@@ -14,5 +14,12 @@ namespace WebUI.Controllers
         {
             return Ok(await Mediator.Send(command));
         }
+
+        [Route("register")]
+        [HttpPost]
+        public async Task<IActionResult> Register([FromBody]RegisterCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
     }
 }
