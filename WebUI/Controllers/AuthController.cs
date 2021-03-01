@@ -1,4 +1,5 @@
 ﻿using Application.Auth.Login;
+using Application.Auth.Register;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

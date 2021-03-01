@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using FluentValidation;
+using WebUI.Models;
 
 namespace WebUI
 {
@@ -34,6 +35,7 @@ namespace WebUI
             services.AddMediatR(applicationAssembly);
             services.AddValidatorsFromAssembly(applicationAssembly);
             services.AddControllers();
+            services.Configure<AuthOptions>(Configuration.GetSection("Auth"));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebUI", Version = "v1" });
