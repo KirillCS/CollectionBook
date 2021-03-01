@@ -22,7 +22,7 @@ namespace Application.Auth.Login
 
         public Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            
+            return null;
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Application.Auth.Login;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebUI.Controllers
@@ -13,9 +10,9 @@ namespace WebUI.Controllers
     {
         [Route("login")]
         [HttpPost]
-        public async Task<LoginResponce> Login([FromBody]LoginCommand command)
+        public async Task<IActionResult> Login([FromBody]LoginCommand command)
         {
-            return Ok(Mediator.Send(command));
+            return Ok(await Mediator.Send(command));
         }
     }
 }
