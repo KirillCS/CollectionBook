@@ -12,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using FluentValidation;
-using WebUI.Models;
+using Infrastructure.Models;
 
 namespace WebUI
 {
@@ -36,6 +36,15 @@ namespace WebUI
             services.AddValidatorsFromAssembly(applicationAssembly);
             services.AddControllers();
             services.Configure<AuthOptions>(Configuration.GetSection("Auth"));
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebUI", Version = "v1" });
@@ -54,6 +63,8 @@ namespace WebUI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
