@@ -3,7 +3,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Auth.Login
+namespace Application.Auth.Commands.Login
 {
     public class LoginCommand : IRequest<string>
     {

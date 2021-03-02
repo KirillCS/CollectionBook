@@ -1,5 +1,5 @@
-﻿using Application.Auth.Login;
-using Application.Auth.Register;
+﻿using Application.Auth.Commands.Login;
+using Application.Auth.Commands.Register;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
