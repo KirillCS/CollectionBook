@@ -9,7 +9,7 @@ namespace Infrastructure.Exceptions
         public InvalidLoginCredentialsException() : base("Invalid login credentials.")
         { }
 
-        public InvalidLoginCredentialsException(string login) : base("Invalid login credentials.")
+        public InvalidLoginCredentialsException(string login) : this()
         {
             Login = login;
         }

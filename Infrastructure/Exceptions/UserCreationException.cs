@@ -14,7 +14,7 @@ namespace Infrastructure.Exceptions
             Errors = new Dictionary<string, string>(); 
         }
 
-        public UserCreationException(IEnumerable<IdentityError> errors) : base("User creation was failed") 
+        public UserCreationException(IEnumerable<IdentityError> errors) : this() 
         {
             Errors = errors.ToDictionary(e => e.Code, e => e.Description);
         }
