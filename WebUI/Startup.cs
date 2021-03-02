@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Infrastructure;
 using Application;
+using WebUI.Filters;
 
 namespace WebUI
 {
@@ -23,7 +24,7 @@ namespace WebUI
             services.AddApplication()
                     .AddInfrastructure(Configuration);
 
-            services.AddControllers();
+            services.AddControllers(options => options.Filters.Add<ApiControllerExceptionFilterAttribute>());
 
             services.AddSwaggerGen(c =>
             {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Domain.Common
@@ -13,7 +12,6 @@ namespace Domain.Common
                 return;
             }
 
-            Debug.Fail(exception.Message);
             throw exception;
         }
 
@@ -24,7 +22,6 @@ namespace Domain.Common
                 return;
             }
 
-            Debug.Fail(exception.Message);
             throw exception;
         }
     }

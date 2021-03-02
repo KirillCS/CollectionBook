@@ -6,6 +6,10 @@ namespace Application.Common.Interfaces
 {
     public interface IUserService
     {
+        Task<bool> UserNameExists(string userName);
+
+        Task<User> GetUser(string userName);
+
         Task<IList<string>> GetUserRoles(User user);
 
         Task<User> CreateUser(string userName, string password);

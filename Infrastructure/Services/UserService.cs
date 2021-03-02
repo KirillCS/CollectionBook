@@ -1,10 +1,13 @@
-﻿using Application.Common.Interfaces;
+﻿using FluentValidation.Results;
+using Application.Common.Interfaces;
 using Domain.Common;
 using Domain.Entities;
 using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using ValidationException = Application.Common.Exceptions.ValidationException;
 
 namespace Infrastructure.Services
 {
@@ -17,6 +20,16 @@ namespace Infrastructure.Services
             this.userManager = userManager;
         }
 
+        public async Task<bool> UserNameExists(string userName)
+        {
+            return await GetUser(userName) is not null;
+        }
+
+        public async Task<User> GetUser(string userName)
+        {
+            return await userManager.FindByNameAsync(userName);
+        }
+
         public async Task<IList<string>> GetUserRoles(User user)
         {
             return await userManager.GetRolesAsync(user);
@@ -26,7 +39,7 @@ namespace Infrastructure.Services
         {
             var user = new User(userName);
             var result = await userManager.CreateAsync(user, password);
-            Guard.Requires(() => result.Succeeded, new UserCreationException(result.Errors));
+            Guard.Requires(() => result.Succeeded, new ValidationException(result.Errors.Select(e => new ValidationFailure("Password", e.Description))));
 
             return user;
         }
