@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure
 {
@@ -21,8 +23,28 @@ namespace Infrastructure
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.Configure<AuthOptions>(configuration.GetSection("Auth"));
+            var authOptionsSection = configuration.GetSection("Auth");
+            services.Configure<AuthOptions>(authOptionsSection);
             services.AddTransient<IJwtService, JwtService>();
+            var authOptions = authOptionsSection.Get<AuthOptions>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidIssuer = authOptions.Issuer,
+
+                            ValidateAudience = true,
+                            ValidAudience = authOptions.Audience,
+
+                            ValidateLifetime = true,
+                            
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = authOptions.SymmetricSecurityKey
+                        };
+                    });
 
             services.AddCors(options =>
             {
