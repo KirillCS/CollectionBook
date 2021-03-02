@@ -3,6 +3,7 @@ using Domain.Common;
 using Domain.Entities;
 using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Services
@@ -14,6 +15,20 @@ namespace Infrastructure.Services
         public UserService(UserManager<User> userManager)
         {
             this.userManager = userManager;
+        }
+
+        public async Task<IList<string>> GetUserRoles(User user)
+        {
+            return await userManager.GetRolesAsync(user);
+        }
+
+        public async Task<User> CreateUser(string userName, string password)
+        {
+            var user = new User(userName);
+            var result = await userManager.CreateAsync(user, password);
+            Guard.Requires(() => result.Succeeded, new UserCreationException(result.Errors));
+
+            return user;
         }
 
         public async Task<User> Authorize(string userName, string password)

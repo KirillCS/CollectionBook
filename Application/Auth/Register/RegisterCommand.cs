@@ -1,12 +1,12 @@
-﻿using Domain.Entities;
+﻿using Application.Common.Interfaces;
+using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Auth.Register
 {
-    public class RegisterCommand : IRequest<string>
+    public class RegisterCommand : IRequest<User>
     {
         public string Login { get; set; }
 
@@ -15,18 +15,18 @@ namespace Application.Auth.Register
         public string PasswordConfirmation { get; set; }
     }
 
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, User>
     {
-        private readonly UserManager<User> userManager;
+        private readonly IUserService userService;
 
-        public RegisterCommandHandler(UserManager<User> userManager)
+        public RegisterCommandHandler(IUserService userService)
         {
-            this.userManager = userManager;
+            this.userService = userService;
         }
 
-        public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<User> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            return null;
+            return await userService.CreateUser(request.Login, request.Password);
         }
     }
 }

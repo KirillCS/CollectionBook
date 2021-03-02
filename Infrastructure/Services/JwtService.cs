@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
 using Infrastructure.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -16,12 +15,12 @@ namespace Infrastructure.Services
     public class JwtService : IJwtService
     {
         private readonly IOptions<AuthOptions> authOptions;
-        private readonly UserManager<User> userManager;
+        private readonly IUserService userService;
 
-        public JwtService(IOptions<AuthOptions> authOptions, UserManager<User> userManager)
+        public JwtService(IOptions<AuthOptions> authOptions, IUserService userService)
         {
             this.authOptions = authOptions;
-            this.userManager = userManager;
+            this.userService = userService;
         }
 
         public async Task<string> GenerateJwt(User user)
@@ -46,7 +45,7 @@ namespace Infrastructure.Services
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
             };
 
-            var rolesClaim = (await userManager.GetRolesAsync(user)).Select(c => new Claim("role", c));
+            var rolesClaim = (await userService.GetUserRoles(user)).Select(c => new Claim("role", c));
             claims.AddRange(rolesClaim);
 
             return claims;

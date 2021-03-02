@@ -17,7 +17,7 @@ namespace Infrastructure
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionString")));
             services.AddScoped<IApplicationDbContext>(providers => providers.GetService<ApplicationDbContext>());
 
-            services.AddIdentityCore<User>()
+            services.AddIdentityCore<User>(options => options.Password.RequireNonAlphanumeric = false)
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 
