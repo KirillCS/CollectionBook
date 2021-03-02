@@ -27,7 +27,7 @@ namespace Infrastructure.Services
 
         public async Task<User> GetUser(string userName)
         {
-            return await userManager.FindByNameAsync(userName);
+            return userName is null ? null : await userManager.FindByNameAsync(userName);
         }
 
         public async Task<IList<string>> GetUserRoles(User user)
