@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Application.Common.Interfaces;
+using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,14 +14,19 @@ namespace Application.Auth.Login
 
     public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
     {
-        public LoginCommandHandler()
-        {
+        private readonly IUserService userService;
+        private readonly IJwtService jwtService;
 
+        public LoginCommandHandler(IUserService userService, IJwtService jwtService)
+        {
+            this.userService = userService;
+            this.jwtService = jwtService;
         }
 
-        public Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            return null;
+            var user = await userService.Authorize(request.Login, request.Password);
+            return await jwtService.GenerateJwt(user);
         }
     }
 }

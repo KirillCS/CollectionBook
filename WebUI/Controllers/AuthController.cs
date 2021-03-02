@@ -13,7 +13,7 @@ namespace WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody]LoginCommand command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(new { access_token = await Mediator.Send(command) });
         }
 
         [Route("register")]
