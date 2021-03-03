@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt'; 
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { API_URL } from './app-injection-tokens';
+import { environment } from 'src/environments/environment';
+import { ACCESS_TOKEN_KEY } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -12,9 +17,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule,
+
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem(ACCESS_TOKEN_KEY),
+        allowedDomains: environment.allowedDomains
+      }
+    })
   ],
-  providers: [],
+  providers: [
+    {
+      provide: API_URL,
+      useValue: environment.apiUrl
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

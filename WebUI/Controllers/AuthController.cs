@@ -11,14 +11,14 @@ namespace WebUI.Controllers
     {
         [Route("login")]
         [HttpPost]
-        public async Task<IActionResult> Login([FromForm] LoginCommand command)
+        public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
-            return Ok(new { access_token = await Mediator.Send(command) });
+            return Ok(new { accessToken = await Mediator.Send(command) });
         }
 
         [Route("register")]
         [HttpPost]
-        public async Task<IActionResult> Register([FromForm] RegisterCommand command)
+        public async Task<IActionResult> Register([FromBody] RegisterCommand command)
         {
             return Ok(await Mediator.Send(command));
         }
