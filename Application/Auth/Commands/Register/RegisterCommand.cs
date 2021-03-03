@@ -1,12 +1,11 @@
 ﻿using Application.Common.Interfaces;
-using Domain.Entities;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Auth.Commands.Register
 {
-    public class RegisterCommand : IRequest<User>
+    public class RegisterCommand : IRequest<string>
     {
         public string Login { get; set; }
 
@@ -15,18 +14,21 @@ namespace Application.Auth.Commands.Register
         public string PasswordConfirmation { get; set; }
     }
 
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, User>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
     {
         private readonly IUserService userService;
+        private readonly IJwtService jwtService;
 
-        public RegisterCommandHandler(IUserService userService)
+        public RegisterCommandHandler(IUserService userService, IJwtService jwtService)
         {
             this.userService = userService;
+            this.jwtService = jwtService;
         }
 
-        public async Task<User> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            return await userService.CreateUser(request.Login, request.Password);
+            var user = await userService.CreateUser(request.Login, request.Password);
+            return await jwtService.GenerateJwt(user);
         }
     }
 }

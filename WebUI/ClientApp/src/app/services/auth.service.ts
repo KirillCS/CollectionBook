@@ -30,8 +30,8 @@ export class AuthService {
       }));
   }
 
-  public register(request: RegistrateRequest): Observable<any> {
-    return this.httpClient.post<any>(`${this.apiUrl}api/auth/register`, request);
+  public register(request: RegistrateRequest): Observable<LoginResponce> {
+    return this.httpClient.post<LoginResponce>(`${this.apiUrl}api/auth/register`, request);
   }
 
   public isAuthenticated(): boolean {

@@ -20,7 +20,7 @@ namespace WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterCommand command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(new { accessToken = await Mediator.Send(command) });
         }
     }
 }
