@@ -26,7 +26,7 @@ export class AuthService {
   public login(request: LoginRequest): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(`${this.apiUrl}api/auth/login`, request)
       .pipe(tap(response => {
-        localStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
+        sessionStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
       }));
   }
 
@@ -35,12 +35,12 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    let token = localStorage.getItem(ACCESS_TOKEN_KEY);
+    let token = sessionStorage.getItem(ACCESS_TOKEN_KEY);
     return token == null ? false : !this.jwtHelper.isTokenExpired(token);
   }
 
   public logout(): void {
-    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    sessionStorage.removeItem(ACCESS_TOKEN_KEY);
     this.router.navigate(['']);
   }
 }
