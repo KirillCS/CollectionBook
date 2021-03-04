@@ -19,7 +19,17 @@ namespace Infrastructure
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionString")));
             services.AddScoped<IApplicationDbContext>(providers => providers.GetService<ApplicationDbContext>());
 
-            services.AddIdentityCore<User>(options => options.Password.RequireNonAlphanumeric = false)
+            services.AddIdentityCore<User>(options => 
+                    {
+                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+
+                        options.Password.RequireDigit = true;
+                        options.Password.RequiredLength = 6;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequiredUniqueChars = 0;
+                        options.Password.RequireLowercase = true;
+                        options.Password.RequireUppercase = true;
+                    })
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 

@@ -34,9 +34,7 @@ namespace WebUI
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors(builder => builder.AllowAnyOrigin()
-                                          .AllowAnyMethod()
-                                          .AllowAnyHeader());
+            app.UseCors();
 
             if (env.IsDevelopment())
             {
@@ -48,8 +46,6 @@ namespace WebUI
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            
 
             app.UseAuthentication();
             app.UseAuthorization();

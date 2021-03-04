@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { LoginRequest } from 'src/app/models/requests/loginRequest';
-import { LoginResponce } from 'src/app/models/responces/loginResponce';
+import { LoginResponse } from 'src/app/models/responses/loginResponce';
 import { RegistrateRequest } from '../models/requests/registrateRequest';
 import { API_URL } from 'src/app/app-injection-tokens';
 
@@ -23,15 +23,15 @@ export class AuthService {
     private router: Router
   ) { }
 
-  public login(request: LoginRequest): Observable<LoginResponce> {
-    return this.httpClient.post<LoginResponce>(`${this.apiUrl}api/auth/login`, request)
+  public login(request: LoginRequest): Observable<LoginResponse> {
+    return this.httpClient.post<LoginResponse>(`${this.apiUrl}api/auth/login`, request)
       .pipe(tap(response => {
         localStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
       }));
   }
 
-  public register(request: RegistrateRequest): Observable<LoginResponce> {
-    return this.httpClient.post<LoginResponce>(`${this.apiUrl}api/auth/register`, request);
+  public register(request: RegistrateRequest): Observable<LoginResponse> {
+    return this.httpClient.post<LoginResponse>(`${this.apiUrl}api/auth/register`, request);
   }
 
   public isAuthenticated(): boolean {

@@ -1,3 +1,3 @@
-export class LoginResponce {
+export class LoginResponse {
   public accessToken: string;
 }
