@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -47,6 +48,7 @@ import { SubmitErrorStateMatcher } from './error-state-matchers/submit-error-sta
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
+    MatMenuModule,
 
     JwtModule.forRoot({
       config: {

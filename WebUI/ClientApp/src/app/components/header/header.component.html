@@ -1,7 +1,23 @@
-<mat-toolbar class="navbar">
-  <div>CollectionBook</div>
-  <div>
-    <a routerLink="auth/register">Registrate</a>
-    <a routerLink="auth/login">Login</a>
+<nav>
+  <div class="container">
+    <div class="content">
+      <a class="logo" routerLink="home">
+        <img class="logo__image" src="assets/logo.png" alt="">
+        <div class="logo__text">CollectionBook</div>
+      </a>
+      <div class="search-input">
+        <span class="material-icons search-icon">search</span>
+        <input type="text" placeholder="Search...">
+      </div>
+      <a id="login-link" class="link" routerLink="auth/login">Log in</a>
+      <a id="signup-link" class="link" routerLink="auth/register">Sign up</a>
+      <button id="auth-button" mat-icon-button [matMenuTriggerFor]="account"><mat-icon>login</mat-icon></button>
+      <mat-menu #account>
+        <button routerLink="auth/login" mat-menu-item>Log in</button>
+        <button routerLink="auth/register" mat-menu-item>Sign up</button>
+      </mat-menu>
+    </div>
   </div>
-</mat-toolbar>
+</nav>
+
+<div class="maket"></div>

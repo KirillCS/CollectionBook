@@ -5,4 +5,12 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: #292929;
+}
+
+.container {
+  min-width: auto;
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
 }
