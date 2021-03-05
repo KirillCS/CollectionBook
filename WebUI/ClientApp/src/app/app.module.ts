@@ -12,7 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,8 +22,8 @@ import { environment } from 'src/environments/environment';
 import { ACCESS_TOKEN_KEY } from './services/auth.service';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+import { LoginComponentDialog } from './components/dialogs/login/login-dialog.component';
+import { RegisterComponent } from './components/dialogs/register/register.component';
 import { DefaultErrorStateMatcher } from './error-state-matchers/default-error-state-mathcer';
 import { SubmitErrorStateMatcher } from './error-state-matchers/submit-error-state-matcher';
 
@@ -31,7 +32,7 @@ import { SubmitErrorStateMatcher } from './error-state-matchers/submit-error-sta
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    LoginComponent,
+    LoginComponentDialog,
     RegisterComponent
   ],
   imports: [
@@ -49,6 +50,7 @@ import { SubmitErrorStateMatcher } from './error-state-matchers/submit-error-sta
     MatIconModule,
     MatTooltipModule,
     MatMenuModule,
+    MatDialogModule,
 
     JwtModule.forRoot({
       config: {

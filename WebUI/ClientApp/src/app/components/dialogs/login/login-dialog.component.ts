@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-login-dialog',
+  templateUrl: './login-dialog.component.html',
+  styleUrls: ['./login-dialog.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponentDialog {
   public matcher = new SubmitErrorStateMatcher();
   public form = new FormGroup({
     login: new FormControl(),
@@ -30,10 +31,10 @@ export class LoginComponent implements OnInit {
     return this.form.get('password');
   }
 
-  constructor(private authService: AuthService, private router: Router) {
-  }
-
-  ngOnInit(): void {
+  constructor(
+    private dialogRef: MatDialogRef<LoginComponentDialog>,
+    private authService: AuthService, 
+    private router: Router) {
   }
 
   public formChanged(): void {
@@ -48,7 +49,7 @@ export class LoginComponent implements OnInit {
 
     this.inProcess = true;
     this.authService.login({ login: this.login.value, password: this.password.value })
-      .subscribe(() => { }, error => {
+      .subscribe(() => this.dialogRef.close(), error => {
         if (error.status == 401) {
           this.invalid = true;
         } else {
@@ -56,6 +57,6 @@ export class LoginComponent implements OnInit {
         }
 
         this.inProcess = false;
-      }, () => this.router.navigate(['']));
+      });
   }
 }

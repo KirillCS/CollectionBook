@@ -9,12 +9,12 @@
         <span class="material-icons search-icon">search</span>
         <input type="text" placeholder="Search...">
       </div>
-      <a id="login-link" class="link" routerLink="auth/login">Log in</a>
-      <a id="signup-link" class="link" routerLink="auth/register">Sign up</a>
+      <button id="login-link" class="link link--auth" mat-button (click)="openLoginDialog()">Log in</button>
+      <button id="signup-link" class="link link--auth" mat-button (click)="openSignupDialog()">Sign up</button>
       <button id="auth-button" mat-icon-button [matMenuTriggerFor]="account"><mat-icon>login</mat-icon></button>
       <mat-menu #account>
-        <button routerLink="auth/login" mat-menu-item>Log in</button>
-        <button routerLink="auth/register" mat-menu-item>Sign up</button>
+        <button mat-menu-item (click)="openLoginDialog()">Log in</button>
+        <button mat-menu-item (click)="openSignupDialog()">Sign up</button>
       </mat-menu>
     </div>
   </div>
