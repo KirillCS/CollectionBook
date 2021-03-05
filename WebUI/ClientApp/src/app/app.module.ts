@@ -22,8 +22,8 @@ import { environment } from 'src/environments/environment';
 import { ACCESS_TOKEN_KEY } from './services/auth.service';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
-import { LoginComponentDialog } from './components/dialogs/login/login-dialog.component';
-import { RegisterComponent } from './components/dialogs/register/register.component';
+import { LoginDialogComponent } from './components/dialogs/login/login-dialog.component';
+import { RegisterDialogComponent } from './components/dialogs/register/register-dialog.component';
 import { DefaultErrorStateMatcher } from './error-state-matchers/default-error-state-mathcer';
 import { SubmitErrorStateMatcher } from './error-state-matchers/submit-error-state-matcher';
 
@@ -32,8 +32,8 @@ import { SubmitErrorStateMatcher } from './error-state-matchers/submit-error-sta
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    LoginComponentDialog,
-    RegisterComponent
+    LoginDialogComponent,
+    RegisterDialogComponent
   ],
   imports: [
     BrowserModule,

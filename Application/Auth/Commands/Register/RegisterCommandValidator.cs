@@ -8,7 +8,7 @@ namespace Application.Auth.Commands.Register
         public RegisterCommandValidator(IUserService userService)
         {
             RuleFor(c => c.Login).NotEmpty().WithMessage("Login is a required field")
-                                 .Matches(@"/^\w*$/gm").WithMessage("Login can only contain english letters, numbers and symbol '_'")
+                                 .Matches(@"^\w*$").WithMessage("Login can only contain english letters, numbers and symbol '_'")
                                  .MaximumLength(256).WithMessage("Login cannot have the length more than 256 characters")
                                  .MustAsync(async (login, ct) => !await userService.UserNameExists(login)).WithMessage(c => $"Login '{c.Login}' already exists");
 

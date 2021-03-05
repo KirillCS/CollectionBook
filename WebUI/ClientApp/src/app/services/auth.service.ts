@@ -31,7 +31,10 @@ export class AuthService {
   }
 
   public register(request: RegistrateRequest): Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>(`${this.apiUrl}api/auth/register`, request);
+    return this.httpClient.post<LoginResponse>(`${this.apiUrl}api/auth/register`, request)
+      .pipe(tap(response => {
+        sessionStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
+      }));
   }
 
   public isAuthenticated(): boolean {

@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
 
 import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
 import { AuthService } from 'src/app/services/auth.service';
 
 import 'src/app/extensions/string-extensions';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-register-dialog',
+  templateUrl: './register-dialog.component.html',
+  styleUrls: ['./register-dialog.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterDialogComponent {
   public matcher = new DefaultErrorStateMatcher();
   public form = new FormGroup({
     login: new FormControl(),
@@ -38,10 +38,7 @@ export class RegisterComponent implements OnInit {
     return this.form.get('passwordConfirmation')
   }
 
-  constructor(private authService: AuthService, private router: Router) {
-  }
-
-  ngOnInit(): void {
+  constructor(private authService: AuthService, private dialogRef: MatDialogRef<RegisterDialogComponent>) {
   }
 
   public formChanged() {
@@ -74,6 +71,6 @@ export class RegisterComponent implements OnInit {
         }
 
         this.inProcess = false;
-      }, () => this.router.navigate(['']));
+      }, () => this.dialogRef.close());
   }
 }

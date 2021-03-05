@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { AuthService } from 'src/app/services/auth.service';
@@ -11,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './login-dialog.component.html',
   styleUrls: ['./login-dialog.component.css']
 })
-export class LoginComponentDialog {
+export class LoginDialogComponent {
   public matcher = new SubmitErrorStateMatcher();
   public form = new FormGroup({
     login: new FormControl(),
@@ -31,10 +30,7 @@ export class LoginComponentDialog {
     return this.form.get('password');
   }
 
-  constructor(
-    private dialogRef: MatDialogRef<LoginComponentDialog>,
-    private authService: AuthService, 
-    private router: Router) {
+  constructor(private dialogRef: MatDialogRef<LoginDialogComponent>, private authService: AuthService) {
   }
 
   public formChanged(): void {
@@ -49,7 +45,7 @@ export class LoginComponentDialog {
 
     this.inProcess = true;
     this.authService.login({ login: this.login.value, password: this.password.value })
-      .subscribe(() => this.dialogRef.close(), error => {
+      .subscribe(() => { }, error => {
         if (error.status == 401) {
           this.invalid = true;
         } else {
@@ -57,6 +53,6 @@ export class LoginComponentDialog {
         }
 
         this.inProcess = false;
-      });
+      }, () => this.dialogRef.close());
   }
 }

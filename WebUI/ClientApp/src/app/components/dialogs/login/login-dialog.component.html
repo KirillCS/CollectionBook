@@ -3,7 +3,7 @@
   <button tabindex="-1" mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
 </div>
 <form [formGroup]="form" (submit)="submit()" (input)="formChanged()">
-  <mat-dialog-content class="">
+  <mat-dialog-content>
     <mat-form-field class="field" appearance="fill">
       <mat-label>Login</mat-label>
       <input type="text" required autocomplete="off" matInput formControlName="login" [errorStateMatcher]="matcher">
