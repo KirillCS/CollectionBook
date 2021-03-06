@@ -10,10 +10,13 @@ namespace Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            var applicationAssembly = Assembly.GetExecutingAssembly();
-            services.AddMediatR(applicationAssembly);
+            var assembly = Assembly.GetExecutingAssembly();
+
+            services.AddAutoMapper(assembly);
+            services.AddMediatR(assembly);
+            services.AddValidatorsFromAssembly(assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            services.AddValidatorsFromAssembly(applicationAssembly);
+
 
             return services;
         }

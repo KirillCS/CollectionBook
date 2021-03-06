@@ -15,6 +15,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 
+import { NgxsModule } from '@ngxs/store';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { API_URL } from './app-injection-tokens';
@@ -57,7 +59,8 @@ import { SubmitErrorStateMatcher } from './error-state-matchers/submit-error-sta
         tokenGetter: () => localStorage.getItem(ACCESS_TOKEN_KEY),
         allowedDomains: environment.allowedDomains
       }
-    })
+    }),
+    NgxsModule.forRoot(null, { developmentMode: !environment.production })
   ],
   providers: [
     { provide: API_URL, useValue: environment.apiUrl },
