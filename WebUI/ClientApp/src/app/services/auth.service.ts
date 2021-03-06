@@ -5,9 +5,9 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { LoginRequest } from 'src/app/models/requests/loginRequest';
-import { LoginResponse } from 'src/app/models/responses/loginResponce';
-import { RegistrateRequest } from '../models/requests/registrateRequest';
+import { LoginRequest } from 'src/app/models/requests/login.request';
+import { LoginResponse } from 'src/app/models/responses/login.responce';
+import { RegisterRequest } from '../models/requests/register.request';
 import { API_URL } from 'src/app/app-injection-tokens';
 
 export const ACCESS_TOKEN_KEY = 'collectionbook_access_token';
@@ -30,7 +30,7 @@ export class AuthService {
       }));
   }
 
-  public register(request: RegistrateRequest): Observable<LoginResponse> {
+  public register(request: RegisterRequest): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(`${this.apiUrl}api/auth/register`, request)
       .pipe(tap(response => {
         sessionStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
