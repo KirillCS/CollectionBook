@@ -2,8 +2,6 @@
 {
     public class LoginResponse
     {
-        public LoginUserDto User { get; set; }
-
         public string AccessToken { get; set; }
     }
 }

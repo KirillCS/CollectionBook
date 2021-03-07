@@ -9,13 +9,26 @@
         <span class="material-icons search-icon">search</span>
         <input type="text" placeholder="Search...">
       </div>
-      <button id="login-link" class="link link--auth" mat-button (click)="openLoginDialog()">Log in</button>
-      <button id="signup-link" class="link link--auth" mat-button (click)="openSignupDialog()">Sign up</button>
-      <button id="auth-button" mat-icon-button [matMenuTriggerFor]="account"><mat-icon>login</mat-icon></button>
-      <mat-menu #account>
-        <button mat-menu-item (click)="openLoginDialog()">Log in</button>
-        <button mat-menu-item (click)="openSignupDialog()">Sign up</button>
-      </mat-menu>
+      <div class="links" *ngIf="!isAuthenticated()">
+        <button class="link link--auth" mat-button (click)="openLoginDialog()">Log in</button>
+        <button class="link link--auth" mat-button (click)="openSignupDialog()">Sign up</button>
+        <button id="auth-button" mat-icon-button [matMenuTriggerFor]="login"><mat-icon>login</mat-icon></button>
+        <mat-menu #login>
+          <button mat-menu-item (click)="openLoginDialog()">Log in</button>
+          <button mat-menu-item (click)="openSignupDialog()">Sign up</button>
+        </mat-menu>
+      </div>
+      <div *ngIf="isAuthenticated()">
+        <button class="link" mat-button [matMenuTriggerFor]="account">
+          @{{ currentUser.login }}
+        </button>
+        <mat-menu #account>
+          <button mat-menu-item><mat-icon>manage_accounts</mat-icon>Profile</button>
+          <button mat-menu-item><mat-icon>collections</mat-icon>My collections</button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="logout()"><mat-icon>logout</mat-icon>Log out</button>
+        </mat-menu>
+      </div>
     </div>
   </div>
 </nav>

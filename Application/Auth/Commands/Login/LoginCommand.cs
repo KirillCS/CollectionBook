@@ -1,5 +1,4 @@
 ﻿using Application.Common.Interfaces;
-using AutoMapper;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,13 +16,11 @@ namespace Application.Auth.Commands.Login
     {
         private readonly IUserService userService;
         private readonly IJwtService jwtService;
-        private readonly IMapper mapper;
 
-        public LoginCommandHandler(IUserService userService, IJwtService jwtService, IMapper mapper)
+        public LoginCommandHandler(IUserService userService, IJwtService jwtService)
         {
             this.userService = userService;
             this.jwtService = jwtService;
-            this.mapper = mapper;
         }
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -31,7 +28,7 @@ namespace Application.Auth.Commands.Login
             var user = await userService.Authorize(request.Login, request.Password);
             string token = await jwtService.GenerateJwt(user);
 
-            return new LoginResponse { User = mapper.Map<LoginUserDto>(user), AccessToken = token };
+            return new LoginResponse { AccessToken = token };
         }
     }
 }

@@ -1,4 +1,4 @@
-export class LoginRequest {
-  public login: string;
-  public password: string;
+export interface LoginRequest {
+  login: string;
+  password: string;
 }

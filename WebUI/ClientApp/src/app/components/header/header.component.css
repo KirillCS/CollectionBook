@@ -98,6 +98,11 @@ nav {
   box-shadow: 0 0 5px 0 #6795c584;
 }
 
+.links {
+  display: flex;
+  flex-direction: row;
+}
+
 .link {
   font-weight: 400;
 }

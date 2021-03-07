@@ -14,20 +14,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 
-import { NgxsModule } from '@ngxs/store';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { API_URL } from './app-injection-tokens';
+import { AppRoutingModule } from 'src/app/app-routing.module';
+import { AppComponent } from 'src/app/app.component';
+import { API_URL } from 'src/app/app-injection-tokens';
 import { environment } from 'src/environments/environment';
-import { ACCESS_TOKEN_KEY } from './services/auth.service';
-import { HeaderComponent } from './components/header/header.component';
-import { HomeComponent } from './components/home/home.component';
-import { LoginDialogComponent } from './components/dialogs/login/login-dialog.component';
-import { RegisterDialogComponent } from './components/dialogs/register/register-dialog.component';
-import { DefaultErrorStateMatcher } from './error-state-matchers/default-error-state-mathcer';
-import { SubmitErrorStateMatcher } from './error-state-matchers/submit-error-state-matcher';
+import { ACCESS_TOKEN_KEY } from 'src/app/services/auth.service';
+import { HeaderComponent } from 'src/app/components/header/header.component';
+import { HomeComponent } from 'src/app/components/home/home.component';
+import { LoginDialogComponent } from 'src/app/components/dialogs/login/login-dialog.component';
+import { RegisterDialogComponent } from 'src/app/components/dialogs/register/register-dialog.component';
+import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
+import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 
 @NgModule({
   declarations: [
@@ -53,14 +52,14 @@ import { SubmitErrorStateMatcher } from './error-state-matchers/submit-error-sta
     MatTooltipModule,
     MatMenuModule,
     MatDialogModule,
+    MatDividerModule,
 
     JwtModule.forRoot({
       config: {
         tokenGetter: () => localStorage.getItem(ACCESS_TOKEN_KEY),
         allowedDomains: environment.allowedDomains
       }
-    }),
-    NgxsModule.forRoot(null, { developmentMode: !environment.production })
+    })
   ],
   providers: [
     { provide: API_URL, useValue: environment.apiUrl },

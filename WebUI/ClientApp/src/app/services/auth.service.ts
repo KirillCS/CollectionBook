@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 
 import { LoginRequest } from 'src/app/models/requests/login.request';
 import { LoginResponse } from 'src/app/models/responses/login.responce';
-import { RegisterRequest } from '../models/requests/register.request';
+import { RegisterRequest } from 'src/app/models/requests/register.request';
 import { API_URL } from 'src/app/app-injection-tokens';
 
 export const ACCESS_TOKEN_KEY = 'collectionbook_access_token';
@@ -26,7 +26,6 @@ export class AuthService {
   public login(request: LoginRequest): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(`${this.apiUrl}api/auth/login`, request)
       .pipe(tap(response => {
-        console.log(response);
         sessionStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
       }));
   }
