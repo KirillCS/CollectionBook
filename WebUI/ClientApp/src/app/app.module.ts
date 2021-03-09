@@ -15,6 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AppComponent } from 'src/app/app.component';
@@ -27,6 +28,7 @@ import { LoginDialogComponent } from 'src/app/components/dialogs/login/login-dia
 import { RegisterDialogComponent } from 'src/app/components/dialogs/register/register-dialog.component';
 import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
+import { ProfileComponent } from 'src/app/components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-err
     HeaderComponent,
     HomeComponent,
     LoginDialogComponent,
-    RegisterDialogComponent
+    RegisterDialogComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -53,6 +56,7 @@ import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-err
     MatMenuModule,
     MatDialogModule,
     MatDividerModule,
+    MatTabsModule,
 
     JwtModule.forRoot({
       config: {

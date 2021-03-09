@@ -5,10 +5,12 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #F6F6F6;
   color: #292929;
 }
 
 .container {
+  position: relative;
   min-width: auto;
   max-width: 1200px;
   height: 100%;

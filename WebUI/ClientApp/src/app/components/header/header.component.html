@@ -1,8 +1,8 @@
 <nav>
   <div class="container">
     <div class="content">
-      <a class="logo" routerLink="home">
-        <img class="logo__image" src="assets/logo.png" alt="">
+      <a class="logo" routerLink="">
+        <img class="logo__image" src="assets/img/logo.png" alt="">
         <div class="logo__text">CollectionBook</div>
       </a>
       <div class="search-input">
@@ -23,7 +23,7 @@
           @{{ currentUser.login }}
         </button>
         <mat-menu #account>
-          <button mat-menu-item><mat-icon class="material-icons-round">account_circle</mat-icon>Your profile</button>
+          <button mat-menu-item routerLink="profile"><mat-icon class="material-icons-round">account_circle</mat-icon>Your profile</button>
           <button mat-menu-item><mat-icon class="material-icons-round">collections</mat-icon>Your collections</button>
           <button mat-menu-item><mat-icon class="material-icons-round">star_rate</mat-icon>Your stars</button>
           <mat-divider></mat-divider>
