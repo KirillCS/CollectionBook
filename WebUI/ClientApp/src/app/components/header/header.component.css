@@ -94,8 +94,8 @@ nav {
 }
 
 .search-input:focus-within {
-  border: 1px solid #6795c5;
-  box-shadow: 0 0 5px 0 #6795c584;
+  border: 1px solid #7AB1EB;
+  box-shadow: 0 0 0px 3px #7AB1EB84;
 }
 
 .links {
