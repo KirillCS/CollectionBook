@@ -29,6 +29,7 @@ import { RegisterDialogComponent } from 'src/app/components/dialogs/register/reg
 import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { ProfileComponent } from 'src/app/components/profile/profile.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ProfileComponent } from 'src/app/components/profile/profile.component';
     HomeComponent,
     LoginDialogComponent,
     RegisterDialogComponent,
-    ProfileComponent
+    ProfileComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
