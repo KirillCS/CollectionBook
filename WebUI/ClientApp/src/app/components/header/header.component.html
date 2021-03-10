@@ -23,7 +23,7 @@
           @{{ currentUser.login }}
         </button>
         <mat-menu #account>
-          <button mat-menu-item routerLink="profile"><mat-icon class="material-icons-round">account_circle</mat-icon>Your profile</button>
+          <button mat-menu-item [routerLink]="['profile', currentUser.login]"><mat-icon class="material-icons-round">account_circle</mat-icon>Your profile</button>
           <button mat-menu-item><mat-icon class="material-icons-round">collections</mat-icon>Your collections</button>
           <button mat-menu-item><mat-icon class="material-icons-round">star_rate</mat-icon>Your stars</button>
           <mat-divider></mat-divider>

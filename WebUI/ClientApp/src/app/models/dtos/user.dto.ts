@@ -1,4 +1,4 @@
-export interface UserDto {
-  id: string;
-  login: string;
+export class UserDto {
+  public id: string;
+  public login: string;
 }

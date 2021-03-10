@@ -19,7 +19,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AppComponent } from 'src/app/app.component';
-import { API_URL } from 'src/app/app-injection-tokens';
+import { API_URL, AVATARS_PATH, DEFAULT_AVATAR_PATH } from 'src/app/app-injection-tokens';
 import { environment } from 'src/environments/environment';
 import { ACCESS_TOKEN_KEY } from 'src/app/services/auth.service';
 import { HeaderComponent } from 'src/app/components/header/header.component';
@@ -67,6 +67,8 @@ import { ProfileComponent } from 'src/app/components/profile/profile.component';
   ],
   providers: [
     { provide: API_URL, useValue: environment.apiUrl },
+    { provide: AVATARS_PATH, useValue: environment.avatarsPath },
+    { provide: DEFAULT_AVATAR_PATH, useValue: environment.defaultAvatarsPath },
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
     { provide: ErrorStateMatcher, useClass: SubmitErrorStateMatcher }
   ],

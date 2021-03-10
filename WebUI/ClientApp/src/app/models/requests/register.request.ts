@@ -1,5 +1,5 @@
-export interface RegisterRequest {
-  login: string;
-  password: string;
-  passwordConfirmation: string;
+export class RegisterRequest {
+  public login: string;
+  public password: string;
+  public passwordConfirmation: string;
 }
