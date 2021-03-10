@@ -12,11 +12,15 @@ namespace Domain.Entities
 
         public string Biography { get; set; }
 
+        public string WebsiteUrl { get; set; }
+
         public string TelegramLogin { get; set; }
 
         public string InstagramLogin { get; set; }
 
         public bool IsEmailVisible { get; set; }
+
+        public string AvatarPath { get; set; }
 
         public User()
         { }
