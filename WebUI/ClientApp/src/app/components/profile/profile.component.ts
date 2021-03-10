@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { UserService } from 'src/app/services/user.service';
 import { UserProfileDto } from 'src/app/models/dtos/user-profile.dto';
@@ -23,6 +23,7 @@ export class ProfileComponent implements OnInit {
     @Inject(DEFAULT_AVATAR_PATH) private defaultAvatarPath: string,
     private userService: UserService,
     private route: ActivatedRoute,
+    private router: Router,
     currentUserService: CurrentUserService
   ) {
     this.currentUser = currentUserService.currentUser;
@@ -32,8 +33,8 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       let login = params.get('login');
-      this.userService.getProfile(login).subscribe(profile => this.profile = profile, error => {
-        console.log(error);
+      this.userService.getProfile(login).subscribe(profile => this.profile = profile, () => {
+        this.router.navigateByUrl('**', {skipLocationChange: true});
       });
     })
   }
