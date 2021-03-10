@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using ValidationException = Application.Common.Exceptions.ValidationException;
 using Infrastructure.Exceptions;
+using Application.Common.Exceptions;
 
 namespace WebUI.Filters
 {
@@ -17,7 +18,8 @@ namespace WebUI.Filters
             exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
                 { typeof(ValidationException), HandleValidationException },
-                { typeof(InvalidLoginCredentialsException), HandleInvalidLoginCredentialsException }
+                { typeof(InvalidLoginCredentialsException), HandleInvalidLoginCredentialsException },
+                { typeof(EntityNotFoundException), HandleEntityNotFoundException }
             };
         }
 
@@ -66,6 +68,21 @@ namespace WebUI.Filters
             };
 
             context.Result = new UnauthorizedObjectResult(details);
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleEntityNotFoundException(ExceptionContext context)
+        {
+            var exception = context.Exception as EntityNotFoundException;
+            var details = new ProblemDetails()
+            {
+                Status = StatusCodes.Status404NotFound,
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                Title = exception.Message,
+                Detail = exception.Message
+            };
+
+            context.Result = new NotFoundObjectResult(details);
             context.ExceptionHandled = true;
         }
 

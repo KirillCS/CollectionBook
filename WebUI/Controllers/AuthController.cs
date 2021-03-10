@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 namespace WebUI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class AuthController : ApiControllerBase
     {
         [Route("login")]
