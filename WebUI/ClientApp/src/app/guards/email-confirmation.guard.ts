@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from "@angular/router";
 import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 import { AuthService } from "src/app/services/auth.service";
 import { EmailConfirmationService } from "src/app/services/email-confirmation.service";
@@ -19,12 +20,7 @@ export class EmailConfirmationGuard implements CanActivate {
     if (!id || !email) {
       return false;
     }
-
-    let isConfirmed: boolean;
-    this.emailService.isEmailConfirmed(id).subscribe(response => isConfirmed = response, error => {
-      console.log(error);
-    })
     
-    return !isConfirmed;
+    return this.emailService.isEmailConfirmed(id).pipe(map(response => !response));
   }
 }

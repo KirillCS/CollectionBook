@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Params } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { API_URL } from 'src/app/app-injection-tokens';
@@ -12,7 +11,12 @@ export class EmailConfirmationService {
   constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
 
   public isEmailConfirmed(id: string): Observable<boolean> {
-    let params: Params = { id };
-    return this.httpClient.get<boolean>(`${this.apiUrl}api/email/confirmed`, params);
+    let params = new HttpParams().set('id', id);
+    return this.httpClient.get<boolean>(`${this.apiUrl}api/email/confirmed`, { params });
+  }
+
+  public sendConfirmationMessage(id: string): Observable<void> {
+    let params = new HttpParams().set('id', id);
+    return this.httpClient.get<void>(`${this.apiUrl}api/email/sendconfirmation`, { params });
   }
 }

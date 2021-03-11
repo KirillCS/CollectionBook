@@ -24,7 +24,7 @@ namespace Application.Email.Queries.GetEmailConfirmationStatus
         public async Task<bool> Handle(GetEmailConfirmationStatusQuery request, CancellationToken cancellationToken)
         {
             var user = await userService.GetUserById(request.Id);
-            Guard.Requires(() => user != null, new EntityNotFoundException());
+            Guard.Requires(() => user is not null, new EntityNotFoundException());
 
             return await userService.IsEmailConfirmed(user);
         }
