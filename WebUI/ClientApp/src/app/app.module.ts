@@ -31,6 +31,7 @@ import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-e
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { ProfileComponent } from 'src/app/components/profile/profile.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { EmailConfirmationComponent } from './components/auth/email-cofirmation/email-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    EmailConfirmationComponent
   ],
   imports: [
     BrowserModule,
