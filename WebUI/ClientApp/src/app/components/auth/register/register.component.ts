@@ -9,11 +9,11 @@ import 'src/app/extensions/string-extensions';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-register-dialog',
-  templateUrl: './register-dialog.component.html',
-  styleUrls: ['./register-dialog.component.css']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class RegisterDialogComponent {
+export class RegisterComponent {
   public matcher = new DefaultErrorStateMatcher();
   public form = new FormGroup({
     login: new FormControl(),
@@ -38,7 +38,7 @@ export class RegisterDialogComponent {
     return this.form.get('passwordConfirmation')
   }
 
-  constructor(private authService: AuthService, private dialogRef: MatDialogRef<RegisterDialogComponent>) {
+  constructor(private authService: AuthService, private dialogRef: MatDialogRef<RegisterComponent>) {
   }
 
   public formChanged() {

@@ -16,6 +16,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AppComponent } from 'src/app/app.component';
@@ -24,8 +25,8 @@ import { environment } from 'src/environments/environment';
 import { ACCESS_TOKEN_KEY } from 'src/app/services/auth.service';
 import { HeaderComponent } from 'src/app/components/header/header.component';
 import { HomeComponent } from 'src/app/components/home/home.component';
-import { LoginDialogComponent } from 'src/app/components/dialogs/login/login-dialog.component';
-import { RegisterDialogComponent } from 'src/app/components/dialogs/register/register-dialog.component';
+import { LoginComponent } from 'src/app/components/auth/login/login.component';
+import { RegisterComponent } from 'src/app/components/auth/register/register.component';
 import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { ProfileComponent } from 'src/app/components/profile/profile.component';
@@ -36,8 +37,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    LoginDialogComponent,
-    RegisterDialogComponent,
+    LoginComponent,
+    RegisterComponent,
     ProfileComponent,
     NotFoundComponent
   ],
@@ -59,6 +60,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     MatDialogModule,
     MatDividerModule,
     MatTabsModule,
+    MatCheckboxModule,
 
     JwtModule.forRoot({
       config: {

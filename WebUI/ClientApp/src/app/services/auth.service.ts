@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -9,6 +8,7 @@ import { LoginRequest } from 'src/app/models/requests/login.request';
 import { LoginResponse } from 'src/app/models/responses/login.responce';
 import { RegisterRequest } from 'src/app/models/requests/register.request';
 import { API_URL } from 'src/app/app-injection-tokens';
+import { AuthTokenService } from 'src/app/services/auth-token.service';
 
 export const ACCESS_TOKEN_KEY = 'collectionbook_access_token';
 
@@ -19,31 +19,30 @@ export class AuthService {
   constructor(
     private httpClient: HttpClient,
     @Inject(API_URL) private apiUrl: string,
-    private jwtHelper: JwtHelperService,
+    private tokenService: AuthTokenService,
     private router: Router
   ) { }
 
-  public login(request: LoginRequest): Observable<LoginResponse> {
+  public login(request: LoginRequest, rememberMe: boolean): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(`${this.apiUrl}api/auth/login`, request)
       .pipe(tap(response => {
-        sessionStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
+        this.tokenService.setToken(response.accessToken, rememberMe);
       }));
   }
 
   public register(request: RegisterRequest): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(`${this.apiUrl}api/auth/register`, request)
       .pipe(tap(response => {
-        sessionStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
+        console.log(response);
       }));
   }
 
   public isAuthenticated(): boolean {
-    let token = sessionStorage.getItem(ACCESS_TOKEN_KEY);
-    return token == null ? false : !this.jwtHelper.isTokenExpired(token);
+    return this.tokenService.getToken() != null;
   }
 
   public logout(): void {
-    sessionStorage.removeItem(ACCESS_TOKEN_KEY);
+    this.tokenService.removeToken();
     this.router.navigate(['']);
   }
 }

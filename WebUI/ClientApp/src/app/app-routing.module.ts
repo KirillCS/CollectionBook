@@ -4,11 +4,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from 'src/app/components/home/home.component';
 import { ProfileComponent } from 'src/app/components/profile/profile.component';
 import { NotFoundComponent } from 'src/app/components/not-found/not-found.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { RegisterComponent } from './components/auth/register/register.component';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'profile/:login', component: ProfileComponent},
-  {path: '**', component: NotFoundComponent}
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'profile/:login', component: ProfileComponent },
+  { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({

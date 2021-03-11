@@ -10,12 +10,12 @@
         <input type="text" placeholder="Search...">
       </div>
       <div class="links" *ngIf="!isAuthenticated()">
-        <button class="link link--auth" mat-button (click)="openLoginDialog()">Log in</button>
-        <button class="link link--auth" mat-button (click)="openSignupDialog()">Sign up</button>
+        <button class="link link--auth" mat-button routerLink="login">Log in</button>
+        <button class="link link--auth" mat-button routerLink="register">Sign up</button>
         <button id="auth-button" mat-icon-button [matMenuTriggerFor]="login"><mat-icon class="material-icons-round">login</mat-icon></button>
         <mat-menu #login>
-          <button mat-menu-item (click)="openLoginDialog()">Log in</button>
-          <button mat-menu-item (click)="openSignupDialog()">Sign up</button>
+          <button mat-menu-item routerLink="login">Log in</button>
+          <button mat-menu-item routerLink="register">Sign up</button>
         </mat-menu>
       </div>
       <div *ngIf="isAuthenticated()">

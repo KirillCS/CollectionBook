@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
 
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-login-dialog',
-  templateUrl: './login-dialog.component.html',
-  styleUrls: ['./login-dialog.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class LoginDialogComponent {
+export class LoginComponent {
   public matcher = new SubmitErrorStateMatcher();
   public form = new FormGroup({
     login: new FormControl(),
-    password: new FormControl()
+    password: new FormControl(),
+    rememberMe: new FormControl()
   });
 
   public hidePassword = true;
@@ -30,7 +30,13 @@ export class LoginDialogComponent {
     return this.form.get('password');
   }
 
-  constructor(private dialogRef: MatDialogRef<LoginDialogComponent>, private authService: AuthService) {
+  
+  public get rememberMe() : AbstractControl {
+    return this.form.get('rememberMe');
+  }
+  
+
+  constructor(private authService: AuthService) {
   }
 
   public formChanged(): void {
@@ -44,7 +50,7 @@ export class LoginDialogComponent {
     }
 
     this.inProcess = true;
-    this.authService.login({ login: this.login.value, password: this.password.value })
+    this.authService.login({ login: this.login.value, password: this.password.value }, this.rememberMe.value ?? false)
       .subscribe(() => { }, error => {
         if (error.status == 401) {
           this.invalid = true;
@@ -53,6 +59,6 @@ export class LoginDialogComponent {
         }
 
         this.inProcess = false;
-      }, () => this.dialogRef.close());
+      });
   }
 }
