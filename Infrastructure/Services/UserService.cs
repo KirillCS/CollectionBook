@@ -47,6 +47,11 @@ namespace Infrastructure.Services
         public async Task<User> Authorize(string userName, string password)
         {
             var user = await userManager.FindByNameAsync(userName);
+            if (user is null)
+            {
+                user = await userManager.FindByEmailAsync(userName);
+            }
+
             Guard.Requires(() => user != null, new InvalidLoginCredentialsException(userName));
             await Guard.RequiresAsync(async () => await userManager.CheckPasswordAsync(user, password), new InvalidLoginCredentialsException(userName));
 

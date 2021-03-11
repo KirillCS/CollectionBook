@@ -2,7 +2,7 @@
   <h1>Login</h1>
   <form [formGroup]="form" (submit)="submit()" (input)="formChanged()">
     <mat-form-field class="field" appearance="fill">
-      <mat-label>Login</mat-label>
+      <mat-label>Login or email</mat-label>
       <input type="text" required autocomplete="off" matInput formControlName="login" [errorStateMatcher]="matcher">
       <mat-error *ngIf="login.errors?.required">Login is a required field</mat-error>
       <mat-error *ngIf="login.errors?.serverErrors">
