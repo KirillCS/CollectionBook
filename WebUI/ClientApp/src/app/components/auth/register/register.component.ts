@@ -77,6 +77,6 @@ export class RegisterComponent {
         }
 
         this.inProcess = false;
-      });
+      }, () => this.inProcess = false);
   }
 }

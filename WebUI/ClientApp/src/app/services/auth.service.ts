@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Inject, Injectable, resolveForwardRef } from '@angular/core';
+import { Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { LoginRequest } from 'src/app/models/requests/login.request';
-import { LoginResponse } from 'src/app/models/responses/login.responce';
+import { LoginResponse } from 'src/app/models/responses/login.response';
 import { RegisterRequest } from 'src/app/models/requests/register.request';
 import { API_URL } from 'src/app/app-injection-tokens';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
+import { RegisterResponse } from 'src/app/models/responses/register.response';
 
 export const ACCESS_TOKEN_KEY = 'collectionbook_access_token';
 
@@ -30,10 +31,11 @@ export class AuthService {
       }));
   }
 
-  public register(request: RegisterRequest): Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>(`${this.apiUrl}api/auth/register`, request)
+  public register(request: RegisterRequest): Observable<RegisterResponse> {
+    return this.httpClient.post<RegisterResponse>(`${this.apiUrl}api/auth/register`, request)
       .pipe(tap(response => {
-        console.log(response);
+        let queryParams: Params = { id: response.id, email: response.email };
+        this.router.navigate(['emailconfirmation'], { queryParams });
       }));
   }
 
