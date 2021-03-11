@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>a051a821-a323-402e-aea9-2bd0352ee2e4</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include=".\wwwroot\**" Exclude=".\wwwroot\**\.gitkeep" CopyToOutputDirectory="PreserveNewest"  />
+    <Content Include=".\wwwroot\**" Exclude=".\wwwroot\**\.gitkeep" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
  </Project>

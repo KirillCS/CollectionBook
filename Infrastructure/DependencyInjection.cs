@@ -32,7 +32,8 @@ namespace Infrastructure
                         options.Password.RequireUppercase = true;
                     })
                     .AddRoles<IdentityRole>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddDefaultTokenProviders();
 
             var authOptionsSection = configuration.GetSection("Auth");
             services.Configure<AuthOptions>(authOptionsSection);
@@ -57,6 +58,15 @@ namespace Infrastructure
                         };
                     });
 
+            services.Configure<SmtpOptions>(configuration.GetSection("Smtp"));
+            services.Configure<EmailOptions>(configuration.GetSection("Email"));
+            services.Configure<SpaOptions>(configuration.GetSection("Spa"));
+
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IEmailConfirmationUriService, EmailConfirmationUriService>();
+            services.AddTransient<IEmailMessageService, EmailMessageService>();
+            services.AddTransient<IEmailSenderService, EmailSenderService>();
+
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
@@ -67,7 +77,6 @@ namespace Infrastructure
                 });
             });
 
-            services.AddTransient<IUserService, UserService>();
 
             return services;
         }

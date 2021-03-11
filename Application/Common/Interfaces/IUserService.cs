@@ -16,6 +16,8 @@ namespace Application.Common.Interfaces
 
         Task<IList<string>> GetUserRoles(User user);
 
+        Task<string> GenerateEmailConfirmationToken(User user);
+
         Task<User> CreateUser(string userName, string email, string password);
 
         Task<User> Authorize(string userName, string password);

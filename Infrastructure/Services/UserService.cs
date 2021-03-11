@@ -45,6 +45,11 @@ namespace Infrastructure.Services
             return await userManager.GetRolesAsync(user);
         }
 
+        public async Task<string> GenerateEmailConfirmationToken(User user)
+        {
+            return await userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
         public async Task<User> CreateUser(string userName, string email, string password)
         {
             var user = new User(userName) { Email = email };
