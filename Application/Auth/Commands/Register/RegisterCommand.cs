@@ -9,6 +9,8 @@ namespace Application.Auth.Commands.Register
     {
         public string Login { get; set; }
 
+        public string Email { get; set; }
+
         public string Password { get; set; }
 
         public string PasswordConfirmation { get; set; }
@@ -27,7 +29,7 @@ namespace Application.Auth.Commands.Register
 
         public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var user = await userService.CreateUser(request.Login, request.Password);
+            var user = await userService.CreateUser(request.Login, request.Email, request.Password);
             return await jwtService.GenerateJwt(user);
         }
     }

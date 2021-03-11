@@ -8,11 +8,15 @@ namespace Application.Common.Interfaces
     {
         Task<bool> UserNameExists(string userName);
 
-        Task<User> GetUser(string userName);
+        Task<bool> EmailExists(string email);
+
+        Task<User> GetUserByUserName(string userName);
+
+        Task<User> GetUserByEmail(string email);
 
         Task<IList<string>> GetUserRoles(User user);
 
-        Task<User> CreateUser(string userName, string password);
+        Task<User> CreateUser(string userName, string email, string password);
 
         Task<User> Authorize(string userName, string password);
     }

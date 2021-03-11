@@ -1,9 +1,6 @@
-<div class="title" mat-dialog-title>
+<div class="card">
   <h1>Sign up</h1>
-  <button tabindex="-1" mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
-</div>
-<form [formGroup]="form" (submit)="submit()" (input)="formChanged()">
-  <mat-dialog-content>
+  <form [formGroup]="form" (submit)="submit()" (input)="formChanged()">
     <mat-form-field class="field" appearance="fill">
       <mat-label>Login</mat-label>
       <input type="text" required pattern="^\w*$" maxlength="256" autocomplete="off" matInput formControlName="login" [errorStateMatcher]="matcher">
@@ -12,6 +9,15 @@
       <mat-error *ngIf="login.errors?.maxlength">Login must be no more than 256 characters long</mat-error>
       <mat-error *ngIf="login.errors?.serverErrors">
         <div *ngFor="let error of login.errors?.serverErrors">{{error}}</div>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field" appearance="fill">
+      <mat-label>Email</mat-label>
+      <input type="email" required autocomplete="off" matInput formControlName="email" [errorStateMatcher]="matcher">
+      <mat-error *ngIf="email.errors?.required">Email is a required field</mat-error>
+      <mat-error *ngIf="email.errors?.email">Not a valid email</mat-error>
+      <mat-error *ngIf="email.errors?.serverErrors">
+        <div *ngFor="let error of email.errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
     <mat-form-field class="field" appearance="fill">
@@ -40,8 +46,6 @@
       </mat-error>
     </mat-form-field>
     <mat-error *ngIf="unknownError">Something went wrong...</mat-error>
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
     <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Register</button>
-  </mat-dialog-actions> 
-</form>
+  </form>
+</div>

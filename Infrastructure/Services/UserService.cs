@@ -22,12 +22,22 @@ namespace Infrastructure.Services
 
         public async Task<bool> UserNameExists(string userName)
         {
-            return await GetUser(userName) is not null;
+            return await GetUserByUserName(userName) is not null;
         }
 
-        public async Task<User> GetUser(string userName)
+        public async Task<bool> EmailExists(string email)
+        {
+            return await GetUserByEmail(email) is not null;
+        }
+
+        public async Task<User> GetUserByUserName(string userName)
         {
             return userName is null ? null : await userManager.FindByNameAsync(userName);
+        }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            return email is null ? null : await userManager.FindByEmailAsync(email);
         }
 
         public async Task<IList<string>> GetUserRoles(User user)
@@ -35,9 +45,9 @@ namespace Infrastructure.Services
             return await userManager.GetRolesAsync(user);
         }
 
-        public async Task<User> CreateUser(string userName, string password)
+        public async Task<User> CreateUser(string userName, string email, string password)
         {
-            var user = new User(userName);
+            var user = new User(userName) { Email = email };
             var result = await userManager.CreateAsync(user, password);
             Guard.Requires(() => result.Succeeded, new ValidationException(result.Errors.Select(e => new ValidationFailure("Password", e.Description))));
 
@@ -46,10 +56,10 @@ namespace Infrastructure.Services
 
         public async Task<User> Authorize(string userName, string password)
         {
-            var user = await userManager.FindByNameAsync(userName);
+            var user = await GetUserByUserName(userName);
             if (user is null)
             {
-                user = await userManager.FindByEmailAsync(userName);
+                user = await GetUserByEmail(userName);
             }
 
             Guard.Requires(() => user != null, new InvalidLoginCredentialsException(userName));

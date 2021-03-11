@@ -27,7 +27,7 @@ namespace Application.Users.Queries.GetProfile
 
         public async Task<ProfileResponse> Handle(GetProfileQuery request, CancellationToken cancellationToken)
         {
-            var user = await userService.GetUser(request.Login);
+            var user = await userService.GetUserByUserName(request.Login);
             Guard.Requires(() => user is not null, new EntityNotFoundException(nameof(User), "login", request.Login));
 
             return mapper.Map<ProfileResponse>(user);
