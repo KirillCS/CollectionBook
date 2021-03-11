@@ -30,8 +30,9 @@ import { RegisterComponent } from 'src/app/components/auth/register/register.com
 import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { ProfileComponent } from 'src/app/components/profile/profile.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { EmailConfirmationComponent } from './components/auth/email-cofirmation/email-confirmation.component';
+import { NotFoundComponent } from 'src/app/components/not-found/not-found.component';
+import { EmailConfirmationComponent } from 'src/app/components/auth/email-cofirmation/email-confirmation.component';
+import { EmailConfirmationGuard } from 'src/app/guards/email-confirmation.guard';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { EmailConfirmationComponent } from './components/auth/email-cofirmation/
     })
   ],
   providers: [
+    EmailConfirmationGuard,
     { provide: API_URL, useValue: environment.apiUrl },
     { provide: AVATARS_PATH, useValue: environment.avatarsPath },
     { provide: DEFAULT_AVATAR_PATH, useValue: environment.defaultAvatarsPath },
