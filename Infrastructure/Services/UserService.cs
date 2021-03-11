@@ -30,6 +30,11 @@ namespace Infrastructure.Services
             return await GetUserByEmail(email) is not null;
         }
 
+        public async Task<User> GetUserById(string id)
+        {
+            return id is null ? null : await userManager.FindByIdAsync(id);
+        }
+
         public async Task<User> GetUserByUserName(string userName)
         {
             return userName is null ? null : await userManager.FindByNameAsync(userName);
@@ -48,6 +53,11 @@ namespace Infrastructure.Services
         public async Task<string> GenerateEmailConfirmationToken(User user)
         {
             return await userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+        public async Task<bool> IsEmailConfirmed(User user)
+        {
+            return await userManager.IsEmailConfirmedAsync(user);
         }
 
         public async Task<User> CreateUser(string userName, string email, string password)

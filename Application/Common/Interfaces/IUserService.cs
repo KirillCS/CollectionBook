@@ -10,6 +10,8 @@ namespace Application.Common.Interfaces
 
         Task<bool> EmailExists(string email);
 
+        Task<User> GetUserById(string id);
+
         Task<User> GetUserByUserName(string userName);
 
         Task<User> GetUserByEmail(string email);
@@ -17,6 +19,8 @@ namespace Application.Common.Interfaces
         Task<IList<string>> GetUserRoles(User user);
 
         Task<string> GenerateEmailConfirmationToken(User user);
+
+        Task<bool> IsEmailConfirmed(User user);
 
         Task<User> CreateUser(string userName, string email, string password);
 
