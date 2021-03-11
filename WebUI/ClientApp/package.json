@@ -24,6 +24,7 @@
     "@ngxs/logger-plugin": "^3.6.2-dev.master-eaa5d86",
     "@ngxs/store": "^3.6.2-dev.master-eaa5d86",
     "rxjs": "~6.6.0",
+    "scss-scaffold": "0.0.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
   },

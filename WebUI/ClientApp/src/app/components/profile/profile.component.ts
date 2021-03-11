@@ -10,7 +10,7 @@ import { API_URL, AVATARS_PATH, DEFAULT_AVATAR_PATH } from 'src/app/app-injectio
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
   public profile = new UserProfileDto();
