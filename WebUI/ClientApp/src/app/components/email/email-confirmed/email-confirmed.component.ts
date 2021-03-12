@@ -10,7 +10,7 @@ import { EmailConfirmationService } from 'src/app/services/email-confirmation.se
 })
 export class EmailConfirmedComponent implements OnInit {
 
-  public confirmed: boolean;
+  public confirmed: boolean = true;
 
   constructor(private route: ActivatedRoute, private emailService: EmailConfirmationService, private authTokenService: AuthTokenService) { }
 
