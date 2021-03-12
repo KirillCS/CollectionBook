@@ -1,4 +1,5 @@
 ﻿using Application.Email.Commands.SendConfirmationEmail;
+using Application.Email.Commands.UpdateEmail;
 using Application.Email.Queries.GetEmailConfirmationStatus;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -21,6 +22,13 @@ namespace WebUI.Controllers
             await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [Route("update")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateEmail([FromBody]UpdateEmailCommand command)
+        {
+            return Ok(await Mediator.Send(command));
         }
     }
 }

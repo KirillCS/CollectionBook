@@ -60,6 +60,11 @@ namespace Infrastructure.Services
             return await userManager.IsEmailConfirmedAsync(user);
         }
 
+        public async Task SetEmail(User user, string email)
+        {
+            await userManager.SetEmailAsync(user, email);
+        }
+
         public async Task<User> CreateUser(string userName, string email, string password)
         {
             var user = new User(userName) { Email = email };

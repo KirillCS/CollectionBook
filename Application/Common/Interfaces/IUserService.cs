@@ -22,6 +22,8 @@ namespace Application.Common.Interfaces
 
         Task<bool> IsEmailConfirmed(User user);
 
+        Task SetEmail(User user, string email);
+
         Task<User> CreateUser(string userName, string email, string password);
 
         Task<User> Authorize(string userName, string password);
