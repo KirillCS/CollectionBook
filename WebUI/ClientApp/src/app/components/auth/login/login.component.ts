@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { Params, Router } from '@angular/router';
 
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { AuthService } from 'src/app/services/auth.service';
@@ -30,13 +31,13 @@ export class LoginComponent {
     return this.form.get('password');
   }
 
-  
-  public get rememberMe() : AbstractControl {
+
+  public get rememberMe(): AbstractControl {
     return this.form.get('rememberMe');
   }
-  
 
-  constructor(private authService: AuthService) { }
+
+  constructor(private authService: AuthService, private router: Router) { }
 
   public formChanged(): void {
     this.invalid = false;
@@ -50,13 +51,18 @@ export class LoginComponent {
 
     this.inProcess = true;
     this.authService.login({ login: this.login.value, password: this.password.value }, this.rememberMe.value ?? false)
-      .subscribe(() => { }, error => {
+      .subscribe(() => { }, errorResponse => {
         this.inProcess = false;
-        if (error.status == 401) {
+        if (errorResponse?.status == 401) {
           this.invalid = true;
           return;
-        } 
-        
+        }
+
+        if (errorResponse?.status == 403) {
+          let queryParams: Params = { id: errorResponse.error.id, email: errorResponse.error.email };
+          this.router.navigate(['emailconfirmation'], { queryParams });
+        }
+
         this.unknownError = true;
       });
   }

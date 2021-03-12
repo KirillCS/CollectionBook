@@ -84,6 +84,7 @@ namespace Infrastructure.Services
 
             Guard.Requires(() => user != null, new InvalidLoginCredentialsException(userName));
             await Guard.RequiresAsync(async () => await userManager.CheckPasswordAsync(user, password), new InvalidLoginCredentialsException(userName));
+            await Guard.RequiresAsync(async () => await IsEmailConfirmed(user), new EmailNotConfirmedException(user.Id, user.Email));
 
             return user;
         }

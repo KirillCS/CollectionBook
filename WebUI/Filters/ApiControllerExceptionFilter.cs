@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using ValidationException = Application.Common.Exceptions.ValidationException;
 using Infrastructure.Exceptions;
 using Application.Common.Exceptions;
+using WebUI.Models;
 
 namespace WebUI.Filters
 {
@@ -19,6 +20,7 @@ namespace WebUI.Filters
             {
                 { typeof(ValidationException), HandleValidationException },
                 { typeof(InvalidLoginCredentialsException), HandleInvalidLoginCredentialsException },
+                { typeof(EmailNotConfirmedException), HandleEmailNotConfirmedException },
                 { typeof(EntityNotFoundException), HandleEntityNotFoundException }
             };
         }
@@ -68,6 +70,24 @@ namespace WebUI.Filters
             };
 
             context.Result = new UnauthorizedObjectResult(details);
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleEmailNotConfirmedException(ExceptionContext context)
+        {
+            var exception = context.Exception as EmailNotConfirmedException;
+            var details = new EmailNotConfirmedDetails()
+            {
+                Status = StatusCodes.Status403Forbidden,
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
+                Title = exception.Message,
+                Detail = exception.Message,
+                Id = exception.UserId,
+                Email = exception.Email
+            };
+
+            context.Result = new ObjectResult(details);
+
             context.ExceptionHandled = true;
         }
 

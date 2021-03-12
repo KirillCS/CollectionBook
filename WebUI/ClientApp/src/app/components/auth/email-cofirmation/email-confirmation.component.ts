@@ -90,8 +90,6 @@ export class EmailConfirmationComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((newEmail: string) => {
-      console.log(newEmail);
-
       if (!newEmail) {
         return;
       }
@@ -123,10 +121,8 @@ export class EmailConfirmationComponent implements OnInit {
             buttonName: 'OK'
           }
         });
-      }, error => {
-        console.log(error);
-
-        if (error.status == 400) {
+      }, errorResponse => {
+        if (errorResponse.status == 400) {
           this.dialog.open(MessageDialogComponent, {
             width: '500px',
             position: { top: '30vh' },
@@ -141,7 +137,7 @@ export class EmailConfirmationComponent implements OnInit {
           return;
         }
 
-        if (error.status == 404) {
+        if (errorResponse.status == 404) {
           this.dialog.open(MessageDialogComponent, {
             width: '500px',
             position: { top: '30vh' },
@@ -162,7 +158,7 @@ export class EmailConfirmationComponent implements OnInit {
           data: {
             type: MessageDialogType.Warning,
             header: 'Failed to update email',
-            message: `Something went wrong: ${error.message}`,
+            message: `Something went wrong: ${errorResponse.message}`,
             buttonName: 'Close'
           }
         });
