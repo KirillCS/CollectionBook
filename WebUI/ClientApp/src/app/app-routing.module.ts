@@ -8,11 +8,12 @@ import { LoginComponent } from 'src/app/components/auth/login/login.component';
 import { RegisterComponent } from 'src/app/components/auth/register/register.component';
 import { EmailConfirmationComponent } from 'src/app/components/auth/email-cofirmation/email-confirmation.component';
 import { EmailConfirmationGuard } from 'src/app/guards/email-confirmation.guard';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [AuthGuard] },
   { path: 'emailconfirmation', component: EmailConfirmationComponent, canActivate: [EmailConfirmationGuard] },
   { path: 'profile/:login', component: ProfileComponent },
   { path: '**', component: NotFoundComponent }

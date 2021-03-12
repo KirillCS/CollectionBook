@@ -33,8 +33,9 @@ import { ProfileComponent } from 'src/app/components/profile/profile.component';
 import { NotFoundComponent } from 'src/app/components/not-found/not-found.component';
 import { EmailConfirmationComponent } from 'src/app/components/auth/email-cofirmation/email-confirmation.component';
 import { EmailConfirmationGuard } from 'src/app/guards/email-confirmation.guard';
-import { MessageDialogComponent } from './components/dialogs/message-dialog/message-dialog.component';
-import { FieldDialogComponent } from './components/dialogs/field-dialog/field-dialog.component';
+import { MessageDialogComponent } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
+import { FieldDialogComponent } from 'src/app/components/dialogs/field-dialog/field-dialog.component';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { FieldDialogComponent } from './components/dialogs/field-dialog/field-di
     })
   ],
   providers: [
+    AuthGuard,
     EmailConfirmationGuard,
     { provide: API_URL, useValue: environment.apiUrl },
     { provide: AVATARS_PATH, useValue: environment.avatarsPath },
