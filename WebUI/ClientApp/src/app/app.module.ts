@@ -33,6 +33,7 @@ import { ProfileComponent } from 'src/app/components/profile/profile.component';
 import { NotFoundComponent } from 'src/app/components/not-found/not-found.component';
 import { EmailConfirmationComponent } from 'src/app/components/auth/email-cofirmation/email-confirmation.component';
 import { EmailConfirmationGuard } from 'src/app/guards/email-confirmation.guard';
+import { MessageDialogComponent } from './components/dialogs/message-dialog/message-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { EmailConfirmationGuard } from 'src/app/guards/email-confirmation.guard'
     RegisterComponent,
     ProfileComponent,
     NotFoundComponent,
-    EmailConfirmationComponent
+    EmailConfirmationComponent,
+    MessageDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,23 @@
+h1 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 1.5rem;
+
+  i {
+    margin-right: 0.3rem;
+    
+    &.info {
+      color: #4391c5;
+    }
+
+    &.warning {
+      color: #c54343;
+    }
+
+    &.success {
+      color: #43c575;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>
+  <i class="material-icons-round {{ className }}">{{ iconName }}</i>
+  {{ data.header }}
+</h1>
+<div mat-dialog-content>{{ data.message }}</div>
+<div mat-dialog-actions align="end">
+  <button (click)="close()" mat-button mat-dialog-close>{{ data.buttonName }}</button>
+</div>
