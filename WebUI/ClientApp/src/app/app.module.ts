@@ -31,11 +31,12 @@ import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-e
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { ProfileComponent } from 'src/app/components/profile/profile.component';
 import { NotFoundComponent } from 'src/app/components/not-found/not-found.component';
-import { EmailConfirmationComponent } from 'src/app/components/auth/email-cofirmation/email-confirmation.component';
+import { EmailConfirmationComponent } from 'src/app/components/email/email-cofirmation/email-confirmation.component';
 import { EmailConfirmationGuard } from 'src/app/guards/email-confirmation.guard';
 import { MessageDialogComponent } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
 import { FieldDialogComponent } from 'src/app/components/dialogs/field-dialog/field-dialog.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
+import { EmailConfirmedComponent } from './components/email/email-confirmed/email-confirmed.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { AuthGuard } from 'src/app/guards/auth.guard';
     NotFoundComponent,
     EmailConfirmationComponent,
     MessageDialogComponent,
-    FieldDialogComponent
+    FieldDialogComponent,
+    EmailConfirmedComponent
   ],
   imports: [
     BrowserModule,

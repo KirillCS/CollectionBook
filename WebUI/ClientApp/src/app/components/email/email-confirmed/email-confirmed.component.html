@@ -1,0 +1,13 @@
+<div class="card" *ngIf="confirmed === true">
+  <h1 class="success">Your email was confirmed</h1>
+  <main>
+    You have verified your email address. Now you can add information about yourself to your account.
+  </main>
+</div>
+
+<div class="card" *ngIf="confirmed === false">
+  <h1 class="error">Email verification failed</h1>
+  <main>
+    Email verification failed because of the token is invalid
+  </main>
+</div>

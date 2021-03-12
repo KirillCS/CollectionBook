@@ -3,7 +3,8 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { API_URL } from 'src/app/app-injection-tokens';
-import { UpdateEmailResponse } from '../models/responses/update-email.response';
+import { LoginResponse } from 'src/app/models/responses/login.response';
+import { UpdateEmailResponse } from 'src/app/models/responses/update-email.response';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +24,9 @@ export class EmailConfirmationService {
 
   public updateEmail(id: string, email: string): Observable<UpdateEmailResponse> {
     return this.httpClient.put<UpdateEmailResponse>(`${this.apiUrl}api/email/update`, { id, email });
+  }
+
+  public confirmEmail(id: string, token: string): Observable<LoginResponse> {
+    return this.httpClient.put<LoginResponse>(`${this.apiUrl}api/email/confirm`, { id, token });
   }
 }

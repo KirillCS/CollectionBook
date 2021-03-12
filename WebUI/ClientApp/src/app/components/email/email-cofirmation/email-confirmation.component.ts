@@ -55,14 +55,14 @@ export class EmailConfirmationComponent implements OnInit {
           buttonName: 'OK'
         }
       });
-    }, error => {
+    }, errorResponse => {
       this.dialog.open(MessageDialogComponent, {
         width: '500px',
         position: { top: '30vh' },
         data: {
           type: MessageDialogType.Warning,
           header: 'Error sending confirmation',
-          message: `Something went wrong while sending a confirmation email ${this.email}: ${error.message}`,
+          message: `Something went wrong while sending a confirmation email ${this.email}: ${errorResponse.message}`,
           buttonName: 'OK'
         }
       });
