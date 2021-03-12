@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,6 +24,8 @@ namespace Application.Common.Interfaces
         Task<bool> IsEmailConfirmed(User user);
 
         Task SetEmail(User user, string email);
+
+        Task<IdentityResult> ConfirmEmail(User user, string token);
 
         Task<User> CreateUser(string userName, string email, string password);
 

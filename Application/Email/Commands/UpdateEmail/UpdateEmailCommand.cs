@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Application.Email.Commands.UpdateEmail
 {
-    public class UpdateEmailCommand : IRequest<string>
+    public class UpdateEmailCommand : IRequest<UpdateEmailResponse>
     {
         public string Id { get; set; }
 
         public string Email { get; set; }
     }
 
-    public class UpdateEmailCommandHandler : IRequestHandler<UpdateEmailCommand, string>
+    public class UpdateEmailCommandHandler : IRequestHandler<UpdateEmailCommand, UpdateEmailResponse>
     {
         private readonly IUserService userService;
         private readonly IEmailConfirmationSenderService senderService;
@@ -25,7 +25,7 @@ namespace Application.Email.Commands.UpdateEmail
             this.senderService = senderService;
         }
 
-        public async Task<string> Handle(UpdateEmailCommand request, CancellationToken cancellationToken)
+        public async Task<UpdateEmailResponse> Handle(UpdateEmailCommand request, CancellationToken cancellationToken)
         {
             var user = await userService.GetUserById(request.Id);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
@@ -33,7 +33,7 @@ namespace Application.Email.Commands.UpdateEmail
             await userService.SetEmail(user, request.Email);
             await senderService.SendConfirmation(user);
 
-            return user.Email;
+            return new UpdateEmailResponse() { NewEmail = user.Email };
         }
     }
 }

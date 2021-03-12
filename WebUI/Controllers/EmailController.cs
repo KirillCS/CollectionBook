@@ -1,4 +1,5 @@
-﻿using Application.Email.Commands.SendConfirmationEmail;
+﻿using Application.Email.Commands.ConfirmEmail;
+using Application.Email.Commands.SendConfirmationEmail;
 using Application.Email.Commands.UpdateEmail;
 using Application.Email.Queries.GetEmailConfirmationStatus;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,14 @@ namespace WebUI.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateEmail([FromBody] UpdateEmailCommand command)
         {
-            return Ok(new { newEmail = await Mediator.Send(command) });
+            return Ok(await Mediator.Send(command));
+        }
+
+        [Route("confirm")]
+        [HttpPut]
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailCommand command)
+        {
+            return Ok(await Mediator.Send(command));
         }
     }
 }

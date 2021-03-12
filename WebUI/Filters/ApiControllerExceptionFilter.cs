@@ -21,6 +21,7 @@ namespace WebUI.Filters
                 { typeof(ValidationException), HandleValidationException },
                 { typeof(InvalidLoginCredentialsException), HandleInvalidLoginCredentialsException },
                 { typeof(EmailNotConfirmedException), HandleEmailNotConfirmedException },
+                { typeof(EmailConfirmationException), HandleEmailConfirmationException },
                 { typeof(EntityNotFoundException), HandleEntityNotFoundException }
             };
         }
@@ -87,7 +88,22 @@ namespace WebUI.Filters
             };
 
             context.Result = new ObjectResult(details);
+            context.ExceptionHandled = true;
+        }
 
+        private void HandleEmailConfirmationException(ExceptionContext context)
+        {
+            var exception = context.Exception as EmailConfirmationException;
+            var details = new ErrorEmailConfirmationDetails()
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Title = exception.Message,
+                Detail = exception.Message,
+                Errors = exception.Errors
+            };
+
+            context.Result = new BadRequestObjectResult(details);
             context.ExceptionHandled = true;
         }
 
