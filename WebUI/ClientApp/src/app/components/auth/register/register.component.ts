@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Params, Router } from '@angular/router';
 
 import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
 import { AuthService } from 'src/app/services/auth.service';
-
 import 'src/app/extensions/string-extensions';
 
 @Component({
@@ -30,11 +30,9 @@ export class RegisterComponent {
     return this.form.get('login');
   }
 
-  
   public get email() : AbstractControl {
     return this.form.get('email');
   }
-  
 
   public get password(): AbstractControl {
     return this.form.get('password');
@@ -44,8 +42,7 @@ export class RegisterComponent {
     return this.form.get('passwordConfirmation')
   }
 
-  constructor(private authService: AuthService) {
-  }
+  constructor(private authService: AuthService, private router: Router) { }
 
   public formChanged() {
     this.unknownError = false;
@@ -63,7 +60,10 @@ export class RegisterComponent {
 
     this.inProcess = true
     this.authService.register({ login: this.login.value, email: this.email.value, password: this.password.value, passwordConfirmation: this.passwordConfirmation.value })
-      .subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
+      .subscribe(response => {
+        let queryParams: Params = { id: response.id, email: response.email };
+        this.router.navigate(['emailconfirmation'], {queryParams});
+      }, (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 400) {
           let errors = errorResponse.error.errors;
           Object.keys(errors).forEach(errorKey => {

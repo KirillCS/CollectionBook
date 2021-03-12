@@ -36,8 +36,7 @@ export class LoginComponent {
   }
   
 
-  constructor(private authService: AuthService) {
-  }
+  constructor(private authService: AuthService) { }
 
   public formChanged(): void {
     this.invalid = false;
@@ -52,13 +51,13 @@ export class LoginComponent {
     this.inProcess = true;
     this.authService.login({ login: this.login.value, password: this.password.value }, this.rememberMe.value ?? false)
       .subscribe(() => { }, error => {
+        this.inProcess = false;
         if (error.status == 401) {
           this.invalid = true;
-        } else {
-          this.unknownError = true;
-        }
-
-        this.inProcess = false;
+          return;
+        } 
+        
+        this.unknownError = true;
       });
   }
 }
