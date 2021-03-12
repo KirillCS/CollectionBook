@@ -34,6 +34,7 @@ import { NotFoundComponent } from 'src/app/components/not-found/not-found.compon
 import { EmailConfirmationComponent } from 'src/app/components/auth/email-cofirmation/email-confirmation.component';
 import { EmailConfirmationGuard } from 'src/app/guards/email-confirmation.guard';
 import { MessageDialogComponent } from './components/dialogs/message-dialog/message-dialog.component';
+import { FieldDialogComponent } from './components/dialogs/field-dialog/field-dialog.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { MessageDialogComponent } from './components/dialogs/message-dialog/mess
     ProfileComponent,
     NotFoundComponent,
     EmailConfirmationComponent,
-    MessageDialogComponent
+    MessageDialogComponent,
+    FieldDialogComponent
   ],
   imports: [
     BrowserModule,

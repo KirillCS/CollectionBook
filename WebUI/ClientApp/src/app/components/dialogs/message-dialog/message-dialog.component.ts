@@ -41,13 +41,13 @@ export class MessageDialogComponent implements OnInit {
   }
 
   constructor(
-    private dialogRef: MatDialogRef<MessageDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { type: MessageDialogType, header: string, message: string, buttonName: string }
+    @Inject(MAT_DIALOG_DATA) public data: {
+      type: MessageDialogType,
+      header: string,
+      message: string,
+      buttonName: string
+    }
   ) { }
 
   ngOnInit(): void { }
-
-  public close() {
-    this.dialogRef.close();
-  }
 }

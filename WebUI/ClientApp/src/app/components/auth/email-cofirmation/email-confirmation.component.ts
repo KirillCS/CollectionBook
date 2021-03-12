@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { EmailConfirmationService } from 'src/app/services/email-confirmation.service';
 import { MessageDialogComponent, MessageDialogType } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
+import { FieldDialogComponent } from 'src/app/components/dialogs/field-dialog/field-dialog.component';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-email-confirmation',
@@ -70,5 +72,29 @@ export class EmailConfirmationComponent implements OnInit {
         this.sendLinkEnable = true;
       }, 60000);
     });
+  }
+
+  public changeEmail(): void {
+    let dialogRef = this.dialog.open(FieldDialogComponent, {
+      width: '450px',
+      position: { top: '30vh' },
+      data: {
+        header: 'Changing email',
+        message: `Enter a new email (current email: ${this.email})`,
+        inputLabel: 'New email',
+        inputType: 'email',
+        formControl: new FormControl('', [Validators.email, Validators.required]),
+        closeButtonName: 'Cancel',
+        submitButtonName: 'Save'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+
+      
+    })
   }
 }

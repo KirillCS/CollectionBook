@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>
+  <i class="material-icons-round">edit</i>
+  {{ data.header }}
+</h1>
+<main mat-dialog-content>
+  <div class="message">{{ data.message }}</div>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ data.inputLabel }}</mat-label>
+    <input type="{{ data.inputType }}" autocomplete="off" matInput [formControl]="data.formControl" [errorStateMatcher]="matcher">
+    <mat-error *ngIf="data.formControl.errors">Not valid</mat-error>
+  </mat-form-field>
+</main>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>{{ data.closeButtonName }}</button>
+  <button [disabled]="data.formControl.errors" [mat-dialog-close]="data.formControl.value" mat-raised-button color="primary">{{ data.submitButtonName }}</button>
+</div>
