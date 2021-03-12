@@ -61,6 +61,8 @@ export class LoginComponent {
         if (errorResponse?.status == 403) {
           let queryParams: Params = { id: errorResponse.error.id, email: errorResponse.error.email };
           this.router.navigate(['emailconfirmation'], { queryParams });
+
+          return;
         }
 
         this.unknownError = true;

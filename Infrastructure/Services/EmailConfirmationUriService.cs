@@ -22,7 +22,7 @@ namespace Infrastructure.Services
         public async Task<string> Generate(User user)
         {
             var emailConfirmationToken = await userService.GenerateEmailConfirmationToken(user);
-            var uriBuilder = new UriBuilder(spaOptions.BaseUrl);
+            var uriBuilder = new UriBuilder(spaOptions.FullEmailConfirmedUrl);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             query["token"] = emailConfirmationToken;
             query["id"] = user.Id;
