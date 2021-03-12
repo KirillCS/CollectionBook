@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { API_URL } from 'src/app/app-injection-tokens';
+import { UpdateEmailResponse } from '../models/responses/update-email.response';
 
 @Injectable({
   providedIn: 'root'
@@ -18,5 +19,9 @@ export class EmailConfirmationService {
   public sendConfirmationMessage(id: string): Observable<void> {
     let params = new HttpParams().set('id', id);
     return this.httpClient.get<void>(`${this.apiUrl}api/email/sendconfirmation`, { params });
+  }
+
+  public updateEmail(id: string, email: string): Observable<UpdateEmailResponse> {
+    return this.httpClient.put<UpdateEmailResponse>(`${this.apiUrl}api/email/update`, { id, email });
   }
 }

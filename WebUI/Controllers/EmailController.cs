@@ -10,14 +10,14 @@ namespace WebUI.Controllers
     {
         [Route("confirmed")]
         [HttpGet]
-        public async Task<IActionResult> IsEmailConfirmed([FromQuery]GetEmailConfirmationStatusQuery query)
+        public async Task<IActionResult> IsEmailConfirmed([FromQuery] GetEmailConfirmationStatusQuery query)
         {
             return Ok(await Mediator.Send(query));
         }
 
         [Route("sendconfirmation")]
         [HttpGet]
-        public async Task<IActionResult> SendConfirmationEmail([FromQuery]SendConfirmationEmailCommand command)
+        public async Task<IActionResult> SendConfirmationEmail([FromQuery] SendConfirmationEmailCommand command)
         {
             await Mediator.Send(command);
 
@@ -26,9 +26,9 @@ namespace WebUI.Controllers
 
         [Route("update")]
         [HttpPut]
-        public async Task<IActionResult> UpdateEmail([FromBody]UpdateEmailCommand command)
+        public async Task<IActionResult> UpdateEmail([FromBody] UpdateEmailCommand command)
         {
-            return Ok(await Mediator.Send(command));
+            return Ok(new { newEmail = await Mediator.Send(command) });
         }
     }
 }

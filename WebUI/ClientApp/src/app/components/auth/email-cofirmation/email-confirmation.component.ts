@@ -89,12 +89,84 @@ export class EmailConfirmationComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (!result) {
+    dialogRef.afterClosed().subscribe((newEmail: string) => {
+      console.log(newEmail);
+
+      if (!newEmail) {
         return;
       }
 
-      
+      if (newEmail == this.email) {
+        this.dialog.open(MessageDialogComponent, {
+          width: '500px',
+          position: { top: '30vh' },
+          data: {
+            type: MessageDialogType.Warning,
+            header: 'Failed to update email',
+            message: `Your new email address is the same as your old one`,
+            buttonName: 'Close'
+          }
+        });
+
+        return;
+      }
+
+      this.emailService.updateEmail(this._id, newEmail).subscribe(response => {
+        this.email = response.newEmail;
+        this.dialog.open(MessageDialogComponent, {
+          width: '500px',
+          position: { top: '30vh' },
+          data: {
+            type: MessageDialogType.Success,
+            header: 'Email update completed successfully',
+            message: `Your email changed to ${response.newEmail} and we've sent to it email confrimation. Check email and confirm it`,
+            buttonName: 'OK'
+          }
+        });
+      }, error => {
+        console.log(error);
+
+        if (error.status == 400) {
+          this.dialog.open(MessageDialogComponent, {
+            width: '500px',
+            position: { top: '30vh' },
+            data: {
+              type: MessageDialogType.Warning,
+              header: 'Failed to update email',
+              message: `User with email ${newEmail} already exists`,
+              buttonName: 'Close'
+            }
+          });
+
+          return;
+        }
+
+        if (error.status == 404) {
+          this.dialog.open(MessageDialogComponent, {
+            width: '500px',
+            position: { top: '30vh' },
+            data: {
+              type: MessageDialogType.Warning,
+              header: 'Failed to update email',
+              message: 'User with your id was not found. Update page',
+              buttonName: 'Close'
+            }
+          });
+
+          return;
+        }
+
+        this.dialog.open(MessageDialogComponent, {
+          width: '500px',
+          position: { top: '30vh' },
+          data: {
+            type: MessageDialogType.Warning,
+            header: 'Failed to update email',
+            message: `Something went wrong: ${error.message}`,
+            buttonName: 'Close'
+          }
+        });
+      })
     })
   }
 }
