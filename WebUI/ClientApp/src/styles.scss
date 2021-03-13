@@ -1,6 +1,12 @@
+// @import '~@angular/material/_theming';
+
+// $typography: mat-typography-config(
+//   $font-family: '"Open Sans", serif'
+// );
+
+// @include mat-core($typography);
+
 * {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
   box-sizing: border-box;
 }
 
