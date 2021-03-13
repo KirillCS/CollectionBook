@@ -1,16 +1,17 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
+import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 
 @Component({
   selector: 'app-field-dialog',
   templateUrl: './field-dialog.component.html',
   styleUrls: ['./field-dialog.component.scss']
 })
-export class FieldDialogComponent implements OnInit {
-  public matcher = new DefaultErrorStateMatcher();
+export class FieldDialogComponent {
+  @Output() public submitEmitter = new EventEmitter<FormControl>();
+  public matcher = new SubmitErrorStateMatcher();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: {
@@ -19,10 +20,13 @@ export class FieldDialogComponent implements OnInit {
       inputLabel: string,
       inputType: string,
       formControl: FormControl,
+      inputErrors: { errorCode: string, errorMessage: string }[],
       closeButtonName: string,
       submitButtonName: string
     }
   ) { }
 
-  ngOnInit(): void { }
+  public submit(): void {
+    this.submitEmitter.emit(this.data.formControl);
+  }
 }
