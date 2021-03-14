@@ -11,6 +11,10 @@ import { EmailConfirmationGuard } from 'src/app/guards/email-confirmation.guard'
 import { AuthGuard } from 'src/app/guards/auth.guard';
 import { EmailConfirmedComponent } from 'src/app/components/email/email-confirmed/email-confirmed.component';
 import { EmailConfirmedGuard } from 'src/app/guards/email-confirmed.guard';
+import { SettingsComponent } from 'src/app/components/settings/settings.component';
+import { ProfileSettingsComponent } from 'src/app/components/settings/profile-settings/profile-settings.component';
+import { AccountSettingsComponent } from 'src/app/components/settings/account-settings/account-settings.component';
+import { SecuritySettingsComponent } from 'src/app/components/settings/security-settings/security-settings.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,6 +23,13 @@ const routes: Routes = [
   { path: 'emailconfirmation', component: EmailConfirmationComponent, canActivate: [EmailConfirmationGuard] },
   { path: 'emailconfirmed', component: EmailConfirmedComponent, canActivate: [EmailConfirmedGuard] },
   { path: 'profile/:login', component: ProfileComponent },
+  {
+    path: 'settings', component: SettingsComponent, children: [
+      { path: 'profile', component: ProfileSettingsComponent },
+      { path: 'account', component: AccountSettingsComponent },
+      { path: 'security', component: SecuritySettingsComponent }
+    ]
+  },
   { path: '**', component: NotFoundComponent }
 ];
 

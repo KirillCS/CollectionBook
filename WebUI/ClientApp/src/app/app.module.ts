@@ -37,6 +37,10 @@ import { MessageDialogComponent } from 'src/app/components/dialogs/message-dialo
 import { FieldDialogComponent } from 'src/app/components/dialogs/field-dialog/field-dialog.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
 import { EmailConfirmedComponent } from './components/email/email-confirmed/email-confirmed.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { SecuritySettingsComponent } from './components/settings/security-settings/security-settings.component';
+import { AccountSettingsComponent } from './components/settings/account-settings/account-settings.component';
+import { ProfileSettingsComponent } from './components/settings/profile-settings/profile-settings.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +54,11 @@ import { EmailConfirmedComponent } from './components/email/email-confirmed/emai
     EmailConfirmationComponent,
     MessageDialogComponent,
     FieldDialogComponent,
-    EmailConfirmedComponent
+    EmailConfirmedComponent,
+    SettingsComponent,
+    SecuritySettingsComponent,
+    AccountSettingsComponent,
+    ProfileSettingsComponent
   ],
   imports: [
     BrowserModule,
