@@ -17,6 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AppComponent } from 'src/app/app.component';
@@ -79,6 +80,7 @@ import { ProfileSettingsComponent } from './components/settings/profile-settings
     MatDividerModule,
     MatTabsModule,
     MatCheckboxModule,
+    MatRadioModule,
 
     JwtModule.forRoot({
       config: {

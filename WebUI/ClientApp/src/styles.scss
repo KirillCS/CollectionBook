@@ -27,3 +27,48 @@ body {
   height: 100%;
   margin: 0 auto;
 }
+
+form {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+
+  .line {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: stretch;
+    flex-wrap: wrap;
+    margin: 0 0 0 -1rem;
+    width: calc(100% + 1rem);
+
+    .field {
+      flex-grow: 1;
+      margin: 0 0 0.6rem 1rem;
+    }
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0 0 0 -1rem;
+    width: calc(100% + 1rem);
+
+    &.right {
+      justify-content: flex-end;
+    }
+
+    &.center {
+      justify-content: center;
+    }
+
+    button {
+      margin: 0.5rem 0 0 1rem;
+
+      &.full {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -1,1 +1,58 @@
-<p>profile-settings works!</p>
+<h1>Profile settings</h1>
+<form [formGroup]="form" (submit)="submit()" (input)="formChanged()">
+  <div class="line">
+    <mat-form-field class="field" appearance="outline">
+      <mat-label>First name</mat-label>
+      <input type="text" maxlength="128" autocomplete="off" matInput formControlName="firstName"
+        [errorStateMatcher]="matcher">
+      <mat-hint>Maximum: 128 characters</mat-hint>
+      <mat-error *ngIf="firstName.errors?.maxlength">Maximum first name length is 128</mat-error>
+      <mat-error *ngIf="firstName.errors?.serverErrors">
+        <div *ngFor="let error of firstName.errors?.serverErrors">{{error}}</div>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field" appearance="outline">
+      <mat-label>Last name</mat-label>
+      <input type="text" maxlength="128" autocomplete="off" matInput formControlName="lastName"
+        [errorStateMatcher]="matcher">
+      <mat-hint>Maximum: 128 characters</mat-hint>
+      <mat-error *ngIf="lastName.errors?.maxlength">Maximum last name length is 128</mat-error>
+      <mat-error *ngIf="lastName.errors?.serverErrors">
+        <div *ngFor="let error of firstName.errors?.serverErrors">{{error}}</div>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="line">
+    <mat-form-field class="field" appearance="outline">
+      <mat-label>Biography</mat-label>
+      <textarea rows="10" matInput></textarea>
+      <input type="text" maxlength="256" autocomplete="off" matInput [errorStateMatcher]="matcher">
+    </mat-form-field>
+  </div>
+  <div class="line">
+    <mat-form-field class="field" appearance="outline">
+      <mat-label>Location</mat-label>
+      <input type="text" maxlength="256" autocomplete="off" matInput formControlName="location"
+        [errorStateMatcher]="matcher">
+      <mat-hint>Maximum: 256 characters</mat-hint>
+      <mat-error *ngIf="location.errors?.maxlength">Maximum location length is 256</mat-error>
+      <mat-error *ngIf="location.errors?.serverErrors">
+        <div *ngFor="let error of firstName.errors?.serverErrors">{{error}}</div>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="line">
+    <mat-form-field class="field" appearance="outline">
+      <mat-label>Telegram login</mat-label>
+      <input type="text" autocomplete="off" matInput>
+    </mat-form-field>
+    <mat-form-field class="field" appearance="outline">
+      <mat-label>Instagram login</mat-label>
+      <input type="text" autocomplete="off" matInput>
+    </mat-form-field>
+  </div>
+  <mat-error *ngIf="unknownError">Something went wrong...</mat-error>
+  <div class="actions right">
+    <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Update profile</button>
+  </div>
+</form>
