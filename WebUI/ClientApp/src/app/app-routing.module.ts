@@ -15,6 +15,7 @@ import { SettingsComponent } from 'src/app/components/settings/settings.componen
 import { ProfileSettingsComponent } from 'src/app/components/settings/profile-settings/profile-settings.component';
 import { AccountSettingsComponent } from 'src/app/components/settings/account-settings/account-settings.component';
 import { SecuritySettingsComponent } from 'src/app/components/settings/security-settings/security-settings.component';
+import { SettingsGuard } from 'src/app/guards/settings.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,7 +25,7 @@ const routes: Routes = [
   { path: 'emailconfirmed', component: EmailConfirmedComponent, canActivate: [EmailConfirmedGuard] },
   { path: 'profile/:login', component: ProfileComponent },
   {
-    path: 'settings', component: SettingsComponent, children: [
+    path: 'settings', component: SettingsComponent, canActivate: [SettingsGuard], children: [
       { path: 'profile', component: ProfileSettingsComponent },
       { path: 'account', component: AccountSettingsComponent },
       { path: 'security', component: SecuritySettingsComponent }
