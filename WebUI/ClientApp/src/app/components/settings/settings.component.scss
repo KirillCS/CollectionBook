@@ -1,0 +1,40 @@
+main {
+  display: flex;
+  flex-direction: row;
+  margin: 3rem 0;
+
+  .settings-menu {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 0 6px 0 #00000040;
+    border-radius: 5px;
+    overflow: hidden;
+    flex-grow: 1;
+    margin: 0 2rem 0 0;
+  
+    a {
+      text-decoration: none;
+      color: black;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: #ececec;
+      }
+  
+      &.active {
+        background-color: #e4e4e4;
+        cursor: default;
+      }
+    }
+  }
+
+  .settings {
+    flex-grow: 3;
+    background-color: white;
+    box-shadow: 0 0 6px 0 #00000040;
+    border-radius: 5px;
+    padding: 2rem;
+  }
+}

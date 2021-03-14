@@ -27,7 +27,7 @@
           <button mat-menu-item><mat-icon class="material-icons-round">collections</mat-icon>Your collections</button>
           <button mat-menu-item><mat-icon class="material-icons-round">star_rate</mat-icon>Your stars</button>
           <mat-divider></mat-divider>
-          <button mat-menu-item (click)="logout()"><mat-icon class="material-icons-round">settings</mat-icon>Settings</button>
+          <button mat-menu-item [routerLink]="['settings', 'profile']"><mat-icon class="material-icons-round">settings</mat-icon>Settings</button>
           <button mat-menu-item (click)="logout()"><mat-icon class="material-icons-round">logout</mat-icon>Log out</button>
         </mat-menu>
       </div>
