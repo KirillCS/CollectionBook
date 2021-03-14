@@ -1,1 +1,52 @@
-<p>security-settings works!</p>
+<h1>Account security</h1>
+<form [formGroup]="form" (submit)="submit()">
+  <div class="line">
+    <mat-form-field class="field" appearance="outline">
+      <mat-label>Old password</mat-label>
+      <input [type]="hideOldPassword ? 'password' : 'text'" required matInput formControlName="oldPassword"
+        [errorStateMatcher]="matcher">
+      <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hideOldPassword = !hideOldPassword">
+        <mat-icon>{{hideOldPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="oldPassword.errors?.required">You must enter old password</mat-error>
+      <mat-error *ngIf="oldPassword.errors?.serverErrors">
+        <div *ngFor="let error of oldPassword.errors?.serverErrors">{{error}}</div>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="line">
+    <mat-form-field class="field" appearance="outline">
+      <mat-label>New password</mat-label>
+      <input [type]="hideNewPassword ? 'password' : 'text'" required minlength="6" matInput
+        formControlName="newPassword" [errorStateMatcher]="matcher">
+      <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hideNewPassword = !hideNewPassword">
+        <mat-icon>{{hideNewPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-hint>Minimum length: 6</mat-hint>
+      <mat-error *ngIf="newPassword.errors?.required">You must enter new password</mat-error>
+      <mat-error *ngIf="newPassword.errors?.minlength">Password must be at least 6 characters long</mat-error>
+      <mat-error *ngIf="newPassword.errors?.serverErrors">
+        <div *ngFor="let error of newPassword.errors?.serverErrors">{{error}}</div>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="field" appearance="outline">
+      <mat-label>Password confirmation</mat-label>
+      <input [type]="hidePasswordConfirmation ? 'password' : 'text'" required matInput
+        formControlName="passwordConfirmation" [errorStateMatcher]="matcher">
+      <button type="button" tabindex="-1" mat-icon-button matSuffix
+        (click)="hidePasswordConfirmation = !hidePasswordConfirmation">
+        <mat-icon>{{hidePasswordConfirmation ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-hint>Minimum length: 6</mat-hint>
+      <mat-error *ngIf="passwordConfirmation.errors?.required">You must confirm password</mat-error>
+      <mat-error *ngIf="passwordConfirmation.errors?.mismatch">Password mismatch</mat-error>
+      <mat-error *ngIf="passwordConfirmation.errors?.serverErrors">
+        <div *ngFor="let error of passwordConfirmation.errors?.serverErrors">{{error}}</div>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="actions justify-content-end">
+    <button type="button" [disabled]="inProcess" mat-button>I forgot password</button>
+    <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Change password</button>
+  </div>
+</form>

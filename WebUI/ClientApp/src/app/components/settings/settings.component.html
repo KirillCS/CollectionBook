@@ -1,12 +1,13 @@
-<div class="container">
-  <main>
-    <div class="settings-menu">
+<div class="app__container">
+  <main class="mt-4 mt-sm-5 mx-0 row align-items-start">
+    <div class="card settings-menu">
+      <span class="title">Account settings</span>
       <a routerLink="profile" routerLinkActive="active">Profile</a>
       <a routerLink="account" routerLinkActive="active">Account</a>
       <a routerLink="security" routerLinkActive="active">Security</a>
     </div>
 
-    <div class="settings">
+    <div class="card settings">
       <router-outlet></router-outlet>
     </div>
   </main>

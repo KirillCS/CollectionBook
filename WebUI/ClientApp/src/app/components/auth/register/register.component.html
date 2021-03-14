@@ -1,55 +1,69 @@
-<div class="card">
-  <h1>Sign up</h1>
-  <form [formGroup]="form" (submit)="submit()" (input)="formChanged()">
-    <mat-form-field class="field" appearance="outline">
-      <mat-icon class="material-icons-round" matPrefix>account_circle</mat-icon>
-      <mat-label>Login</mat-label>
-      <input type="text" required pattern="^\w*$" maxlength="256" autocomplete="off" matInput formControlName="login" [errorStateMatcher]="matcher">
-      <mat-error *ngIf="login.errors?.required">Login is a required field</mat-error>
-      <mat-error *ngIf="login.errors?.pattern">Login can only contain english letters, numbers and symbol '_'</mat-error>
-      <mat-error *ngIf="login.errors?.maxlength">Login must be no more than 256 characters long</mat-error>
-      <mat-error *ngIf="login.errors?.serverErrors">
-        <div *ngFor="let error of login.errors?.serverErrors">{{error}}</div>
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="field" appearance="outline">
-      <mat-icon class="material-icons-round" matPrefix>alternate_email</mat-icon>
-      <mat-label>Email</mat-label>
-      <input type="email" required autocomplete="off" matInput formControlName="email" [errorStateMatcher]="matcher">
-      <mat-error *ngIf="email.errors?.required">Email is a required field</mat-error>
-      <mat-error *ngIf="email.errors?.email">Not a valid email</mat-error>
-      <mat-error *ngIf="email.errors?.serverErrors">
-        <div *ngFor="let error of email.errors?.serverErrors">{{error}}</div>
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="field" appearance="outline">
-      <mat-icon class="material-icons-round" matPrefix>vpn_key</mat-icon>
-      <mat-label>Password</mat-label>
-      <input [type]="hidePassword ? 'password' : 'text'" required minlength="6" matInput formControlName="password" [errorStateMatcher]="matcher">
-      <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-      </button>
-      <mat-hint>Minimum length: 6</mat-hint>
-      <mat-error *ngIf="password.errors?.required">Password is a required field</mat-error>
-      <mat-error *ngIf="password.errors?.minlength">Password must be at least 6 characters long</mat-error>
-      <mat-error *ngIf="password.errors?.serverErrors">
-        <div *ngFor="let error of password.errors?.serverErrors">{{error}}</div>
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="field" appearance="outline">
-      <mat-icon class="material-icons-round" matPrefix>vpn_key</mat-icon>
-      <mat-label>Password confirmation</mat-label>
-      <input [type]="hidePasswordConfirmation ? 'password' : 'text'" required matInput formControlName="passwordConfirmation" [errorStateMatcher]="matcher">
-      <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hidePasswordConfirmation = !hidePasswordConfirmation" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePasswordConfirmation">
-        <mat-icon>{{hidePasswordConfirmation ? 'visibility_off' : 'visibility'}}</mat-icon>
-      </button>
-      <mat-error *ngIf="passwordConfirmation.errors?.required">Confirm password</mat-error>
-      <mat-error *ngIf="passwordConfirmation.errors?.mismatch">Password mismatch</mat-error>
-      <mat-error *ngIf="passwordConfirmation.errors?.serverErrors">
-        <div *ngFor="let error of passwordConfirmation.errors?.serverErrors">{{error}}</div>
-      </mat-error>
-    </mat-form-field>
-    <mat-error *ngIf="unknownError">Something went wrong...</mat-error>
-    <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Register</button>
-  </form>
+<div class="row justify-content-center mt-sm-5 mt-4 mx-3">
+  <div class="card col-xl-3 col-lg-5 col-md-6 col-sm-7">
+    <h1>Sign up</h1>
+    <form [formGroup]="form" (submit)="submit()" (input)="formChanged()">
+      <div class="line">
+        <mat-form-field class="field" appearance="outline">
+          <mat-label>Login</mat-label>
+          <input type="text" required pattern="^\w*$" maxlength="256" autocomplete="off" matInput
+            formControlName="login" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="login.errors?.required">Login is a required field</mat-error>
+          <mat-error *ngIf="login.errors?.pattern">Login can only contain english letters, numbers and symbol '_'
+          </mat-error>
+          <mat-error *ngIf="login.errors?.maxlength">Login must be no more than 256 characters long</mat-error>
+          <mat-error *ngIf="login.errors?.serverErrors">
+            <div *ngFor="let error of login.errors?.serverErrors">{{error}}</div>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="line">
+        <mat-form-field class="field" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input type="email" required autocomplete="off" matInput formControlName="email"
+            [errorStateMatcher]="matcher">
+          <mat-error *ngIf="email.errors?.required">Email is a required field</mat-error>
+          <mat-error *ngIf="email.errors?.email">Not a valid email</mat-error>
+          <mat-error *ngIf="email.errors?.serverErrors">
+            <div *ngFor="let error of email.errors?.serverErrors">{{error}}</div>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="line">
+        <mat-form-field class="field" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input [type]="hidePassword ? 'password' : 'text'" required minlength="6" matInput formControlName="password"
+            [errorStateMatcher]="matcher">
+          <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-hint>Minimum length: 6</mat-hint>
+          <mat-error *ngIf="password.errors?.required">Password is a required field</mat-error>
+          <mat-error *ngIf="password.errors?.minlength">Password must be at least 6 characters long</mat-error>
+          <mat-error *ngIf="password.errors?.serverErrors">
+            <div *ngFor="let error of password.errors?.serverErrors">{{error}}</div>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="line">
+        <mat-form-field class="field" appearance="outline">
+          <mat-label>Password confirmation</mat-label>
+          <input [type]="hidePasswordConfirmation ? 'password' : 'text'" required matInput
+            formControlName="passwordConfirmation" [errorStateMatcher]="matcher">
+          <button type="button" tabindex="-1" mat-icon-button matSuffix
+            (click)="hidePasswordConfirmation = !hidePasswordConfirmation">
+            <mat-icon>{{hidePasswordConfirmation ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="passwordConfirmation.errors?.required">Confirm password</mat-error>
+          <mat-error *ngIf="passwordConfirmation.errors?.mismatch">Password mismatch</mat-error>
+          <mat-error *ngIf="passwordConfirmation.errors?.serverErrors">
+            <div *ngFor="let error of passwordConfirmation.errors?.serverErrors">{{error}}</div>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <mat-error *ngIf="unknownError">Something went wrong...</mat-error>
+      <div class="actions">
+        <button class="full" type="submit" [disabled]="inProcess" mat-raised-button color="primary">Register</button>
+      </div>
+    </form>
+  </div>
 </div>

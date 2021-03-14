@@ -5,7 +5,7 @@
       <mat-label>First name</mat-label>
       <input type="text" maxlength="128" autocomplete="off" matInput formControlName="firstName"
         [errorStateMatcher]="matcher">
-      <mat-hint>Maximum: 128 characters</mat-hint>
+      <mat-hint>Maximum length: 128</mat-hint>
       <mat-error *ngIf="firstName.errors?.maxlength">Maximum first name length is 128</mat-error>
       <mat-error *ngIf="firstName.errors?.serverErrors">
         <div *ngFor="let error of firstName.errors?.serverErrors">{{error}}</div>
@@ -15,7 +15,7 @@
       <mat-label>Last name</mat-label>
       <input type="text" maxlength="128" autocomplete="off" matInput formControlName="lastName"
         [errorStateMatcher]="matcher">
-      <mat-hint>Maximum: 128 characters</mat-hint>
+      <mat-hint>Maximum length: 128</mat-hint>
       <mat-error *ngIf="lastName.errors?.maxlength">Maximum last name length is 128</mat-error>
       <mat-error *ngIf="lastName.errors?.serverErrors">
         <div *ngFor="let error of firstName.errors?.serverErrors">{{error}}</div>
@@ -34,7 +34,7 @@
       <mat-label>Location</mat-label>
       <input type="text" maxlength="256" autocomplete="off" matInput formControlName="location"
         [errorStateMatcher]="matcher">
-      <mat-hint>Maximum: 256 characters</mat-hint>
+      <mat-hint>Maximum length: 256</mat-hint>
       <mat-error *ngIf="location.errors?.maxlength">Maximum location length is 256</mat-error>
       <mat-error *ngIf="location.errors?.serverErrors">
         <div *ngFor="let error of firstName.errors?.serverErrors">{{error}}</div>
@@ -52,7 +52,7 @@
     </mat-form-field>
   </div>
   <mat-error *ngIf="unknownError">Something went wrong...</mat-error>
-  <div class="actions right">
+  <div class="actions justify-content-end">
     <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Update profile</button>
   </div>
 </form>

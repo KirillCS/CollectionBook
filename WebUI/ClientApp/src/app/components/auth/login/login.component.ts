@@ -66,6 +66,6 @@ export class LoginComponent {
         }
 
         this.unknownError = true;
-      });
+      }, () => this.router.navigate(['']));
   }
 }
