@@ -1,4 +1,5 @@
 <h1>Account security</h1>
+<h2>Change password</h2>
 <form [formGroup]="form" (submit)="submit()">
   <div class="line">
     <mat-form-field class="field" appearance="outline">
@@ -45,7 +46,7 @@
       </mat-error>
     </mat-form-field>
   </div>
-  <div class="actions justify-content-end">
+  <div class="actions justify-content-end flex-wrap-reverse">
     <button type="button" [disabled]="inProcess" mat-button>I forgot password</button>
     <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Change password</button>
   </div>

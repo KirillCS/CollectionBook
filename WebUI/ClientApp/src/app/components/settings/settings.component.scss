@@ -26,6 +26,7 @@
 
     &.active {
       border-left: 3px solid #3F51B5;
+      padding: 0.8rem 1.3rem 0.8rem calc(1.3rem - 3px);
       cursor: default;
     }
   }

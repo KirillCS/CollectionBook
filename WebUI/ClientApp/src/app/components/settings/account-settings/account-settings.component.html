@@ -1,1 +1,41 @@
 <h1>Account settings</h1>
+<h2>Change login</h2>
+<p>Changing login can have some side effects (for example, links to your profile won't work)</p>
+<form [formGroup]="form">
+  <div class="line">
+    <mat-form-field class="field" appearance="outline">
+      <mat-label>New login</mat-label>
+      <input type="text" required pattern="^\w*$" maxlength="256" autocomplete="off" matInput formControlName="login"
+        [errorStateMatcher]="matcher">
+      <mat-error *ngIf="login.errors?.required">Login is a required field</mat-error>
+      <mat-error *ngIf="login.errors?.pattern">Login can only contain english letters, numbers and symbol '_'
+      </mat-error>
+      <mat-error *ngIf="login.errors?.maxlength">Login must be no more than 256 characters long</mat-error>
+      <mat-error *ngIf="login.errors?.serverErrors">
+        <div *ngFor="let error of login.errors?.serverErrors">{{error}}</div>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="actions justify-content-end">
+    <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Change login</button>
+  </div>
+</form>
+<mat-divider class="my-4"></mat-divider>
+<h2>Change email</h2>
+<form [formGroup]="form">
+  <div class="line">
+    <mat-form-field class="field" appearance="outline">
+      <mat-label>New email</mat-label>
+      <input type="email" required autocomplete="off" matInput formControlName="email"
+        [errorStateMatcher]="matcher">
+      <mat-error *ngIf="email.errors?.required">Email is a required field</mat-error>
+      <mat-error *ngIf="email.errors?.email">Not a valid email</mat-error>
+      <mat-error *ngIf="email.errors?.serverErrors">
+        <div *ngFor="let error of email.errors?.serverErrors">{{error}}</div>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="actions justify-content-end">
+    <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Change email</button>
+  </div>
+</form>
