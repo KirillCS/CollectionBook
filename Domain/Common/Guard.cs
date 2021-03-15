@@ -11,7 +11,7 @@ namespace Domain.Common
             {
                 return;
             }
-
+            
             throw exception;
         }
 

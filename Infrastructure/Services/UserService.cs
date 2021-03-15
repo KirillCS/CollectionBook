@@ -75,8 +75,13 @@ namespace Infrastructure.Services
             var user = new User(userName) { Email = email };
             var result = await userManager.CreateAsync(user, password);
             Guard.Requires(() => result.Succeeded, new ValidationException(result.Errors.Select(e => new ValidationFailure("Password", e.Description))));
-
+            
             return user;
+        }
+
+        public async Task<IdentityResult> UpdateUser(User user)
+        {
+            return await userManager.UpdateAsync(user);
         }
 
         public async Task<User> Authorize(string userName, string password)

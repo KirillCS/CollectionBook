@@ -29,6 +29,8 @@ namespace Application.Common.Interfaces
 
         Task<User> CreateUser(string userName, string email, string password);
 
+        Task<IdentityResult> UpdateUser(User user);
+
         Task<User> Authorize(string userName, string password);
     }
 }
