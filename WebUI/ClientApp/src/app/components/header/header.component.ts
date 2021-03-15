@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
-import { UserDto } from 'src/app/models/dtos/user.dto';
+import { UserLoginDto } from 'src/app/models/dtos/user-login.dto';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +13,7 @@ export class HeaderComponent {
 
   constructor(private authService: AuthService, private currentUserService: CurrentUserService) { }
 
-  public get currentUser() : UserDto {
+  public get currentUser() : UserLoginDto {
     return this.currentUserService.currentUser;
   }
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-import { UserDto } from 'src/app/models/dtos/user.dto';
+import { UserLoginDto } from 'src/app/models/dtos/user-login.dto';
 import { AuthService } from 'src/app/services/auth.service';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
 
@@ -15,7 +15,7 @@ export class CurrentUserService {
     private tokenService: AuthTokenService
   ) { }
 
-  public get currentUser(): UserDto {
+  public get currentUser(): UserLoginDto {
     if (!this.authService.isAuthenticated()) {
       return null;
     }

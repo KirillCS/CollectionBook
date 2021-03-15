@@ -80,7 +80,7 @@ export class EmailConfirmationComponent implements OnInit {
     });
   }
 
-  private openErrorSendingMessageDialog(message: string) : MatDialogRef<MessageDialogComponent, any> {
+  private openErrorSendingMessageDialog(message: string): MatDialogRef<MessageDialogComponent, any> {
     return this.dialog.open(MessageDialogComponent, {
       width: '500px',
       position: { top: '30vh' },
@@ -120,7 +120,7 @@ export class EmailConfirmationComponent implements OnInit {
       if (formControl.invalid) {
         return;
       }
-      
+
       let newEmail = formControl.value;
       if (newEmail == this.email) {
         formControl.setErrors({ using: true });
@@ -128,7 +128,7 @@ export class EmailConfirmationComponent implements OnInit {
         return;
       }
 
-      this.emailService.updateEmail(this._id, newEmail).subscribe(response => {
+      this.emailService.updateEmail({ id: this._id, email: newEmail }).subscribe(response => {
         this.email = response.newEmail;
         dialogRef.close();
         this.openUpdatingEmailSuccessDialog();
@@ -152,7 +152,7 @@ export class EmailConfirmationComponent implements OnInit {
     });
   }
 
-  private openUpdatingEmailSuccessDialog() : MatDialogRef<MessageDialogComponent, any> {
+  private openUpdatingEmailSuccessDialog(): MatDialogRef<MessageDialogComponent, any> {
     return this.dialog.open(MessageDialogComponent, {
       width: '500px',
       position: { top: '30vh' },
@@ -165,7 +165,7 @@ export class EmailConfirmationComponent implements OnInit {
     });
   }
 
-  private openUpdatingEmailFailedDialog(message: string) : MatDialogRef<MessageDialogComponent, any> {
+  private openUpdatingEmailFailedDialog(message: string): MatDialogRef<MessageDialogComponent, any> {
     return this.dialog.open(MessageDialogComponent, {
       width: '500px',
       position: { top: '30vh' },

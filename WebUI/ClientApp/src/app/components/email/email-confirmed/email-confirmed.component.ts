@@ -18,7 +18,7 @@ export class EmailConfirmedComponent implements OnInit {
     this.route.queryParamMap.subscribe(params => {
       let id = params.get('id');
       let token = params.get('token');
-      this.emailService.confirmEmail(id, token).subscribe(response => {
+      this.emailService.confirmEmail({ id, token }).subscribe(response => {
         this.confirmed = true;
         this.authTokenService.setToken(response.accessToken, false);
       }, errorResponse => {

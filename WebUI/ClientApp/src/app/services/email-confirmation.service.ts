@@ -3,8 +3,10 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { API_URL } from 'src/app/app-injection-tokens';
-import { LoginResponse } from 'src/app/models/responses/login.response';
+import { LoginResponse } from 'src/app/models/responses/auth/login.response';
 import { UpdateEmailResponse } from 'src/app/models/responses/update-email.response';
+import { UpdateEmailRequest } from 'src/app/models/requests/email/update-email.request';
+import { ConfirmEmailRequest } from 'src/app/models/requests/email/confirm-email.request';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +24,11 @@ export class EmailConfirmationService {
     return this.httpClient.get<void>(`${this.apiUrl}api/email/sendconfirmation`, { params });
   }
 
-  public updateEmail(id: string, email: string): Observable<UpdateEmailResponse> {
-    return this.httpClient.put<UpdateEmailResponse>(`${this.apiUrl}api/email/update`, { id, email });
+  public updateEmail(request: UpdateEmailRequest): Observable<UpdateEmailResponse> {
+    return this.httpClient.put<UpdateEmailResponse>(`${this.apiUrl}api/email/update`, request);
   }
 
-  public confirmEmail(id: string, token: string): Observable<LoginResponse> {
-    return this.httpClient.put<LoginResponse>(`${this.apiUrl}api/email/confirm`, { id, token });
+  public confirmEmail(request: ConfirmEmailRequest): Observable<LoginResponse> {
+    return this.httpClient.put<LoginResponse>(`${this.apiUrl}api/email/confirm`, request);
   }
 }

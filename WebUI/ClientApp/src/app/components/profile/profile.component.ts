@@ -2,9 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { UserService } from 'src/app/services/user.service';
-import { UserProfileDto } from 'src/app/models/dtos/user-profile.dto';
+import { UserProfileDto } from 'src/app/models/dtos/user.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
-import { UserDto } from 'src/app/models/dtos/user.dto';
+import { UserLoginDto } from 'src/app/models/dtos/user-login.dto';
 import { API_URL, AVATARS_PATH, DEFAULT_AVATAR_PATH } from 'src/app/app-injection-tokens';
 
 @Component({
@@ -14,7 +14,7 @@ import { API_URL, AVATARS_PATH, DEFAULT_AVATAR_PATH } from 'src/app/app-injectio
 })
 export class ProfileComponent implements OnInit {
   public profile = new UserProfileDto();
-  public currentUser: UserDto;
+  public currentUser: UserLoginDto;
   private avatarsSource: string;
 
   constructor(
