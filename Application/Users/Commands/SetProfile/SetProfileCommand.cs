@@ -11,8 +11,6 @@ namespace Application.Users.Commands.SetProfile
 {
     public class SetProfileCommand : IRequest<ProfileResponse>
     {
-        public string Id { get; set; }
-
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -30,18 +28,20 @@ namespace Application.Users.Commands.SetProfile
 
     public class SetProfileCommandHandler : IRequestHandler<SetProfileCommand, ProfileResponse>
     {
+        private readonly ICurrentUserService currentUserService;
         private readonly IUserService userService;
         private readonly IMapper mapper;
 
-        public SetProfileCommandHandler(IUserService userService, IMapper mapper)
+        public SetProfileCommandHandler(ICurrentUserService currentUserService, IUserService userService, IMapper mapper)
         {
+            this.currentUserService = currentUserService;
             this.userService = userService;
             this.mapper = mapper;
         }
 
         public async Task<ProfileResponse> Handle(SetProfileCommand request, CancellationToken cancellationToken)
         {
-            var user = await userService.GetUserById(request.Id);
+            var user = await userService.GetUserById(currentUserService.UserId);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
             request.CopyPropertiesTo(user);
             await userService.UpdateUser(user) ;

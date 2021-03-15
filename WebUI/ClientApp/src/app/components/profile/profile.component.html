@@ -7,44 +7,44 @@
         </div>
       </div>
       <div class="data-block">
-        <h1 class="data-line name" *ngIf="profile.firstName || profile.lastName" >{{ profile.firstName }} {{ profile.lastName }}</h1>
-        <div class="data-line login" *ngIf="profile.login">{{ profile.login }}</div>
-        <div class="data-line biography" *ngIf="profile.biography">{{ profile.biography }}</div>
+        <h1 class="data-line name" *ngIf="user.firstName || user.lastName" >{{ user.firstName }} {{ user.lastName }}</h1>
+        <div class="data-line login" *ngIf="user.login">{{ user.login }}</div>
+        <div class="data-line biography" *ngIf="user.biography">{{ user.biography }}</div>
         <ul class="data-line others" *ngIf="isOthersDataVisible()">
-          <li *ngIf="profile.location">
+          <li *ngIf="user.location">
             <div class="icon-data">
               <i class="material-icons-round">location_on</i>
-              {{ profile.location }}
+              {{ user.location }}
             </div>
           </li>
-          <li *ngIf="profile.isEmailVisible">
+          <li *ngIf="user.isEmailVisible">
             <div class="icon-data">
               <i class="material-icons-round">email</i>
-              {{ profile.email }}
+              {{ user.email }}
             </div>
           </li>
-          <li *ngIf="profile.websiteUrl">
+          <li *ngIf="user.websiteUrl">
             <div class="icon-data">
               <i class="material-icons-round">link</i>
-              <a href="{{ profile.websiteUrl }}" target="_blank" tabindex="-1" matTooltip="{{ profile.websiteUrl }}">Website</a>
+              <a href="{{ user.websiteUrl }}" target="_blank" tabindex="-1" matTooltip="{{ user.websiteUrl }}">Website</a>
             </div>
           </li>
-          <li *ngIf="profile.telegramLogin">
+          <li *ngIf="user.telegramLogin">
             <div class="icon-data">
               <i class="fab fa-telegram-plane"></i>
-              <a href="https://t.me/{{ profile.telegramLogin }}" target="_blank" tabindex="-1">@{{ profile.telegramLogin }}</a>
+              <a href="https://t.me/{{ user.telegramLogin }}" target="_blank" tabindex="-1">@{{ user.telegramLogin }}</a>
             </div>
           </li>
-          <li *ngIf="profile.instagramLogin">
+          <li *ngIf="user.instagramLogin">
             <div class="icon-data">
               <i class="fab fa-instagram"></i>
-              <a href="https://www.instagram.com/{{ profile.instagramLogin }}" target="_blank" tabindex="-1">@{{ profile.instagramLogin }}</a>
+              <a href="https://www.instagram.com/{{ user.instagramLogin }}" target="_blank" tabindex="-1">@{{ user.instagramLogin }}</a>
             </div>
           </li>
         </ul>
       </div>
     </div>
-    <button id="settings-button" mat-icon-button *ngIf="currentUser && currentUser.id == profile.id" [routerLink]="['/settings', 'profile']">
+    <button id="settings-button" mat-icon-button *ngIf="currentUser && currentUser.id == user.id" [routerLink]="['/settings', 'profile']">
       <mat-icon class="material-icons-round">settings</mat-icon>
     </button>
   </div>

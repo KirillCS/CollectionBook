@@ -1,4 +1,4 @@
-export class UserProfileDto {
+export class UserDto {
   public id: string;
   public login: string;
   public avatarPath: string;

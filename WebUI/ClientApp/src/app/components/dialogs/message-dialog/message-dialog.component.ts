@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export enum MessageDialogType {
   Info = 0,
@@ -7,12 +7,19 @@ export enum MessageDialogType {
   Warning = 2
 }
 
+export class MessageDialogData {
+  public type = MessageDialogType.Info;
+  public header = 'Oops...';
+  public message = 'Something went wrong...';
+  public buttonName = 'Cancel';
+}
+
 @Component({
   selector: 'app-message-dialog',
   templateUrl: './message-dialog.component.html',
   styleUrls: ['./message-dialog.component.scss']
 })
-export class MessageDialogComponent implements OnInit {
+export class MessageDialogComponent {
 
   public get iconName(): string {
     switch (this.data.type) {
@@ -40,14 +47,5 @@ export class MessageDialogComponent implements OnInit {
     }
   }
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: {
-      type: MessageDialogType,
-      header: string,
-      message: string,
-      buttonName: string
-    }
-  ) { }
-
-  ngOnInit(): void { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: MessageDialogData) { }
 }

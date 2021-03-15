@@ -1,11 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { UserService } from 'src/app/services/user.service';
-import { UserProfileDto } from 'src/app/models/dtos/user.dto';
+import { UserDto } from 'src/app/models/dtos/user.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { UserLoginDto } from 'src/app/models/dtos/user-login.dto';
-import { API_URL, AVATARS_PATH, DEFAULT_AVATAR_PATH } from 'src/app/app-injection-tokens';
+import { AvatarService } from 'src/app/services/avatar.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,41 +13,38 @@ import { API_URL, AVATARS_PATH, DEFAULT_AVATAR_PATH } from 'src/app/app-injectio
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  public profile = new UserProfileDto();
+
+  public user = new UserDto();
   public currentUser: UserLoginDto;
-  private avatarsSource: string;
 
   constructor(
-    @Inject(API_URL) apiUrl: string,
-    @Inject(AVATARS_PATH) avatarPath: string,
-    @Inject(DEFAULT_AVATAR_PATH) private defaultAvatarPath: string,
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
+    private avatarService: AvatarService,
     currentUserService: CurrentUserService
   ) {
     this.currentUser = currentUserService.currentUser;
-    this.avatarsSource = apiUrl + avatarPath;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       let login = params.get('login');
-      this.userService.getProfile(login).subscribe(profile => this.profile = profile, () => {
-        this.router.navigateByUrl('**', {skipLocationChange: true});
+      this.userService.getProfile(login).subscribe(profile => this.user = profile, () => {
+        this.router.navigateByUrl('**', { skipLocationChange: true });
       });
     })
   }
 
   public getAvatarPath(): string {
-    return this.profile.avatarPath ? this.avatarsSource + this.profile.avatarPath : this.defaultAvatarPath;
+    return this.avatarService.getFullAvatarPath(this.user?.avatarPath);
   }
 
   public isOthersDataVisible(): boolean {
-    return this.profile.location?.length > 0 ||
-      this.profile.isEmailVisible?.length > 0 ||
-      this.profile.websiteUrl?.length > 0 ||
-      this.profile.telegramLogin?.length > 0 ||
-      this.profile.instagramLogin?.length > 0;
+    return this.user.location?.length > 0 ||
+      this.user.isEmailVisible?.length > 0 ||
+      this.user.websiteUrl?.length > 0 ||
+      this.user.telegramLogin?.length > 0 ||
+      this.user.instagramLogin?.length > 0;
   }
 }

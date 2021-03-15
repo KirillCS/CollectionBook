@@ -2,14 +2,14 @@
   <div class="card row mx-0 flex-sm-row flex-column align-items-sm-center justify-content-between w-100 mt-3 mt-sm-4 px-4 py-3">
     <div class="row mx-0 align-items-center">
       <div class="user-avatar">
-        <img src="assets/img/default-profile-avatar.png" alt="">
+        <img src="{{ getAvatarPath() }}" alt="">
       </div>
       <div class="user-data">
-        <h2 class="name m-0">Kirill Potapov</h2>
-        <h3 class="login m-0">login</h3>
+        <h2 class="name m-0">{{ user.firstName }} {{ user.lastName }}</h2>
+        <h3 class="login m-0">{{ user.login }}</h3>
       </div>
     </div>
-    <button class="mt-3 mt-sm-0" mat-stroked-button [routerLink]="['/profile', 'login']">Go to profile</button>
+    <button class="mt-3 mt-sm-0" mat-stroked-button [routerLink]="['/profile', user.login]">Go to profile</button>
   </div>
   <main class="mt-3 mx-0 row flex-md-row flex-column align-items-start">
     <div class="card settings-menu">

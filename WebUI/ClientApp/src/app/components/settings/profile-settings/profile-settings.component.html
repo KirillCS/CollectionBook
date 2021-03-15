@@ -6,9 +6,9 @@
       <input type="text" maxlength="128" autocomplete="off" matInput formControlName="firstName"
         [errorStateMatcher]="matcher">
       <mat-hint>Maximum length: 128</mat-hint>
-      <mat-error *ngIf="firstName.errors?.maxlength">Maximum first name length is 128</mat-error>
-      <mat-error *ngIf="firstName.errors?.serverErrors">
-        <div *ngFor="let error of firstName.errors?.serverErrors">{{error}}</div>
+      <mat-error *ngIf="form.get('firstName').errors?.maxlength">Maximum first name length is 128</mat-error>
+      <mat-error *ngIf="form.get('firstName').errors?.serverErrors">
+        <div *ngFor="let error of form.get('firstName').errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
     <mat-form-field class="field" appearance="outline">
@@ -16,17 +16,19 @@
       <input type="text" maxlength="128" autocomplete="off" matInput formControlName="lastName"
         [errorStateMatcher]="matcher">
       <mat-hint>Maximum length: 128</mat-hint>
-      <mat-error *ngIf="lastName.errors?.maxlength">Maximum last name length is 128</mat-error>
-      <mat-error *ngIf="lastName.errors?.serverErrors">
-        <div *ngFor="let error of firstName.errors?.serverErrors">{{error}}</div>
+      <mat-error *ngIf="form.get('lastName').errors?.maxlength">Maximum last name length is 128</mat-error>
+      <mat-error *ngIf="form.get('lastName').errors?.serverErrors">
+        <div *ngFor="let error of form.get('lastName').errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
   </div>
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>Biography</mat-label>
-      <textarea rows="10" matInput></textarea>
-      <input type="text" maxlength="256" autocomplete="off" matInput [errorStateMatcher]="matcher">
+      <textarea rows="4" matInput formControlName="biography"></textarea>
+      <mat-error *ngIf="form.get('biography').errors?.serverErrors">
+        <div *ngFor="let error of form.get('biography').errors?.serverErrors">{{error}}</div>
+      </mat-error>
     </mat-form-field>
   </div>
   <div class="line">
@@ -35,26 +37,35 @@
       <input type="text" maxlength="256" autocomplete="off" matInput formControlName="location"
         [errorStateMatcher]="matcher">
       <mat-hint>Maximum length: 256</mat-hint>
-      <mat-error *ngIf="location.errors?.maxlength">Maximum location length is 256</mat-error>
-      <mat-error *ngIf="location.errors?.serverErrors">
-        <div *ngFor="let error of firstName.errors?.serverErrors">{{error}}</div>
+      <mat-error *ngIf="form.get('location').errors?.maxlength">Maximum location length is 256</mat-error>
+      <mat-error *ngIf="form.get('location').errors?.serverErrors">
+        <div *ngFor="let error of form.get('location').errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
   </div>
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>Your website</mat-label>
-      <input type="url" autocomplete="off" matInput>
+      <input type="url" autocomplete="off" matInput formControlName="websiteUrl">
+      <mat-error *ngIf="form.get('websiteUrl').errors?.serverErrors">
+        <div *ngFor="let error of form.get('websiteUrl').errors?.serverErrors">{{error}}</div>
+      </mat-error>
     </mat-form-field>
-</div>
+  </div>
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>Telegram login</mat-label>
-      <input type="text" autocomplete="off" matInput>
+      <input type="text" autocomplete="off" matInput formControlName="telegramLogin">
+      <mat-error *ngIf="form.get('telegramLogin').errors?.serverErrors">
+        <div *ngFor="let error of form.get('telegramLogin').errors?.serverErrors">{{error}}</div>
+      </mat-error>
     </mat-form-field>
     <mat-form-field class="field" appearance="outline">
       <mat-label>Instagram login</mat-label>
-      <input type="text" autocomplete="off" matInput>
+      <input type="text" autocomplete="off" matInput formControlName="instagramLogin">
+      <mat-error *ngIf="form.get('instagramLogin').errors?.serverErrors">
+        <div *ngFor="let error of form.get('instagramLogin').errors?.serverErrors">{{error}}</div>
+      </mat-error>
     </mat-form-field>
   </div>
   <mat-error *ngIf="unknownError">Something went wrong...</mat-error>

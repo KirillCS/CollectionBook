@@ -84,7 +84,14 @@ import { ProfileSettingsComponent } from './components/settings/profile-settings
 
     JwtModule.forRoot({
       config: {
-        tokenGetter: () => localStorage.getItem(ACCESS_TOKEN_KEY),
+        tokenGetter: () => {
+          let token = sessionStorage.getItem(ACCESS_TOKEN_KEY);
+          if (!token) {
+            token = localStorage.getItem(ACCESS_TOKEN_KEY);
+          }
+
+          return token;
+        },
         allowedDomains: environment.allowedDomains
       }
     })

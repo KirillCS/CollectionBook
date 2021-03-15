@@ -7,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using Infrastructure;
 using Application;
 using WebUI.Filters;
+using Application.Common.Interfaces;
+using WebUI.Services;
 
 namespace WebUI
 {
@@ -25,6 +27,9 @@ namespace WebUI
                     .AddInfrastructure(Configuration);
 
             services.AddControllers(options => options.Filters.Add<ApiControllerExceptionFilterAttribute>());
+
+            services.AddSingleton<ICurrentUserService, CurrentUserService>();
+            services.AddHttpContextAccessor();
 
             services.AddSwaggerGen(c =>
             {

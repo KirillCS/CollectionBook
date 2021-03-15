@@ -28,7 +28,8 @@ const routes: Routes = [
     path: 'settings', component: SettingsComponent, canActivate: [SettingsGuard], children: [
       { path: 'profile', component: ProfileSettingsComponent },
       { path: 'account', component: AccountSettingsComponent },
-      { path: 'security', component: SecuritySettingsComponent }
+      { path: 'security', component: SecuritySettingsComponent },
+      { path: '', redirectTo: 'profile', pathMatch: 'full' }
     ]
   },
   { path: '**', component: NotFoundComponent }

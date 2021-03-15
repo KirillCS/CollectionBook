@@ -7,7 +7,7 @@ export const environment = {
   apiUrl: 'https://localhost:5001/',
   avatarsPath: 'avatars/',
   defaultAvatarsPath: 'assets/img/default-profile-avatar.png',
-  allowedDomains: ['https://localhost:5001/']
+  allowedDomains: ['localhost:5001']
 };
 
 /*
