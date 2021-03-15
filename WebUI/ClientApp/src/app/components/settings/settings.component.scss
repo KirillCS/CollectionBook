@@ -1,8 +1,29 @@
+.user-avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 1rem;
+
+  img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.user-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 4rem;
+}
+
 .settings-menu {
   display: flex;
   flex-direction: column;
   width: 25%;
-  margin: 0 2rem 0 0;
+  margin: 0 1.5rem 0 0;
   padding: 0;
   user-select: none;
 
@@ -33,5 +54,16 @@
 }
 
 .settings {
-  width: calc(75% - 2rem);
+  width: calc(75% - 1.5rem);
+}
+
+@media(max-width: 768px) {
+  .settings-menu {
+    width: 100%;
+    margin: 0 0 1rem 0;
+  }
+
+  .settings {
+    width: 100%;
+  }
 }
