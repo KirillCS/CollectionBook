@@ -1,17 +1,17 @@
 <nav>
-  <div class="app__container">
-    <div class="content">
+  <div class="app__container h-100">
+    <div class="nav-bar">
       <a class="logo" routerLink="">
-        <img class="logo__image" src="assets/img/logo.png" alt="">
-        <div class="logo__text">CollectionBook</div>
+        <img class="image" src="assets/img/logo.png" alt="">
+        <div class="text">CollectionBook</div>
       </a>
-      <div class="search-input">
-        <i class="material-icons-round search-icon">search</i>
-        <input type="text" placeholder="Search...">
-      </div>
+      <mat-form-field class="search-input" appearance="outline">
+        <mat-icon matPrefix>search</mat-icon>
+        <input type="search" autocomplete="off" matInput placeholder="Search">
+      </mat-form-field>
       <div class="links" *ngIf="!isAuthenticated()">
-        <button class="link link--auth" mat-button routerLink="login">Log in</button>
-        <button class="link link--auth" mat-button routerLink="register">Sign up</button>
+        <button class="link--auth" mat-button routerLink="login">Log in</button>
+        <button class="link--auth" mat-button routerLink="register">Sign up</button>
         <button id="auth-button" mat-icon-button [matMenuTriggerFor]="login"><mat-icon class="material-icons-round">login</mat-icon></button>
         <mat-menu #login>
           <button mat-menu-item routerLink="login">Log in</button>
@@ -19,7 +19,7 @@
         </mat-menu>
       </div>
       <div *ngIf="isAuthenticated()">
-        <button class="link" mat-button [matMenuTriggerFor]="account">
+        <button mat-button [matMenuTriggerFor]="account">
           @{{ currentUser.login }}
         </button>
         <mat-menu #account>
