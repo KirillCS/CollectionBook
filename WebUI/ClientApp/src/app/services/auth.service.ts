@@ -24,7 +24,7 @@ export class AuthService {
     private router: Router
   ) { }
 
-  public login(request: LoginRequest, rememberMe: boolean = false): Observable<LoginResponse> {
+  public login(request: LoginRequest, rememberMe: boolean): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(`${this.apiUrl}api/auth/login`, request)
       .pipe(tap(response => {
         this.tokenService.setToken(response.accessToken, rememberMe);

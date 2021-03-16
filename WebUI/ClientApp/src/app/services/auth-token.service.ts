@@ -18,7 +18,7 @@ export class AuthTokenService {
     return token && this.jwtHelper.isTokenExpired(token) ? null : token;
   }
 
-  public setToken(token: string, isConstant: boolean): void {
+  public setToken(token: string, isConstant = false): void {
     if (isConstant) {
       localStorage.setItem(ACCESS_TOKEN_KEY, token);
       return;

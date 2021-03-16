@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { UserDto } from 'src/app/models/dtos/user.dto';
 import { API_URL } from 'src/app/app-injection-tokens';
 import { UpdateProfileRequest } from 'src/app/models/requests/user/update-profile.request';
+import { UpdateLoginRequest } from 'src/app/models/requests/user/update-login.request';
+import { LoginResponse } from 'src/app/models/responses/auth/login.response';
 
 @Injectable({
   providedIn: 'root'
@@ -18,5 +20,9 @@ export class UserService {
 
   public updateProfile(request: UpdateProfileRequest): Observable<UserDto> {
     return this.httpClient.put<UserDto>(`${this.apiUrl}api/user/updateprofile`, request);
+  }
+
+  public updateLogin(request: UpdateLoginRequest): Observable<LoginResponse> {
+    return this.httpClient.put<LoginResponse>(`${this.apiUrl}api/user/updatelogin`, request);
   }
 }
