@@ -19,7 +19,7 @@
     </mat-form-field>
   </div>
   <div class="actions justify-content-end">
-    <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Change login</button>
+    <button type="submit" [disabled]="isChangingLoginInProcess" mat-raised-button color="primary">Change login</button>
   </div>
 </form>
 
@@ -47,6 +47,6 @@
     </mat-form-field>
   </div>
   <div class="actions justify-content-end">
-    <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Change email</button>
+    <button type="submit" [disabled]="isChangingEmailInProcess" mat-raised-button color="primary">Change email</button>
   </div>
 </form>
