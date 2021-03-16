@@ -32,8 +32,9 @@ namespace Application.Email.Commands.ConfirmEmail
             Guard.Requires(() => user is not null, new EntityNotFoundException());
             var result = await userService.ConfirmEmail(user, request.Token);
             Guard.Requires(() => result.Succeeded, new EmailConfirmationException(result.Errors));
+            var claims = await userService.GetUserClaims(user);
 
-            return new LoginResponse() { AccessToken = await jwtService.GenerateJwt(user) };
+            return new LoginResponse() { AccessToken = jwtService.GenerateJwt(claims) };
         }
     }
 }

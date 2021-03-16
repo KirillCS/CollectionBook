@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Application.Common.Interfaces
@@ -27,11 +28,15 @@ namespace Application.Common.Interfaces
 
         Task<IdentityResult> ConfirmEmail(User user, string token);
 
+        Task<string> GenerateChangeEmailToken(User user, string newEmail);
+
         Task<IdentityResult> SetUserName(User user, string userName);
 
         Task<User> CreateUser(string userName, string email, string password);
 
         Task<IdentityResult> UpdateUser(User user);
+
+        Task<IEnumerable<Claim>> GetUserClaims(User user);
 
         Task<User> Authorize(string userName, string password);
     }

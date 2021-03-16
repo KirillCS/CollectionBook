@@ -27,8 +27,9 @@ namespace Application.Email.Commands.SendConfirmationEmail
         {
             var user = await userService.GetUserById(request.Id);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
+            var token = await userService.GenerateEmailConfirmationToken(user);
+            await emailService.Send(user.Id, user.Email, token);
 
-            await emailService.SendConfirmation(user);
             return Unit.Value;
         }
     }

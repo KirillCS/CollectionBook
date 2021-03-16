@@ -63,10 +63,11 @@ namespace Infrastructure
             services.Configure<SpaOptions>(configuration.GetSection("Spa"));
 
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IEmailConfirmationUriService, EmailConfirmationUriService>();
+            services.AddTransient<IUriService, UriService>();
             services.AddTransient<IEmailMessageService, EmailMessageService>();
             services.AddTransient<IEmailSenderService, EmailSenderService>();
             services.AddTransient<IEmailConfirmationSenderService, EmailConfirmationSenderService>();
+            services.AddTransient<IEmailChangingTokenSenderService, EmailChangingTokenSenderService>();
 
             services.AddCors(options =>
             {

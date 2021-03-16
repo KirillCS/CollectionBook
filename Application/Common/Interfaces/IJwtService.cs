@@ -1,10 +1,10 @@
-﻿using Domain.Entities;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Application.Common.Interfaces
 {
     public interface IJwtService
     {
-        Task<string> GenerateJwt(User user);
+        string GenerateJwt(IEnumerable<Claim> claims);
     }
 }

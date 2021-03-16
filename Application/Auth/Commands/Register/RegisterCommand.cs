@@ -33,7 +33,8 @@ namespace Application.Auth.Commands.Register
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var user = await userService.CreateUser(request.Login, request.Email, request.Password);
-            await emailService.SendConfirmation(user);
+            var token = await userService.GenerateEmailConfirmationToken(user);
+            await emailService.Send(user.Id, user.Email, token);
 
             return mapper.Map<RegisterResponse>(user);
         }

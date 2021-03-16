@@ -2,7 +2,6 @@
 using Infrastructure.Models;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
-using MimeKit;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Services

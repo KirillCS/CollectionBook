@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ValidationException = Application.Common.Exceptions.ValidationException;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Infrastructure.Services
 {
@@ -70,6 +72,11 @@ namespace Infrastructure.Services
             return await userManager.ConfirmEmailAsync(user, token);
         }
 
+        public async Task<string> GenerateChangeEmailToken(User user, string newEmail)
+        {
+            return await userManager.GenerateChangeEmailTokenAsync(user, newEmail);
+        }
+
         public async Task<IdentityResult> SetUserName(User user, string userName)
         {
             return await userManager.SetUserNameAsync(user, userName);
@@ -89,6 +96,20 @@ namespace Infrastructure.Services
             return await userManager.UpdateAsync(user);
         }
 
+
+        public async Task<IEnumerable<Claim>> GetUserClaims(User user)
+        {
+            var claims = new List<Claim>()
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+            };
+
+            var rolesClaim = (await GetUserRoles(user)).Select(c => new Claim("role", c));
+            claims.AddRange(rolesClaim);
+
+            return claims;
+        }
 
         public async Task<User> Authorize(string userName, string password)
         {

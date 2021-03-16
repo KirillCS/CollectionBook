@@ -31,7 +31,8 @@ namespace Application.Users.Commands.UpdateLogin
             var user = await userService.GetUserById(currentUserService.UserId);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
             await userService.SetUserName(user, request.Login);
-            var token = await jwtService.GenerateJwt(user);
+            var claims = await userService.GetUserClaims(user);
+            var token = jwtService.GenerateJwt(claims);
 
             return new LoginResponse { AccessToken = token };
         }

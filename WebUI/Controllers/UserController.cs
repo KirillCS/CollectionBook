@@ -1,4 +1,5 @@
-﻿using Application.Users.Commands.UpdateLogin;
+﻿using Application.Users.Commands.UpdateEmail;
+using Application.Users.Commands.UpdateLogin;
 using Application.Users.Commands.UpdateProfile;
 using Application.Users.Queries.GetUser;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +31,16 @@ namespace WebUI.Controllers
         public async Task<IActionResult> UpdateLogin([FromBody] UpdateLoginCommand command)
         {
             return Ok(await Mediator.Send(command));
+        }
+
+        [Route("updateemail")]
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> UpdateEmail([FromBody] UpdateEmailCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
         }
     }
 }

@@ -13,7 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 import { DialogComponent } from 'src/app/components/dialogs/dialog/dialog.component';
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { MessageDialogComponent, MessageDialogData, MessageDialogType } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
+import { MessageDialogComponent } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-account-settings',

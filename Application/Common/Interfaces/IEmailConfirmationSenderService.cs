@@ -1,10 +1,9 @@
-﻿using Domain.Entities;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Application.Common.Interfaces
 {
     public interface IEmailConfirmationSenderService
     {
-        Task SendConfirmation(User user);
+        Task Send(string userId, string email, string token);
     }
 }

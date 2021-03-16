@@ -26,7 +26,8 @@ namespace Application.Auth.Commands.Login
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await userService.Authorize(request.Login, request.Password);
-            string token = await jwtService.GenerateJwt(user);
+            var claims = await userService.GetUserClaims(user);
+            string token = jwtService.GenerateJwt(claims);
 
             return new LoginResponse { AccessToken = token };
         }

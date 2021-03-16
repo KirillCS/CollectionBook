@@ -29,9 +29,9 @@ namespace Application.Email.Commands.UpdateEmail
         {
             var user = await userService.GetUserById(request.Id);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
-
             await userService.SetEmail(user, request.Email);
-            await senderService.SendConfirmation(user);
+            var token = await userService.GenerateEmailConfirmationToken(user);
+            await senderService.Send(user.Id, user.Email, token);
 
             return new UpdateEmailResponse() { NewEmail = user.Email };
         }
