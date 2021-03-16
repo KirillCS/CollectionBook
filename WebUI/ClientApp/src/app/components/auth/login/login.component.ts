@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { Params, Router } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   public matcher = new SubmitErrorStateMatcher();
   public form = new FormGroup({
     login: new FormControl(),
@@ -37,7 +37,11 @@ export class LoginComponent {
   }
 
 
-  constructor(private authService: AuthService, private router: Router) { }
+  public constructor(private authService: AuthService, private router: Router) { }
+
+  public ngOnDestroy(): void {
+    this.form.reset();
+  }
 
   public formChanged(): void {
     this.invalid = false;

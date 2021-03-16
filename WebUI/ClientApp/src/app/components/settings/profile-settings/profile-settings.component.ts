@@ -7,11 +7,13 @@ import { Subscription } from 'rxjs';
 import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
 import { UpdateProfileRequest } from 'src/app/models/requests/user/update-profile.request';
 import { AuthService } from 'src/app/services/auth.service';
-import { AvatarService } from 'src/app/services/avatar.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { UserService } from 'src/app/services/user.service';
 import { MessageDialogComponent, MessageDialogType } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserDto } from 'src/app/models/dtos/user.dto';
+import { ServerErrorsService } from 'src/app/services/server-errors.service';
 
 @Component({
   selector: 'app-profile-settings',
@@ -36,22 +38,16 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   public unknownError = false;
   public inProcess = false;
 
-  constructor(
+  public constructor(
     private settingsService: SettingsService,
     private userService: UserService,
     private currentUserService: CurrentUserService,
     private authService: AuthService,
-    private diaolog: MatDialog
+    private serverErrorsService: ServerErrorsService,
+    private diaolog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
-    this.subscription = this.settingsService.user$.subscribe(user => {
-      this.form.get('firstName').setValue(user.firstName);
-      this.form.get('lastName').setValue(user.lastName);
-      this.form.get('biography').setValue(user.biography);
-      this.form.get('location').setValue(user.location);
-      this.form.get('websiteUrl').setValue(user.websiteUrl);
-      this.form.get('telegramLogin').setValue(user.telegramLogin);
-      this.form.get('instagramLogin').setValue(user.instagramLogin);
-    });
+    this.subscription = this.settingsService.user$.subscribe(user => this.setForm(user));
   }
 
   public ngOnInit(): void {
@@ -106,30 +102,15 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let request: UpdateProfileRequest = {
-      firstName: this.form.get('firstName').value,
-      lastName: this.form.get('lastName').value,
-      biography: this.form.get('biography').value,
-      location: this.form.get('location').value,
-      websiteUrl: this.form.get('websiteUrl').value,
-      telegramLogin: this.form.get('telegramLogin').value,
-      instagramLogin: this.form.get('instagramLogin').value,
-    }
-
     this.inProcess = true;
-    this.userService.updateProfile(request).subscribe(response => {
+    this.userService.updateProfile(this.getRequest()).subscribe(response => {
       this.settingsService.update(response);
-    }, (errorResponse: HttpErrorResponse) => {
-      if (errorResponse.status == 400) {
-        let errors = errorResponse.error.errors;
-        Object.keys(errors).forEach(errorKey => {
-          let control = this.form.get(errorKey.toCamelCase());
-          if (control) {
-            control.setErrors({ serverErrors: errors[errorKey] });
-          }
-        });
 
-        this.inProcess = false;
+    }, (errorResponse: HttpErrorResponse) => {
+      this.inProcess = false;
+      if (errorResponse.status == 400) {
+        this.serverErrorsService.setFormErrors(this.form, errorResponse);
+
         return;
       }
 
@@ -164,7 +145,34 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
         return;
       }
+
+      this.unknownError = true;
+    }, () => {
+      
       this.inProcess = false;
-    }, () => this.inProcess = false);
+      this.snackBar.open('Profile was updated', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
+    });
+  }
+
+  private setForm(user: UserDto): void {
+    this.form.get('firstName').setValue(user.firstName);
+    this.form.get('lastName').setValue(user.lastName);
+    this.form.get('biography').setValue(user.biography);
+    this.form.get('location').setValue(user.location);
+    this.form.get('websiteUrl').setValue(user.websiteUrl);
+    this.form.get('telegramLogin').setValue(user.telegramLogin);
+    this.form.get('instagramLogin').setValue(user.instagramLogin);
+  }
+
+  private getRequest(): UpdateProfileRequest {
+    return {
+      firstName: this.form.get('firstName').value,
+      lastName: this.form.get('lastName').value,
+      biography: this.form.get('biography').value,
+      location: this.form.get('location').value,
+      websiteUrl: this.form.get('websiteUrl').value,
+      telegramLogin: this.form.get('telegramLogin').value,
+      instagramLogin: this.form.get('instagramLogin').value,
+    };
   }
 }
