@@ -37,7 +37,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.userService.getProfile(this.currentUserService.currentUser.login).subscribe(user => {
+    this.userService.getUser(this.currentUserService.currentUser.login).subscribe(user => {
       this.settingsService.update(user);
     })
   }

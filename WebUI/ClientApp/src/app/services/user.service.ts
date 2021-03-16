@@ -12,8 +12,8 @@ import { UpdateProfileRequest } from 'src/app/models/requests/user/update-profil
 export class UserService {
   constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
 
-  public getProfile(login: string): Observable<UserDto> {
-    return this.httpClient.get<UserDto>(`${this.apiUrl}api/user/profile/${login ?? ''}`);
+  public getUser(login: string): Observable<UserDto> {
+    return this.httpClient.get<UserDto>(`${this.apiUrl}api/user/${login ?? ''}`);
   }
 
   public updateProfile(request: UpdateProfileRequest): Observable<UserDto> {

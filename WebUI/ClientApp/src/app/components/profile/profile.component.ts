@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
   public ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       let login = params.get('login');
-      this.userService.getProfile(login).subscribe(profile => this.user = profile, () => {
+      this.userService.getUser(login).subscribe(profile => this.user = profile, () => {
         this.router.navigateByUrl('**', { skipLocationChange: true });
       });
     })

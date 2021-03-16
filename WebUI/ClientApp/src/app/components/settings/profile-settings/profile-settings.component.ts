@@ -51,7 +51,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.userService.getProfile(this.currentUserService.currentUser?.login).subscribe(response => {
+    this.userService.getUser(this.currentUserService.currentUser?.login).subscribe(response => {
       this.settingsService.update(response);
     }, (errorResponse: HttpErrorResponse) => {
       this.authService.logout();

@@ -8,9 +8,9 @@ namespace WebUI.Controllers
 {
     public class UserController : ApiControllerBase
     {
-        [Route("profile/{Login}")]
+        [Route("{Login}")]
         [HttpGet]
-        public async Task<IActionResult> GetProfile([FromRoute] GetProfileQuery query)
+        public async Task<IActionResult> GetUser([FromRoute] GetProfileQuery query)
         {
             return Ok(await Mediator.Send(query));
         }
