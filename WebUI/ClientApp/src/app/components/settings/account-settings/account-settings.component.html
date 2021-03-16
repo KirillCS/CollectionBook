@@ -5,13 +5,13 @@
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>New login</mat-label>
-      <input type="text" required pattern="^\w*$" maxlength="256" autocomplete="off" matInput formControlName="login"
+      <input type="text" required pattern="^[a-zA-Z0-9-_.]*$" maxlength="256" autocomplete="off" matInput formControlName="login"
         [errorStateMatcher]="matcher">
       <mat-error *ngIf="loginForm.get('login').errors?.required">Login is a required field</mat-error>
-      <mat-error *ngIf="loginForm.get('login').errors?.pattern">Login can only contain english letters, numbers and symbol
-        '_'
+      <mat-error *ngIf="loginForm.get('login').errors?.pattern">Login can only contain english letters, numbers and
+        symbols '_', '-', '.'</mat-error>
+      <mat-error *ngIf="loginForm.get('login').errors?.maxlength">Login must be no more than 256 characters long
       </mat-error>
-      <mat-error *ngIf="loginForm.get('login').errors?.maxlength">Login must be no more than 256 characters long</mat-error>
       <mat-error *ngIf="loginForm.get('login').errors?.serverErrors">
         <div *ngFor="let error of loginForm.get('login').errors?.serverErrors">{{error}}</div>
       </mat-error>
@@ -25,7 +25,8 @@
 <mat-divider class="my-4"></mat-divider>
 
 <h2>Change email</h2>
-<p>To change your account email address you must enter new email address and confirm it by following the link in the email that will be sent to the new email address.</p>
+<p>To change your account email address you must enter new email address and confirm it by following the link in the
+  email that will be sent to the new email address.</p>
 <form [formGroup]="emailForm" (submit)="emailSubmit()">
   <div class="line">
     <mat-form-field class="field" appearance="outline">

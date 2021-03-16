@@ -70,6 +70,11 @@ namespace Infrastructure.Services
             return await userManager.ConfirmEmailAsync(user, token);
         }
 
+        public async Task<IdentityResult> SetUserName(User user, string userName)
+        {
+            return await userManager.SetUserNameAsync(user, userName);
+        }
+
         public async Task<User> CreateUser(string userName, string email, string password)
         {
             var user = new User(userName) { Email = email };
@@ -83,6 +88,7 @@ namespace Infrastructure.Services
         {
             return await userManager.UpdateAsync(user);
         }
+
 
         public async Task<User> Authorize(string userName, string password)
         {

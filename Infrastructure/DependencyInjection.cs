@@ -21,7 +21,7 @@ namespace Infrastructure
 
             services.AddIdentityCore<User>(options => 
                     {
-                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-.";
                         options.User.RequireUniqueEmail = true;
 
                         options.Password.RequireDigit = true;

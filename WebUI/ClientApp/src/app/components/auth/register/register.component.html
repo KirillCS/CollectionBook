@@ -5,10 +5,10 @@
       <div class="line">
         <mat-form-field class="field" appearance="outline">
           <mat-label>Login</mat-label>
-          <input type="text" required pattern="^\w*$" maxlength="256" autocomplete="off" matInput
+          <input type="text" required pattern="^[a-zA-Z0-9-_.]*$" maxlength="256" autocomplete="off" matInput
             formControlName="login" [errorStateMatcher]="matcher">
           <mat-error *ngIf="login.errors?.required">Login is a required field</mat-error>
-          <mat-error *ngIf="login.errors?.pattern">Login can only contain english letters, numbers and symbol '_'
+          <mat-error *ngIf="login.errors?.pattern">Login can only contain english letters, numbers and symbols '_', '-', '.'
           </mat-error>
           <mat-error *ngIf="login.errors?.maxlength">Login must be no more than 256 characters long</mat-error>
           <mat-error *ngIf="login.errors?.serverErrors">

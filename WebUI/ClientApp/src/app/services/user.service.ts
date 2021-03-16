@@ -17,6 +17,6 @@ export class UserService {
   }
 
   public updateProfile(request: UpdateProfileRequest): Observable<UserDto> {
-    return this.httpClient.put<UserDto>(`${this.apiUrl}api/user/setprofile`, request);
+    return this.httpClient.put<UserDto>(`${this.apiUrl}api/user/updateprofile`, request);
   }
 }

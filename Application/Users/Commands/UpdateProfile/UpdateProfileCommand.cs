@@ -1,15 +1,15 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Users.Queries.GetProfile;
+using Application.Common.Models;
 using AutoMapper;
 using Domain.Common;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Users.Commands.SetProfile
+namespace Application.Users.Commands.UpdateProfile
 {
-    public class SetProfileCommand : IRequest<ProfileResponse>
+    public class UpdateProfileCommand : IRequest<UserDto>
     {
         public string FirstName { get; set; }
 
@@ -26,27 +26,27 @@ namespace Application.Users.Commands.SetProfile
         public string InstagramLogin { get; set; }
     }
 
-    public class SetProfileCommandHandler : IRequestHandler<SetProfileCommand, ProfileResponse>
+    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, UserDto>
     {
         private readonly ICurrentUserService currentUserService;
         private readonly IUserService userService;
         private readonly IMapper mapper;
 
-        public SetProfileCommandHandler(ICurrentUserService currentUserService, IUserService userService, IMapper mapper)
+        public UpdateProfileCommandHandler(ICurrentUserService currentUserService, IUserService userService, IMapper mapper)
         {
             this.currentUserService = currentUserService;
             this.userService = userService;
             this.mapper = mapper;
         }
 
-        public async Task<ProfileResponse> Handle(SetProfileCommand request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
         {
             var user = await userService.GetUserById(currentUserService.UserId);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
             request.CopyPropertiesTo(user);
-            await userService.UpdateUser(user) ;
+            await userService.UpdateUser(user);
 
-            return mapper.Map<ProfileResponse>(user);
+            return mapper.Map<UserDto>(user);
         }
     }
 }

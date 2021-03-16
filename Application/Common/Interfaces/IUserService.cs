@@ -27,6 +27,8 @@ namespace Application.Common.Interfaces
 
         Task<IdentityResult> ConfirmEmail(User user, string token);
 
+        Task<IdentityResult> SetUserName(User user, string userName);
+
         Task<User> CreateUser(string userName, string email, string password);
 
         Task<IdentityResult> UpdateUser(User user);

@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Application.Users.Commands.SetProfile
+namespace Application.Users.Commands.UpdateProfile
 {
-    public class SetProfileValidator : AbstractValidator<SetProfileCommand>
+    public class UpdateProfileValidator : AbstractValidator<UpdateProfileCommand>
     {
-        public SetProfileValidator()
+        public UpdateProfileValidator()
         {
             RuleFor(c => c.FirstName).MaximumLength(128).WithMessage("Maximum first name length is 128");
 

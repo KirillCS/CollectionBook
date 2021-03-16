@@ -1,5 +1,6 @@
-﻿using Application.Users.Commands.SetProfile;
-using Application.Users.Queries.GetProfile;
+﻿using Application.Users.Commands.UpdateLogin;
+using Application.Users.Commands.UpdateProfile;
+using Application.Users.Queries.GetUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -10,15 +11,23 @@ namespace WebUI.Controllers
     {
         [Route("{Login}")]
         [HttpGet]
-        public async Task<IActionResult> GetUser([FromRoute] GetProfileQuery query)
+        public async Task<IActionResult> GetUser([FromRoute] GetUserQuery query)
         {
             return Ok(await Mediator.Send(query));
         }
 
-        [Route("setprofile")]
+        [Route("updateprofile")]
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> SetProfile([FromBody] SetProfileCommand command)
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+        [Route("updatelogin")]
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> UpdateLogin([FromBody] UpdateLoginCommand command)
         {
             return Ok(await Mediator.Send(command));
         }

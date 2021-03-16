@@ -2,9 +2,9 @@
 using AutoMapper;
 using Domain.Entities;
 
-namespace Application.Users.Queries.GetProfile
+namespace Application.Common.Models
 {
-    public class ProfileResponse : IMapFrom<User>
+    public class UserDto : IMapFrom<User>
     {
         public string Id { get; set; }
 
@@ -32,7 +32,7 @@ namespace Application.Users.Queries.GetProfile
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<User, ProfileResponse>()
+            profile.CreateMap<User, UserDto>()
                    .ForMember(prof => prof.Login, opt => opt.MapFrom(u => u.UserName));
         }
     }
