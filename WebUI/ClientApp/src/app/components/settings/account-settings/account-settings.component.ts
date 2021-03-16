@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher'
@@ -9,6 +10,7 @@ import { AuthTokenService } from 'src/app/services/auth-token.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { UserService } from 'src/app/services/user.service';
+import { DialogComponent } from 'src/app/components/dialogs/dialog/dialog.component';
 
 @Component({
   selector: 'app-account-settings',
@@ -31,7 +33,8 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     private settingsService: SettingsService,
     private userService: UserService,
     private currentUserService: CurrentUserService,
-    private authTokenService: AuthTokenService 
+    private authTokenService: AuthTokenService,
+    private dialog: MatDialog
   ) {
     this.subscription = settingsService.user$.subscribe(user => {
       this.user = user;
@@ -60,15 +63,32 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.userService.updateLogin({ login: control.value }).subscribe(response => {
-      this.authTokenService.setToken(response.accessToken);
-      this.user.login = control.value;
-      this.settingsService.update(this.user);
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '400px',
+      position: { top: '30vh' },
+      data: {
+        header: 'Are you sure?',
+        message: `Are you sure you want to change login from ${this.user.login} to ${control.value}? Links to your profile will be broken.`,
+        positiveButtonName: 'Yes',
+        negativeButtonName: 'No'
+      }
+    });
 
-    }, (errorResponse: HttpErrorResponse) => {
+    dialogRef.afterClosed().subscribe((result: string) => {
+      if (result == 'No') {
+        return;
+      }
 
-    }, () => {
-      form.resetForm();
+      this.userService.updateLogin({ login: control.value }).subscribe(response => {
+        this.authTokenService.setToken(response.accessToken);
+        this.user.login = control.value;
+        this.settingsService.update(this.user);
+
+      }, (errorResponse: HttpErrorResponse) => {
+
+      }, () => {
+        form.resetForm();
+      });
     });
   }
 

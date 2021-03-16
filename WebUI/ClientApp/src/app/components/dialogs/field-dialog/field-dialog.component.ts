@@ -7,7 +7,7 @@ import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-err
 @Component({
   selector: 'app-field-dialog',
   templateUrl: './field-dialog.component.html',
-  styleUrls: ['./field-dialog.component.scss']
+  styleUrls: ['../dialogs-icons.scss']
 })
 export class FieldDialogComponent {
   @Output() public submitEmitter = new EventEmitter<FormControl>();

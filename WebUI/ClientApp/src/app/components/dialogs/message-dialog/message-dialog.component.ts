@@ -17,7 +17,7 @@ export class MessageDialogData {
 @Component({
   selector: 'app-message-dialog',
   templateUrl: './message-dialog.component.html',
-  styleUrls: ['./message-dialog.component.scss']
+  styleUrls: ['../dialogs-icons.scss']
 })
 export class MessageDialogComponent {
 
@@ -47,7 +47,7 @@ export class MessageDialogComponent {
     }
   }
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: MessageDialogData) {
+  public constructor(@Inject(MAT_DIALOG_DATA) public data: MessageDialogData) {
     if (!this.data) {
       this.data = new MessageDialogData();
     }

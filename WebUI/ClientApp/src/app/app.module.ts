@@ -43,6 +43,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { SecuritySettingsComponent } from './components/settings/security-settings/security-settings.component';
 import { AccountSettingsComponent } from './components/settings/account-settings/account-settings.component';
 import { ProfileSettingsComponent } from './components/settings/profile-settings/profile-settings.component';
+import { DialogComponent } from './components/dialogs/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { ProfileSettingsComponent } from './components/settings/profile-settings
     SettingsComponent,
     SecuritySettingsComponent,
     AccountSettingsComponent,
-    ProfileSettingsComponent
+    ProfileSettingsComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
