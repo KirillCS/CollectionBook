@@ -21,6 +21,10 @@ body {
   background-color: #f6f6f6;
 }
 
+textarea {
+  line-height: 1.2rem !important;
+}
+
 .app__container {
   position: relative;
   min-width: auto;
