@@ -16,6 +16,8 @@ import { ProfileSettingsComponent } from 'src/app/components/settings/profile-se
 import { AccountSettingsComponent } from 'src/app/components/settings/account-settings/account-settings.component';
 import { SecuritySettingsComponent } from 'src/app/components/settings/security-settings/security-settings.component';
 import { SettingsGuard } from 'src/app/guards/settings.guard';
+import { EmailChangedGuard } from 'src/app/guards/email-changed.guard';
+import { EmailChangedComponent } from './components/email/email-changed/email-changed.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -23,6 +25,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [AuthGuard] },
   { path: 'emailconfirmation', component: EmailConfirmationComponent, canActivate: [EmailConfirmationGuard] },
   { path: 'emailconfirmed', component: EmailConfirmedComponent, canActivate: [EmailConfirmedGuard] },
+  { path: 'emailchanged', component: EmailChangedComponent, canActivate: [EmailChangedGuard] },
   { path: 'profile/:login', component: ProfileComponent },
   {
     path: 'settings', component: SettingsComponent, canActivate: [SettingsGuard], children: [

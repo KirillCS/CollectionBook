@@ -30,6 +30,8 @@ namespace Application.Common.Interfaces
 
         Task<string> GenerateChangeEmailToken(User user, string newEmail);
 
+        Task<IdentityResult> ChangeEmail(User user, string newEmail, string token);
+
         Task<IdentityResult> SetUserName(User user, string userName);
 
         Task<User> CreateUser(string userName, string email, string password);

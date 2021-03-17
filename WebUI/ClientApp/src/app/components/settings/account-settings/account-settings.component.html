@@ -28,7 +28,7 @@
 <h2>Change email</h2>
 <p>To change your account email address you must enter new email address and confirm it by following the link in the
   email that will be sent to the new email address.</p>
-<form [formGroup]="emailForm" (submit)="emailSubmit()">
+<form [formGroup]="emailForm" #emailNgForm="ngForm" (submit)="emailSubmit(emailNgForm)">
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>Current email</mat-label>
@@ -40,6 +40,7 @@
       <mat-label>New email</mat-label>
       <input type="email" required autocomplete="off" matInput formControlName="email" [errorStateMatcher]="matcher">
       <mat-error *ngIf="emailForm.get('email').errors?.required">Email is a required field</mat-error>
+      <mat-error *ngIf="emailForm.get('email').errors?.using">Email '{{ user?.email }}' is already in use</mat-error>
       <mat-error *ngIf="emailForm.get('email').errors?.email">Not a valid email</mat-error>
       <mat-error *ngIf="emailForm.get('email').errors?.serverErrors">
         <div *ngFor="let error of emailForm.get('email').errors?.serverErrors">{{error}}</div>

@@ -13,7 +13,8 @@ import { UserService } from 'src/app/services/user.service';
 import { DialogComponent } from 'src/app/components/dialogs/dialog/dialog.component';
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { MessageDialogComponent } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
+import { MessageDialogComponent, MessageDialogType } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
+import { EmailConfirmationService } from 'src/app/services/email-confirmation.service';
 
 @Component({
   selector: 'app-account-settings',
@@ -39,6 +40,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     private currentUserService: CurrentUserService,
     private authTokenService: AuthTokenService,
     private serverErrorService: ServerErrorsService,
+    private emailService: EmailConfirmationService,
     private authService: AuthService,
     private dialog: MatDialog
   ) {
@@ -66,7 +68,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.dialog.open(MessageDialogComponent, { width: '400px', position: { top: '30vh' }});
+      this.dialog.open(MessageDialogComponent, { width: '400px', position: { top: '30vh' } });
     });
   }
 
@@ -127,10 +129,10 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
               buttonName: 'OK'
             }
           });
-          
+
           return;
         }
-        
+
         if (errorResponse.status == 404) {
           this.authService.logout();
           this.dialog.open(MessageDialogComponent, {
@@ -146,7 +148,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.dialog.open(MessageDialogComponent, { width: '400px', position: { top: '30vh' }});
+        this.dialog.open(MessageDialogComponent, { width: '400px', position: { top: '30vh' } });
         this.isChangingLoginInProcess = false;
       }, () => {
         form.resetForm();
@@ -155,9 +157,76 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  public emailSubmit(): void {
+  public emailSubmit(form: NgForm): void {
     if (this.emailForm.invalid) {
       return;
     }
+
+    let control = this.emailForm.get('email');
+    if (control.value == this.user.email) {
+      control.setErrors({ using: true });
+
+      return;
+    }
+
+    this.isChangingEmailInProcess = true;
+    this.emailService.updateEmail({ email: control.value }).subscribe(() => {
+      this.dialog.open(MessageDialogComponent, {
+        width: '400px',
+        position: { top: '30vh' },
+        data: {
+          type: MessageDialogType.Info,
+          header: 'Confirm email',
+          message: `We've sent confirmation message to email address ${control.value}. You must confirm it to update account email.`,
+          buttonName: 'OK'
+        }
+      });
+
+    }, (errorResponse: HttpErrorResponse) => {
+      if (errorResponse.status == 400) {
+        this.serverErrorService.setFormErrors(this.emailForm, errorResponse);
+        this.isChangingEmailInProcess = false;
+
+        return;
+      }
+
+      if (errorResponse.status == 401) {
+        this.authService.logout();
+        this.dialog.open(MessageDialogComponent, {
+          width: '400px',
+          position: { top: '30vh' },
+          data: {
+            header: 'Not authenticated',
+            message: `You must be authenticated to change account email.`,
+            buttonName: 'OK'
+          }
+        });
+        this.isChangingEmailInProcess = false;
+
+        return;
+      }
+
+      if (errorResponse.status == 404) {
+        this.authService.logout();
+        this.dialog.open(MessageDialogComponent, {
+          width: '400px',
+          position: { top: '30vh' },
+          data: {
+            header: 'Not found',
+            message: `Your account was not found. Maybe it was deleted.`,
+            buttonName: 'OK'
+          }
+        });
+        this.isChangingEmailInProcess = false;
+
+        return;
+      }
+
+      this.dialog.open(MessageDialogComponent, { width: '400px', position: { top: '30vh' } });
+      this.isChangingEmailInProcess = false;
+    }, () => {
+      form.resetForm();
+      this.isChangingEmailInProcess = false;
+    });
   }
 }

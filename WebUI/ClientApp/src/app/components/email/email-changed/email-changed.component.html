@@ -1,0 +1,21 @@
+<div class="px-3" *ngIf="success === true">
+  <main class="card mt-3 mt-md-4 mx-auto">
+    <h1 class="success">Email has changed</h1>
+    <div>
+      Account email address has successfully changed to <b>{{ email }}</b>.
+    </div>
+    <div class="mb-0 mt-3 row mx-0 align-items-center justify-content-end">
+      <button mat-button color="primary" routerLink="">Go to home</button>
+    </div>
+  </main>
+</div>
+
+<div class="px-3" *ngIf="success === false">
+  <main class="card mt-3 mt-md-4 mx-auto">
+    <h1 class="failed">Failed to change email address</h1>
+    <div>{{ errorMessage }}</div>
+    <div class="mb-0 mt-3 row mx-0 align-items-center justify-content-end">
+      <button mat-button color="primary" routerLink="">Go to home</button>
+    </div>
+  </main>
+</div>

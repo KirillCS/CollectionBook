@@ -38,12 +38,13 @@ import { EmailConfirmationGuard } from 'src/app/guards/email-confirmation.guard'
 import { MessageDialogComponent } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
 import { FieldDialogComponent } from 'src/app/components/dialogs/field-dialog/field-dialog.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
-import { EmailConfirmedComponent } from './components/email/email-confirmed/email-confirmed.component';
-import { SettingsComponent } from './components/settings/settings.component';
-import { SecuritySettingsComponent } from './components/settings/security-settings/security-settings.component';
-import { AccountSettingsComponent } from './components/settings/account-settings/account-settings.component';
-import { ProfileSettingsComponent } from './components/settings/profile-settings/profile-settings.component';
-import { DialogComponent } from './components/dialogs/dialog/dialog.component';
+import { EmailConfirmedComponent } from 'src/app/components/email/email-confirmed/email-confirmed.component';
+import { SettingsComponent } from 'src/app/components/settings/settings.component';
+import { SecuritySettingsComponent } from 'src/app/components/settings/security-settings/security-settings.component';
+import { AccountSettingsComponent } from 'src/app/components/settings/account-settings/account-settings.component';
+import { ProfileSettingsComponent } from 'src/app/components/settings/profile-settings/profile-settings.component';
+import { DialogComponent } from 'src/app/components/dialogs/dialog/dialog.component';
+import { EmailChangedComponent } from 'src/app/components/email/email-changed/email-changed.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { DialogComponent } from './components/dialogs/dialog/dialog.component';
     SecuritySettingsComponent,
     AccountSettingsComponent,
     ProfileSettingsComponent,
-    DialogComponent
+    DialogComponent,
+    EmailChangedComponent
   ],
   imports: [
     BrowserModule,

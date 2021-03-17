@@ -1,4 +1,3 @@
-export class ChangeUnconfirmedEmailRequest {
-  public id: string;
+export class UpdateEmailRequest {
   public email: string;
 }

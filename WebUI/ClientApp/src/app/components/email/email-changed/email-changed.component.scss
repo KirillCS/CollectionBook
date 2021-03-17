@@ -1,0 +1,14 @@
+main {
+  min-width: auto;
+  max-width: 600px;
+
+  h1 {
+    &.success {
+      color: #0b9439;
+    }
+
+    &.failed {
+      color: #b83422;
+    }
+  }
+}

@@ -4,8 +4,10 @@ import { Observable } from 'rxjs';
 
 import { API_URL } from 'src/app/app-injection-tokens';
 import { LoginResponse } from 'src/app/models/responses/auth/login.response';
-import { ChangeUnconfirmedEmailRequest } from 'src/app/models/requests/email/update-email.request';
+import { ChangeUnconfirmedEmailRequest } from 'src/app/models/requests/email/change-unconfirmed-email.request';
 import { ConfirmEmailRequest } from 'src/app/models/requests/email/confirm-email.request';
+import { UpdateEmailRequest } from 'src/app/models/requests/email/update-email.request';
+import { ConfirmEmailUpdatingRequest } from 'src/app/models/requests/email/confirm-email-updating.request';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +31,13 @@ export class EmailConfirmationService {
 
   public confirmEmail(request: ConfirmEmailRequest): Observable<LoginResponse> {
     return this.httpClient.put<LoginResponse>(`${this.apiUrl}api/user/email/confirm`, request);
+  }
+
+  public updateEmail(request: UpdateEmailRequest): Observable<void> {
+    return this.httpClient.put<void>(`${this.apiUrl}api/user/email/update`, request);
+  }
+
+  public confirmEmailUpdating(request: ConfirmEmailUpdatingRequest): Observable<void> {
+    return this.httpClient.put<void>(`${this.apiUrl}api/user/email/confirmupdating`, request);
   }
 }

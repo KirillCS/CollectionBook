@@ -77,6 +77,11 @@ namespace Infrastructure.Services
             return await userManager.GenerateChangeEmailTokenAsync(user, newEmail);
         }
 
+        public async Task<IdentityResult> ChangeEmail(User user, string newEmail, string token)
+        {
+            return await userManager.ChangeEmailAsync(user, newEmail, token);
+        }
+
         public async Task<IdentityResult> SetUserName(User user, string userName)
         {
             return await userManager.SetUserNameAsync(user, userName);
@@ -95,7 +100,6 @@ namespace Infrastructure.Services
         {
             return await userManager.UpdateAsync(user);
         }
-
 
         public async Task<IEnumerable<Claim>> GetUserClaims(User user)
         {

@@ -6,6 +6,7 @@ using Application.UserEmail.Queries.GetEmailConfirmationStatus;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Application.UserEmail.Commands.ConfirmEmailUpdating;
 
 namespace WebUI.Controllers
 {
@@ -48,6 +49,15 @@ namespace WebUI.Controllers
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> UpdateEmail([FromBody] UpdateEmailCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [Route("confirmupdating")]
+        [HttpPut]
+        public async Task<IActionResult> ConfirmEmailUpdating([FromBody] ConfirmEmailUpdatingCommand command)
         {
             await Mediator.Send(command);
 
