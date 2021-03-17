@@ -16,13 +16,15 @@ namespace Application.UserEmail.Commands.UpdateEmail
     {
         private readonly IUserService userService;
         private readonly ICurrentUserService currentUserService;
-        private readonly IEmailChangingTokenSenderService senderService;
+        private readonly IEmailMessageService messageService;
+        private readonly IEmailSenderService emailSenderService;
 
-        public UpdateEmailCommandHandler(IUserService userService, ICurrentUserService currentUserService, IEmailChangingTokenSenderService senderService)
+        public UpdateEmailCommandHandler(IUserService userService, ICurrentUserService currentUserService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
         {
             this.userService = userService;
             this.currentUserService = currentUserService;
-            this.senderService = senderService;
+            this.messageService = messageService;
+            this.emailSenderService = emailSenderService;
         }
 
         public async Task<Unit> Handle(UpdateEmailCommand request, CancellationToken cancellationToken)
@@ -30,7 +32,8 @@ namespace Application.UserEmail.Commands.UpdateEmail
             var user = await userService.GetUserById(currentUserService.UserId);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
             var token = await userService.GenerateChangeEmailToken(user, request.Email);
-            await senderService.Send(user.Id, request.Email, token);
+            var messsage = messageService.GenerateEmailChangingMessage(request.Email, user.Id, token);
+            await emailSenderService.SendEmail(messsage);
 
             return Unit.Value;
         }

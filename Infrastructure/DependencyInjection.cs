@@ -66,8 +66,6 @@ namespace Infrastructure
             services.AddTransient<IUriService, UriService>();
             services.AddTransient<IEmailMessageService, EmailMessageService>();
             services.AddTransient<IEmailSenderService, EmailSenderService>();
-            services.AddTransient<IEmailConfirmationSenderService, EmailConfirmationSenderService>();
-            services.AddTransient<IEmailChangingTokenSenderService, EmailChangingTokenSenderService>();
 
             services.AddCors(options =>
             {

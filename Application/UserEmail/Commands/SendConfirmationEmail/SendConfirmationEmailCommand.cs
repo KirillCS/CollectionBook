@@ -15,12 +15,14 @@ namespace Application.UserEmail.Commands.SendConfirmationEmail
     public class SendConfirmationEmailCommandHandler : IRequestHandler<SendConfirmationEmailCommand>
     {
         private readonly IUserService userService;
-        private readonly IEmailConfirmationSenderService emailService;
+        private readonly IEmailMessageService messageService;
+        private readonly IEmailSenderService emailSenderService;
 
-        public SendConfirmationEmailCommandHandler(IUserService userService, IEmailConfirmationSenderService emailService)
+        public SendConfirmationEmailCommandHandler(IUserService userService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
         {
             this.userService = userService;
-            this.emailService = emailService;
+            this.messageService = messageService;
+            this.emailSenderService = emailSenderService;
         }
 
         public async Task<Unit> Handle(SendConfirmationEmailCommand request, CancellationToken cancellationToken)
@@ -28,7 +30,8 @@ namespace Application.UserEmail.Commands.SendConfirmationEmail
             var user = await userService.GetUserById(request.Id);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
             var token = await userService.GenerateEmailConfirmationToken(user);
-            await emailService.Send(user.Id, user.Email, token);
+            var message = messageService.GenerateEmailConfirmationMessage(user.Email, user.Id, token);
+            await emailSenderService.SendEmail(message);
 
             return Unit.Value;
         }

@@ -4,6 +4,10 @@ namespace Application.Common.Interfaces
 {
     public interface IEmailMessageService
     {
-        MimeMessage GenerateMessage(string email, string subject, string message);
+        MimeMessage GenerateEmailConfirmationMessage(string recipientEmail, string userId, string confirmationToken);
+
+        MimeMessage GenerateEmailChangingMessage(string recipientEmail, string userId, string changingToken);
+
+        MimeMessage GenerateCustomMessage(string recipientEmail, string subject, string message);
     }
 }
