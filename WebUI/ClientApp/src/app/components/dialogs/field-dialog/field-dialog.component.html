@@ -7,9 +7,9 @@
 <form>
   <main class="row mx-0 flex-column" mat-dialog-content>
     <div class="mb-3">{{ data.message }}</div>
-    <mat-form-field appearance="outline">
+    <mat-form-field class="w-100" appearance="outline">
       <mat-label>{{ data.inputLabel }}</mat-label>
-      <input class="w-100" type="{{ data.inputType }}" autocomplete="off" matInput [formControl]="data.formControl" [errorStateMatcher]="matcher">
+      <input type="{{ data.inputType }}" autocomplete="off" matInput [formControl]="data.formControl" [errorStateMatcher]="matcher">
       <mat-error *ngFor="let error of data.inputErrors">
         <span *ngIf="data.formControl.hasError(error.errorCode)">{{ error.errorMessage }}</span>
       </mat-error>

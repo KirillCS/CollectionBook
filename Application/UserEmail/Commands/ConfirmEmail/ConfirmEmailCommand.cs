@@ -6,7 +6,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Email.Commands.ConfirmEmail
+namespace Application.UserEmail.Commands.ConfirmEmail
 {
     public class ConfirmEmailCommand : IRequest<LoginResponse>
     {

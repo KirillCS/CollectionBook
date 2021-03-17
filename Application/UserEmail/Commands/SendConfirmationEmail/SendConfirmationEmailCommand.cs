@@ -5,7 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Email.Commands.SendConfirmationEmail
+namespace Application.UserEmail.Commands.SendConfirmationEmail
 {
     public class SendConfirmationEmailCommand : IRequest
     {

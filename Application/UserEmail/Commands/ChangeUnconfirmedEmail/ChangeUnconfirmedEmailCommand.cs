@@ -5,27 +5,27 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Email.Commands.UpdateEmail
+namespace Application.UserEmail.Commands.ChangeUnconfirmedEmail
 {
-    public class UpdateEmailCommand : IRequest<UpdateEmailResponse>
+    public class ChangeUnconfirmedEmailCommand : IRequest
     {
         public string Id { get; set; }
 
         public string Email { get; set; }
     }
 
-    public class UpdateEmailCommandHandler : IRequestHandler<UpdateEmailCommand, UpdateEmailResponse>
+    public class ChangeUnconfirmedEmailCommandHandler : IRequestHandler<ChangeUnconfirmedEmailCommand>
     {
         private readonly IUserService userService;
         private readonly IEmailConfirmationSenderService senderService;
 
-        public UpdateEmailCommandHandler(IUserService userService, IEmailConfirmationSenderService senderService)
+        public ChangeUnconfirmedEmailCommandHandler(IUserService userService, IEmailConfirmationSenderService senderService)
         {
             this.userService = userService;
             this.senderService = senderService;
         }
 
-        public async Task<UpdateEmailResponse> Handle(UpdateEmailCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(ChangeUnconfirmedEmailCommand request, CancellationToken cancellationToken)
         {
             var user = await userService.GetUserById(request.Id);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
@@ -33,7 +33,7 @@ namespace Application.Email.Commands.UpdateEmail
             var token = await userService.GenerateEmailConfirmationToken(user);
             await senderService.Send(user.Id, user.Email, token);
 
-            return new UpdateEmailResponse() { NewEmail = user.Email };
+            return Unit.Value;
         }
     }
 }

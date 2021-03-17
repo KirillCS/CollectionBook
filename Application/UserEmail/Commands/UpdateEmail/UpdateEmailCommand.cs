@@ -5,7 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Users.Commands.UpdateEmail
+namespace Application.UserEmail.Commands.UpdateEmail
 {
     public class UpdateEmailCommand : IRequest
     {

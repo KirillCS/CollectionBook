@@ -95,7 +95,7 @@ export class EmailConfirmationComponent implements OnInit {
 
   private openChangingEmailDialog(): MatDialogRef<FieldDialogComponent, any> {
     return this.dialog.open(FieldDialogComponent, {
-      width: '450px',
+      width: '550px',
       position: { top: '30vh' },
       data: {
         header: 'Changing email',
@@ -128,8 +128,8 @@ export class EmailConfirmationComponent implements OnInit {
         return;
       }
 
-      this.emailService.updateEmail({ id: this._id, email: newEmail }).subscribe(response => {
-        this.email = response.newEmail;
+      this.emailService.changeUnconfirmedEmail({ id: this._id, email: newEmail }).subscribe(() => {
+        this.email = newEmail;
         dialogRef.close();
         this.openUpdatingEmailSuccessDialog();
 

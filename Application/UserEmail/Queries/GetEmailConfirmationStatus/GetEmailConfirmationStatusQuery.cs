@@ -5,7 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Email.Queries.GetEmailConfirmationStatus
+namespace Application.UserEmail.Queries.GetEmailConfirmationStatus
 {
     public class GetEmailConfirmationStatusQuery : IRequest<bool>
     {
