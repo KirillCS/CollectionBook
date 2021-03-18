@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Application.Common.Models;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -10,19 +11,19 @@ namespace Application.Common.Interfaces
 
         Task<bool> EmailExists(string email);
 
-        Task SetLogin(string userId, string newLogin);
+        Task<Result> SetLogin(string userId, string newLogin);
 
-        Task SetEmail(string userId, string newEmail);
+        Task<Result> SetEmail(string userId, string newEmail);
 
         Task<string> GenerateEmailConfirmationToken(string userId);
 
         Task<bool> IsEmailConfirmed(string userId);
 
-        Task ConfirmEmail(string userId, string confirmationToken);
+        Task<Result> ConfirmEmail(string userId, string confirmationToken);
 
         Task<string> GenerateEmailChangingToken(string userId, string newEmail);
 
-        Task ChangeEmail(string userId, string newEmail, string emailChangingToken);
+        Task<Result> ChangeEmail(string userId, string newEmail, string emailChangingToken);
 
         Task<IEnumerable<string>> GetUserRoles(string userId);
 
