@@ -29,6 +29,8 @@ namespace Application.Common.Interfaces
 
         Task<IEnumerable<Claim>> GetUserClaims(string userId);
 
-        Task Authorize(string login, string password);
+        Task<string> Create(string userName, string email, string password);
+
+        Task<bool> Authorize(string login, string password);
     }
 }
