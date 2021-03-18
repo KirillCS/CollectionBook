@@ -29,10 +29,10 @@ namespace Application.Users.Commands.UpdateProfile
     public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, UserDto>
     {
         private readonly ICurrentUserService currentUserService;
-        private readonly IUserService userService;
+        private readonly IUserService1 userService;
         private readonly IMapper mapper;
 
-        public UpdateProfileCommandHandler(ICurrentUserService currentUserService, IUserService userService, IMapper mapper)
+        public UpdateProfileCommandHandler(ICurrentUserService currentUserService, IUserService1 userService, IMapper mapper)
         {
             this.currentUserService = currentUserService;
             this.userService = userService;

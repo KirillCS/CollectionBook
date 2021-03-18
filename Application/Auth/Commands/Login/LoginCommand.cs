@@ -14,19 +14,19 @@ namespace Application.Auth.Commands.Login
 
     public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
-        private readonly IUserService userService;
+        private readonly IIdentityService identityService;
         private readonly IJwtService jwtService;
 
-        public LoginCommandHandler(IUserService userService, IJwtService jwtService)
+        public LoginCommandHandler(IIdentityService identityService, IJwtService jwtService)
         {
-            this.userService = userService;
+            this.identityService = identityService;
             this.jwtService = jwtService;
         }
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await userService.Authorize(request.Login, request.Password);
-            var claims = await userService.GetUserClaims(user);
+            var id = await identityService.Authorize(request.Login, request.Password);
+            var claims = await identityService.GetUserClaims(id);
             string token = jwtService.GenerateJwt(claims);
 
             return new LoginResponse { AccessToken = token };

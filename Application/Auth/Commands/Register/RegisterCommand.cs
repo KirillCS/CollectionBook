@@ -19,13 +19,19 @@ namespace Application.Auth.Commands.Register
 
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
     {
+        private readonly IIdentityService identityService;
         private readonly IUserService userService;
         private readonly IMapper mapper;
         private readonly IEmailMessageService messageService;
         private readonly IEmailSenderService emailSenderService;
 
-        public RegisterCommandHandler(IUserService userService, IMapper mapper, IEmailMessageService messageService, IEmailSenderService emailSenderService)
+        public RegisterCommandHandler(IIdentityService identityService,
+                                      IUserService userService,
+                                      IMapper mapper,
+                                      IEmailMessageService messageService,
+                                      IEmailSenderService emailSenderService)
         {
+            this.identityService = identityService;
             this.userService = userService;
             this.mapper = mapper;
             this.messageService = messageService;
@@ -34,8 +40,9 @@ namespace Application.Auth.Commands.Register
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var user = await userService.CreateUser(request.Login, request.Email, request.Password);
-            var token = await userService.GenerateEmailConfirmationToken(user);
+            var id = await identityService.Create(request.Login, request.Email, request.Password);
+            var token = await identityService.GenerateEmailConfirmationToken(id);
+            var user = await userService.GetById(id);
             var message = messageService.GenerateEmailConfirmationMessage(user.Email, user.Id, token);
             await emailSenderService.SendEmail(message);
 

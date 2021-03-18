@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 
 namespace Infrastructure
 {
@@ -62,11 +63,12 @@ namespace Infrastructure
             services.Configure<EmailOptions>(configuration.GetSection("Email"));
             services.Configure<SpaOptions>(configuration.GetSection("Spa"));
 
-            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserService1, UserService1>();
             services.AddTransient<IUriService, UriService>();
             services.AddTransient<IEmailMessageService, EmailMessageService>();
             services.AddTransient<IEmailSenderService, EmailSenderService>();
 
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>

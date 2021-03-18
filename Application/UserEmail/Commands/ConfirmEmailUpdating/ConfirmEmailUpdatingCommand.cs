@@ -18,9 +18,9 @@ namespace Application.UserEmail.Commands.ConfirmEmailUpdating
 
     public class ConfirmEmailUpdatingHandler : IRequestHandler<ConfirmEmailUpdatingCommand>
     {
-        private readonly IUserService userService;
+        private readonly IUserService1 userService;
 
-        public ConfirmEmailUpdatingHandler(IUserService userService)
+        public ConfirmEmailUpdatingHandler(IUserService1 userService)
         {
             this.userService = userService;
         }

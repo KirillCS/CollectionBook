@@ -5,7 +5,7 @@ namespace Application.UserEmail.Commands.UpdateEmail
 {
     public class UpdateEmailCommandValidator : AbstractValidator<UpdateEmailCommand>
     {
-        public UpdateEmailCommandValidator(IUserService userService)
+        public UpdateEmailCommandValidator(IUserService1 userService)
         {
             RuleFor(c => c.Email).NotEmpty().WithMessage("Email is a required field")
                                  .Matches("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$").WithMessage("Not valid email")

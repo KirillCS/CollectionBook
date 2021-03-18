@@ -15,11 +15,11 @@ namespace Application.Users.Commands.UpdateLogin
 
     public class UpdateLoginCommandHandler : IRequestHandler<UpdateLoginCommand, LoginResponse>
     {
-        private readonly IUserService userService;
+        private readonly IUserService1 userService;
         private readonly ICurrentUserService currentUserService;
         private readonly IJwtService jwtService;
 
-        public UpdateLoginCommandHandler(IUserService userService, ICurrentUserService currentUserService, IJwtService jwtService)
+        public UpdateLoginCommandHandler(IUserService1 userService, ICurrentUserService currentUserService, IJwtService jwtService)
         {
             this.userService = userService;
             this.currentUserService = currentUserService;

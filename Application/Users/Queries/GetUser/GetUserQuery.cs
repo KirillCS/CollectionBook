@@ -17,10 +17,10 @@ namespace Application.Users.Queries.GetUser
 
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
     {
-        private readonly IUserService userService;
+        private readonly IUserService1 userService;
         private readonly IMapper mapper;
 
-        public GetUserQueryHandler(IUserService userService, IMapper mapper)
+        public GetUserQueryHandler(IUserService1 userService, IMapper mapper)
         {
             this.userService = userService;
             this.mapper = mapper;

@@ -5,12 +5,10 @@ using Domain.Common;
 using FluentValidation.Results;
 using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Identity;
-using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Identity
@@ -118,7 +116,7 @@ namespace Infrastructure.Identity
             return user.Id;
         }
 
-        public async Task<bool> Authorize(string login, string password)
+        public async Task<string> Authorize(string login, string password)
         {
             var user = await userManager.FindByNameAsync(login);
             if (user is null)
@@ -130,7 +128,7 @@ namespace Infrastructure.Identity
             await Guard.RequiresAsync(async () => await userManager.CheckPasswordAsync(user, password), new InvalidLoginCredentialsException(login));
             await Guard.RequiresAsync(async () => await userManager.IsEmailConfirmedAsync(user), new EmailNotConfirmedException(user.Id, user.Email));
 
-            return true;
+            return user.Id;
         }
 
         protected async Task<User> GetUser(string userId)

@@ -31,6 +31,6 @@ namespace Application.Common.Interfaces
 
         Task<string> Create(string userName, string email, string password);
 
-        Task<bool> Authorize(string login, string password);
+        Task<string> Authorize(string login, string password);
     }
 }

@@ -16,11 +16,11 @@ namespace Application.UserEmail.Commands.ChangeUnconfirmedEmail
 
     public class ChangeUnconfirmedEmailCommandHandler : IRequestHandler<ChangeUnconfirmedEmailCommand>
     {
-        private readonly IUserService userService;
+        private readonly IUserService1 userService;
         private readonly IEmailMessageService messageService;
         private readonly IEmailSenderService emailSenderService;
 
-        public ChangeUnconfirmedEmailCommandHandler(IUserService userService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
+        public ChangeUnconfirmedEmailCommandHandler(IUserService1 userService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
         {
             this.userService = userService;
             this.messageService = messageService;

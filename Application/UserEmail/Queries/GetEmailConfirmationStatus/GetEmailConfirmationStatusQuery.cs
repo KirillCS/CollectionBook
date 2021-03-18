@@ -14,9 +14,9 @@ namespace Application.UserEmail.Queries.GetEmailConfirmationStatus
 
     public class GetEmailConfirmationStatusQueryHandler : IRequestHandler<GetEmailConfirmationStatusQuery, bool>
     {
-        private readonly IUserService userService;
+        private readonly IUserService1 userService;
 
-        public GetEmailConfirmationStatusQueryHandler(IUserService userService)
+        public GetEmailConfirmationStatusQueryHandler(IUserService1 userService)
         {
             this.userService = userService;
         }

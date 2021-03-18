@@ -14,12 +14,12 @@ namespace Application.UserEmail.Commands.UpdateEmail
 
     class UpdateEmailCommandHandler : IRequestHandler<UpdateEmailCommand>
     {
-        private readonly IUserService userService;
+        private readonly IUserService1 userService;
         private readonly ICurrentUserService currentUserService;
         private readonly IEmailMessageService messageService;
         private readonly IEmailSenderService emailSenderService;
 
-        public UpdateEmailCommandHandler(IUserService userService, ICurrentUserService currentUserService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
+        public UpdateEmailCommandHandler(IUserService1 userService, ICurrentUserService currentUserService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
         {
             this.userService = userService;
             this.currentUserService = currentUserService;

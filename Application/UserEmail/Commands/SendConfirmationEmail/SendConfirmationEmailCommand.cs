@@ -14,11 +14,11 @@ namespace Application.UserEmail.Commands.SendConfirmationEmail
 
     public class SendConfirmationEmailCommandHandler : IRequestHandler<SendConfirmationEmailCommand>
     {
-        private readonly IUserService userService;
+        private readonly IUserService1 userService;
         private readonly IEmailMessageService messageService;
         private readonly IEmailSenderService emailSenderService;
 
-        public SendConfirmationEmailCommandHandler(IUserService userService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
+        public SendConfirmationEmailCommandHandler(IUserService1 userService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
         {
             this.userService = userService;
             this.messageService = messageService;

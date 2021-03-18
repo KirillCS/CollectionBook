@@ -17,10 +17,10 @@ namespace Application.UserEmail.Commands.ConfirmEmail
 
     public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, LoginResponse>
     {
-        private readonly IUserService userService;
+        private readonly IUserService1 userService;
         private readonly IJwtService jwtService;
 
-        public ConfirmEmailCommandHandler(IUserService userService, IJwtService jwtService)
+        public ConfirmEmailCommandHandler(IUserService1 userService, IJwtService jwtService)
         {
             this.userService = userService;
             this.jwtService = jwtService;

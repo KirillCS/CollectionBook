@@ -1,7 +1,8 @@
-﻿using AutoMapper;
+﻿using Application.Common.Mappings;
+using AutoMapper;
 using System.Reflection;
 
-namespace Application.Common.Mappings
+namespace Infrastructure.Mappings
 {
     public class MappingProfile : Profile
     {
