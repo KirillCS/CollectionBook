@@ -1,7 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
-using AutoMapper;
 using Domain.Common;
 using MediatR;
 using System.Threading;
@@ -29,24 +28,23 @@ namespace Application.Users.Commands.UpdateProfile
     public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, UserDto>
     {
         private readonly ICurrentUserService currentUserService;
-        private readonly IUserService1 userService;
-        private readonly IMapper mapper;
+        private readonly IUserService userService;
 
-        public UpdateProfileCommandHandler(ICurrentUserService currentUserService, IUserService1 userService, IMapper mapper)
+        public UpdateProfileCommandHandler(ICurrentUserService currentUserService, IUserService userService)
         {
             this.currentUserService = currentUserService;
             this.userService = userService;
-            this.mapper = mapper;
         }
 
         public async Task<UserDto> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
         {
-            var user = await userService.GetUserById(currentUserService.UserId);
-            Guard.Requires(() => user is not null, new EntityNotFoundException());
+            var user = await userService.GetById(currentUserService.UserId);
+            Guard.Requires(() => user is not null, new IdentityNotFoundException(currentUserService.UserId));
             request.CopyPropertiesTo(user);
-            await userService.UpdateUser(user);
+            var result = await userService.UpdateProfile(user);
+            Guard.Requires(() => result.Successed, new UpdateProfileException(result.Errors));
 
-            return mapper.Map<UserDto>(user);
+            return user;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Application.UserEmail.Commands.ChangeUnconfirmedEmail
         public async Task<Unit> Handle(ChangeUnconfirmedEmailCommand request, CancellationToken cancellationToken)
         {
             var result = await identityService.SetEmail(request.Id, request.Email);
-            Guard.Requires(() => result.Successed, new ChangeEmailException(result.Errors));
+            Guard.Requires(() => result.Successed, new UpdateEmailException(result.Errors));
 
             var token = await identityService.GenerateEmailConfirmationToken(request.Id);
             var message = messageService.GenerateEmailConfirmationMessage(request.Email, request.Id, token);

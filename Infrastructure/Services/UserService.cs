@@ -31,5 +31,12 @@ namespace Infrastructure.Services
 
             return mapper.Map<UserDto>(user);
         }
+
+        public async Task<Result> UpdateProfile(UserDto user)
+        {
+            var result = await userManager.UpdateAsync(mapper.Map<User>(user));
+
+            return result.ToApplicationResult();
+        }
     }
 }

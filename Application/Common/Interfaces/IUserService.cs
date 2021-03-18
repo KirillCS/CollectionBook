@@ -8,5 +8,7 @@ namespace Application.Common.Interfaces
         Task<UserDto> GetById(string id);
 
         Task<UserDto> GetByLogin(string login);
+
+        Task<Result> UpdateProfile(UserDto user);
     }
 }

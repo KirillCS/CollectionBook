@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Application.Common.Exceptions
 {
-    public class ChangeEmailException : Exception
+    public class UpdateLoginException : Exception
     {
         public IEnumerable<string> Errors { get; } = Array.Empty<string>();
 
-        public ChangeEmailException() : base("Failed to change email")
+        public UpdateLoginException() : base("Failed to change login")
         { }
 
-        public ChangeEmailException(IEnumerable<string> errors) : this()
+        public UpdateLoginException(IEnumerable<string> errors) : this()
         {
             Errors = errors;
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Infrastructure.Exceptions
+namespace Application.Common.Exceptions
 {
     public class IdentityNotFoundException : Exception
     {
@@ -9,7 +9,7 @@ namespace Infrastructure.Exceptions
         public IdentityNotFoundException() : base("Identity was not found")
         { }
 
-        public IdentityNotFoundException(string id) : base($"Identity with id {id} was not found")
+        public IdentityNotFoundException(string id) : base($"Identity with id {id ?? string.Empty} was not found")
         {
             Id = id;
         }

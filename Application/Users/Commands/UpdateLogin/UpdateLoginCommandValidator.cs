@@ -5,12 +5,12 @@ namespace Application.Users.Commands.UpdateLogin
 {
     public class UpdateLoginCommandValidator : AbstractValidator<UpdateLoginCommand>
     {
-        public UpdateLoginCommandValidator(IUserService1 userService)
+        public UpdateLoginCommandValidator(IIdentityService identityService)
         {
             RuleFor(c => c.Login).NotEmpty().WithMessage("Login is a required field")
                                  .Matches(@"^[a-zA-Z0-9-_.]+$").WithMessage("Login can only contain english letters, numbers and symbols '_', '-', '.'")
                                  .MaximumLength(256).WithMessage("Login cannot have the length more than 256 characters")
-                                 .MustAsync(async (login, ct) => !await userService.UserNameExists(login)).WithMessage(c => $"Login '{c.Login}' already exists");
+                                 .MustAsync(async (login, ct) => !await identityService.LoginExists(login)).WithMessage(c => $"Login '{c.Login}' already exists");
         }
     }
 }

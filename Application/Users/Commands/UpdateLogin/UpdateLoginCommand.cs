@@ -15,23 +15,22 @@ namespace Application.Users.Commands.UpdateLogin
 
     public class UpdateLoginCommandHandler : IRequestHandler<UpdateLoginCommand, LoginResponse>
     {
-        private readonly IUserService1 userService;
+        private readonly IIdentityService identityService;
         private readonly ICurrentUserService currentUserService;
         private readonly IJwtService jwtService;
 
-        public UpdateLoginCommandHandler(IUserService1 userService, ICurrentUserService currentUserService, IJwtService jwtService)
+        public UpdateLoginCommandHandler(IIdentityService identityService, ICurrentUserService currentUserService, IJwtService jwtService)
         {
-            this.userService = userService;
+            this.identityService = identityService;
             this.currentUserService = currentUserService;
             this.jwtService = jwtService;
         }
 
         public async Task<LoginResponse> Handle(UpdateLoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await userService.GetUserById(currentUserService.UserId);
-            Guard.Requires(() => user is not null, new EntityNotFoundException());
-            await userService.SetUserName(user, request.Login);
-            var claims = await userService.GetUserClaims(user);
+            var result = await identityService.SetLogin(currentUserService.UserId, request.Login);
+            Guard.Requires(() => result.Successed, new UpdateLoginException(result.Errors));
+            var claims = await identityService.GetUserClaims(currentUserService.UserId);
             var token = jwtService.GenerateJwt(claims);
 
             return new LoginResponse { AccessToken = token };

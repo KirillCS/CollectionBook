@@ -1,9 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
-using AutoMapper;
 using Domain.Common;
-using Domain.Entities;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,21 +15,19 @@ namespace Application.Users.Queries.GetUser
 
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
     {
-        private readonly IUserService1 userService;
-        private readonly IMapper mapper;
+        private readonly IUserService userService;
 
-        public GetUserQueryHandler(IUserService1 userService, IMapper mapper)
+        public GetUserQueryHandler(IUserService userService)
         {
             this.userService = userService;
-            this.mapper = mapper;
         }
 
         public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await userService.GetUserByUserName(request.Login);
-            Guard.Requires(() => user is not null, new EntityNotFoundException(nameof(User), "login", request.Login));
+            var user = await userService.GetByLogin(request.Login);
+            Guard.Requires(() => user is not null, new IdentityNotFoundException());
 
-            return mapper.Map<UserDto>(user);
+            return user;
         }
     }
 }
