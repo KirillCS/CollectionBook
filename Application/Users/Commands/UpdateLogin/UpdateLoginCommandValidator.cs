@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Application.Users.Commands.UpdateLogin
 {
-    public class UpdateLoginValidator : AbstractValidator<UpdateLoginCommand>
+    public class UpdateLoginCommandValidator : AbstractValidator<UpdateLoginCommand>
     {
-        public UpdateLoginValidator(IUserService userService)
+        public UpdateLoginCommandValidator(IUserService userService)
         {
             RuleFor(c => c.Login).NotEmpty().WithMessage("Login is a required field")
                                  .Matches(@"^[a-zA-Z0-9-_.]+$").WithMessage("Login can only contain english letters, numbers and symbols '_', '-', '.'")

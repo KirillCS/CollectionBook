@@ -2,9 +2,9 @@
 
 namespace Application.Users.Commands.UpdateProfile
 {
-    public class UpdateProfileValidator : AbstractValidator<UpdateProfileCommand>
+    public class UpdateProfileCommandValidator : AbstractValidator<UpdateProfileCommand>
     {
-        public UpdateProfileValidator()
+        public UpdateProfileCommandValidator()
         {
             RuleFor(c => c.FirstName).MaximumLength(128).WithMessage("Maximum first name length is 128");
 
