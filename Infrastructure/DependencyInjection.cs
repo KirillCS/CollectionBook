@@ -1,5 +1,4 @@
 ﻿using Application.Common.Interfaces;
-using Domain.Entities;
 using Infrastructure.Models;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using Infrastructure.Identity;
 
 namespace Infrastructure
 {
@@ -63,7 +63,8 @@ namespace Infrastructure
             services.Configure<EmailOptions>(configuration.GetSection("Email"));
             services.Configure<SpaOptions>(configuration.GetSection("Spa"));
 
-            services.AddTransient<IUserService1, UserService1>();
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUriService, UriService>();
             services.AddTransient<IEmailMessageService, EmailMessageService>();
             services.AddTransient<IEmailSenderService, EmailSenderService>();

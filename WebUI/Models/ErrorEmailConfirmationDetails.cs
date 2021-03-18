@@ -5,6 +5,6 @@ namespace WebUI.Models
 {
     public class ErrorEmailConfirmationDetails : ProblemDetails
     {
-        public IDictionary<string, string> Errors { get; set; }
+        public IEnumerable<string> Errors { get; set; }
     }
 }

@@ -1,10 +1,6 @@
-﻿using Application.Common.Mappings;
-using AutoMapper;
-using Domain.Entities;
-
-namespace Application.Common.Models
+﻿namespace Application.Common.Models
 {
-    public class UserDto : IMapFrom<User>
+    public class UserDto
     {
         public string Id { get; set; }
 
@@ -29,11 +25,5 @@ namespace Application.Common.Models
         public string TelegramLogin { get; set; }
 
         public string InstagramLogin { get; set; }
-
-        public void Mapping(Profile profile)
-        {
-            profile.CreateMap<User, UserDto>()
-                   .ForMember(prof => prof.Login, opt => opt.MapFrom(u => u.UserName));
-        }
     }
 }
