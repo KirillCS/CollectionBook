@@ -18,19 +18,17 @@ namespace Application.UserEmail.Commands.ConfirmEmailUpdating
 
     public class ConfirmEmailUpdatingHandler : IRequestHandler<ConfirmEmailUpdatingCommand>
     {
-        private readonly IUserService1 userService;
+        private readonly IIdentityService identityService;
 
-        public ConfirmEmailUpdatingHandler(IUserService1 userService)
+        public ConfirmEmailUpdatingHandler(IIdentityService identityService)
         {
-            this.userService = userService;
+            this.identityService = identityService;
         }
 
         public async Task<Unit> Handle(ConfirmEmailUpdatingCommand request, CancellationToken cancellationToken)
         {
-            var user = await userService.GetUserById(request.Id);
-            Guard.Requires(() => user is not null, new EntityNotFoundException());
-            await userService.ChangeEmail(user, request.Email, request.Token);
-            // throw exception if email changing was failed
+            var result = await identityService.ChangeEmail(request.Id, request.Email, request.Token);
+            Guard.Requires(() => result.Successed, new EmailUpdatingConfirmationException(result.Errors));
 
             return Unit.Value;
         }

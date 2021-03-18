@@ -16,24 +16,24 @@ namespace Application.UserEmail.Commands.ChangeUnconfirmedEmail
 
     public class ChangeUnconfirmedEmailCommandHandler : IRequestHandler<ChangeUnconfirmedEmailCommand>
     {
-        private readonly IUserService1 userService;
+        private readonly IIdentityService identityService;
         private readonly IEmailMessageService messageService;
         private readonly IEmailSenderService emailSenderService;
 
-        public ChangeUnconfirmedEmailCommandHandler(IUserService1 userService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
+        public ChangeUnconfirmedEmailCommandHandler(IIdentityService identityService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
         {
-            this.userService = userService;
+            this.identityService = identityService;
             this.messageService = messageService;
             this.emailSenderService = emailSenderService;
         }
 
         public async Task<Unit> Handle(ChangeUnconfirmedEmailCommand request, CancellationToken cancellationToken)
         {
-            var user = await userService.GetUserById(request.Id);
-            Guard.Requires(() => user is not null, new EntityNotFoundException());
-            await userService.SetEmail(user, request.Email);
-            var token = await userService.GenerateEmailConfirmationToken(user);
-            var message = messageService.GenerateEmailConfirmationMessage(user.Email, user.Id, token);
+            var result = await identityService.SetEmail(request.Id, request.Email);
+            Guard.Requires(() => result.Successed, new ChangeEmailException(result.Errors));
+
+            var token = await identityService.GenerateEmailConfirmationToken(request.Id);
+            var message = messageService.GenerateEmailConfirmationMessage(request.Email, request.Id, token);
             await emailSenderService.SendEmail(message);
 
             return Unit.Value;

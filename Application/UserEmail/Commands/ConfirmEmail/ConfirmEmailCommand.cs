@@ -17,24 +17,23 @@ namespace Application.UserEmail.Commands.ConfirmEmail
 
     public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, LoginResponse>
     {
-        private readonly IUserService1 userService;
+        private readonly IIdentityService identityService;
         private readonly IJwtService jwtService;
 
-        public ConfirmEmailCommandHandler(IUserService1 userService, IJwtService jwtService)
+        public ConfirmEmailCommandHandler(IIdentityService identityService, IJwtService jwtService)
         {
-            this.userService = userService;
+            this.identityService = identityService;
             this.jwtService = jwtService;
         }
 
         public async Task<LoginResponse> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
         {
-            var user = await userService.GetUserById(request.Id);
-            Guard.Requires(() => user is not null, new EntityNotFoundException());
-            var result = await userService.ConfirmEmail(user, request.Token);
-            Guard.Requires(() => result.Succeeded, new EmailConfirmationException(result.Errors));
-            var claims = await userService.GetUserClaims(user);
+            var result = await identityService.ConfirmEmail(request.Id, request.Token);
+            Guard.Requires(() => result.Successed, new EmailConfirmationException(result.Errors));
+            var claims = await identityService.GetUserClaims(request.Id);
+            var token = jwtService.GenerateJwt(claims);
 
-            return new LoginResponse() { AccessToken = jwtService.GenerateJwt(claims) };
+            return new LoginResponse() { AccessToken = token };
         }
     }
 }

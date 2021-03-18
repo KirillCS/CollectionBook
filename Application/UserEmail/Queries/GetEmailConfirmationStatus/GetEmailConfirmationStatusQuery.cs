@@ -1,6 +1,4 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Domain.Common;
+﻿using Application.Common.Interfaces;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,19 +12,16 @@ namespace Application.UserEmail.Queries.GetEmailConfirmationStatus
 
     public class GetEmailConfirmationStatusQueryHandler : IRequestHandler<GetEmailConfirmationStatusQuery, bool>
     {
-        private readonly IUserService1 userService;
+        private readonly IIdentityService identityService;
 
-        public GetEmailConfirmationStatusQueryHandler(IUserService1 userService)
+        public GetEmailConfirmationStatusQueryHandler(IIdentityService identityService)
         {
-            this.userService = userService;
+            this.identityService = identityService;
         }
 
         public async Task<bool> Handle(GetEmailConfirmationStatusQuery request, CancellationToken cancellationToken)
         {
-            var user = await userService.GetUserById(request.Id);
-            Guard.Requires(() => user is not null, new EntityNotFoundException());
-
-            return await userService.IsEmailConfirmed(user);
+            return await identityService.IsEmailConfirmed(request.Id);
         }
     }
 }
