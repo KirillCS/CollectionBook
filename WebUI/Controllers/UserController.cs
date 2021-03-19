@@ -21,7 +21,9 @@ namespace WebUI.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileCommand command)
         {
-            return Ok(await Mediator.Send(command));
+            await Mediator.Send(command);
+
+            return Ok();
         }
 
         [Route("updatelogin")]

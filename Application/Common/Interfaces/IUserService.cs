@@ -1,4 +1,5 @@
 ﻿using Application.Common.Models;
+using Application.Users.Commands.UpdateProfile;
 using System.Threading.Tasks;
 
 namespace Application.Common.Interfaces
@@ -9,6 +10,6 @@ namespace Application.Common.Interfaces
 
         Task<UserDto> GetByLogin(string login);
 
-        Task<Result> UpdateProfile(UserDto user);
+        Task<Result> UpdateProfile(string userId, UpdateProfileCommand command);
     }
 }

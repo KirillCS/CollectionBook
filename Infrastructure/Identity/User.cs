@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Identity
 {
-    public class User : IdentityUser, IMapTo<UserDto>
+    public class User : IdentityUser, IMapTo<UserDto>, IMapFrom<UserDto>
     {
         public string FirstName { get; set; }
 
@@ -34,6 +34,11 @@ namespace Infrastructure.Identity
         void IMapTo<UserDto>.Mapping(Profile profile)
         {
             profile.CreateMap<User, UserDto>().ForMember(d => d.Login, s => s.MapFrom(u => u.UserName));
+        }
+
+        void IMapFrom<UserDto>.Mapping(Profile profile)
+        {
+            profile.CreateMap<UserDto, User>().ForMember(d => d.UserName, s => s.MapFrom(u => u.Login));
         }
     }
 }

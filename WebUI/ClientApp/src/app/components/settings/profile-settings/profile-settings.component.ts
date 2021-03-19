@@ -22,6 +22,7 @@ import { ServerErrorsService } from 'src/app/services/server-errors.service';
 })
 export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
+  private user: UserDto;
   private subscription: Subscription;
 
   public form = new FormGroup({
@@ -47,15 +48,18 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     private diaolog: MatDialog,
     private snackBar: MatSnackBar
   ) {
-    this.subscription = this.settingsService.user$.subscribe(user => this.setForm(user));
+    this.subscription = this.settingsService.user$.subscribe(user => {
+      this.user = user;
+      this.setForm(user);
+    });
   }
 
   public ngOnInit(): void {
     this.userService.getUser(this.currentUserService.currentUser?.login).subscribe(response => {
       this.settingsService.update(response);
     }, (errorResponse: HttpErrorResponse) => {
-      this.authService.logout();
       if (errorResponse.status == 401) {
+        this.authService.logout();
         this.diaolog.open(MessageDialogComponent, {
           width: '500px',
           position: { top: '30vh' },
@@ -66,11 +70,12 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
             buttonName: 'Close'
           }
         });
-
+        
         return;
       }
-
+      
       if (errorResponse.status == 404) {
+        this.authService.logout();
         this.diaolog.open(MessageDialogComponent, {
           width: '500px',
           position: { top: '30vh' },
@@ -103,8 +108,9 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     }
 
     this.inProcess = true;
-    this.userService.updateProfile(this.getRequest()).subscribe(response => {
-      this.settingsService.update(response);
+    this.userService.updateProfile(this.getRequest()).subscribe(() => {
+      this.setUser();
+      this.settingsService.update(this.user);
 
     }, (errorResponse: HttpErrorResponse) => {
       this.inProcess = false;
@@ -148,7 +154,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
       this.unknownError = true;
     }, () => {
-      
+
       this.inProcess = false;
       this.snackBar.open('Profile was updated', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
     });
@@ -174,5 +180,15 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
       telegramLogin: this.form.get('telegramLogin').value,
       instagramLogin: this.form.get('instagramLogin').value,
     };
+  }
+
+  private setUser(): void {
+    this.user.firstName = this.form.get('firstName').value;
+    this.user.lastName = this.form.get('lastName').value;
+    this.user.biography = this.form.get('biography').value;
+    this.user.location = this.form.get('location').value;
+    this.user.websiteUrl = this.form.get('websiteUrl').value;
+    this.user.telegramLogin = this.form.get('telegramLogin').value;
+    this.user.instagramLogin = this.form.get('instagramLogin').value;
   }
 }

@@ -18,8 +18,8 @@ export class UserService {
     return this.httpClient.get<UserDto>(`${this.apiUrl}api/user/${login ?? ''}`);
   }
 
-  public updateProfile(request: UpdateProfileRequest): Observable<UserDto> {
-    return this.httpClient.put<UserDto>(`${this.apiUrl}api/user/updateprofile`, request);
+  public updateProfile(request: UpdateProfileRequest): Observable<void> {
+    return this.httpClient.put<void>(`${this.apiUrl}api/user/updateprofile`, request);
   }
 
   public updateLogin(request: UpdateLoginRequest): Observable<LoginResponse> {

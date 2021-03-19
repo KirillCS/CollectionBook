@@ -1,6 +1,5 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Models;
 using Domain.Common;
 using MediatR;
 using System.Threading;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Commands.UpdateProfile
 {
-    public class UpdateProfileCommand : IRequest<UserDto>
+    public class UpdateProfileCommand : IRequest
     {
         public string FirstName { get; set; }
 
@@ -25,7 +24,7 @@ namespace Application.Users.Commands.UpdateProfile
         public string InstagramLogin { get; set; }
     }
 
-    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, UserDto>
+    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand>
     {
         private readonly ICurrentUserService currentUserService;
         private readonly IUserService userService;
@@ -36,15 +35,12 @@ namespace Application.Users.Commands.UpdateProfile
             this.userService = userService;
         }
 
-        public async Task<UserDto> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
         {
-            var user = await userService.GetById(currentUserService.UserId);
-            Guard.Requires(() => user is not null, new IdentityNotFoundException(currentUserService.UserId));
-            request.CopyPropertiesTo(user);
-            var result = await userService.UpdateProfile(user);
+            var result = await userService.UpdateProfile(currentUserService.UserId, request);
             Guard.Requires(() => result.Successed, new UpdateProfileException(result.Errors));
 
-            return user;
+            return Unit.Value;
         }
     }
 }

@@ -4,6 +4,9 @@ using AutoMapper;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using Domain.Common;
+using Application.Users.Commands.UpdateProfile;
+using Application.Common.Exceptions;
 
 namespace Infrastructure.Services
 {
@@ -32,9 +35,12 @@ namespace Infrastructure.Services
             return mapper.Map<UserDto>(user);
         }
 
-        public async Task<Result> UpdateProfile(UserDto user)
+        public async Task<Result> UpdateProfile(string userId, UpdateProfileCommand command)
         {
-            var result = await userManager.UpdateAsync(mapper.Map<User>(user));
+            var user = await userManager.FindByIdAsync(userId);
+            Guard.Requires(() => user is not null, new IdentityNotFoundException());
+            command.CopyPropertiesTo(user);
+            var result = await userManager.UpdateAsync(user);
 
             return result.ToApplicationResult();
         }
