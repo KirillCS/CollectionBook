@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { UserDto } from 'src/app/models/dtos/user.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
-import { UserLoginDto } from 'src/app/models/dtos/user-login.dto';
 import { AvatarService } from 'src/app/services/avatar.service';
 
 @Component({
@@ -15,22 +14,24 @@ import { AvatarService } from 'src/app/services/avatar.service';
 export class ProfileComponent implements OnInit {
 
   public user = new UserDto();
-  public currentUser: UserLoginDto;
+  public isOwner = false;
 
-  constructor(
+  public constructor(
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
     private avatarService: AvatarService,
-    currentUserService: CurrentUserService
-  ) {
-    this.currentUser = currentUserService.currentUser;
-  }
+    private currentUserService: CurrentUserService
+  ) { }
 
   public ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       let login = params.get('login');
-      this.userService.getUser(login).subscribe(profile => this.user = profile, () => {
+      this.userService.getUser(login).subscribe(response => {
+        this.user = response;
+        this.isOwner = response.id == this.currentUserService.currentUser.id;
+
+      }, () => {
         this.router.navigateByUrl('**', { skipLocationChange: true });
       });
     })

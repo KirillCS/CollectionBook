@@ -25,7 +25,7 @@
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>Biography</mat-label>
-      <textarea rows="4" matInput formControlName="biography"></textarea>
+      <textarea rows="4" placeholder="Write some words about you" matInput formControlName="biography"></textarea>
       <mat-error *ngIf="form.get('biography').errors?.serverErrors">
         <div *ngFor="let error of form.get('biography').errors?.serverErrors">{{error}}</div>
       </mat-error>
@@ -34,7 +34,7 @@
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>Location</mat-label>
-      <input type="text" maxlength="256" autocomplete="off" matInput formControlName="location"
+      <input type="text" maxlength="256" autocomplete="off" placeholder="Ex. Belarus, Minsk" matInput formControlName="location"
         [errorStateMatcher]="matcher">
       <mat-hint>Maximum length: 256</mat-hint>
       <mat-error *ngIf="form.get('location').errors?.maxlength">Maximum location length is 256</mat-error>
@@ -46,7 +46,7 @@
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>Your website</mat-label>
-      <input type="url" autocomplete="off" matInput formControlName="websiteUrl">
+      <input type="url" autocomplete="off" placeholder="Ex. https://wikipedia.com" matInput formControlName="websiteUrl">
       <mat-error *ngIf="form.get('websiteUrl').errors?.serverErrors">
         <div *ngFor="let error of form.get('websiteUrl').errors?.serverErrors">{{error}}</div>
       </mat-error>
@@ -55,20 +55,20 @@
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>Telegram login</mat-label>
-      <input type="text" autocomplete="off" matInput formControlName="telegramLogin">
+      <input type="text" autocomplete="off" placeholder="Ex. kirill" matInput formControlName="telegramLogin">
       <mat-error *ngIf="form.get('telegramLogin').errors?.serverErrors">
         <div *ngFor="let error of form.get('telegramLogin').errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
     <mat-form-field class="field" appearance="outline">
       <mat-label>Instagram login</mat-label>
-      <input type="text" autocomplete="off" matInput formControlName="instagramLogin">
+      <input type="text" autocomplete="off" placeholder="Ex. kirill" matInput formControlName="instagramLogin">
       <mat-error *ngIf="form.get('instagramLogin').errors?.serverErrors">
         <div *ngFor="let error of form.get('instagramLogin').errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
   </div>
-  <mat-error *ngIf="unknownError">Something went wrong...</mat-error>
+  <mat-error *ngIf="unknownError">Something went wrong on server. You can try to update profile again</mat-error>
   <div class="actions justify-content-end">
     <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Update profile</button>
   </div>

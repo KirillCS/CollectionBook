@@ -29,7 +29,7 @@ namespace Application.Users.Commands.UpdateLogin
         public async Task<LoginResponse> Handle(UpdateLoginCommand request, CancellationToken cancellationToken)
         {
             var result = await identityService.SetLogin(currentUserService.UserId, request.Login);
-            Guard.Requires(() => result.Successed, new UpdateLoginException(result.Errors));
+            Guard.Requires(() => result.Successed, new OperationException(result.Errors));
             var claims = await identityService.GetUserClaims(currentUserService.UserId);
             var token = jwtService.GenerateJwt(claims);
 

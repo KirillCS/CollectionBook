@@ -29,7 +29,7 @@ namespace Application.UserEmail.Commands.ConfirmEmail
         public async Task<LoginResponse> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
         {
             var result = await identityService.ConfirmEmail(request.Id, request.Token);
-            Guard.Requires(() => result.Successed, new EmailConfirmationException(result.Errors));
+            Guard.Requires(() => result.Successed, new OperationException(result.Errors, 400));
             var claims = await identityService.GetUserClaims(request.Id);
             var token = jwtService.GenerateJwt(claims);
 

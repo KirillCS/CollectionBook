@@ -28,7 +28,7 @@ namespace Application.UserEmail.Commands.ConfirmEmailUpdating
         public async Task<Unit> Handle(ConfirmEmailUpdatingCommand request, CancellationToken cancellationToken)
         {
             var result = await identityService.ChangeEmail(request.Id, request.Email, request.Token);
-            Guard.Requires(() => result.Successed, new EmailUpdatingConfirmationException(result.Errors));
+            Guard.Requires(() => result.Successed, new OperationException(result.Errors, 400));
 
             return Unit.Value;
         }

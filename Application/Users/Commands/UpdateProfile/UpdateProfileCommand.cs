@@ -38,7 +38,7 @@ namespace Application.Users.Commands.UpdateProfile
         public async Task<Unit> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
         {
             var result = await userService.UpdateProfile(currentUserService.UserId, request);
-            Guard.Requires(() => result.Successed, new UpdateProfileException(result.Errors));
+            Guard.Requires(() => result.Successed, new OperationException(result.Errors));
 
             return Unit.Value;
         }

@@ -1,17 +1,12 @@
-<div class="card">
-  <h1>Confirm your email</h1>
-  <main>
-    You must verify your email address <b>{{ email }}</b> to log into your account. To do this check your email, find our letter and follow the link in it.
+<div class="px-3">
+  <main class="card mt-3 mt-md-4 mx-auto">
+    <h1>Confirm your email</h1>
+    <div>
+      You must verify your email address <b>{{ email }}</b> to log into your account. To do this check your email, find our letter and follow the link in it.
+    </div>
+    <div class="row mx-0 mt-3 flex-column">
+      <a (click)="sendEmail()">I didn't get email</a>
+      <a (click)="changeEmail()">I misspelled my email address</a>
+    </div>
   </main>
-  <mat-divider></mat-divider>
-  <footer>
-    <div>
-      <span>Did not get the letter?</span>
-      <a (click)="sendEmail()">Click here to send again</a>
-    </div>
-    <div>
-      <span>Misspelled an email address?</span>
-      <a (click)="changeEmail()">Click here to change it</a>
-    </div>
-  </footer>
 </div>

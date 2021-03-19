@@ -6,10 +6,7 @@
           <mat-form-field class="field" appearance="outline">
             <mat-label>Login or email</mat-label>
             <input type="text" required autocomplete="off" matInput formControlName="login" [errorStateMatcher]="matcher">
-            <mat-error *ngIf="login.errors?.required">Login is a required field</mat-error>
-            <mat-error *ngIf="login.errors?.serverErrors">
-              <div *ngFor="let error of login.errors?.serverErrors">{{error}}</div>
-            </mat-error>
+            <mat-error *ngIf="login.errors?.required">This field is required</mat-error>
           </mat-form-field>
         </div>
         <div class="line">

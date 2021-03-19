@@ -21,13 +21,8 @@ namespace WebUI.Filters
                 { typeof(ValidationException), HandleValidationException },
                 { typeof(InvalidLoginCredentialsException), HandleInvalidLoginCredentialsException },
                 { typeof(EmailNotConfirmedException), HandleEmailNotConfirmedException },
-                { typeof(UpdateEmailException), HandleUpdateEmailException },
-                { typeof(EmailConfirmationException), HandleEmailConfirmationException },
-                { typeof(EmailUpdatingConfirmationException), HandleEmailUpdatingConfirmationException },
-                { typeof(UpdateLoginException), HandleUpdateLoginException },
-                { typeof(UpdateProfileException), HandleUpdateProfileException },
-                { typeof(IdentityNotFoundException), HandleIdentityNotFoundException },
-                { typeof(EntityNotFoundException), HandleEntityNotFoundException }
+                { typeof(EntityNotFoundException), HandleEntityNotFoundException },
+                { typeof(OperationException), HandleOperationException }
             };
         }
 
@@ -96,98 +91,6 @@ namespace WebUI.Filters
             context.ExceptionHandled = true;
         }
 
-        private void HandleUpdateEmailException(ExceptionContext context)
-        {
-            var exception = context.Exception as UpdateEmailException;
-            var details = new ProblemDetails()
-            {
-                Status = StatusCodes.Status400BadRequest,
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
-                Title = exception.Message,
-                Detail = exception.Message
-            };
-
-            context.Result = new BadRequestObjectResult(details);
-            context.ExceptionHandled = true;
-        }
-
-        private void HandleEmailConfirmationException(ExceptionContext context)
-        {
-            var exception = context.Exception as EmailConfirmationException;
-            var details = new ErrorEmailConfirmationDetails()
-            {
-                Status = StatusCodes.Status400BadRequest,
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                Title = exception.Message,
-                Detail = exception.Message,
-                Errors = exception.Errors
-            };
-
-            context.Result = new BadRequestObjectResult(details);
-            context.ExceptionHandled = true;
-        }
-
-        private void HandleEmailUpdatingConfirmationException(ExceptionContext context)
-        {
-            var exception = context.Exception as EmailUpdatingConfirmationException;
-            var details = new ErrorEmailConfirmationDetails()
-            {
-                Status = StatusCodes.Status400BadRequest,
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                Title = exception.Message,
-                Detail = exception.Message,
-                Errors = exception.Errors
-            };
-
-            context.Result = new BadRequestObjectResult(details);
-            context.ExceptionHandled = true;
-        }
-
-        private void HandleUpdateLoginException(ExceptionContext context)
-        {
-            var exception = context.Exception as UpdateLoginException;
-            var details = new ProblemDetails()
-            {
-                Status = StatusCodes.Status400BadRequest,
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                Title = exception.Message,
-                Detail = exception.Message
-            };
-
-            context.Result = new BadRequestObjectResult(details);
-            context.ExceptionHandled = true;
-        }
-
-        private void HandleUpdateProfileException(ExceptionContext context)
-        {
-            var exception = context.Exception as UpdateProfileException;
-            var details = new ProblemDetails()
-            {
-                Status = StatusCodes.Status400BadRequest,
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-                Title = exception.Message,
-                Detail = exception.Message
-            };
-
-            context.Result = new BadRequestObjectResult(details);
-            context.ExceptionHandled = true;
-        }
-
-        private void HandleIdentityNotFoundException(ExceptionContext context)
-        {
-            var exception = context.Exception as IdentityNotFoundException;
-            var details = new ProblemDetails()
-            {
-                Status = StatusCodes.Status404NotFound,
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-                Title = exception.Message,
-                Detail = exception.Message
-            };
-
-            context.Result = new NotFoundObjectResult(details);
-            context.ExceptionHandled = true;
-        }
-
         private void HandleEntityNotFoundException(ExceptionContext context)
         {
             var exception = context.Exception as EntityNotFoundException;
@@ -200,6 +103,21 @@ namespace WebUI.Filters
             };
 
             context.Result = new NotFoundObjectResult(details);
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleOperationException(ExceptionContext context)
+        {
+            var exception = context.Exception as OperationException;
+            var details = new OperationExceptionDetails(exception.Errors)
+            {
+                Status = exception.StatusCode,
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                Title = exception.Message,
+                Detail = exception.Message
+            };
+
+            context.Result = new ObjectResult(details);
             context.ExceptionHandled = true;
         }
 

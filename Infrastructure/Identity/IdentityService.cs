@@ -2,7 +2,6 @@
 using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Common;
-using FluentValidation.Results;
 using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
@@ -111,7 +110,7 @@ namespace Infrastructure.Identity
         {
             var user = new User(userName) { Email = email };
             var result = await userManager.CreateAsync(user, password);
-            Guard.Requires(() => result.Succeeded, new ValidationException(result.Errors.Select(e => new ValidationFailure("Password", e.Description))));
+            Guard.Requires(() => result.Succeeded, new OperationException(result.Errors.Select(e => e.Description)));
 
             return user.Id;
         }
@@ -134,8 +133,8 @@ namespace Infrastructure.Identity
         protected async Task<User> GetUser(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
-            Guard.Requires(() => user is not null, new IdentityNotFoundException(userId));
-            
+            Guard.Requires(() => user is not null, new EntityNotFoundException(nameof(User), "id", userId));
+
             return user;
         }
     }

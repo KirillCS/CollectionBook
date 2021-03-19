@@ -7,10 +7,10 @@ import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnDestroy {
+  
   public matcher = new SubmitErrorStateMatcher();
   public form = new FormGroup({
     login: new FormControl(),
@@ -35,7 +35,6 @@ export class LoginComponent implements OnDestroy {
   public get rememberMe(): AbstractControl {
     return this.form.get('rememberMe');
   }
-
 
   public constructor(private authService: AuthService, private router: Router) { }
 
@@ -70,6 +69,9 @@ export class LoginComponent implements OnDestroy {
         }
 
         this.unknownError = true;
-      }, () => this.router.navigate(['']));
+      }, () => {
+        this.inProcess = false;
+        this.router.navigate(['']);
+      });
   }
 }

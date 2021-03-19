@@ -27,7 +27,7 @@ namespace Application.Auth.Commands.Login
         {
             var id = await identityService.Authorize(request.Login, request.Password);
             var claims = await identityService.GetUserClaims(id);
-            string token = jwtService.GenerateJwt(claims);
+            var token = jwtService.GenerateJwt(claims);
 
             return new LoginResponse { AccessToken = token };
         }

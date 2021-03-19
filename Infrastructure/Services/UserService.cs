@@ -38,7 +38,7 @@ namespace Infrastructure.Services
         public async Task<Result> UpdateProfile(string userId, UpdateProfileCommand command)
         {
             var user = await userManager.FindByIdAsync(userId);
-            Guard.Requires(() => user is not null, new IdentityNotFoundException());
+            Guard.Requires(() => user is not null, new EntityNotFoundException(nameof(User), "id", userId));
             command.CopyPropertiesTo(user);
             var result = await userManager.UpdateAsync(user);
 

@@ -25,7 +25,7 @@ namespace Application.Users.Queries.GetUser
         public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
             var user = await userService.GetByLogin(request.Login);
-            Guard.Requires(() => user is not null, new IdentityNotFoundException());
+            Guard.Requires(() => user is not null, new EntityNotFoundException(nameof(UserDto), "login", request.Login));
 
             return user;
         }

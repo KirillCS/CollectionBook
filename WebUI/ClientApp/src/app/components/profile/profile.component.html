@@ -44,7 +44,7 @@
         </ul>
       </div>
     </div>
-    <button id="settings-button" mat-icon-button *ngIf="currentUser && currentUser.id == user.id" [routerLink]="['/settings', 'profile']">
+    <button id="settings-button" mat-icon-button *ngIf="isOwner" [routerLink]="['/settings', 'profile']">
       <mat-icon class="material-icons-round">settings</mat-icon>
     </button>
   </div>

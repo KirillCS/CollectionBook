@@ -7,12 +7,9 @@
           <mat-label>Login</mat-label>
           <input type="text" required pattern="^[a-zA-Z0-9-_.]*$" maxlength="256" autocomplete="off" matInput
             formControlName="login" [errorStateMatcher]="matcher">
-          <mat-error *ngIf="login.errors?.required">Login is a required field</mat-error>
-          <mat-error *ngIf="login.errors?.pattern">Login can only contain english letters, numbers and symbols '_', '-', '.'
-          </mat-error>
-          <mat-error *ngIf="login.errors?.maxlength">Login must be no more than 256 characters long</mat-error>
+          <mat-error *ngIf="login.errors">{{ loginErrorMessage }}</mat-error>
           <mat-error *ngIf="login.errors?.serverErrors">
-            <div *ngFor="let error of login.errors?.serverErrors">{{error}}</div>
+            <div *ngFor="let error of login.errors?.serverErrors">{{ error }}</div>
           </mat-error>
         </mat-form-field>
       </div>
@@ -21,26 +18,24 @@
           <mat-label>Email</mat-label>
           <input type="email" required autocomplete="off" matInput formControlName="email"
             [errorStateMatcher]="matcher">
-          <mat-error *ngIf="email.errors?.required">Email is a required field</mat-error>
-          <mat-error *ngIf="email.errors?.email">Not a valid email</mat-error>
+          <mat-error *ngIf="email.errors">{{ emailErrorMessage }}</mat-error>
           <mat-error *ngIf="email.errors?.serverErrors">
-            <div *ngFor="let error of email.errors?.serverErrors">{{error}}</div>
+            <div *ngFor="let error of email.errors?.serverErrors">{{ error }}</div>
           </mat-error>
         </mat-form-field>
       </div>
       <div class="line">
         <mat-form-field class="field" appearance="outline">
           <mat-label>Password</mat-label>
-          <input [type]="hidePassword ? 'password' : 'text'" required minlength="6" matInput formControlName="password"
+          <input [type]="hidePassword ? 'password' : 'text'" required minlength="6" pattern="^(?=.*[a-z])(?=.*?[A-Z])(?=.*\d)([a-zA-Z\d]|.){6,}$" matInput formControlName="password"
             [errorStateMatcher]="matcher">
           <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
             <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
           <mat-hint>Minimum length: 6</mat-hint>
-          <mat-error *ngIf="password.errors?.required">Password is a required field</mat-error>
-          <mat-error *ngIf="password.errors?.minlength">Password must be at least 6 characters long</mat-error>
+          <mat-error *ngIf="password.errors">{{ passwordErrorMessage }}</mat-error>
           <mat-error *ngIf="password.errors?.serverErrors">
-            <div *ngFor="let error of password.errors?.serverErrors">{{error}}</div>
+            <div *ngFor="let error of password.errors?.serverErrors">{{ error }}</div>
           </mat-error>
         </mat-form-field>
       </div>
@@ -53,10 +48,9 @@
             (click)="hidePasswordConfirmation = !hidePasswordConfirmation">
             <mat-icon>{{hidePasswordConfirmation ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
-          <mat-error *ngIf="passwordConfirmation.errors?.required">Confirm password</mat-error>
-          <mat-error *ngIf="passwordConfirmation.errors?.mismatch">Password mismatch</mat-error>
+          <mat-error *ngIf="passwordConfirmation.errors">{{ passwordConfirmationErrorMessage }}</mat-error>
           <mat-error *ngIf="passwordConfirmation.errors?.serverErrors">
-            <div *ngFor="let error of passwordConfirmation.errors?.serverErrors">{{error}}</div>
+            <div *ngFor="let error of passwordConfirmation.errors?.serverErrors">{{ error }}</div>
           </mat-error>
         </mat-form-field>
       </div>

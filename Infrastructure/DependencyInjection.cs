@@ -22,15 +22,15 @@ namespace Infrastructure
 
             services.AddIdentityCore<User>(options => 
                     {
-                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-.";
+                        options.User.AllowedUserNameCharacters = string.Empty;
                         options.User.RequireUniqueEmail = true;
 
-                        options.Password.RequireDigit = true;
-                        options.Password.RequiredLength = 6;
+                        options.Password.RequireDigit = false;
+                        options.Password.RequiredLength = 0;
                         options.Password.RequireNonAlphanumeric = false;
                         options.Password.RequiredUniqueChars = 0;
-                        options.Password.RequireLowercase = true;
-                        options.Password.RequireUppercase = true;
+                        options.Password.RequireLowercase = false;
+                        options.Password.RequireUppercase = false;
                     })
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()

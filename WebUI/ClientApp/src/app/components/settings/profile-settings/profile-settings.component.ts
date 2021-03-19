@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
-import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
+import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { UpdateProfileRequest } from 'src/app/models/requests/user/update-profile.request';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
@@ -17,8 +17,7 @@ import { ServerErrorsService } from 'src/app/services/server-errors.service';
 
 @Component({
   selector: 'app-profile-settings',
-  templateUrl: './profile-settings.component.html',
-  styleUrls: ['./profile-settings.component.scss']
+  templateUrl: './profile-settings.component.html'
 })
 export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
@@ -34,7 +33,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     telegramLogin: new FormControl(),
     instagramLogin: new FormControl(),
   });
-  public matcher = new DefaultErrorStateMatcher();
+  public matcher = new SubmitErrorStateMatcher();
 
   public unknownError = false;
   public inProcess = false;
@@ -45,7 +44,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     private currentUserService: CurrentUserService,
     private authService: AuthService,
     private serverErrorsService: ServerErrorsService,
-    private diaolog: MatDialog,
+    private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {
     this.subscription = this.settingsService.user$.subscribe(user => {
@@ -57,16 +56,17 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.userService.getUser(this.currentUserService.currentUser?.login).subscribe(response => {
       this.settingsService.update(response);
+
     }, (errorResponse: HttpErrorResponse) => {
       if (errorResponse.status == 401) {
         this.authService.logout();
-        this.diaolog.open(MessageDialogComponent, {
+        this.dialog.open(MessageDialogComponent, {
           width: '500px',
           position: { top: '30vh' },
           data: {
             type: MessageDialogType.Warning,
             header: 'Not authenticated',
-            message: 'You must be authenticated to set up a profile',
+            message: 'You must be authenticated to set up account profile',
             buttonName: 'Close'
           }
         });
@@ -76,13 +76,13 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
       
       if (errorResponse.status == 404) {
         this.authService.logout();
-        this.diaolog.open(MessageDialogComponent, {
+        this.dialog.open(MessageDialogComponent, {
           width: '500px',
           position: { top: '30vh' },
           data: {
             type: MessageDialogType.Warning,
-            header: 'Account not found',
-            message: 'Your account was not found. Maybe it was deleted',
+            header: 'User not found',
+            message: 'User was not found. Maybe it was deleted',
             buttonName: 'Close'
           }
         });
@@ -90,7 +90,15 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.diaolog.open(MessageDialogComponent, { width: '500px', position: { top: '30vh' } });
+      this.dialog.open(MessageDialogComponent, { 
+        width: '500px', 
+        position: { top: '30vh' }, 
+        data: { 
+          type: MessageDialogType.Warning, 
+          header: 'Something went wrong', 
+          message: 'Something went wrong on the server. Maybe updating page will be able to help.' 
+        } 
+      });
     });
   }
 
@@ -122,13 +130,13 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
       if (errorResponse.status == 401) {
         this.authService.logout();
-        this.diaolog.open(MessageDialogComponent, {
+        this.dialog.open(MessageDialogComponent, {
           width: '500px',
           position: { top: '30vh' },
           data: {
             type: MessageDialogType.Warning,
             header: 'Not authenticated',
-            message: 'You must be authenticated to set up a profile',
+            message: 'You must be authenticated to set up account profile',
             buttonName: 'Close'
           }
         });
@@ -138,13 +146,13 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
       if (errorResponse.status == 404) {
         this.authService.logout();
-        this.diaolog.open(MessageDialogComponent, {
+        this.dialog.open(MessageDialogComponent, {
           width: '500px',
           position: { top: '30vh' },
           data: {
             type: MessageDialogType.Warning,
-            header: 'Account not found',
-            message: 'Your account was not found. Maybe it was deleted',
+            header: 'User not found',
+            message: 'User was not found. Maybe it was deleted',
             buttonName: 'Close'
           }
         });
@@ -153,8 +161,8 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
       }
 
       this.unknownError = true;
-    }, () => {
 
+    }, () => {
       this.inProcess = false;
       this.snackBar.open('Profile was updated', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
     });

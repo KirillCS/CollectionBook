@@ -7,11 +7,11 @@ import { EmailConfirmationService } from 'src/app/services/email-confirmation.se
 @Component({
   selector: 'app-email-changed',
   templateUrl: './email-changed.component.html',
-  styleUrls: ['./email-changed.component.scss']
+  styleUrls: ['../email-components.styles.scss']
 })
 export class EmailChangedComponent implements OnInit {
 
-  public success: boolean;
+  public changed: boolean;
   public email = '';
   public errorMessage = '';
 
@@ -22,24 +22,26 @@ export class EmailChangedComponent implements OnInit {
       let id = params.get('id');
       let email = params.get('email');
       let token = params.get('token');
+
       this.emailService.confirmEmailUpdating({ id, email, token }).subscribe(() => {
         this.email = email;
-        this.success = true;
+        this.changed = true;
+
       }, (errorResponse: HttpErrorResponse) => {
-        this.success = false;
+        this.changed = false;
         if (errorResponse.status == 400) {
-          this.errorMessage = 'Link is broken: email has wrong format.';
+          this.errorMessage = 'This could be if email is already in use by another user, or email has already updated or simply verification token is invalid. Try update account email again.';
 
           return;
         }
 
         if (errorResponse.status == 404) {
-          this.errorMessage = 'User is not found. It could be because link is broken or user was deleted.';
+          this.errorMessage = 'User was not found. It could be because link is broken or user was deleted.';
 
           return;
         }
 
-        this.errorMessage = 'Token is invalid;'
+        this.errorMessage = 'Something went wrong on the server.';
       })
     })
   }

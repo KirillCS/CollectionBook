@@ -15,11 +15,11 @@ import { ServerErrorsService } from 'src/app/services/server-errors.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageDialogComponent, MessageDialogType } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
 import { EmailConfirmationService } from 'src/app/services/email-confirmation.service';
+import { LoginResponse } from 'src/app/models/responses/auth/login.response';
 
 @Component({
   selector: 'app-account-settings',
-  templateUrl: './account-settings.component.html',
-  styleUrls: ['./account-settings.component.css']
+  templateUrl: './account-settings.component.html'
 })
 export class AccountSettingsComponent implements OnInit, OnDestroy {
 
@@ -50,25 +50,51 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.userService.getUser(this.currentUserService.currentUser.login).subscribe(user => {
-      this.settingsService.update(user);
+    this.userService.getUser(this.currentUserService.currentUser.login).subscribe(response => {
+      this.settingsService.update(response);
+
     }, (errorResponse: HttpErrorResponse) => {
+      if (errorResponse.status == 401) {
+        this.authService.logout();
+        this.dialog.open(MessageDialogComponent, {
+          width: '500px',
+          position: { top: '30vh' },
+          data: {
+            type: MessageDialogType.Warning,
+            header: 'Not authenticated',
+            message: 'You must be authenticated to set up account login',
+            buttonName: 'Close'
+          }
+        });
+        
+        return;
+      }
+      
       if (errorResponse.status == 404) {
         this.authService.logout();
         this.dialog.open(MessageDialogComponent, {
-          width: '400px',
+          width: '500px',
           position: { top: '30vh' },
           data: {
-            header: 'Not found',
-            message: `Your account was not found. Maybe it was deleted.`,
-            buttonName: 'OK'
+            type: MessageDialogType.Warning,
+            header: 'User not found',
+            message: 'User was not found. Maybe it was deleted',
+            buttonName: 'Close'
           }
         });
 
         return;
       }
 
-      this.dialog.open(MessageDialogComponent, { width: '400px', position: { top: '30vh' } });
+      this.dialog.open(MessageDialogComponent, { 
+        width: '500px', 
+        position: { top: '30vh' }, 
+        data: { 
+          type: MessageDialogType.Warning, 
+          header: 'Something went wrong', 
+          message: 'Something went wrong on the server. Maybe updating page will be able to help.' 
+        } 
+      });
     });
   }
 
@@ -105,7 +131,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       }
 
       this.isChangingLoginInProcess = true;
-      this.userService.updateLogin({ login: control.value }).subscribe(response => {
+      this.userService.updateLogin({ login: control.value }).subscribe((response: LoginResponse) => {
         this.authTokenService.setToken(response.accessToken);
         this.user.login = control.value;
         this.settingsService.update(this.user);
@@ -139,8 +165,8 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
             width: '400px',
             position: { top: '30vh' },
             data: {
-              header: 'Not found',
-              message: `Your account was not found. Maybe it was deleted.`,
+              header: 'User not found',
+              message: `User was not found. Maybe it was deleted.`,
               buttonName: 'OK'
             }
           });
@@ -148,7 +174,15 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.dialog.open(MessageDialogComponent, { width: '400px', position: { top: '30vh' } });
+        this.dialog.open(MessageDialogComponent, { 
+          width: '400px', 
+          position: { top: '30vh' },
+          data: {
+            type: MessageDialogType.Warning,
+            header: 'Something went wrong',
+            message: 'Something went wrong on the server. Maybe page updating will be able to help.'
+          }
+        });
         this.isChangingLoginInProcess = false;
       }, () => {
         form.resetForm();
@@ -183,9 +217,9 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       });
 
     }, (errorResponse: HttpErrorResponse) => {
+      this.isChangingEmailInProcess = false;
       if (errorResponse.status == 400) {
         this.serverErrorService.setFormErrors(this.emailForm, errorResponse);
-        this.isChangingEmailInProcess = false;
 
         return;
       }
@@ -198,10 +232,9 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
           data: {
             header: 'Not authenticated',
             message: `You must be authenticated to change account email.`,
-            buttonName: 'OK'
+            buttonName: 'Close'
           }
         });
-        this.isChangingEmailInProcess = false;
 
         return;
       }
@@ -212,18 +245,16 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
           width: '400px',
           position: { top: '30vh' },
           data: {
-            header: 'Not found',
-            message: `Your account was not found. Maybe it was deleted.`,
-            buttonName: 'OK'
+            header: 'User not found',
+            message: `User was not found. Maybe it was deleted.`,
+            buttonName: 'Close'
           }
         });
-        this.isChangingEmailInProcess = false;
 
         return;
       }
 
       this.dialog.open(MessageDialogComponent, { width: '400px', position: { top: '30vh' } });
-      this.isChangingEmailInProcess = false;
     }, () => {
       form.resetForm();
       this.isChangingEmailInProcess = false;
