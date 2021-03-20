@@ -8,6 +8,8 @@ import { UpdateProfileRequest } from 'src/app/models/requests/user/update-profil
 import { UpdateLoginRequest } from 'src/app/models/requests/user/update-login.request';
 import { LoginResponse } from 'src/app/models/responses/auth/login.response';
 import { UpdatePasswordRequest } from 'src/app/models/requests/user/update-password.request';
+import { sendPasswordResetConfirmation } from 'src/app/models/requests/user/send-password-reset-confirmation.request';
+import { ResetPasswordRequest } from '../models/requests/user/reset-password.request';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +31,13 @@ export class UserService {
 
   public updatePassword(request: UpdatePasswordRequest): Observable<void> {
     return this.httpClient.put<void>(`${this.apiUrl}api/user/updatepassword`, request);
+  }
+
+  public sendPasswordResetConfirmation(request: sendPasswordResetConfirmation): Observable<void> {
+    return this.httpClient.post<void>(`${this.apiUrl}api/user/sendreset`, request);
+  }
+
+  public resetPassword(request: ResetPasswordRequest): Observable<void> {
+    return this.httpClient.put<void>(`${this.apiUrl}api/user/resetpassword`, request);
   }
 }
