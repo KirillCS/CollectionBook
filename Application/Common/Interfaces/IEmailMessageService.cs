@@ -8,6 +8,8 @@ namespace Application.Common.Interfaces
 
         MimeMessage GenerateEmailChangingMessage(string recipientEmail, string userId, string changingToken);
 
+        MimeMessage GeneratePasswordResetMessage(string recipientEmail, string userId, string passwordResetToken);
+
         MimeMessage GenerateCustomMessage(string recipientEmail, string subject, string message);
     }
 }

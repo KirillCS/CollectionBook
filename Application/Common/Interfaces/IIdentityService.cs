@@ -33,6 +33,10 @@ namespace Application.Common.Interfaces
 
         Task<Result> ChangePassword(string userId, string currentPassword, string newPassword);
 
+        Task<string> GeneratePasswordResetToken(string userId);
+
+        Task<Result> ResetPassword(string userId, string passwordResetToken, string newPassword);
+
         Task<string> Create(string userName, string email, string password);
 
         Task<string> Authorize(string login, string password);

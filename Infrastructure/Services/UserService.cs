@@ -35,6 +35,13 @@ namespace Infrastructure.Services
             return mapper.Map<UserDto>(user);
         }
 
+        public async Task<UserDto> GetByEmail(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+
+            return mapper.Map<UserDto>(user);
+        }
+
         public async Task<Result> UpdateProfile(string userId, UpdateProfileCommand command)
         {
             var user = await userManager.FindByIdAsync(userId);

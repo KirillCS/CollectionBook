@@ -1,8 +1,8 @@
 ﻿using Application.Common.Interfaces;
-using Domain.Common;
 using Infrastructure.Models;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Web;
 
 namespace Infrastructure.Services
@@ -18,21 +18,47 @@ namespace Infrastructure.Services
 
         public string GenerateEmailConfirmationUri(string userId, string token)
         {
-            var uriBuilder = new UriBuilder(spaOptions.FullEmailConfirmedUrl);
-            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-            query["id"] = userId;
-            query["token"] = token;
-            uriBuilder.Query = query.ToString();
-            return uriBuilder.ToString();
+            var queryParams = new Dictionary<string, string>
+            {
+                { "id", userId },
+                { "token", token }
+            };
+
+            return GenerateUri(spaOptions.FullEmailConfirmedUrl, queryParams);
         }
 
         public string GenerateEmailChangingUri(string userId, string newEmail, string token)
         {
-            var uriBuilder = new UriBuilder(spaOptions.FullEmailChangedUrl);
+            var queryParams = new Dictionary<string, string>
+            {
+                { "id", userId },
+                { "email", newEmail },
+                { "token", token }
+            };
+
+            return GenerateUri(spaOptions.FullEmailChangedUrl, queryParams);
+        }
+
+        public string GeneratePasswordResetUri(string userId, string token)
+        {
+            var queryParams = new Dictionary<string, string>
+            {
+                { "id", userId },
+                { "token", token }
+            };
+
+            return GenerateUri(spaOptions.FullPasswordResetUrl, queryParams);
+        }
+
+        public string GenerateUri(string baseUrl, IDictionary<string, string> queryParams)
+        {
+            var uriBuilder = new UriBuilder(baseUrl);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-            query["id"] = userId;
-            query["email"] = newEmail;
-            query["token"] = token;
+            foreach (var key in queryParams.Keys)
+            {
+                query[key] = queryParams[key];
+            }
+
             uriBuilder.Query = query.ToString();
             return uriBuilder.ToString();
         }

@@ -13,5 +13,9 @@
         public string ChangingSubject { get; set; }
 
         public string ChangingMessage { get; set; }
+
+        public string PasswordResetSubject { get; set; }
+
+        public string PasswordResetMessage { get; set; }
     }
 }

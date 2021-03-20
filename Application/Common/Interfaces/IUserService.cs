@@ -10,6 +10,8 @@ namespace Application.Common.Interfaces
 
         Task<UserDto> GetByLogin(string login);
 
+        Task<UserDto> GetByEmail(string email);
+
         Task<Result> UpdateProfile(string userId, UpdateProfileCommand command);
     }
 }

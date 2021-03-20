@@ -1,4 +1,6 @@
-﻿using Application.Users.Commands.UpdateLogin;
+﻿using Application.Users.Commands.ResetPassword;
+using Application.Users.Commands.SendPasswordResetConfirmation;
+using Application.Users.Commands.UpdateLogin;
 using Application.Users.Commands.UpdatePassword;
 using Application.Users.Commands.UpdateProfile;
 using Application.Users.Queries.GetUser;
@@ -39,6 +41,24 @@ namespace WebUI.Controllers
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [Route("sendreset")]
+        [HttpPost]
+        public async Task<IActionResult> SendPasswordResetConfirmation([FromBody] SendPasswordResetConfirmationCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [Route("resetpassword")]
+        [HttpPut]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
         {
             await Mediator.Send(command);
 

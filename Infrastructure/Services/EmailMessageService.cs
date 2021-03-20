@@ -34,6 +34,15 @@ namespace Infrastructure.Services
             return GenerateCustomMessage(recipientEmail, subject, message);
         }
 
+        public MimeMessage GeneratePasswordResetMessage(string recipientEmail, string userId, string passwordResetToken)
+        {
+            var subject = emailOptions.PasswordResetSubject;
+            var uri = uriService.GeneratePasswordResetUri(userId, passwordResetToken);
+            var message = string.Format(emailOptions.PasswordResetMessage, uri);
+
+            return GenerateCustomMessage(recipientEmail, subject, message);
+        }
+
         public MimeMessage GenerateCustomMessage(string recipientEmail, string subject, string message)
         {
             var mimeMessage = new MimeMessage();

@@ -121,6 +121,21 @@ namespace Infrastructure.Identity
             return result.ToApplicationResult();
         }
 
+        public async Task<string> GeneratePasswordResetToken(string userId)
+        {
+            var user = await GetUser(userId);
+
+            return await userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public async Task<Result> ResetPassword(string userId, string passwordResetToken, string newPassword)
+        {
+            var user = await GetUser(userId);
+            var result = await userManager.ResetPasswordAsync(user, passwordResetToken, newPassword);
+
+            return result.ToApplicationResult();
+        }
+
         public async Task<string> Create(string userName, string email, string password)
         {
             var user = new User(userName) { Email = email };
