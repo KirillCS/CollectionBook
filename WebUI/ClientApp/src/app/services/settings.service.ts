@@ -68,7 +68,8 @@ export class SettingsService {
         data: {
           type: MessageDialogType.Warning,
           header: 'Something went wrong',
-          message: 'Something went wrong on the server. Maybe updating page will be able to help.'
+          message: 'Something went wrong on the server. Maybe updating page will be able to help.',
+          buttonName: 'Close'
         }
       });
     })

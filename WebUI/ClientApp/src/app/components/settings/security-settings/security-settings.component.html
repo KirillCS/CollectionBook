@@ -45,7 +45,7 @@
     </mat-form-field>
   </div>
   <div class="actions justify-content-end flex-wrap-reverse">
-    <button type="button" [disabled]="inProcess" mat-button>I forgot password</button>
+    <button type="button" (click)="forgotPasswordButtonClicked()" [disabled]="inProcess" mat-button>I forgot password</button>
     <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Change password</button>
   </div>
 </form>
