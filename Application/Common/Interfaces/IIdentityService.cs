@@ -29,6 +29,10 @@ namespace Application.Common.Interfaces
 
         Task<IEnumerable<Claim>> GetUserClaims(string userId);
 
+        Task<bool> CheckPassword(string userId, string password);
+
+        Task<Result> ChangePassword(string userId, string currentPassword, string newPassword);
+
         Task<string> Create(string userName, string email, string password);
 
         Task<string> Authorize(string login, string password);

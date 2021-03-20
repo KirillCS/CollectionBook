@@ -106,6 +106,21 @@ namespace Infrastructure.Identity
             return claims;
         }
 
+        public async Task<bool> CheckPassword(string userId, string password)
+        {
+            var user = await GetUser(userId);
+
+            return await userManager.CheckPasswordAsync(user, password);
+        }
+
+        public async Task<Result> ChangePassword(string userId, string currentPassword, string newPassword)
+        {
+            var user = await GetUser(userId);
+            var result = await userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+            return result.ToApplicationResult();
+        }
+
         public async Task<string> Create(string userName, string email, string password)
         {
             var user = new User(userName) { Email = email };

@@ -21,10 +21,7 @@ namespace Application.Auth.Commands.Register
                                     .Matches("^(?=.*[a-z])(?=.*?[A-Z])(?=.*\\d)([a-zA-Z\\d]|.){6,}$").WithMessage("Password must contain at least one lowercase english letter, one uppercase english letter and one number");
 
             RuleFor(c => c.PasswordConfirmation).NotEmpty().WithMessage("Password must be confirmed")
-                                                .Equal(c => c.Password).When(c => !IsPasswordFieldsEmpty(c), ApplyConditionTo.CurrentValidator).WithMessage("Password mismatch");
+                                                .Equal(c => c.Password).When(c => !(string.IsNullOrEmpty(c.Password) || string.IsNullOrEmpty(c.PasswordConfirmation)), ApplyConditionTo.CurrentValidator).WithMessage("Password mismatch");
         }
-
-        private bool IsPasswordFieldsEmpty(RegisterCommand command) =>
-            string.IsNullOrEmpty(command.Password) || string.IsNullOrEmpty(command.PasswordConfirmation);
     }
 }
