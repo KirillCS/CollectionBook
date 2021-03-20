@@ -4,14 +4,14 @@
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>Old password</mat-label>
-      <input [type]="hideOldPassword ? 'password' : 'text'" required matInput formControlName="oldPassword"
+      <input [type]="hideCurrentPassword ? 'password' : 'text'" required matInput formControlName="currentPassword"
         [errorStateMatcher]="matcher">
-      <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hideOldPassword = !hideOldPassword">
-        <mat-icon>{{hideOldPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hideCurrentPassword = !hideCurrentPassword">
+        <mat-icon>{{hideCurrentPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
-      <mat-error *ngIf="oldPassword.errors?.required">You must enter old password</mat-error>
-      <mat-error *ngIf="oldPassword.errors?.serverErrors">
-        <div *ngFor="let error of oldPassword.errors?.serverErrors">{{error}}</div>
+      <mat-error *ngIf="currentPassword.errors?.required">You must enter old password</mat-error>
+      <mat-error *ngIf="currentPassword.errors?.serverErrors">
+        <div *ngFor="let error of currentPassword.errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
   </div>
@@ -38,7 +38,6 @@
         (click)="hidePasswordConfirmation = !hidePasswordConfirmation">
         <mat-icon>{{hidePasswordConfirmation ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
-      <mat-hint>Minimum length: 6</mat-hint>
       <mat-error *ngIf="passwordConfirmation.errors?.required">You must confirm password</mat-error>
       <mat-error *ngIf="passwordConfirmation.errors?.mismatch">Password mismatch</mat-error>
       <mat-error *ngIf="passwordConfirmation.errors?.serverErrors">

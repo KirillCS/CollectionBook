@@ -2,28 +2,29 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
+import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
   selector: 'app-security-settings',
-  templateUrl: './security-settings.component.html',
-  styleUrls: ['./security-settings.component.css']
+  templateUrl: './security-settings.component.html'
 })
 export class SecuritySettingsComponent implements OnInit {
+  
   public matcher = new SubmitErrorStateMatcher();
   public form = new FormGroup({
-    oldPassword: new FormControl(),
+    currentPassword: new FormControl(),
     newPassword: new FormControl(),
     passwordConfirmation: new FormControl()
   });
 
-  public hideOldPassword = true;
+  public hideCurrentPassword = true;
   public hideNewPassword = true;
   public hidePasswordConfirmation = true;
 
   public inProcess = false;
 
-  public get oldPassword() : AbstractControl {
-    return this.form.get('oldPassword');
+  public get currentPassword() : AbstractControl {
+    return this.form.get('currentPassword');
   }
 
   public get newPassword() : AbstractControl {
@@ -34,9 +35,10 @@ export class SecuritySettingsComponent implements OnInit {
     return this.form.get('passwordConfirmation');
   }
 
-  constructor() { }
+  public constructor(private settingsService: SettingsService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+    this.settingsService.updateFromServer();
   }
 
   public submit(): void {

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserDto } from 'src/app/models/dtos/user.dto';
 import { AvatarService } from 'src/app/services/avatar.service';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -15,9 +16,8 @@ export class SettingsComponent {
   constructor(private settingsService: SettingsService, private avatarService: AvatarService) { 
     this.settingsService.user$.subscribe(user => {
       this.user = user;
-    })
+    });
   }
-
   
   public getAvatarPath(): string {
     return this.avatarService.getFullAvatarPath(this.user?.avatarPath);

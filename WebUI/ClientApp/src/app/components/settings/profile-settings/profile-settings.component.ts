@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { UpdateProfileRequest } from 'src/app/models/requests/user/update-profile.request';
 import { AuthService } from 'src/app/services/auth.service';
-import { CurrentUserService } from 'src/app/services/current-user.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { UserService } from 'src/app/services/user.service';
 import { MessageDialogComponent, MessageDialogType } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
@@ -41,7 +40,6 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   public constructor(
     private settingsService: SettingsService,
     private userService: UserService,
-    private currentUserService: CurrentUserService,
     private authService: AuthService,
     private serverErrorsService: ServerErrorsService,
     private dialog: MatDialog,
@@ -54,52 +52,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.userService.getUser(this.currentUserService.currentUser?.login).subscribe(response => {
-      this.settingsService.update(response);
-
-    }, (errorResponse: HttpErrorResponse) => {
-      if (errorResponse.status == 401) {
-        this.authService.logout();
-        this.dialog.open(MessageDialogComponent, {
-          width: '500px',
-          position: { top: '30vh' },
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'Not authenticated',
-            message: 'You must be authenticated to set up account profile',
-            buttonName: 'Close'
-          }
-        });
-        
-        return;
-      }
-      
-      if (errorResponse.status == 404) {
-        this.authService.logout();
-        this.dialog.open(MessageDialogComponent, {
-          width: '500px',
-          position: { top: '30vh' },
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'User not found',
-            message: 'User was not found. Maybe it was deleted',
-            buttonName: 'Close'
-          }
-        });
-
-        return;
-      }
-
-      this.dialog.open(MessageDialogComponent, { 
-        width: '500px', 
-        position: { top: '30vh' }, 
-        data: { 
-          type: MessageDialogType.Warning, 
-          header: 'Something went wrong', 
-          message: 'Something went wrong on the server. Maybe updating page will be able to help.' 
-        } 
-      });
-    });
+    this.settingsService.updateFromServer();
   }
 
   ngOnDestroy(): void {
