@@ -18,6 +18,8 @@ import { SecuritySettingsComponent } from 'src/app/components/settings/security-
 import { SettingsGuard } from 'src/app/guards/settings.guard';
 import { EmailChangedGuard } from 'src/app/guards/email-changed.guard';
 import { EmailChangedComponent } from './components/email/email-changed/email-changed.component';
+import { PasswordResetComponent } from 'src/app/components/password-reset/password-reset.component';
+import { PasswordResetGuard } from 'src/app/guards/password-reset.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,6 +28,7 @@ const routes: Routes = [
   { path: 'emailconfirmation', component: EmailConfirmationComponent, canActivate: [EmailConfirmationGuard] },
   { path: 'emailconfirmed', component: EmailConfirmedComponent, canActivate: [EmailConfirmedGuard] },
   { path: 'emailchanged', component: EmailChangedComponent, canActivate: [EmailChangedGuard] },
+  { path: 'passwordreset', component: PasswordResetComponent, canActivate: [PasswordResetGuard] },
   { path: 'profile/:login', component: ProfileComponent },
   {
     path: 'settings', component: SettingsComponent, canActivate: [SettingsGuard], children: [

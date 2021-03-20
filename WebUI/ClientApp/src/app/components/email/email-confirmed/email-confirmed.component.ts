@@ -16,13 +16,13 @@ export class EmailConfirmedComponent implements OnInit {
   public confirmed: boolean;
   public errorMessage = '';
 
-  constructor(
+  public constructor(
     private route: ActivatedRoute,
     private emailService: EmailConfirmationService,
     private authTokenService: AuthTokenService
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
       let id = params.get('id');
       let token = params.get('token');

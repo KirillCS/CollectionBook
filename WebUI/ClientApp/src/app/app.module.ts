@@ -45,6 +45,7 @@ import { AccountSettingsComponent } from 'src/app/components/settings/account-se
 import { ProfileSettingsComponent } from 'src/app/components/settings/profile-settings/profile-settings.component';
 import { DialogComponent } from 'src/app/components/dialogs/dialog/dialog.component';
 import { EmailChangedComponent } from 'src/app/components/email/email-changed/email-changed.component';
+import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { EmailChangedComponent } from 'src/app/components/email/email-changed/em
     AccountSettingsComponent,
     ProfileSettingsComponent,
     DialogComponent,
-    EmailChangedComponent
+    EmailChangedComponent,
+    PasswordResetComponent
   ],
   imports: [
     BrowserModule,
