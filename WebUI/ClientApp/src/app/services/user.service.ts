@@ -7,6 +7,7 @@ import { API_URL } from 'src/app/app-injection-tokens';
 import { UpdateProfileRequest } from 'src/app/models/requests/user/update-profile.request';
 import { UpdateLoginRequest } from 'src/app/models/requests/user/update-login.request';
 import { LoginResponse } from 'src/app/models/responses/auth/login.response';
+import { UpdatePasswordRequest } from 'src/app/models/requests/user/update-password.request';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +25,9 @@ export class UserService {
 
   public updateLogin(request: UpdateLoginRequest): Observable<LoginResponse> {
     return this.httpClient.put<LoginResponse>(`${this.apiUrl}api/user/updatelogin`, request);
+  }
+
+  public updatePassword(request: UpdatePasswordRequest): Observable<void> {
+    return this.httpClient.put<void>(`${this.apiUrl}api/user/updatepassword`, request);
   }
 }

@@ -1,15 +1,15 @@
 <h1>Account security</h1>
 <h2>Change password</h2>
-<form [formGroup]="form" (submit)="submit()">
+<form [formGroup]="form" #passwordNgForm="ngForm" (submit)="submit(passwordNgForm)">
   <div class="line">
     <mat-form-field class="field" appearance="outline">
-      <mat-label>Old password</mat-label>
+      <mat-label>Current password</mat-label>
       <input [type]="hideCurrentPassword ? 'password' : 'text'" required matInput formControlName="currentPassword"
         [errorStateMatcher]="matcher">
       <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hideCurrentPassword = !hideCurrentPassword">
         <mat-icon>{{hideCurrentPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
-      <mat-error *ngIf="currentPassword.errors?.required">You must enter old password</mat-error>
+      <mat-error *ngIf="currentPassword.errors?.required">You must enter current password</mat-error>
       <mat-error *ngIf="currentPassword.errors?.serverErrors">
         <div *ngFor="let error of currentPassword.errors?.serverErrors">{{error}}</div>
       </mat-error>
@@ -18,14 +18,13 @@
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>New password</mat-label>
-      <input [type]="hideNewPassword ? 'password' : 'text'" required minlength="6" matInput
+      <input [type]="hideNewPassword ? 'password' : 'text'" required minlength="6" pattern="^(?=.*[a-z])(?=.*?[A-Z])(?=.*\d)([a-zA-Z\d]|.){6,}$" matInput
         formControlName="newPassword" [errorStateMatcher]="matcher">
       <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hideNewPassword = !hideNewPassword">
         <mat-icon>{{hideNewPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
       <mat-hint>Minimum length: 6</mat-hint>
-      <mat-error *ngIf="newPassword.errors?.required">You must enter new password</mat-error>
-      <mat-error *ngIf="newPassword.errors?.minlength">Password must be at least 6 characters long</mat-error>
+      <mat-error *ngIf="newPassword.errors">{{ newPasswordErrorMessage }}</mat-error>
       <mat-error *ngIf="newPassword.errors?.serverErrors">
         <div *ngFor="let error of newPassword.errors?.serverErrors">{{error}}</div>
       </mat-error>

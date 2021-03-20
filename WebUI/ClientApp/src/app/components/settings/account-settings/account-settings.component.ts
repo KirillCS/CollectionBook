@@ -15,6 +15,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { MessageDialogComponent, MessageDialogType } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
 import { EmailConfirmationService } from 'src/app/services/email-confirmation.service';
 import { LoginResponse } from 'src/app/models/responses/auth/login.response';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-account-settings',
@@ -40,6 +41,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     private serverErrorService: ServerErrorsService,
     private emailService: EmailConfirmationService,
     private authService: AuthService,
+    private snackBar: MatSnackBar,
     private dialog: MatDialog
   ) {
     this.subscription = settingsService.user$.subscribe(user => {
@@ -140,6 +142,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       }, () => {
         form.resetForm();
         this.isChangingLoginInProcess = false;
+        this.snackBar.open('Login was updated', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
       });
     });
   }
@@ -209,7 +212,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
       this.dialog.open(MessageDialogComponent, { width: '400px', position: { top: '30vh' } });
     }, () => {
-      form.resetForm();
+      form.reset();
       this.isChangingEmailInProcess = false;
     });
   }
