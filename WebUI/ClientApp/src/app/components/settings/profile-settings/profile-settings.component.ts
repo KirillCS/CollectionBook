@@ -28,6 +28,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     lastName: new FormControl(),
     biography: new FormControl(),
     location: new FormControl(),
+    isEmailVisible: new FormControl(),
     websiteUrl: new FormControl(),
     telegramLogin: new FormControl(),
     instagramLogin: new FormControl(),
@@ -55,7 +56,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     this.settingsService.updateFromServer();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
@@ -125,6 +126,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     this.form.get('firstName').setValue(user.firstName);
     this.form.get('lastName').setValue(user.lastName);
     this.form.get('biography').setValue(user.biography);
+    this.form.get('isEmailVisible').setValue(user.isEmailVisible);
     this.form.get('location').setValue(user.location);
     this.form.get('websiteUrl').setValue(user.websiteUrl);
     this.form.get('telegramLogin').setValue(user.telegramLogin);
@@ -137,6 +139,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
       lastName: this.form.get('lastName').value,
       biography: this.form.get('biography').value,
       location: this.form.get('location').value,
+      isEmailVisible: this.form.get('isEmailVisible').value,
       websiteUrl: this.form.get('websiteUrl').value,
       telegramLogin: this.form.get('telegramLogin').value,
       instagramLogin: this.form.get('instagramLogin').value,
@@ -148,6 +151,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     this.user.lastName = this.form.get('lastName').value;
     this.user.biography = this.form.get('biography').value;
     this.user.location = this.form.get('location').value;
+    this.user.isEmailVisible = this.form.get('isEmailVisible').value;
     this.user.websiteUrl = this.form.get('websiteUrl').value;
     this.user.telegramLogin = this.form.get('telegramLogin').value;
     this.user.instagramLogin = this.form.get('instagramLogin').value;

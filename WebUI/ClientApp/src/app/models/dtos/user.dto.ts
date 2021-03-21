@@ -6,7 +6,7 @@ export class UserDto {
   public lastName: string;
   public biography: string;
   public email: string;
-  public isEmailVisible: string;
+  public isEmailVisible: boolean;
   public location: string;
   public websiteUrl: string;
   public telegramLogin: string;

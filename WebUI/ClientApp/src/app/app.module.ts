@@ -19,6 +19,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
 
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
@@ -92,7 +93,8 @@ import { PasswordResetComponent } from './components/password-reset/password-res
     MatCheckboxModule,
     MatRadioModule,
     MatSnackBarModule,
-    
+    MatSelectModule,
+
     NgProgressModule,
     NgProgressHttpModule,
 

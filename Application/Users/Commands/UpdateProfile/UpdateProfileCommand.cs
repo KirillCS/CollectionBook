@@ -17,6 +17,8 @@ namespace Application.Users.Commands.UpdateProfile
 
         public string Location { get; set; }
 
+        public bool IsEmailVisible { get; set; }
+
         public string WebsiteUrl { get; set; }
 
         public string TelegramLogin { get; set; }

@@ -43,7 +43,7 @@ export class ProfileComponent implements OnInit {
 
   public isOthersDataVisible(): boolean {
     return this.user.location?.length > 0 ||
-      this.user.isEmailVisible?.length > 0 ||
+      this.user.isEmailVisible ||
       this.user.websiteUrl?.length > 0 ||
       this.user.telegramLogin?.length > 0 ||
       this.user.instagramLogin?.length > 0;

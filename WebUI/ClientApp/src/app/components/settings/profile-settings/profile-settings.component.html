@@ -33,6 +33,16 @@
   </div>
   <div class="line">
     <mat-form-field class="field" appearance="outline">
+      <mat-label>Email visibility</mat-label>
+      <mat-select formControlName="isEmailVisible">
+        <mat-option [value]="false">Unvisible</mat-option>
+        <mat-option [value]="true">Visible</mat-option>
+      </mat-select>
+      <mat-hint>Email visibility in your profile page</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="line">
+    <mat-form-field class="field" appearance="outline">
       <mat-label>Location</mat-label>
       <input type="text" maxlength="256" autocomplete="off" placeholder="Ex. Belarus, Minsk" matInput formControlName="location"
         [errorStateMatcher]="matcher">
