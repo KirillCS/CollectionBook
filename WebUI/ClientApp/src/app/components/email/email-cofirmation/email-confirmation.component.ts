@@ -95,7 +95,7 @@ export class EmailConfirmationComponent implements OnInit {
       });
     });
 
-    dialogRef.afterClosed().subscribe(() => submitSubscription.unsubscribe())
+    dialogRef.afterClosed().subscribe(() => submitSubscription.unsubscribe());
   }
 
   private openChangingEmailDialog(): MatDialogRef<FieldDialogComponent, any> {

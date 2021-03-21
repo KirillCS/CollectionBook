@@ -24,8 +24,9 @@
         </div>
         <mat-error *ngIf="invalid">Invalid login or password</mat-error>
         <mat-error *ngIf="unknownError">Something went wrong...</mat-error>
-        <div class="actions">
-          <button class="full" type="submit" [disabled]="inProcess" mat-raised-button color="primary">Login</button>
+        <div class="actions justify-content-center">
+          <button class="w-100" type="submit" [disabled]="inProcess" mat-raised-button color="primary">Login</button>
+          <button type="button" (click)="forgotPasswordButtonClicked()" [disabled]="inProcess" mat-button>I forgot password</button>
         </div>
       </form>
     </div>
