@@ -5,7 +5,7 @@
 // );
 
 // @include mat-core($typography);
-@import 'bootstrap/dist/css/bootstrap-grid.min.css';
+@import "bootstrap/dist/css/bootstrap-grid.min.css";
 
 * {
   box-sizing: border-box;
@@ -67,7 +67,7 @@ form {
     margin: 0 0 0 -1rem;
     width: calc(100% + 1rem);
 
-    >* {
+    > * {
       margin: 0.8rem 0 0 1rem;
     }
   }
@@ -79,4 +79,10 @@ form {
   border-radius: 5px;
   padding: 2rem;
   overflow: hidden;
+}
+
+.ng-spinner-icon {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
 }
