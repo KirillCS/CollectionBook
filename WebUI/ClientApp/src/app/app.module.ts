@@ -24,6 +24,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
 
+import { ImageCropperModule } from 'ngx-image-cropper';
+
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AppComponent } from 'src/app/app.component';
 import { API_URL, AVATARS_PATH, DEFAULT_AVATAR_PATH } from 'src/app/app-injection-tokens';
@@ -50,6 +52,7 @@ import { ProfileSettingsComponent } from 'src/app/components/settings/profile-se
 import { DialogComponent } from 'src/app/components/dialogs/dialog/dialog.component';
 import { EmailChangedComponent } from 'src/app/components/email/email-changed/email-changed.component';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
+import { ImageCropperDialogComponent } from './components/dialogs/image-cropper-dialog/image-cropper-dialog.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +73,8 @@ import { PasswordResetComponent } from './components/password-reset/password-res
     ProfileSettingsComponent,
     DialogComponent,
     EmailChangedComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    ImageCropperDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -97,6 +101,8 @@ import { PasswordResetComponent } from './components/password-reset/password-res
 
     NgProgressModule,
     NgProgressHttpModule,
+
+    ImageCropperModule,
 
     JwtModule.forRoot({
       config: {

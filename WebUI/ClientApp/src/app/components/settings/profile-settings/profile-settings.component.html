@@ -1,4 +1,25 @@
 <h1>Profile settings</h1>
+<h2>Change profile avatar</h2>
+<div class="col-xl-5 col-lg-7 col-sm-9 col-12 px-0">
+  <div class="avatar-settings">
+    <div class="dummy"></div>
+    <div class="menu">
+      <button mat-fab [matMenuTriggerFor]="menu" color="">
+        <mat-icon class="material-icons-round">mode_edit</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <input type="file" style="display: none;" accept="image/*" #avatarInput (change)="avatarSelected($event.target.files)">
+        <button (click)="selectAvatar()" mat-menu-item>Upload a photo</button>
+        <button [disabled]="!clearAvatarEnable" mat-menu-item>Clear</button>
+      </mat-menu>
+    </div>
+    <div class="avatar">
+      <img src="{{ getAvatarPath() }}" alt="">
+    </div>
+  </div>
+</div>
+<mat-divider class="my-4"></mat-divider>
+<h2>Change profile data</h2>
 <form [formGroup]="form" (submit)="submit()" (input)="formChanged()">
   <div class="line">
     <mat-form-field class="field" appearance="outline">
@@ -44,8 +65,8 @@
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>Location</mat-label>
-      <input type="text" maxlength="256" autocomplete="off" placeholder="Ex. Belarus, Minsk" matInput formControlName="location"
-        [errorStateMatcher]="matcher">
+      <input type="text" maxlength="256" autocomplete="off" placeholder="Ex. Belarus, Minsk" matInput
+        formControlName="location" [errorStateMatcher]="matcher">
       <mat-hint>Maximum length: 256</mat-hint>
       <mat-error *ngIf="form.get('location').errors?.maxlength">Maximum location length is 256</mat-error>
       <mat-error *ngIf="form.get('location').errors?.serverErrors">
@@ -56,7 +77,8 @@
   <div class="line">
     <mat-form-field class="field" appearance="outline">
       <mat-label>Your website</mat-label>
-      <input type="url" autocomplete="off" placeholder="Ex. https://wikipedia.com" matInput formControlName="websiteUrl">
+      <input type="url" autocomplete="off" placeholder="Ex. https://wikipedia.com" matInput
+        formControlName="websiteUrl">
       <mat-error *ngIf="form.get('websiteUrl').errors?.serverErrors">
         <div *ngFor="let error of form.get('websiteUrl').errors?.serverErrors">{{error}}</div>
       </mat-error>

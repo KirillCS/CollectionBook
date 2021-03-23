@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -13,15 +13,21 @@ import { MessageDialogComponent, MessageDialogType } from 'src/app/components/di
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserDto } from 'src/app/models/dtos/user.dto';
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
+import { AvatarService } from 'src/app/services/avatar.service';
+import { ImageCropperDialogComponent, ImageCropperDialogData } from '../../dialogs/image-cropper-dialog/image-cropper-dialog.component';
 
 @Component({
   selector: 'app-profile-settings',
-  templateUrl: './profile-settings.component.html'
+  templateUrl: './profile-settings.component.html',
+  styleUrls: ['./profile-settings.component.scss']
 })
 export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
   private user: UserDto;
   private subscription: Subscription;
+
+  @ViewChild('avatarInput')
+  private avatarInput: ElementRef<HTMLElement>;
 
   public form = new FormGroup({
     firstName: new FormControl(),
@@ -38,11 +44,18 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   public unknownError = false;
   public inProcess = false;
 
+  
+  public get clearAvatarEnable() : boolean {
+    return this.user?.avatarPath.length > 0;
+  }
+  
+
   public constructor(
     private settingsService: SettingsService,
     private userService: UserService,
     private authService: AuthService,
     private serverErrorsService: ServerErrorsService,
+    private avatarService: AvatarService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {
@@ -62,6 +75,30 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
   public formChanged(): void {
     this.unknownError = false;
+  }
+
+  public getAvatarPath(): string {
+    return this.avatarService.getFullAvatarPath(this.user?.avatarPath);
+  }
+
+  public selectAvatar(): void {
+    this.avatarInput.nativeElement.click();
+  }
+
+  public avatarSelected(files: FileList): void {
+    if (!files.length) {
+      return;
+    }
+
+    let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      width: '600px',
+      data: new ImageCropperDialogData(files[0], true, 1, 512, true, 'Upload')
+    });
+
+    dialogRef.afterClosed().subscribe((avatar: Blob) => {
+      console.log(avatar);
+      
+    })
   }
 
   public submit(): void {

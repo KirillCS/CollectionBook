@@ -1,0 +1,17 @@
+<div mat-dialog-title>
+  <h1 class="row mx-0 align-items-center">
+    <i class="material-icons-round mr-2">crop_free</i>
+    Image cropper
+  </h1>
+</div>
+<main mat-dialog-content>
+  <h2>Crop your profile avatar</h2>
+  <image-cropper class="p-0" #cropper [imageFile]="data.file" [resizeToWidth]="data.resizeToWidth"
+    [roundCropper]="data.roundCropper" [maintainAspectRatio]="data.maintainAspectRatio" [aspectRatio]="data.aspectRatio"
+    [format]="'png'" (imageCropped)="imageCropped($event)">
+  </image-cropper>
+</main>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button [mat-dialog-close]="croppedImage" color="primary">{{ data.submitButton }}</button>
+</div>
