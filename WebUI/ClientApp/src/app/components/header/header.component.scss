@@ -24,33 +24,27 @@ nav {
     height: 100%;
 
     .logo {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      cursor: pointer;
       height: 100%;
+      min-width: unset !important;
       padding: 0 0.8rem;
-      text-decoration: none;
-      background-color: #80808000;
-      transition: 0.15s background-color ease;
+      border-radius: 0;
 
-      &:hover {
-        background-color: #8080801e;
-      }
+      div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 100%;
 
-      &:active {
-        background-color: #8080802e;
-      }
+        img {
+          height: 60%;
+          margin-right: 0.2rem;
+        }
 
-      .image {
-        height: 60%;
-        margin-right: 0.2rem;
-      }
-
-      .text {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #474747;
+        span {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: #474747;
+        }
       }
     }
 
@@ -76,12 +70,14 @@ nav {
 
     .nav-bar {
       .logo {
-        .image {
-          margin: 0;
-        }
+        div {
+          img {
+            margin: 0;
+          }
 
-        .text {
-          display: none;
+          span {
+            display: none;
+          }
         }
       }
 
