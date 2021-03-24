@@ -12,6 +12,8 @@ namespace Application.Common.Interfaces
 
         Task<UserDto> GetByEmail(string email);
 
+        Task<Result> UpdateAvatar(string userId, string newAvatarPath);
+
         Task<Result> UpdateProfile(string userId, UpdateProfileCommand command);
     }
 }

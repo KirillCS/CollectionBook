@@ -90,14 +90,22 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
       return;
     }
 
+    let file = files[0];
     let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       width: '600px',
-      data: new ImageCropperDialogData(files[0], true, 1, 512, true, 'Upload')
+      data: new ImageCropperDialogData(file, true, 1, 512, true, 'Upload')
     });
 
-    dialogRef.afterClosed().subscribe((avatar: Blob) => {
-      console.log(avatar);
+    dialogRef.afterClosed().subscribe((avatarBlob: Blob) => {
       
+      if (!avatarBlob) {
+        return;
+      }
+
+      let avatar: any = avatarBlob;
+      avatar.name = file.name;
+
+      this.userService.updateAvatar(<File>avatar).subscribe(() => {});
     })
   }
 

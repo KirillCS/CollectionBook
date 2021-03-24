@@ -42,6 +42,16 @@ namespace Infrastructure.Services
             return mapper.Map<UserDto>(user);
         }
 
+        public async Task<Result> UpdateAvatar(string userId, string newAvatarPath)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            Guard.Requires(() => user is not null, new EntityNotFoundException(nameof(User), "id", userId));
+            user.AvatarPath = newAvatarPath;
+            var result = await userManager.UpdateAsync(user);
+
+            return result.ToApplicationResult();
+        }
+
         public async Task<Result> UpdateProfile(string userId, UpdateProfileCommand command)
         {
             var user = await userManager.FindByIdAsync(userId);

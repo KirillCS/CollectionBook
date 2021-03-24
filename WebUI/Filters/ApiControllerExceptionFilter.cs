@@ -7,6 +7,7 @@ using ValidationException = Application.Common.Exceptions.ValidationException;
 using Infrastructure.Exceptions;
 using Application.Common.Exceptions;
 using WebUI.Models;
+using WebUI.Exceptions;
 
 namespace WebUI.Filters
 {
@@ -22,7 +23,7 @@ namespace WebUI.Filters
                 { typeof(InvalidLoginCredentialsException), HandleInvalidLoginCredentialsException },
                 { typeof(EmailNotConfirmedException), HandleEmailNotConfirmedException },
                 { typeof(EntityNotFoundException), HandleEntityNotFoundException },
-                { typeof(OperationException), HandleOperationException }
+                { typeof(OperationException), HandleOperationException },
             };
         }
 

@@ -1,22 +1,47 @@
 ﻿using Application.Users.Commands.ResetPassword;
 using Application.Users.Commands.SendPasswordResetConfirmation;
+using Application.Users.Commands.UpdateAvatar;
 using Application.Users.Commands.UpdateLogin;
 using Application.Users.Commands.UpdatePassword;
 using Application.Users.Commands.UpdateProfile;
 using Application.Users.Queries.GetUser;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
+using WebUI.Interfaces;
 
 namespace WebUI.Controllers
 {
     public class UserController : ApiControllerBase
     {
+        private readonly IFormFileSaver fileSaver;
+
+        public UserController(IFormFileSaver fileSaver)
+        {
+            this.fileSaver = fileSaver;
+        }
+
         [Route("{Login}")]
         [HttpGet]
         public async Task<IActionResult> GetUser([FromRoute] GetUserQuery query)
         {
             return Ok(await Mediator.Send(query));
+        }
+
+        [Route("updateavatar")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> UpdateAvatar([FromForm] IFormFile avatar)
+        {
+            var fileName = await fileSaver.SaveAvatar(avatar, $"{User.Identity.Name}_{Guid.NewGuid()}");
+
+            var command = new UpdateAvatarCommand { AvatarPath = fileName };
+
+            await Mediator.Send(command);
+
+            return Ok();
         }
 
         [Route("updateprofile")]

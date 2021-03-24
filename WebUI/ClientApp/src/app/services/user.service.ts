@@ -21,6 +21,12 @@ export class UserService {
     return this.httpClient.get<UserDto>(`${this.apiUrl}api/user/${login ?? ''}`);
   }
 
+  public updateAvatar(avatar: File): Observable<void> {
+    let formData = new FormData();
+    formData.append('avatar', avatar, avatar.name);
+    return this.httpClient.post<void>(`${this.apiUrl}api/user/updateavatar`, formData);
+  }
+
   public updateProfile(request: UpdateProfileRequest): Observable<void> {
     return this.httpClient.put<void>(`${this.apiUrl}api/user/updateprofile`, request);
   }
