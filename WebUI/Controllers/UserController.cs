@@ -30,7 +30,7 @@ namespace WebUI.Controllers
             return Ok(await Mediator.Send(query));
         }
 
-        [Route("updateavatar")]
+        [Route("avatar/update")]
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> UpdateAvatar([FromForm] IFormFile avatar)
@@ -44,7 +44,7 @@ namespace WebUI.Controllers
             return Ok();
         }
 
-        [Route("updateprofile")]
+        [Route("profile/update")]
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileCommand command)
@@ -54,7 +54,7 @@ namespace WebUI.Controllers
             return Ok();
         }
 
-        [Route("updatelogin")]
+        [Route("login/update")]
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> UpdateLogin([FromBody] UpdateLoginCommand command)
@@ -62,7 +62,7 @@ namespace WebUI.Controllers
             return Ok(await Mediator.Send(command));
         }
 
-        [Route("updatepassword")]
+        [Route("password/update")]
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordCommand command)
@@ -72,7 +72,7 @@ namespace WebUI.Controllers
             return Ok();
         }
 
-        [Route("sendreset")]
+        [Route("password/sendresetconfirmation")]
         [HttpPost]
         public async Task<IActionResult> SendPasswordResetConfirmation([FromBody] SendPasswordResetConfirmationCommand command)
         {
@@ -81,7 +81,7 @@ namespace WebUI.Controllers
             return Ok();
         }
 
-        [Route("resetpassword")]
+        [Route("password/reset")]
         [HttpPut]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
         {

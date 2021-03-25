@@ -24,26 +24,26 @@ export class UserService {
   public updateAvatar(avatar: File): Observable<void> {
     let formData = new FormData();
     formData.append('avatar', avatar, avatar.name);
-    return this.httpClient.post<void>(`${this.apiUrl}api/user/updateavatar`, formData);
+    return this.httpClient.post<void>(`${this.apiUrl}api/user/avatar/update`, { formData });
   }
 
   public updateProfile(request: UpdateProfileRequest): Observable<void> {
-    return this.httpClient.put<void>(`${this.apiUrl}api/user/updateprofile`, request);
+    return this.httpClient.put<void>(`${this.apiUrl}api/user/profile/update`, request);
   }
 
   public updateLogin(request: UpdateLoginRequest): Observable<LoginResponse> {
-    return this.httpClient.put<LoginResponse>(`${this.apiUrl}api/user/updatelogin`, request);
+    return this.httpClient.put<LoginResponse>(`${this.apiUrl}api/user/login/update`, request);
   }
 
   public updatePassword(request: UpdatePasswordRequest): Observable<void> {
-    return this.httpClient.put<void>(`${this.apiUrl}api/user/updatepassword`, request);
+    return this.httpClient.put<void>(`${this.apiUrl}api/user/password/update`, request);
   }
 
   public sendPasswordResetConfirmation(request: sendPasswordResetConfirmation): Observable<void> {
-    return this.httpClient.post<void>(`${this.apiUrl}api/user/sendreset`, request);
+    return this.httpClient.post<void>(`${this.apiUrl}api/user/password/sendresetconfirmation`, request);
   }
 
   public resetPassword(request: ResetPasswordRequest): Observable<void> {
-    return this.httpClient.put<void>(`${this.apiUrl}api/user/resetpassword`, request);
+    return this.httpClient.put<void>(`${this.apiUrl}api/user/password/reset`, request);
   }
 }
