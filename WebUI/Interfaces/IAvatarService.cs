@@ -10,6 +10,6 @@ namespace WebUI.Interfaces
     {
         Task<string> UpdateAvatar(IFormFile avatar);
 
-        Task<string> ResetAvatar();
+        Task ResetAvatar();
     }
 }

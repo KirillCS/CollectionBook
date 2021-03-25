@@ -39,9 +39,14 @@ namespace WebUI.Services
             return newFileName;
         }
 
-        public Task<string> ResetAvatar()
+        public async Task ResetAvatar()
         {
-            throw new NotImplementedException();
+            var user = await userService.GetById(currentUserService.UserId);
+            Guard.Requires(() => user is not null, new EntityNotFoundException());
+            if (!string.IsNullOrEmpty(user.AvatarPath))
+            {
+                fileRemoverService.RemoveAvatar(user.AvatarPath);
+            }
         }
     }
 }

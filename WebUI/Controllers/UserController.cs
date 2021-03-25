@@ -1,4 +1,5 @@
-﻿using Application.Users.Commands.ResetPassword;
+﻿using Application.Users.Commands.ResetAvatar;
+using Application.Users.Commands.ResetPassword;
 using Application.Users.Commands.SendPasswordResetConfirmation;
 using Application.Users.Commands.UpdateAvatar;
 using Application.Users.Commands.UpdateLogin;
@@ -39,6 +40,18 @@ namespace WebUI.Controllers
             var command = new UpdateAvatarCommand { AvatarPath = fileName };
 
             await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [Route("avatar/reset")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ResetAvatar()
+        {
+            await avatarService.ResetAvatar();
+
+            await Mediator.Send(new ResetAvatarCommand());
 
             return Ok();
         }

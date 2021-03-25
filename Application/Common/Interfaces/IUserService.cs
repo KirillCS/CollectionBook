@@ -14,6 +14,8 @@ namespace Application.Common.Interfaces
 
         Task<Result> UpdateAvatar(string userId, string newAvatarPath);
 
+        Task<Result> ResetAvatar(string userId);
+
         Task<Result> UpdateProfile(string userId, UpdateProfileCommand command);
     }
 }
