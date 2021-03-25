@@ -15,6 +15,7 @@ import { UserDto } from 'src/app/models/dtos/user.dto';
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
 import { AvatarService } from 'src/app/services/avatar.service';
 import { ImageCropperDialogComponent, ImageCropperDialogData } from '../../dialogs/image-cropper-dialog/image-cropper-dialog.component';
+import { DialogComponent } from '../../dialogs/dialog/dialog.component';
 
 @Component({
   selector: 'app-profile-settings',
@@ -46,7 +47,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
   
   public get clearAvatarEnable() : boolean {
-    return this.user?.avatarPath.length > 0;
+    return this.user?.avatarPath?.length > 0;
   }
   
 
@@ -162,6 +163,38 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
         });
       });
     })
+  }
+
+  public resetAvatar(): void {
+    let dialogRef = this.dialog.open(DialogComponent, {
+      width: '500px',
+      position: { top: '30vh' },
+      data: {
+        header: 'Reset profile avatar?',
+        message: 'Are you sure you want to reset profile avatar?',
+        positiveButtonName: 'Yes',
+        negativeButtonName: 'No'
+      }
+    })
+
+    dialogRef.afterClosed().subscribe((answer: string) => {
+      if (answer === 'No') {
+        return;
+      }
+
+      this.userService.resetAvatar().subscribe(() => {
+        this.dialog.open(MessageDialogComponent, {
+          width: '500px',
+          position: {top: '30vh'},
+          data: {
+            type: MessageDialogType.Success,
+            header: 'Profile avatar reseted',
+            message: 'Profile avatar has been successfully reseted. Reload the page to see the new profile avatar.',
+            buttonName: 'OK'
+          }
+        });
+      });
+    });
   }
 
   public submit(): void {

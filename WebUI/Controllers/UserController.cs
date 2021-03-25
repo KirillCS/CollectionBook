@@ -45,7 +45,7 @@ namespace WebUI.Controllers
         }
 
         [Route("avatar/reset")]
-        [HttpPost]
+        [HttpDelete]
         [Authorize]
         public async Task<IActionResult> ResetAvatar()
         {

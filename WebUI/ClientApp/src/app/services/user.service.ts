@@ -27,6 +27,10 @@ export class UserService {
     return this.httpClient.post<void>(`${this.apiUrl}api/user/avatar/update`, formData);
   }
 
+  public resetAvatar(): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiUrl}api/user/avatar/reset`);
+  }
+
   public updateProfile(request: UpdateProfileRequest): Observable<void> {
     return this.httpClient.put<void>(`${this.apiUrl}api/user/profile/update`, request);
   }
