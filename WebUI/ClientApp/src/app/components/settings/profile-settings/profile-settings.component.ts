@@ -105,7 +105,62 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
       let avatar: any = avatarBlob;
       avatar.name = file.name;
 
-      this.userService.updateAvatar(<File>avatar).subscribe(() => {});
+      this.userService.updateAvatar(<File>avatar).subscribe(() => {
+        this.dialog.open(MessageDialogComponent, {
+          width: '500px',
+          position: {top: '30vh'},
+          data: {
+            type: MessageDialogType.Success,
+            header: 'Profile avatar updated',
+            message: 'Profile avatar has been successfully updated. Reload the page to see the new profile avatar.',
+            buttonName: 'OK'
+          }
+        });
+      }, (errorResponse: HttpErrorResponse) => {
+
+        if (errorResponse.status == 401) {
+          this.authService.logout();
+          this.dialog.open(MessageDialogComponent, {
+            width: '500px',
+            position: {top: '30vh'},
+            data: {
+              type: MessageDialogType.Warning,
+              header: 'Failed to update a profile avatar',
+              message: 'You must be authenticated to update your profile avatar.',
+              buttonName: 'Close'
+            }
+          });
+
+          return;
+        }
+        
+        if (errorResponse.status == 404) {
+          this.authService.logout();
+          this.dialog.open(MessageDialogComponent, {
+            width: '500px',
+            position: {top: '30vh'},
+            data: {
+              type: MessageDialogType.Warning,
+              header: 'User not found',
+              message: 'Your account was not found. Maybe it was deleted.',
+              buttonName: 'Close'
+            }
+          });
+
+          return;
+        }
+
+        this.dialog.open(MessageDialogComponent, {
+          width: '500px',
+          position: {top: '30vh'},
+          data: {
+            type: MessageDialogType.Warning,
+            header: 'Failed to update a profile avatar',
+            message: 'Something went wrong while profile avatar was updating. Try update avatar again.',
+            buttonName: 'Close'
+          }
+        });
+      });
     })
   }
 

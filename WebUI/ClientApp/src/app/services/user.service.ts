@@ -24,7 +24,7 @@ export class UserService {
   public updateAvatar(avatar: File): Observable<void> {
     let formData = new FormData();
     formData.append('avatar', avatar, avatar.name);
-    return this.httpClient.post<void>(`${this.apiUrl}api/user/avatar/update`, { formData });
+    return this.httpClient.post<void>(`${this.apiUrl}api/user/avatar/update`, formData);
   }
 
   public updateProfile(request: UpdateProfileRequest): Observable<void> {
