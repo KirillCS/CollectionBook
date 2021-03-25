@@ -34,6 +34,8 @@ namespace WebUI
             services.AddHttpContextAccessor();
 
             services.AddTransient<IFormFileSaver, FormFileSaver>();
+            services.AddTransient<IFileRemoverService, FileRemoverService>();
+            services.AddTransient<IAvatarService, AvatarService>();
             services.Configure<FilePathsOptions>(Configuration.GetSection("FilePaths"));
 
             services.AddSwaggerGen(c =>

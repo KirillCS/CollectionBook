@@ -8,7 +8,6 @@ using Application.Users.Queries.GetUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using WebUI.Interfaces;
 
@@ -16,11 +15,11 @@ namespace WebUI.Controllers
 {
     public class UserController : ApiControllerBase
     {
-        private readonly IFormFileSaver fileSaver;
+        private readonly IAvatarService avatarService;
 
-        public UserController(IFormFileSaver fileSaver)
+        public UserController(IAvatarService avatarService)
         {
-            this.fileSaver = fileSaver;
+            this.avatarService = avatarService;
         }
 
         [Route("{Login}")]
@@ -35,7 +34,7 @@ namespace WebUI.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateAvatar([FromForm] IFormFile avatar)
         {
-            var fileName = await fileSaver.SaveAvatar(avatar, $"{User.Identity.Name}_{Guid.NewGuid()}");
+            var fileName = await avatarService.UpdateAvatar(avatar);
 
             var command = new UpdateAvatarCommand { AvatarPath = fileName };
 
