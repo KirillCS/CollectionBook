@@ -1,7 +1,9 @@
 ﻿using Application.Common.Mappings;
 using Application.Common.Models;
 using AutoMapper;
+using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace Infrastructure.Identity
 {
@@ -24,6 +26,8 @@ namespace Infrastructure.Identity
         public bool IsEmailVisible { get; set; }
 
         public string AvatarPath { get; set; }
+
+        public IList<Collection> Collections { get; private set; } = new List<Collection>();
 
         public User()
         { }
