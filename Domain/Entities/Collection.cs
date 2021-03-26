@@ -5,7 +5,7 @@ namespace Domain.Entities
 {
     public class Collection
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 
@@ -17,6 +17,6 @@ namespace Domain.Entities
 
         public string UserId { get; set; }
 
-        public IList<Tag> Tags { get; private set; } = new List<Tag>();
+        public List<Tag> Tags { get; private set; } = new List<Tag>();
     }
 }

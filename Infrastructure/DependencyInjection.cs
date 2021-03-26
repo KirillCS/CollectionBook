@@ -69,6 +69,8 @@ namespace Infrastructure
             services.AddTransient<IEmailMessageService, EmailMessageService>();
             services.AddTransient<IEmailSenderService, EmailSenderService>();
 
+            services.AddTransient<ITagService, TagService>();
+
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddCors(options =>
             {

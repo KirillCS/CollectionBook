@@ -8,6 +8,6 @@ namespace Domain.Entities
 
         public string Label { get; set; }
 
-        public IList<Collection> Collections { get; private set; } = new List<Collection>();
+        public List<Collection> Collections { get; private set; } = new List<Collection>();
     }
 }
