@@ -2,8 +2,6 @@
 {
     public interface IFileRemoverService
     {
-        void RemoveAvatar(string avatarPath);
-
-        void RemoveFile(string fullPath);
+        void RemoveFile(string filePath);
     }
 }

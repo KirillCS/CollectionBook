@@ -5,8 +5,6 @@ namespace WebUI.Interfaces
 {
     public interface IFormFileSaver
     {
-        Task<string> SaveAvatar(IFormFile avatar, string fileName);
-
-        Task<string> SaveFile(IFormFile file, string fullPath, string fileName);
+        Task<string> SaveFile(IFormFile file, string filePath, string fileName);
     }
 }

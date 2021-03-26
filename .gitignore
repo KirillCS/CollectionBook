@@ -341,3 +341,6 @@ healthchecksdb
 
 /WebUI/wwwroot/avatars/*
 !/WebUI/wwwroot/avatars/.gitkeep
+
+/WebUI/wwwroot/collectionscovers/*
+!/WebUI/wwwroot/collectionscovers/.gitkeep

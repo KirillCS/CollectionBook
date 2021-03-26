@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -13,9 +13,9 @@ import { MessageDialogComponent, MessageDialogType } from 'src/app/components/di
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserDto } from 'src/app/models/dtos/user.dto';
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
-import { AvatarService } from 'src/app/services/avatar.service';
 import { ImageCropperDialogComponent, ImageCropperDialogData } from '../../dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { DialogComponent } from '../../dialogs/dialog/dialog.component';
+import { API_URL, DEFAULT_AVATAR_PATH } from 'src/app/app-injection-tokens';
 
 @Component({
   selector: 'app-profile-settings',
@@ -52,11 +52,12 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   
 
   public constructor(
+    @Inject(API_URL) private apiUrl: string,
+    @Inject(DEFAULT_AVATAR_PATH) private defaultAvatarPath: string,
     private settingsService: SettingsService,
     private userService: UserService,
     private authService: AuthService,
     private serverErrorsService: ServerErrorsService,
-    private avatarService: AvatarService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {
@@ -79,7 +80,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   }
 
   public getAvatarPath(): string {
-    return this.avatarService.getFullAvatarPath(this.user?.avatarPath);
+    return this.user?.avatarPath?.length > 0 ? this.apiUrl + this.user.avatarPath : this.defaultAvatarPath;
   }
 
   public selectAvatar(): void {

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Inject } from '@angular/core';
+
+import { API_URL, DEFAULT_AVATAR_PATH } from 'src/app/app-injection-tokens';
 import { UserDto } from 'src/app/models/dtos/user.dto';
-import { AvatarService } from 'src/app/services/avatar.service';
 import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
@@ -13,13 +13,17 @@ export class SettingsComponent {
 
   public user = new UserDto();
 
-  constructor(private settingsService: SettingsService, private avatarService: AvatarService) { 
+  constructor(
+    @Inject(API_URL) private apiUrl: string,
+    @Inject(DEFAULT_AVATAR_PATH) private defaultAvatarPath: string,
+    private settingsService: SettingsService
+  ) { 
     this.settingsService.user$.subscribe(user => {
       this.user = user;
     });
   }
   
   public getAvatarPath(): string {
-    return this.avatarService.getFullAvatarPath(this.user?.avatarPath);
+    return this.user?.avatarPath?.length > 0 ? this.apiUrl + this.user.avatarPath : this.defaultAvatarPath;
   }
 }

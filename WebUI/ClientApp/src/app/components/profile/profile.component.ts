@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { UserService } from 'src/app/services/user.service';
 import { UserDto } from 'src/app/models/dtos/user.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
-import { AvatarService } from 'src/app/services/avatar.service';
+import { API_URL, DEFAULT_AVATAR_PATH } from 'src/app/app-injection-tokens';
 
 @Component({
   selector: 'app-profile',
@@ -17,10 +17,11 @@ export class ProfileComponent implements OnInit {
   public isOwner = false;
 
   public constructor(
+    @Inject(API_URL) private apiUrl: string,
+    @Inject(DEFAULT_AVATAR_PATH) private defaultAvatarPath: string,
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    private avatarService: AvatarService,
     private currentUserService: CurrentUserService
   ) { }
 
@@ -38,7 +39,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public getAvatarPath(): string {
-    return this.avatarService.getFullAvatarPath(this.user?.avatarPath);
+    return this.user?.avatarPath?.length > 0 ? this.apiUrl + this.user.avatarPath : this.defaultAvatarPath;
   }
 
   public isOthersDataVisible(): boolean {

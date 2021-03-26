@@ -5,7 +5,6 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:44319/',
-  avatarsPath: 'avatars/',
   defaultAvatarsPath: 'assets/img/default-profile-avatar.png',
   allowedDomains: ['localhost:44319']
 };
