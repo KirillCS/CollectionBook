@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Domain.Entities
 {
@@ -15,5 +16,7 @@ namespace Domain.Entities
         public DateTime CreationTime { get; set; }
 
         public string UserId { get; set; }
+
+        public IList<Tag> Tags { get; private set; } = new List<Tag>();
     }
 }

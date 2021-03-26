@@ -9,6 +9,8 @@ namespace Application.Common.Interfaces
     {
         DbSet<Collection> Collections { get; set; }
 
+        DbSet<Tag> Tags { get; set; }
+
         Task<int> SaveChanges(CancellationToken cancellationToken);
     }
 }

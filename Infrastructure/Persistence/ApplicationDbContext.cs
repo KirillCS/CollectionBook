@@ -13,6 +13,8 @@ namespace Infrastructure.Persistence
     {
         public DbSet<Collection> Collections { get; set; }
 
+        public DbSet<Tag> Tags { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         { }
 
