@@ -18,8 +18,11 @@ namespace Infrastructure.Services
 
         public async Task<IEnumerable<Tag>> AddTags(IEnumerable<string> tags)
         {
-            var newTags = tags.Where(t => !string.IsNullOrEmpty(t) && dbContext.Tags.Any(ct => t != ct.Label)).Select(t => new Tag { Label = t });
+            tags = tags.Distinct();
+            var oldTags = dbContext.Tags.Where(t => tags.Contains(t.Label));
+            var newTags = tags.Where(t => oldTags.Any(ot => t != ot.Label)).Select(t => new Tag { Label = t });
             await dbContext.Tags.AddRangeAsync(newTags);
+            await dbContext.SaveChanges(default);
 
             return dbContext.Tags.Where(t => tags.Contains(t.Label));
         }
