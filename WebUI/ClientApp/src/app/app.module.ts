@@ -43,7 +43,6 @@ import { EmailConfirmationComponent } from 'src/app/components/email/email-cofir
 import { EmailConfirmationGuard } from 'src/app/guards/email-confirmation.guard';
 import { MessageDialogComponent } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
 import { FieldDialogComponent } from 'src/app/components/dialogs/field-dialog/field-dialog.component';
-import { AuthGuard } from 'src/app/guards/auth.guard';
 import { EmailConfirmedComponent } from 'src/app/components/email/email-confirmed/email-confirmed.component';
 import { SettingsComponent } from 'src/app/components/settings/settings.component';
 import { SecuritySettingsComponent } from 'src/app/components/settings/security-settings/security-settings.component';
@@ -53,6 +52,7 @@ import { DialogComponent } from 'src/app/components/dialogs/dialog/dialog.compon
 import { EmailChangedComponent } from 'src/app/components/email/email-changed/email-changed.component';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 import { ImageCropperDialogComponent } from './components/dialogs/image-cropper-dialog/image-cropper-dialog.component';
+import { CollectionCreatingComponent } from './components/collection/collection-creating/collection-creating.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +74,8 @@ import { ImageCropperDialogComponent } from './components/dialogs/image-cropper-
     DialogComponent,
     EmailChangedComponent,
     PasswordResetComponent,
-    ImageCropperDialogComponent
+    ImageCropperDialogComponent,
+    CollectionCreatingComponent
   ],
   imports: [
     BrowserModule,
@@ -119,7 +120,6 @@ import { ImageCropperDialogComponent } from './components/dialogs/image-cropper-
     })
   ],
   providers: [
-    AuthGuard,
     EmailConfirmationGuard,
     { provide: API_URL, useValue: environment.apiUrl },
     { provide: DEFAULT_AVATAR_PATH, useValue: environment.defaultAvatarsPath },
