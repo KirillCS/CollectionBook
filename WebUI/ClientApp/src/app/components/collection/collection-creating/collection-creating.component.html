@@ -51,16 +51,21 @@
         <div class="line mt-3">
           <mat-form-field class="field w-100" appearance="outline">
             <mat-label>Collection tags</mat-label>
-            <mat-chip-list #tagList aria-label="Fruit selection">
-              <mat-chip *ngFor="let tag of tags" [selectable]="true" [removable]="true" (removed)="remove(tag)">
-                {{tag.label}}
+            <mat-chip-list #tagList>
+              <mat-chip *ngFor="let tag of tags" [selectable]="true" [removable]="true" (removed)="removeTag(tag)">
+                {{ tag }}
                 <mat-icon matChipRemove>cancel</mat-icon>
               </mat-chip>
-              <input maxlength="48" placeholder="Ex. coins" #tagsInput [matChipInputFor]="tagList"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="false"
-                (matChipInputTokenEnd)="add($event)">
-              <mat-error *ngIf="tagsInput.errors?.maxlength">Tag maximum length is 48 characters</mat-error>
+              <input maxlength="48" placeholder="Ex. coins" #tagInput [formControl]="tagsControl" [matAutocomplete]="tagAutocomplete"
+                [matChipInputFor]="tagList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="addTag($event)">
+              <mat-error *ngIf="tagInput.errors?.maxlength">Tag maximum length is 48 characters</mat-error>
             </mat-chip-list>
+            <mat-autocomplete #tagAutocomplete="matAutocomplete" (optionSelected)="tagSelected($event)">
+              <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+                {{tag}}
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
         </div>
         <div>

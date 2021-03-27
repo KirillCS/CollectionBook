@@ -22,6 +22,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
@@ -103,6 +104,7 @@ import { CollectionCreatingComponent } from './components/collection/collection-
     MatSelectModule,
     MatStepperModule,
     MatChipsModule,
+    MatAutocompleteModule,
 
     NgProgressModule,
     NgProgressHttpModule,
