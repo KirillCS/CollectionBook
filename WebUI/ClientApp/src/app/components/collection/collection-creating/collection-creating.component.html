@@ -1,1 +1,73 @@
-<p>collection-creating works!</p>
+<div class="app__container pt-md-4 pt-3 px-3">
+  <div class="card">
+    <h1>Collection creating</h1>
+    <mat-vertical-stepper>
+      <mat-step [stepControl]="nameFormGroup" errorMessage="Collection name is required">
+        <form [formGroup]="nameFormGroup">
+          <ng-template matStepLabel>Fill out a collection name</ng-template>
+          <div class="line mt-3">
+            <mat-form-field class="field" appearance="outline">
+              <mat-label>Collection name</mat-label>
+              <input placeholder="Ex. Coins" autocomplete="off" required maxlength="256" matInput
+                formControlName="name">
+              <mat-error *ngIf="nameFormGroup.get('name').errors?.required">Collection name is required</mat-error>
+              <mat-error *ngIf="nameFormGroup.get('name').errors?.maxlength">Maximum length is 256 characters
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <button mat-button matStepperNext color="primary">Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="descriptionFormGroup">
+        <form [formGroup]="descriptionFormGroup">
+          <ng-template matStepLabel>Fill out a collection description</ng-template>
+          <div class="line mt-3">
+            <mat-form-field class="field" appearance="outline">
+              <mat-label>Collection description</mat-label>
+              <textarea rows="5" placeholder="Tell about this collection" maxlength="4096" matInput
+                formControlName="description"></textarea>
+              <mat-error *ngIf="descriptionFormGroup.get('description').errors?.maxlength">Maximum length is 4096
+                characters</mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Add a cover for your collection</ng-template>
+
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Add tags describing your collection</ng-template>
+        <div class="line mt-3">
+          <mat-form-field class="field w-100" appearance="outline">
+            <mat-label>Collection tags</mat-label>
+            <mat-chip-list #tagList aria-label="Fruit selection">
+              <mat-chip *ngFor="let tag of tags" [selectable]="true" [removable]="true" (removed)="remove(tag)">
+                {{tag.label}}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+              <input maxlength="48" placeholder="Ex. coins" #tagsInput [matChipInputFor]="tagList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="false"
+                (matChipInputTokenEnd)="add($event)">
+              <mat-error *ngIf="tagsInput.errors?.maxlength">Tag maximum length is 48 characters</mat-error>
+            </mat-chip-list>
+          </mat-form-field>
+        </div>
+        <div>
+          <button class="mr-2" mat-button matStepperPrevious>Back</button>
+          <button mat-raised-button matStepperNext color="primary">Create</button>
+        </div>
+      </mat-step>
+    </mat-vertical-stepper>
+  </div>
+</div>

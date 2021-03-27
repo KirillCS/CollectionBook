@@ -20,6 +20,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
@@ -99,6 +101,8 @@ import { CollectionCreatingComponent } from './components/collection/collection-
     MatRadioModule,
     MatSnackBarModule,
     MatSelectModule,
+    MatStepperModule,
+    MatChipsModule,
 
     NgProgressModule,
     NgProgressHttpModule,
