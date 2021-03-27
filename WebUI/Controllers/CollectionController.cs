@@ -21,7 +21,10 @@ namespace WebUI.Controllers
         [Authorize]
         public async Task<IActionResult> CreateCollection([FromForm] CreateCollectionCommand command, IFormFile cover)
         {
-            command.CoverPath = await collectionCoverService.SaveCover(cover);
+            if (cover is not null)
+            {
+                command.CoverPath = await collectionCoverService.SaveCover(cover);
+            }
 
             await Mediator.Send(command);
 

@@ -7,6 +7,9 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
 
 import { TagsService } from 'src/app/services/tags.service';
+import { CollectionService } from 'src/app/services/collection.service';
+import { CollectionCreatingRequest } from 'src/app/models/requests/collection/collection-creating.request';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-collection-creating',
@@ -27,12 +30,14 @@ export class CollectionCreatingComponent {
   public filteredTags: Observable<string[]>;
   public tags: string[] = [];
 
-  public constructor(private tagsService: TagsService) { }
+  public inProcess = false;
+
+  public constructor(private tagsService: TagsService, private collectionService: CollectionService) { }
 
   public addTag(event: MatChipInputEvent): void {
     const input = event.input;
     const values = event.value.split(/[ ,]/);
-    
+
     values.forEach(value => {
       if ((value || '').trim() && !this.tags.some(tag => tag === value)) {
         this.tags.push(value.trim());
@@ -54,7 +59,7 @@ export class CollectionCreatingComponent {
 
   public tagsInputChanged(): void {
     let value = this.tagInput.nativeElement.value;
-    
+
     this.filteredTags = this.tagsService.searchTags(value, this.searchTagsCount);
   }
 
@@ -65,5 +70,21 @@ export class CollectionCreatingComponent {
     }
 
     this.tagInput.nativeElement.value = '';
+  }
+
+  public submit(): void {
+    if (this.nameFormGroup.invalid || this.descriptionFormGroup.invalid) {
+      return;
+    }
+
+    this.inProcess = true;
+    let request: CollectionCreatingRequest = {
+      name: this.nameFormGroup.get('name').value,
+      description: this.descriptionFormGroup.get('description').value,
+      cover: null,
+      tags: this.tags
+    };
+
+    this.collectionService.create(request).subscribe(() => { }, (errorResponse: HttpErrorResponse) => { }, () => { this.inProcess = false; });
   }
 }

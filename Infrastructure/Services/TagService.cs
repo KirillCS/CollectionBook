@@ -20,7 +20,7 @@ namespace Infrastructure.Services
         {
             tags = tags.Distinct();
             var oldTags = dbContext.Tags.Where(t => tags.Contains(t.Label));
-            var newTags = tags.Where(t => oldTags.Any(ot => t != ot.Label)).Select(t => new Tag { Label = t });
+            var newTags = tags.Where(t => !oldTags.Any(ot => t == ot.Label)).Select(t => new Tag { Label = t });
             await dbContext.Tags.AddRangeAsync(newTags);
             await dbContext.SaveChanges(default);
 
