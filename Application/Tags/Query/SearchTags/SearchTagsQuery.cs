@@ -12,7 +12,7 @@ namespace Application.Tags.Query.SearchTags
     {
         public string SearchString { get; set; }
 
-        public int ReturnedCount { get; set; }
+        public int Count { get; set; }
     }
 
     public class SearchTagsQueryHandler : IRequestHandler<SearchTagsQuery, IEnumerable<string>>
@@ -27,7 +27,7 @@ namespace Application.Tags.Query.SearchTags
         public async Task<IEnumerable<string>> Handle(SearchTagsQuery request, CancellationToken cancellationToken)
         {
             return await dbContext.Tags.Where(tag => tag.Label.Contains(request.SearchString))
-                                       .Take(request.ReturnedCount)
+                                       .Take(request.Count)
                                        .Select(tag => tag.Label)
                                        .ToListAsync(cancellationToken);
         }

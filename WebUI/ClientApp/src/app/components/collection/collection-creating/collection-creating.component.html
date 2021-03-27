@@ -56,9 +56,9 @@
                 {{ tag }}
                 <mat-icon matChipRemove>cancel</mat-icon>
               </mat-chip>
-              <input maxlength="48" placeholder="Ex. coins" #tagInput [formControl]="tagsControl" [matAutocomplete]="tagAutocomplete"
-                [matChipInputFor]="tagList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                (matChipInputTokenEnd)="addTag($event)">
+              <input maxlength="48" placeholder="Ex. coins" #tagInput (input)="tagsInputChanged()"
+                [matAutocomplete]="tagAutocomplete" [matChipInputFor]="tagList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addTag($event)">
               <mat-error *ngIf="tagInput.errors?.maxlength">Tag maximum length is 48 characters</mat-error>
             </mat-chip-list>
             <mat-autocomplete #tagAutocomplete="matAutocomplete" (optionSelected)="tagSelected($event)">

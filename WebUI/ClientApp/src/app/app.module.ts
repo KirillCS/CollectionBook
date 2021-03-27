@@ -107,7 +107,9 @@ import { CollectionCreatingComponent } from './components/collection/collection-
     MatAutocompleteModule,
 
     NgProgressModule,
-    NgProgressHttpModule,
+    NgProgressHttpModule.withConfig({
+      silentApis: environment.silentApis
+    }),
 
     ImageCropperModule,
 

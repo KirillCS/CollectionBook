@@ -6,7 +6,7 @@ namespace Application.Tags.Query.SearchTags
     {
         public SearchTagQueryValidator()
         {
-            RuleFor(q => q.ReturnedCount).GreaterThan(-1).WithMessage("Returned count must be more or equal 0");
+            RuleFor(q => q.Count).GreaterThan(-1).WithMessage("Returned count must be more or equal 0");
         }
     }
 }
