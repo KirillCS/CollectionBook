@@ -6,12 +6,12 @@
 </div>
 <main mat-dialog-content>
   <h2>Crop your profile avatar</h2>
-  <image-cropper class="p-0" #cropper [imageFile]="data.file" [resizeToWidth]="data.resizeToWidth"
+  <image-cropper class="p-0" #cropper [autoCrop]="false" [imageFile]="data.file" [resizeToWidth]="data.resizeToWidth"
     [roundCropper]="data.roundCropper" [maintainAspectRatio]="data.maintainAspectRatio" [aspectRatio]="data.aspectRatio"
     [format]="'png'" (imageCropped)="imageCropped($event)">
   </image-cropper>
 </main>
 <div mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-raised-button [mat-dialog-close]="croppedImage" color="primary">{{ data.submitButton }}</button>
+  <button mat-raised-button (click)="cropper.crop()" color="primary">{{ data.submitButton }}</button>
 </div>

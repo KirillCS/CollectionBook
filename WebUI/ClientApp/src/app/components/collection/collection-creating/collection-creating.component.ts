@@ -25,6 +25,8 @@ export class CollectionCreatingComponent {
   public nameFormGroup = new FormGroup({ name: new FormControl() });
   public descriptionFormGroup = new FormGroup({ description: new FormControl() });
 
+  public image: File;
+
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
   public separatorKeysCodes = [ENTER, SPACE, COMMA];
   public filteredTags: Observable<string[]>;
@@ -33,6 +35,10 @@ export class CollectionCreatingComponent {
   public inProcess = false;
 
   public constructor(private tagsService: TagsService, private collectionService: CollectionService) { }
+
+  public imageChanged(image: File) {
+    this.image = image;
+  }
 
   public addTag(event: MatChipInputEvent): void {
     const input = event.input;

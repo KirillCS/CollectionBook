@@ -56,6 +56,7 @@ import { EmailChangedComponent } from 'src/app/components/email/email-changed/em
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 import { ImageCropperDialogComponent } from './components/dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { CollectionCreatingComponent } from './components/collection/collection-creating/collection-creating.component';
+import { DragNDropImageComponent } from './components/drag-n-drop-image/drag-n-drop-image.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { CollectionCreatingComponent } from './components/collection/collection-
     EmailChangedComponent,
     PasswordResetComponent,
     ImageCropperDialogComponent,
-    CollectionCreatingComponent
+    CollectionCreatingComponent,
+    DragNDropImageComponent
   ],
   imports: [
     BrowserModule,

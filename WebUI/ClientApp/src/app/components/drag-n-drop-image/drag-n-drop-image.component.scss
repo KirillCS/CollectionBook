@@ -1,0 +1,50 @@
+.border {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: #E0E0E0 dashed 2px;
+  border-radius: 5px;
+  padding: 1rem;
+  cursor: pointer;
+
+  &.over {
+    border-style: solid;
+  }
+
+  .placeholder {
+    text-align: center;
+    user-select: none;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    color: #969696;
+    margin: 1rem;
+  }
+
+  img {
+    min-width: 200px;
+    max-width: 100%;
+    min-height: 100px;
+    max-height: 500px;
+    border-radius: 5px;
+    overflow: hidden;
+    object-fit: cover;
+  }
+
+  input {
+    display: none;
+  }
+
+  .buttons {
+    position: absolute;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    top: 1.5rem;
+    right: 1.5rem;
+
+    button {
+      margin-left: 0.5rem;
+    }
+  }
+}
