@@ -17,6 +17,10 @@ export class CollectionService {
     let formData = new FormData();
     formData.append('name', request.name);
     formData.append('description', request.description);
+    if (request.cover) {
+      formData.append('cover', request.cover, request.cover.name);
+    }
+
     request.tags.forEach(tag => {
       formData.append('tags', tag);
     })

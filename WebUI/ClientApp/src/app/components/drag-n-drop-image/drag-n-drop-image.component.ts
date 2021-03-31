@@ -42,7 +42,10 @@ export class DragNDropImageComponent {
     });
 
     dialogRef.afterClosed().subscribe((imageBlob: Blob) => {
-      this.setImage(<File>imageBlob);
+      let image: any = imageBlob;
+      image.name = this.currentImage.name;
+
+      this.setImage(<File>image);
     });
   }
 

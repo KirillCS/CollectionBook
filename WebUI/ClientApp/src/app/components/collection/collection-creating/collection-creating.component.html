@@ -16,7 +16,7 @@
             </mat-form-field>
           </div>
           <div>
-            <button mat-button matStepperNext color="primary">Next</button>
+            <button mat-button matStepperNext>Next</button>
           </div>
         </form>
       </mat-step>
@@ -72,10 +72,12 @@
         </div>
         <div>
           <button class="mr-2" mat-button matStepperPrevious>Back</button>
-          <button (click)="submit()" [disabled]="inProcess" mat-raised-button matStepperNext
-            color="primary">Create</button>
         </div>
       </mat-step>
     </mat-vertical-stepper>
+    <div class="mt-4 row mx-0 align-items-center justify-content-end">
+      <button class="mr-3" mat-button>Cancel</button>
+      <button (click)="submit()" [disabled]="inProcess" mat-raised-button color="primary">Create</button>
+    </div>
   </div>
 </div>

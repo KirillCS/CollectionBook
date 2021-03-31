@@ -87,7 +87,7 @@ export class CollectionCreatingComponent {
     let request: CollectionCreatingRequest = {
       name: this.nameFormGroup.get('name').value,
       description: this.descriptionFormGroup.get('description').value,
-      cover: null,
+      cover: this.image,
       tags: this.tags
     };
 
