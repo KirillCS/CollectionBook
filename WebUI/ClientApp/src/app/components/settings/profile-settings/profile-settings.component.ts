@@ -9,13 +9,12 @@ import { UpdateProfileRequest } from 'src/app/models/requests/user/update-profil
 import { AuthService } from 'src/app/services/auth.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { UserService } from 'src/app/services/user.service';
-import { MessageDialogComponent, MessageDialogType } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserDto } from 'src/app/models/dtos/user.dto';
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
-import { ImageCropperDialogComponent, ImageCropperDialogData } from '../../dialogs/image-cropper-dialog/image-cropper-dialog.component';
-import { DialogComponent } from '../../dialogs/dialog/dialog.component';
+import { ImageCropperDialogComponent, ImageCropperDialogData } from 'src/app/components/dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { API_URL, DEFAULT_AVATAR_PATH } from 'src/app/app-injection-tokens';
+import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 
 @Component({
   selector: 'app-profile-settings',
@@ -58,6 +57,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private authService: AuthService,
     private serverErrorsService: ServerErrorsService,
+    private dialogService: DefaultDialogsService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {
@@ -108,75 +108,30 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
       avatar.name = file.name;
 
       this.userService.updateAvatar(<File>avatar).subscribe(() => {
-        this.dialog.open(MessageDialogComponent, {
-          width: '500px',
-          position: {top: '30vh'},
-          data: {
-            type: MessageDialogType.Success,
-            header: 'Profile avatar updated',
-            message: 'Profile avatar has been successfully updated. Reload the page to see the new profile avatar.',
-            buttonName: 'OK'
-          }
-        });
+        this.dialogService.openSuccessMessageDialog('Profile avatar updated', 'Profile avatar has been successfully updated. Reload the page to see the new profile avatar.');
       }, (errorResponse: HttpErrorResponse) => {
 
         if (errorResponse.status == 401) {
           this.authService.logout();
-          this.dialog.open(MessageDialogComponent, {
-            width: '500px',
-            position: {top: '30vh'},
-            data: {
-              type: MessageDialogType.Warning,
-              header: 'Failed to update a profile avatar',
-              message: 'You must be authenticated to update your profile avatar.',
-              buttonName: 'Close'
-            }
-          });
+          this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'You must be authenticated to update your profile avatar.');
 
           return;
         }
         
         if (errorResponse.status == 404) {
           this.authService.logout();
-          this.dialog.open(MessageDialogComponent, {
-            width: '500px',
-            position: {top: '30vh'},
-            data: {
-              type: MessageDialogType.Warning,
-              header: 'User not found',
-              message: 'Your account was not found. Maybe it was deleted.',
-              buttonName: 'Close'
-            }
-          });
+          this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
 
           return;
         }
 
-        this.dialog.open(MessageDialogComponent, {
-          width: '500px',
-          position: {top: '30vh'},
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'Failed to update a profile avatar',
-            message: 'Something went wrong while profile avatar was updating. Try update avatar again.',
-            buttonName: 'Close'
-          }
-        });
+        this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'Something went wrong while profile avatar was updating. Try update avatar again.');
       });
     })
   }
 
   public resetAvatar(): void {
-    let dialogRef = this.dialog.open(DialogComponent, {
-      width: '500px',
-      position: { top: '30vh' },
-      data: {
-        header: 'Reset profile avatar?',
-        message: 'Are you sure you want to reset profile avatar?',
-        positiveButtonName: 'Yes',
-        negativeButtonName: 'No'
-      }
-    })
+    let dialogRef = this.dialogService.openYesNoDialog('Reset profile avatar?', 'Are you sure you want to reset profile avatar?');
 
     dialogRef.afterClosed().subscribe((answer: string) => {
       if (answer === 'No') {
@@ -184,59 +139,23 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
       }
 
       this.userService.resetAvatar().subscribe(() => {
-        this.dialog.open(MessageDialogComponent, {
-          width: '500px',
-          position: {top: '30vh'},
-          data: {
-            type: MessageDialogType.Success,
-            header: 'Profile avatar reseted',
-            message: 'Profile avatar has been successfully reseted. Reload the page to see the new profile avatar.',
-            buttonName: 'OK'
-          }
-        });
+        this.dialogService.openSuccessMessageDialog('Profile avatar reseted', 'Profile avatar has been successfully reseted. Reload the page to see the new profile avatar.');
       }, (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 401) {
           this.authService.logout();
-          this.dialog.open(MessageDialogComponent, {
-            width: '500px',
-            position: {top: '30vh'},
-            data: {
-              type: MessageDialogType.Warning,
-              header: 'Failed to reset a profile avatar',
-              message: 'You must be authenticated to reset your profile avatar.',
-              buttonName: 'Close'
-            }
-          });
+          this.dialogService.openWarningMessageDialog('Failed to reset a profile avatar', 'You must be authenticated to reset your profile avatar.');
 
           return;
         }
 
         if (errorResponse.status == 404) {
           this.authService.logout();
-          this.dialog.open(MessageDialogComponent, {
-            width: '500px',
-            position: {top: '30vh'},
-            data: {
-              type: MessageDialogType.Warning,
-              header: 'User not found',
-              message: 'Your account was not found. Maybe it was deleted.',
-              buttonName: 'Close'
-            }
-          });
-
+          this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
+          
           return;
         }
-
-        this.dialog.open(MessageDialogComponent, {
-          width: '500px',
-          position: {top: '30vh'},
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'Failed to reset a profile avatar',
-            message: 'Something went wrong while profile avatar was resetting. Try reset avatar again.',
-            buttonName: 'Close'
-          }
-        });
+        
+        this.dialogService.openWarningMessageDialog('Failed to reset a profile avatar', 'Something went wrong while profile avatar was resetting. Try reset avatar again.');
       });
     });
   }
@@ -261,32 +180,14 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
       if (errorResponse.status == 401) {
         this.authService.logout();
-        this.dialog.open(MessageDialogComponent, {
-          width: '500px',
-          position: { top: '30vh' },
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'Not authenticated',
-            message: 'You must be authenticated to set up account profile',
-            buttonName: 'Close'
-          }
-        });
+        this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to set up account profile');
 
         return;
       }
 
       if (errorResponse.status == 404) {
         this.authService.logout();
-        this.dialog.open(MessageDialogComponent, {
-          width: '500px',
-          position: { top: '30vh' },
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'User not found',
-            message: 'User was not found. Maybe it was deleted',
-            buttonName: 'Close'
-          }
-        });
+        this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted');
 
         return;
       }

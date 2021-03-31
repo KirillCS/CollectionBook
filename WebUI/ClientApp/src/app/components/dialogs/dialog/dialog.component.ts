@@ -2,10 +2,13 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export class DialogData {
-  public header = 'Sure?';
-  public message = 'Are you sure?';
-  public positiveButtonName = 'Yes';
-  public negativeButtonName = 'No';
+
+  constructor(
+    public header: string,
+    public message: string,
+    public positiveButtonName: string,
+    public negativeButtonName: string
+  ) { }
 }
 
 @Component({

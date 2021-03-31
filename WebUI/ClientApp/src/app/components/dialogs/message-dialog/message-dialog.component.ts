@@ -8,10 +8,13 @@ export enum MessageDialogType {
 }
 
 export class MessageDialogData {
-  public type = MessageDialogType.Warning;
-  public header = 'Oops...';
-  public message = 'Something went wrong...';
-  public buttonName = 'Cancel';
+
+  constructor(
+    public type: MessageDialogType,
+    public header: string,
+    public message: string,
+    public buttonName: string
+  ) { }
 }
 
 @Component({
@@ -47,9 +50,5 @@ export class MessageDialogComponent {
     }
   }
 
-  public constructor(@Inject(MAT_DIALOG_DATA) public data: MessageDialogData) {
-    if (!this.data) {
-      this.data = new MessageDialogData();
-    }
-  }
+  public constructor(@Inject(MAT_DIALOG_DATA) public data: MessageDialogData) { }
 }

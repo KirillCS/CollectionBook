@@ -2,13 +2,13 @@ import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Params, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { AuthService } from 'src/app/services/auth.service';
 import { FieldDialogComponent } from 'src/app/components/dialogs/field-dialog/field-dialog.component';
 import { UserService } from 'src/app/services/user.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { MessageDialogComponent, MessageDialogType } from '../../dialogs/message-dialog/message-dialog.component';
+import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 
 @Component({
   selector: 'app-login',
@@ -45,6 +45,7 @@ export class LoginComponent implements OnDestroy {
     private authService: AuthService,
     private router: Router,
     private dialog: MatDialog,
+    private dialogsService: DefaultDialogsService,
     private userService: UserService
   ) { }
 
@@ -110,7 +111,7 @@ export class LoginComponent implements OnDestroy {
         return;
       }
 
-      this.userService.sendPasswordResetConfirmation({ email: formControl.value }).subscribe(() => {}, (errorResponse: HttpErrorResponse) => {
+      this.userService.sendPasswordResetConfirmation({ email: formControl.value }).subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 404) {
           formControl.setErrors({ notfound: true });
 
@@ -118,29 +119,11 @@ export class LoginComponent implements OnDestroy {
         }
 
         dialogRef.close();
-        this.dialog.open(MessageDialogComponent, {
-          width: '500px',
-          position: {top: '30vh'},
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'Failed to send confirmation',
-            message: 'Something went wrong while sending confirmation. You can try to reset your password again',
-            buttonName: 'Close'
-          }
-        });
+        this.dialogsService.openWarningMessageDialog('Failed to send confirmation', 'Something went wrong while sending confirmation. You can try to reset your password again');
 
       }, () => {
         dialogRef.close();
-        this.dialog.open(MessageDialogComponent, {
-          width: '500px',
-          position: {top: '30vh'},
-          data: {
-            type: MessageDialogType.Success,
-            header: 'Confirmation has sent',
-            message: 'Password reset confirmation has sent. Check your email and follow the link to reset account password.',
-            buttonName: 'OK'
-          }
-        });
+        this.dialogsService.openSuccessMessageDialog('Confirmation has sent', 'Password reset confirmation has sent. Check your email and follow the link to reset account password.');
       });
     });
 

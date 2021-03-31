@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, NgForm } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
@@ -9,8 +8,8 @@ import { UpdatePasswordRequest } from 'src/app/models/requests/user/update-passw
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { UserService } from 'src/app/services/user.service';
-import { MessageDialogComponent, MessageDialogType } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 
 @Component({
   selector: 'app-security-settings',
@@ -66,7 +65,7 @@ export class SecuritySettingsComponent implements OnInit {
     private userService: UserService,
     private serverErrorService: ServerErrorsService,
     private authService: AuthService,
-    private dialog: MatDialog,
+    private dialogService: DefaultDialogsService,
     private snackBar: MatSnackBar
   ) {
     this.settingsService.user$.subscribe(user => {
@@ -105,37 +104,19 @@ export class SecuritySettingsComponent implements OnInit {
 
       if (errorResponse.status == 401) {
         this.authService.logout();
-        this.dialog.open(MessageDialogComponent, {
-          width: '400px',
-          position: { top: '30vh' },
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'Not authenticated',
-            message: `You must be authenticated to change account email.`,
-            buttonName: 'Close'
-          }
-        });
+        this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change account email.');
 
         return;
       }
 
       if (errorResponse.status == 404) {
         this.authService.logout();
-        this.dialog.open(MessageDialogComponent, {
-          width: '400px',
-          position: { top: '30vh' },
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'User not found',
-            message: `User was not found. Maybe it was deleted.`,
-            buttonName: 'Close'
-          }
-        });
+        this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
 
         return;
       }
 
-      this.dialog.open(MessageDialogComponent, { width: '400px', position: { top: '30vh' } });
+      this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong while updating the account password.');
     }, () => {
       ngForm.resetForm();
       this.inProcess = false;
@@ -148,59 +129,22 @@ export class SecuritySettingsComponent implements OnInit {
     this.userService.sendPasswordResetConfirmation({ email: this.email }).subscribe(() => {}, (errorResponse: HttpErrorResponse) => {
       this.inProcess = false;
       if (errorResponse.status == 400) {
-        this.dialog.open(MessageDialogComponent, { 
-          width: '400px',
-          position: {top: '30vh'},
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'Failed to send email',
-            message: 'Your account email address has not passed validation. Refresh this page and click this button again.',
-            buttonName: 'Close'
-          }
-        });
+        this.dialogService.openWarningMessageDialog('Failed to send email', 'Your account email address has not passed validation. Refresh this page and click this button again.');
 
         return;
       }
 
       if (errorResponse.status == 404) {
         this.authService.logout();
-        this.dialog.open(MessageDialogComponent, { 
-          width: '400px',
-          position: {top: '30vh'},
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'User not found',
-            message: 'User was not found. Maybe it was deleted.',
-            buttonName: 'Close'
-          }
-        });
+        this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted.');
 
         return;
       }
 
-      this.dialog.open(MessageDialogComponent, { 
-        width: '400px',
-        position: {top: '30vh'},
-        data: {
-          type: MessageDialogType.Warning,
-          header: 'Failed to send email',
-          message: 'Something went wrong on the server.',
-          buttonName: 'Close'
-        }
-      });
-
+      this.dialogService.openWarningMessageDialog('Failed to send email', 'Something went wrong on the server.');
     }, () => {
       this.inProcess = false;
-      this.dialog.open(MessageDialogComponent, { 
-        width: '400px',
-        position: {top: '30vh'},
-        data: {
-          type: MessageDialogType.Success,
-          header: 'Email has sent',
-          message: 'Reset password confirmation has sent to your account email address. Check it and follow the link in it.',
-          buttonName: 'OK'
-        }
-      });
+      this.dialogService.openSuccessMessageDialog('Email has sent', 'Reset password confirmation has sent to your account email address. Check it and follow the link in it.');
     });
   }
 }

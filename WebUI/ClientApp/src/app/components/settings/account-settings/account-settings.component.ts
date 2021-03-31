@@ -16,6 +16,7 @@ import { MessageDialogComponent, MessageDialogType } from 'src/app/components/di
 import { EmailConfirmationService } from 'src/app/services/email-confirmation.service';
 import { LoginResponse } from 'src/app/models/responses/auth/login.response';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 
 @Component({
   selector: 'app-account-settings',
@@ -42,6 +43,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     private emailService: EmailConfirmationService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
+    private dialogService: DefaultDialogsService,
     private dialog: MatDialog
   ) {
     this.subscription = settingsService.user$.subscribe(user => {
@@ -69,16 +71,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      position: { top: '30vh' },
-      data: {
-        header: 'Are you sure?',
-        message: `Are you sure you want to change login from ${this.user.login} to ${control.value}? Links to your profile will be broken.`,
-        positiveButtonName: 'Yes',
-        negativeButtonName: 'No'
-      }
-    });
+    const dialogRef = this.dialogService.openYesNoDialog('Are you sure?', `Are you sure you want to change login from ${this.user.login} to ${control.value}? Links to your profile will be broken.`);
 
     dialogRef.afterClosed().subscribe((result: string) => {
       if (result == 'No') {
@@ -101,43 +94,19 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
         if (errorResponse.status == 401) {
           this.authService.logout();
-          this.dialog.open(MessageDialogComponent, {
-            width: '400px',
-            position: { top: '30vh' },
-            data: {
-              header: 'Not authenticated',
-              message: `You must be authenticated to change account login.`,
-              buttonName: 'OK'
-            }
-          });
-
+          this.dialogService.openWarningMessageDialog('Not authenticated', `You must be authenticated to change account login.`);
+          
           return;
         }
-
+        
         if (errorResponse.status == 404) {
           this.authService.logout();
-          this.dialog.open(MessageDialogComponent, {
-            width: '400px',
-            position: { top: '30vh' },
-            data: {
-              header: 'User not found',
-              message: `User was not found. Maybe it was deleted.`,
-              buttonName: 'OK'
-            }
-          });
-
+          this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
+          
           return;
         }
-
-        this.dialog.open(MessageDialogComponent, { 
-          width: '400px', 
-          position: { top: '30vh' },
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'Something went wrong',
-            message: 'Something went wrong on the server. Maybe page updating will be able to help.'
-          }
-        });
+        
+        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server. Maybe page updating will be able to help.');
         this.isChangingLoginInProcess = false;
       }, () => {
         form.resetForm();
@@ -161,17 +130,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
     this.isChangingEmailInProcess = true;
     this.emailService.updateEmail({ email: control.value }).subscribe(() => {
-      this.dialog.open(MessageDialogComponent, {
-        width: '400px',
-        position: { top: '30vh' },
-        data: {
-          type: MessageDialogType.Info,
-          header: 'Confirm email',
-          message: `We've sent confirmation message to email address ${control.value}. You must confirm it to update account email.`,
-          buttonName: 'OK'
-        }
-      });
-
+      this.dialogService.openInfoMessageDialog('Confirm email', `We've sent confirmation message to email address ${control.value}. You must confirm it to update account email.`);
     }, (errorResponse: HttpErrorResponse) => {
       this.isChangingEmailInProcess = false;
       if (errorResponse.status == 400) {
@@ -182,35 +141,19 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
       if (errorResponse.status == 401) {
         this.authService.logout();
-        this.dialog.open(MessageDialogComponent, {
-          width: '400px',
-          position: { top: '30vh' },
-          data: {
-            header: 'Not authenticated',
-            message: `You must be authenticated to change account email.`,
-            buttonName: 'Close'
-          }
-        });
+        this.dialogService.openWarningMessageDialog('Not authenticated', `You must be authenticated to change account email.`);
 
         return;
       }
 
       if (errorResponse.status == 404) {
         this.authService.logout();
-        this.dialog.open(MessageDialogComponent, {
-          width: '400px',
-          position: { top: '30vh' },
-          data: {
-            header: 'User not found',
-            message: `User was not found. Maybe it was deleted.`,
-            buttonName: 'Close'
-          }
-        });
-
+        this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
+        
         return;
       }
-
-      this.dialog.open(MessageDialogComponent, { width: '400px', position: { top: '30vh' } });
+      
+      this.dialogService.openWarningMessageDialog('Something went wrong', `Something went wrong while updating email.`);
     }, () => {
       form.reset();
       this.isChangingEmailInProcess = false;

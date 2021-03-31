@@ -3,10 +3,10 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { EmailConfirmationService } from 'src/app/services/email-confirmation.service';
-import { MessageDialogComponent, MessageDialogType } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
 import { FieldDialogComponent } from 'src/app/components/dialogs/field-dialog/field-dialog.component';
 import { FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 
 @Component({
   selector: 'app-email-confirmation',
@@ -19,7 +19,13 @@ export class EmailConfirmationComponent implements OnInit {
   public email = '';
   public sendLinkEnable = true;
 
-  constructor(private router: Router, private route: ActivatedRoute, private emailService: EmailConfirmationService, private dialog: MatDialog) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private emailService: EmailConfirmationService,
+    private dialogService: DefaultDialogsService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
@@ -30,25 +36,25 @@ export class EmailConfirmationComponent implements OnInit {
 
   public sendEmail(): void {
     if (!this.sendLinkEnable) {
-      this.openWarningDialog('Message already sent', `Verification email has already sent to ${this.email}. Wait 1 minute to send a new one.`);
+      this.dialogService.openWarningMessageDialog('Message already sent', `Verification email has already sent to ${this.email}. Wait 1 minute to send a new one.`);
 
       return;
     }
 
     this.sendLinkEnable = false;
     this.emailService.sendConfirmationMessage(this._id).subscribe(() => {
-      this.openSuccessDialog('Message was sent', `Verification message was sent to ${this.email}. Check your email and confirm it.`);
+      this.dialogService.openSuccessMessageDialog('Message was sent', `Verification message was sent to ${this.email}. Check your email and confirm it.`);
 
     }, (errorResponse: HttpErrorResponse) => {
       this.sendLinkEnable = true;
       if (errorResponse.status == 404) {
         this.router.navigate(['']);
-        this.openWarningDialog('User not found', 'User was not found. Maybe it was deleted');
-        
+        this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted');
+
         return;
       }
 
-      this.openWarningDialog('Failed to send message', `Something went wrong while sending a verification message to ${this.email}: ${errorResponse.message}`);
+      this.dialogService.openWarningMessageDialog('Failed to send message', `Something went wrong while sending a verification message to ${this.email}: ${errorResponse.message}`);
 
     }, () => {
       setTimeout(() => {
@@ -74,7 +80,7 @@ export class EmailConfirmationComponent implements OnInit {
       this.emailService.changeUnconfirmedEmail({ id: this._id, email: newEmail }).subscribe(() => {
         this.email = newEmail;
         dialogRef.close();
-        this.openSuccessDialog('Email updated successfully', `Account email changed to ${this.email}. Verification message has sent. Check email and confirm it`);
+        this.dialogService.openSuccessMessageDialog('Email updated successfully', `Account email changed to ${this.email}. Verification message has sent. Check email and confirm it.`);
 
       }, errorResponse => {
         if (errorResponse.status == 400) {
@@ -86,12 +92,12 @@ export class EmailConfirmationComponent implements OnInit {
         dialogRef.close();
         if (errorResponse.status == 404) {
           this.router.navigate(['']);
-          this.openWarningDialog('User not found', 'User was not found. Maybe it was deleted');
+          this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted');
 
           return;
         }
 
-        this.openWarningDialog('Failed to update email', `Something went wrong: ${errorResponse.message}`);
+        this.dialogService.openWarningMessageDialog('Failed to update email', `Something went wrong: ${errorResponse.message}`);
       });
     });
 
@@ -116,32 +122,6 @@ export class EmailConfirmationComponent implements OnInit {
         ],
         closeButtonName: 'Cancel',
         submitButtonName: 'Save'
-      }
-    });
-  }
-
-  private openWarningDialog(header: string, message: string): MatDialogRef<MessageDialogComponent, any> {
-    return this.dialog.open(MessageDialogComponent, {
-      width: '500px',
-      position: {top: '30vh'},
-      data: {
-        type: MessageDialogType.Warning,
-        header: header,
-        message: message,
-        buttonName: 'Close'
-      }
-    });
-  }
-
-  private openSuccessDialog(header: string, message: string): MatDialogRef<MessageDialogComponent, any> {
-    return this.dialog.open(MessageDialogComponent, {
-      width: '500px',
-      position: {top: '30vh'},
-      data: {
-        type: MessageDialogType.Success,
-        header: header,
-        message: message,
-        buttonName: 'OK'
       }
     });
   }

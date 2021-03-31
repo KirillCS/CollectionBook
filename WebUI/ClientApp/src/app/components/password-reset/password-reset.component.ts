@@ -1,14 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher';
 import { ResetPasswordRequest } from 'src/app/models/requests/user/reset-password.request';
+import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
 import { UserService } from 'src/app/services/user.service';
-import { MessageDialogComponent, MessageDialogType } from '../dialogs/message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-password-reset',
@@ -75,7 +74,7 @@ export class PasswordResetComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private serverErrorsService: ServerErrorsService,
-    private dialog: MatDialog
+    private dialogService: DefaultDialogsService
   ) { }
 
   public ngOnInit(): void {
@@ -113,43 +112,16 @@ export class PasswordResetComponent implements OnInit {
 
       if (errorResponse.status == 404) {
         this.router.navigate(['']);
-        this.dialog.open(MessageDialogComponent, {
-          width: '400px',
-          position: {top: '30vh'},
-          data: {
-            type: MessageDialogType.Warning,
-            header: 'Failed to reset password',
-            message: 'User was not found. Maybe link was broken or user was deleted.',
-            buttonName: 'Close'
-          }
-        });
+        this.dialogService.openWarningMessageDialog('Failed to reset password', 'User was not found. Maybe link was broken or user was deleted.');
 
         return;
       }
 
-      this.dialog.open(MessageDialogComponent, {
-        width: '400px',
-        position: {top: '30vh'},
-        data: {
-          type: MessageDialogType.Warning,
-          header: 'Failed to reset password',
-          message: 'Token is invalid.',
-          buttonName: 'Close'
-        }
-      });
+      this.dialogService.openWarningMessageDialog('Failed to reset password', 'Token is invalid.');
 
     }, () => {
       this.router.navigate(['']);
-      this.dialog.open(MessageDialogComponent, {
-        width: '400px',
-        position: {top: '30vh'},
-        data: {
-          type: MessageDialogType.Success,
-          header: 'Password reset successfully',
-          message: 'Password has reseted successfully',
-          buttonName: 'OK'
-        }
-      });
+      this.dialogService.openSuccessMessageDialog('Password reset successfully', 'Password has reseted successfully');
     })
   }
 }

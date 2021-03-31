@@ -91,6 +91,14 @@ export class CollectionCreatingComponent {
       tags: this.tags
     };
 
-    this.collectionService.create(request).subscribe(() => { }, (errorResponse: HttpErrorResponse) => { }, () => { this.inProcess = false; });
+    this.collectionService.create(request).subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
+      if (errorResponse.status == 400) {
+        
+      }
+
+      if (errorResponse.status == 401) {
+        
+      }
+    }, () => { this.inProcess = false; });
   }
 }
