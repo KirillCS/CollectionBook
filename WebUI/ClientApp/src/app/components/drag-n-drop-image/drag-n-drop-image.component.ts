@@ -46,13 +46,9 @@ export class DragNDropImageComponent {
     });
   }
 
-  public resetImage(event: MouseEvent): void {
+  public resetButtonClicked(event: MouseEvent): void {
     event.stopPropagation();
-
-    this.input.nativeElement.value = '';
-    this.thumbData = '';
-    this.currentImage = null;
-    this.imageChanged.emit(null);
+    this.resetImage();
   }
 
   public filesSelected(event: Event) : void {
@@ -108,5 +104,12 @@ export class DragNDropImageComponent {
     reader.onload = () => {
       this.thumbData = <string>reader.result;
     };
+  }
+
+  private resetImage(): void {
+    this.input.nativeElement.value = '';
+    this.thumbData = '';
+    this.currentImage = null;
+    this.imageChanged.emit(null);
   }
 }
