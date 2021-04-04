@@ -2,16 +2,20 @@
   <div class="card">
     <h1>Collection creating</h1>
     <mat-vertical-stepper>
-      <mat-step [stepControl]="nameFormGroup" errorMessage="Collection name is required">
+      <mat-step [stepControl]="nameFormGroup" errorMessage="Collection name has wrong format">
         <form [formGroup]="nameFormGroup">
           <ng-template matStepLabel>Fill out a collection name</ng-template>
           <div class="line mt-3">
             <mat-form-field class="field" appearance="outline">
               <mat-label>Collection name</mat-label>
-              <input placeholder="Ex. Coins" autocomplete="off" required maxlength="256" matInput
-                formControlName="name">
-              <mat-error *ngIf="nameFormGroup.get('name').errors?.required">Collection name is required</mat-error>
-              <mat-error *ngIf="nameFormGroup.get('name').errors?.maxlength">Maximum length is 256 characters
+              <input placeholder="Ex. Coins" autocomplete="off" required maxlength="256" matInput formControlName="name"
+                [errorStateMatcher]="matcher">
+              <mat-error *ngIf="this.nameFormGroup.get('name').errors?.required">Collection name is required</mat-error>
+              <mat-error *ngIf="this.nameFormGroup.get('name').errors?.maxlength">
+                Maximum length is 256 characters
+              </mat-error>
+              <mat-error *ngIf="nameFormGroup.get('name').errors?.serverErrors">
+                <div *ngFor="let error of nameFormGroup.get('name').errors?.serverErrors">{{error}}</div>
               </mat-error>
             </mat-form-field>
           </div>
@@ -20,16 +24,20 @@
           </div>
         </form>
       </mat-step>
-      <mat-step [stepControl]="descriptionFormGroup">
+      <mat-step [stepControl]="descriptionFormGroup" errorMessage="Description maximum length is 4096
+      characters">
         <form [formGroup]="descriptionFormGroup">
           <ng-template matStepLabel>Fill out a collection description</ng-template>
           <div class="line mt-3">
             <mat-form-field class="field" appearance="outline">
               <mat-label>Collection description</mat-label>
               <textarea rows="5" placeholder="Tell about this collection" maxlength="4096" matInput
-                formControlName="description"></textarea>
+                formControlName="description" [errorStateMatcher]="matcher"></textarea>
               <mat-error *ngIf="descriptionFormGroup.get('description').errors?.maxlength">Maximum length is 4096
                 characters</mat-error>
+              <mat-error *ngIf="descriptionFormGroup.get('description').errors?.serverErrors">
+                <div *ngFor="let error of descriptionFormGroup.get('description').errors?.serverErrors">{{error}}</div>
+              </mat-error>
             </mat-form-field>
           </div>
           <div>

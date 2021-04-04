@@ -10,6 +10,12 @@ import { TagsService } from 'src/app/services/tags.service';
 import { CollectionService } from 'src/app/services/collection.service';
 import { CollectionCreatingRequest } from 'src/app/models/requests/collection/collection-creating.request';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ServerErrorsService } from 'src/app/services/server-errors.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
 
 @Component({
   selector: 'app-collection-creating',
@@ -21,7 +27,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class CollectionCreatingComponent {
 
   private searchTagsCount = 5;
-
+  
+  public matcher = new DefaultErrorStateMatcher();
+  
   public nameFormGroup = new FormGroup({ name: new FormControl() });
   public descriptionFormGroup = new FormGroup({ description: new FormControl() });
 
@@ -34,7 +42,15 @@ export class CollectionCreatingComponent {
 
   public inProcess = false;
 
-  public constructor(private tagsService: TagsService, private collectionService: CollectionService) { }
+  public constructor(
+    private tagsService: TagsService,
+    private collectionService: CollectionService,
+    private serverErrorsService: ServerErrorsService,
+    private authService: AuthService,
+    private dialogService: DefaultDialogsService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) { }
 
   public imageChanged(image: File) {
     this.image = image;
@@ -92,13 +108,26 @@ export class CollectionCreatingComponent {
     };
 
     this.collectionService.create(request).subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
+      this.inProcess = false;
       if (errorResponse.status == 400) {
-        
+        this.serverErrorsService.setFormErrors(this.nameFormGroup, errorResponse);
+        this.serverErrorsService.setFormErrors(this.descriptionFormGroup, errorResponse);
+
+        return;
       }
 
       if (errorResponse.status == 401) {
-        
+        this.authService.logout();
+        this.dialogService.openWarningMessageDialog('You must be authenticated', 'You must be authenticated to create a new collection.');
+
+        return;
       }
-    }, () => { this.inProcess = false; });
+
+      this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while adding a collection.');
+    }, () => {
+      this.inProcess = false;
+      this.router.navigate(['']);
+      this.snackBar.open('Collection was added', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
+    });
   }
 }

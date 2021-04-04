@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher'
@@ -9,10 +8,8 @@ import { UserDto } from 'src/app/models/dtos/user.dto';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { UserService } from 'src/app/services/user.service';
-import { DialogComponent } from 'src/app/components/dialogs/dialog/dialog.component';
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { MessageDialogComponent, MessageDialogType } from 'src/app/components/dialogs/message-dialog/message-dialog.component';
 import { EmailConfirmationService } from 'src/app/services/email-confirmation.service';
 import { LoginResponse } from 'src/app/models/responses/auth/login.response';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -43,8 +40,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     private emailService: EmailConfirmationService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private dialogService: DefaultDialogsService,
-    private dialog: MatDialog
+    private dialogService: DefaultDialogsService
   ) {
     this.subscription = settingsService.user$.subscribe(user => {
       this.user = user;
