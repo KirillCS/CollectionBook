@@ -32,6 +32,13 @@ textarea {
   margin: 0 auto;
 }
 
+.app__container--form {
+  position: relative;
+  min-width: auto;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
 .h-100 {
   height: 100%;
 }
