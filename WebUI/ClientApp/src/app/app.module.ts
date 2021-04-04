@@ -57,6 +57,8 @@ import { PasswordResetComponent } from './components/password-reset/password-res
 import { ImageCropperDialogComponent } from './components/dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { CollectionCreatingComponent } from './components/collection/collection-creating/collection-creating.component';
 import { DragNDropImageComponent } from './components/drag-n-drop-image/drag-n-drop-image.component';
+import { CollectionsComponent } from './components/profile/collections/collections.component';
+import { StarsComponent } from './components/profile/stars/stars.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +82,9 @@ import { DragNDropImageComponent } from './components/drag-n-drop-image/drag-n-d
     PasswordResetComponent,
     ImageCropperDialogComponent,
     CollectionCreatingComponent,
-    DragNDropImageComponent
+    DragNDropImageComponent,
+    CollectionsComponent,
+    StarsComponent
   ],
   imports: [
     BrowserModule,

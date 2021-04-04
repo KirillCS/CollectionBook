@@ -21,6 +21,8 @@ import { PasswordResetGuard } from 'src/app/guards/password-reset.guard';
 import { CollectionCreatingComponent } from './components/collection/collection-creating/collection-creating.component';
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { NotAuthenticatedGuard } from './guards/not-authenticated.guard';
+import { CollectionsComponent } from './components/profile/collections/collections.component';
+import { StarsComponent } from './components/profile/stars/stars.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -30,7 +32,12 @@ const routes: Routes = [
   { path: 'emailconfirmed', component: EmailConfirmedComponent, canActivate: [EmailConfirmedGuard] },
   { path: 'emailchanged', component: EmailChangedComponent, canActivate: [EmailChangedGuard] },
   { path: 'passwordreset', component: PasswordResetComponent, canActivate: [PasswordResetGuard] },
-  { path: 'profile/:login', component: ProfileComponent },
+  {
+    path: 'profile/:login', component: ProfileComponent, children: [
+      { path: 'collections', component: CollectionsComponent },
+      { path: 'stars', component: StarsComponent }
+    ]
+  },
   {
     path: 'settings', component: SettingsComponent, canActivate: [AuthenticatedGuard], children: [
       { path: 'profile', component: ProfileSettingsComponent },

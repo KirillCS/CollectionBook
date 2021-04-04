@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="data-block">
-        <h1 class="data-line name" *ngIf="user.firstName || user.lastName" >{{ user.firstName }} {{ user.lastName }}</h1>
+        <h1 class="data-line name" *ngIf="user.firstName || user.lastName">{{ user.firstName }} {{ user.lastName }}</h1>
         <div class="data-line login" *ngIf="user.login">{{ user.login }}</div>
         <div class="data-line biography" *ngIf="user.biography">{{ user.biography }}</div>
         <ul class="data-line others" *ngIf="isOthersDataVisible()">
@@ -26,19 +26,22 @@
           <li *ngIf="user.websiteUrl">
             <div class="icon-data">
               <i class="material-icons-round">link</i>
-              <a href="{{ user.websiteUrl }}" target="_blank" tabindex="-1" matTooltip="{{ user.websiteUrl }}">Website</a>
+              <a href="{{ user.websiteUrl }}" target="_blank" tabindex="-1"
+                matTooltip="{{ user.websiteUrl }}">Website</a>
             </div>
           </li>
           <li *ngIf="user.telegramLogin">
             <div class="icon-data">
               <i class="fab fa-telegram-plane"></i>
-              <a href="https://t.me/{{ user.telegramLogin }}" target="_blank" tabindex="-1">@{{ user.telegramLogin }}</a>
+              <a href="https://t.me/{{ user.telegramLogin }}" target="_blank" tabindex="-1">@{{ user.telegramLogin
+                }}</a>
             </div>
           </li>
           <li *ngIf="user.instagramLogin">
             <div class="icon-data">
               <i class="fab fa-instagram"></i>
-              <a href="https://www.instagram.com/{{ user.instagramLogin }}" target="_blank" tabindex="-1">@{{ user.instagramLogin }}</a>
+              <a href="https://www.instagram.com/{{ user.instagramLogin }}" target="_blank" tabindex="-1">@{{
+                user.instagramLogin }}</a>
             </div>
           </li>
         </ul>
@@ -47,5 +50,21 @@
     <button id="settings-button" mat-icon-button *ngIf="isOwner" [routerLink]="['/settings', 'profile']">
       <mat-icon class="material-icons-round">settings</mat-icon>
     </button>
+    <nav mat-tab-nav-bar mat-align-tabs="center">
+      <a mat-tab-link routerLink="collections" routerLinkActive #collections="routerLinkActive"
+        [active]="collections.isActive">
+        <mat-icon class="material-icons-round mr-1">
+          collections
+        </mat-icon>
+        Collections
+      </a>
+      <a mat-tab-link routerLink="stars" routerLinkActive #stars="routerLinkActive"
+      [active]="stars.isActive">
+        <mat-icon class="material-icons-round mr-1">
+          star
+        </mat-icon>
+        Stars
+      </a>
+    </nav>
   </div>
 </div>
