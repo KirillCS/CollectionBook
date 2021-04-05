@@ -30,10 +30,10 @@
           <button mat-menu-item [routerLink]="['profile', currentUser.login]">
             <mat-icon class="material-icons-round">account_circle</mat-icon>Your profile
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item [routerLink]="['profile', currentUser.login, 'collections']">
             <mat-icon class="material-icons-round">collections</mat-icon>Your collections
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item [routerLink]="['profile', currentUser.login, 'stars']">
             <mat-icon class="material-icons-round">star</mat-icon>Your stars
           </button>
           <mat-divider></mat-divider>
