@@ -148,6 +148,11 @@ form {
   }
 }
 
+mat-paginator {
+  border-radius: 8px;
+  box-shadow: 0 0 6px 0 #00000040 !important;
+}
+
 @media (max-width: 960px) {
   .cards-group {
   
