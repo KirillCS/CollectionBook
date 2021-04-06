@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -10,6 +10,9 @@ import { LoginResponse } from 'src/app/models/responses/auth/login.response';
 import { UpdatePasswordRequest } from 'src/app/models/requests/user/update-password.request';
 import { sendPasswordResetConfirmation } from 'src/app/models/requests/user/send-password-reset-confirmation.request';
 import { ResetPasswordRequest } from '../models/requests/user/reset-password.request';
+import { GetUserCollectionsRequest } from '../models/requests/user/get-user-collections.request';
+import { PaginatedListResponse } from '../models/responses/paginated-list.response';
+import { UserCollectionDto } from '../models/dtos/user-collections.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +22,16 @@ export class UserService {
 
   public getUser(login: string): Observable<UserDto> {
     return this.httpClient.get<UserDto>(`${this.apiUrl}api/user/${login ?? ''}`);
+  }
+
+  public getCollections(request: GetUserCollectionsRequest): Observable<PaginatedListResponse<UserCollectionDto>> {
+    let params = new HttpParams();
+    params.append('login', request.login)
+          .append('searchString', request.searchString)
+          .append('pageSize', request.pageSize.toString())
+          .append('pageIndex', request.pageIndex.toString());
+
+    return this.httpClient.get<PaginatedListResponse<UserCollectionDto>>(`${this.apiUrl}api/user/collections`, { params });
   }
 
   public updateAvatar(avatar: File): Observable<void> {
