@@ -13,10 +13,16 @@ export class CollectionService {
   constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
 
   public create(request: CollectionCreatingRequest): Observable<void> {
-    console.log(request);
     let formData = new FormData();
-    formData.append('name', request.name);
-    formData.append('description', request.description);
+
+    if (request.name) {
+      formData.append('name', request.name);
+    }
+
+    if (request.description) {
+      formData.append('description', request.description);
+    }
+
     if (request.cover) {
       formData.append('cover', request.cover, request.cover.name);
     }

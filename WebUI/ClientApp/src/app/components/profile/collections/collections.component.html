@@ -1,49 +1,41 @@
 <div class="app__container pt-4 px-3">
   <div class="card mt-2 mb-4 py-3 row mx-0 justify-content-between align-items-center">
     <mat-form-field appearance="outline">
-      <input matInput placeholder="Find user collection..." autocomplete="off">
+      <input matInput type="search" placeholder="Find user collection..." autocomplete="off" [(ngModel)]="searchString"
+        (input)="searchCollections()">
+      <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="clearSearch()" [disabled]="searchString.length == 0">
+        <mat-icon class="material-icons-round">clear</mat-icon>
+      </button>
     </mat-form-field>
     <button mat-stroked-button routerLink="/new" color="primary">New</button>
   </div>
   <div class="cards-group">
-    <mat-card>
-      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    <mat-card *ngFor="let collection of collections | async">
+      <img mat-card-image *ngIf="collection.coverPath" [src]="getCollectionCover(collection.coverPath)"
+        [alt]="collection.coverPath">
       <mat-card-content>
         <header>
-          <h2>Some collection</h2>
+          <h2>{{ collection.name }}</h2>
           <button mat-icon-button color="warn">
             <mat-icon class="material-icons-round">star_outline</mat-icon>
           </button>
         </header>
-        <p>
-          The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-          A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-          bred for hunting.
-        </p>
-        <div class="tags">
+        <p *ngIf="collection.description">{{ collection.description }}</p>
+        <div class="tags" *ngIf="collection.tags?.length > 0">
           <mat-chip-list>
-            <mat-chip>
+            <mat-chip *ngFor="let tag of collection.tags">
               <span>
-                Collection
-              </span>
-            </mat-chip>
-            <mat-chip>
-              <span>
-                Test
-              </span>
-            </mat-chip>
-            <mat-chip>
-              <span>
-                Coins
+                {{ tag.label }}
               </span>
             </mat-chip>
           </mat-chip-list>
         </div>
+        <div class="date">{{ collection.creationTime | date: 'medium' }}</div>
       </mat-card-content>
     </mat-card>
   </div>
 
-  <div class="pb-3">
-    <mat-paginator [length]="100" [pageSize]="12" [pageSizeOptions]="[6, 12, 24]"></mat-paginator>
+  <div class="pb-4">
+    <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[6, 12, 24]" (page)="pageChanged($event)"></mat-paginator>
   </div>
 </div>

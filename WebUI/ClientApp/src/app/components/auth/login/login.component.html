@@ -14,7 +14,7 @@
             <mat-label>Password</mat-label>
             <input [type]="hidePassword ? 'password' : 'text'" required matInput formControlName="password" [errorStateMatcher]="matcher">
             <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              <mat-icon class="material-icons-round">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
             <mat-error *ngIf="password.errors?.required">Password is a required field</mat-error>
           </mat-form-field>

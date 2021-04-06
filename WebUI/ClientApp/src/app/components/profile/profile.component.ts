@@ -35,7 +35,7 @@ export class ProfileComponent implements OnInit {
       }, () => {
         this.router.navigateByUrl('**', { skipLocationChange: true });
       });
-    })
+    });
   }
 
   public getAvatarPath(): string {

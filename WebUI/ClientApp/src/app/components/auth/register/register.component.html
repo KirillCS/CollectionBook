@@ -30,7 +30,7 @@
           <input [type]="hidePassword ? 'password' : 'text'" required minlength="6" pattern="^(?=.*[a-z])(?=.*?[A-Z])(?=.*\d)([a-zA-Z\d]|.){6,}$" matInput formControlName="password"
             [errorStateMatcher]="matcher">
           <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
-            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-icon class="material-icons-round">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
           <mat-hint>Minimum length: 6</mat-hint>
           <mat-error *ngIf="password.errors">{{ passwordErrorMessage }}</mat-error>
@@ -46,7 +46,7 @@
             formControlName="passwordConfirmation" [errorStateMatcher]="matcher">
           <button type="button" tabindex="-1" mat-icon-button matSuffix
             (click)="hidePasswordConfirmation = !hidePasswordConfirmation">
-            <mat-icon>{{hidePasswordConfirmation ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-icon class="material-icons-round">{{hidePasswordConfirmation ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
           <mat-error *ngIf="passwordConfirmation.errors">{{ passwordConfirmationErrorMessage }}</mat-error>
           <mat-error *ngIf="passwordConfirmation.errors?.serverErrors">

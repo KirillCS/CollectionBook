@@ -25,11 +25,14 @@ export class UserService {
   }
 
   public getCollections(request: GetUserCollectionsRequest): Observable<PaginatedListResponse<UserCollectionDto>> {
-    let params = new HttpParams();
-    params.append('login', request.login)
-          .append('searchString', request.searchString)
-          .append('pageSize', request.pageSize.toString())
-          .append('pageIndex', request.pageIndex.toString());
+    let params = new HttpParams({
+      fromObject: {
+        login: request.login,
+        searchString: request.searchString,
+        pageSize: request.pageSize.toString(),
+        pageIndex: request.pageIndex.toString()
+      }
+    });
 
     return this.httpClient.get<PaginatedListResponse<UserCollectionDto>>(`${this.apiUrl}api/user/collections`, { params });
   }

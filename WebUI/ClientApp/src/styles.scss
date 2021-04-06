@@ -96,7 +96,7 @@ form {
 
 .cards-group {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: space-between;
   flex-wrap: wrap;
 
@@ -106,7 +106,13 @@ form {
     box-shadow: 0 0 6px 0 #00000040 !important;
     border-radius: 8px;
 
+    img {
+      height: 300px;
+      object-fit: cover;
+    }
+
     mat-card-content {
+      
       header {
         display: flex;
         justify-content: space-between;
@@ -132,17 +138,23 @@ form {
       }
 
       .tags {
-        margin-top: 1rem;
+        margin-top: 1.5rem;
       }
-    }
 
-    mat-chip {
-      max-width: 100%;
-      
-      span {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
+      .date {
+        margin-top: 1.5rem;
+        font-size: 0.8rem;
+        opacity: 0.6;
+      }
+
+      mat-chip {
+        max-width: 100%;
+        
+        span {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
       }
     }
   }
