@@ -83,7 +83,7 @@ form {
 .card {
   background-color: white;
   box-shadow: 0 0 6px 0 #00000040;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 2rem;
   overflow: hidden;
 }
@@ -92,4 +92,76 @@ form {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
+}
+
+.cards-group {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  mat-card {
+    width: 32%;
+    margin-bottom: 25px;
+    box-shadow: 0 0 6px 0 #00000040 !important;
+    border-radius: 8px;
+
+    mat-card-content {
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+  
+        h2 {
+          margin: 0;
+          word-wrap: break-word;
+        }
+  
+        button {
+          margin-left: 0.5rem;
+        }
+      }
+
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+      }
+
+      .tags {
+        margin-top: 1rem;
+      }
+    }
+
+    mat-chip {
+      max-width: 100%;
+      
+      span {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+@media (max-width: 960px) {
+  .cards-group {
+  
+    mat-card {
+      width: 48.5%;
+    }
+  }
+}
+
+@media (max-width: 620px) {
+  .cards-group {
+  
+    mat-card {
+      width: 100%;
+    }
+  }
 }

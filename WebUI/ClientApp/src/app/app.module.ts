@@ -23,6 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCardModule } from '@angular/material/card';
 
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
@@ -111,6 +112,7 @@ import { StarsComponent } from './components/profile/stars/stars.component';
     MatStepperModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatCardModule,
 
     NgProgressModule,
     NgProgressHttpModule.withConfig({
