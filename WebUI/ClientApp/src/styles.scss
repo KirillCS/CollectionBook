@@ -95,65 +95,107 @@ form {
 }
 
 .cards-group {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
 
   mat-card {
-    width: 32%;
-    margin-bottom: 25px;
     box-shadow: 0 0 6px 0 #00000040 !important;
     border-radius: 8px;
 
     img {
-      height: 300px;
+      height: 250px;
       object-fit: cover;
     }
 
     mat-card-content {
-      
-      header {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: calc(100% - 250px);
+
+      main {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-  
-        h2 {
-          margin: 0;
-          word-wrap: break-word;
+        flex-direction: column;
+
+        header {
+          display: flex;
+          justify-content: space-between;
+
+          h2 {
+            margin: 0;
+            word-wrap: break-word;
+          }
+
+          button {
+            margin-left: 0.5rem;
+          }
         }
-  
-        button {
-          margin-left: 0.5rem;
-        }
-      }
 
-      p {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 4;
-        -webkit-box-orient: vertical;
-      }
-
-      .tags {
-        margin-top: 1.5rem;
-      }
-
-      .date {
-        margin-top: 1.5rem;
-        font-size: 0.8rem;
-        opacity: 0.6;
-      }
-
-      mat-chip {
-        max-width: 100%;
-        
-        span {
-          text-overflow: ellipsis;
-          white-space: nowrap;
+        p {
           overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+          margin: 0;
+          margin-top: 0.5rem;
+        }
+      }
+
+      footer {
+        display: flex;
+        flex-direction: column;
+
+        margin-top: 0.7rem;
+
+        mat-chip {
+          max-width: 100%;
+
+          span {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+        }
+
+        data {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+
+          margin-top: 0.8rem;
+
+          font-size: 0.8rem;
+          opacity: 0.6;
+
+          .date {
+            display: flex;
+            flex-grow: 1;
+          }
+
+          .statistics {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            cursor: default;
+
+            span {
+              display: flex;
+              align-items: center;
+              margin-left: 0.5rem;
+
+              mat-icon {
+                font-size: 1rem;
+                width: auto;
+                height: auto;
+              }
+            }
+          }
         }
       }
     }
@@ -163,22 +205,4 @@ form {
 mat-paginator {
   border-radius: 8px;
   box-shadow: 0 0 6px 0 #00000040 !important;
-}
-
-@media (max-width: 960px) {
-  .cards-group {
-  
-    mat-card {
-      width: 48.5%;
-    }
-  }
-}
-
-@media (max-width: 620px) {
-  .cards-group {
-  
-    mat-card {
-      width: 100%;
-    }
-  }
 }

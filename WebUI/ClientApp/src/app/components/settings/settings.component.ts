@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 
-import { API_URL, DEFAULT_AVATAR_PATH } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';
 import { UserDto } from 'src/app/models/dtos/user.dto';
 import { SettingsService } from 'src/app/services/settings.service';
 
@@ -15,7 +15,7 @@ export class SettingsComponent {
 
   constructor(
     @Inject(API_URL) private apiUrl: string,
-    @Inject(DEFAULT_AVATAR_PATH) private defaultAvatarPath: string,
+    @Inject(DEFAULT_AVATAR) private defaultAvatarPath: string,
     private settingsService: SettingsService
   ) { 
     this.settingsService.user$.subscribe(user => {

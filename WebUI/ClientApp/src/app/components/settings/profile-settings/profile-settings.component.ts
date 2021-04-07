@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserDto } from 'src/app/models/dtos/user.dto';
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
 import { ImageCropperDialogComponent, ImageCropperDialogData } from 'src/app/components/dialogs/image-cropper-dialog/image-cropper-dialog.component';
-import { API_URL, DEFAULT_AVATAR_PATH } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 
 @Component({
@@ -52,7 +52,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
   public constructor(
     @Inject(API_URL) private apiUrl: string,
-    @Inject(DEFAULT_AVATAR_PATH) private defaultAvatarPath: string,
+    @Inject(DEFAULT_AVATAR) private defaultAvatarPath: string,
     private settingsService: SettingsService,
     private userService: UserService,
     private authService: AuthService,

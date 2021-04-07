@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { UserDto } from 'src/app/models/dtos/user.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
-import { API_URL, DEFAULT_AVATAR_PATH } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
 
   public constructor(
     @Inject(API_URL) private apiUrl: string,
-    @Inject(DEFAULT_AVATAR_PATH) private defaultAvatarPath: string,
+    @Inject(DEFAULT_AVATAR) private defaultAvatarPath: string,
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,

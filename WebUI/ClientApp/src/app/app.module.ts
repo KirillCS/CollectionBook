@@ -33,7 +33,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AppComponent } from 'src/app/app.component';
-import { API_URL, DEFAULT_AVATAR_PATH } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_AVATAR, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
 import { environment } from 'src/environments/environment';
 import { ACCESS_TOKEN_KEY } from 'src/app/services/auth.service';
 import { HeaderComponent } from 'src/app/components/header/header.component';
@@ -140,7 +140,8 @@ import { StarsComponent } from './components/profile/stars/stars.component';
   providers: [
     EmailConfirmationGuard,
     { provide: API_URL, useValue: environment.apiUrl },
-    { provide: DEFAULT_AVATAR_PATH, useValue: environment.defaultAvatarsPath },
+    { provide: DEFAULT_AVATAR, useValue: environment.defaultAvatar },
+    { provide: DEFAULT_COLLECTION_COVER, useValue: environment.defaultCollectionCover },
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
     { provide: ErrorStateMatcher, useClass: SubmitErrorStateMatcher }
   ],
