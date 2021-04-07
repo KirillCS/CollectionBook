@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +7,7 @@ import { API_URL, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens'
 import { UserCollectionDto } from 'src/app/models/dtos/user-collections.dto';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
+import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -33,11 +35,10 @@ export class CollectionsComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
+    private dialogsService: DefaultDialogsService,
     @Inject(API_URL) private apiUrl: string,
     @Inject(DEFAULT_COLLECTION_COVER) private defaultCover: string
-  ) {
-    this.collections.subscribe(collections => console.log(collections));
-  }
+  ) { }
 
   public ngOnInit(): void {
     this.route.parent.paramMap.subscribe(params => {
@@ -82,6 +83,21 @@ export class CollectionsComponent implements OnInit {
     this.userService.getCollections({ login: this.currentUserLogin, searchString, pageSize, pageIndex }).subscribe(response => {
       this.totalCount = response.totalCount;
       this.collections$.next(response.items);
+    }, (errorResponse: HttpErrorResponse) => {
+      if (errorResponse.status == 400) {
+        this.pageIndex = 0;
+        this.pageSize = 0;
+
+        return;
+      }
+
+      if (errorResponse.status == 404) {
+        this.router.navigateByUrl('**', { skipLocationChange: true });
+
+        return;
+      }
+
+      this.dialogsService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching for user collections.');
     });
   }
 }
