@@ -107,7 +107,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       }, () => {
         form.resetForm();
         this.isChangingLoginInProcess = false;
-        this.snackBar.open('Login was updated', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
+        this.snackBar.open('Login was updated', 'OK', { horizontalPosition: 'left', verticalPosition: 'bottom', duration: 3500 });
       });
     });
   }

@@ -16,6 +16,7 @@ import { DefaultDialogsService } from 'src/app/services/default-dialogs.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
+import { CurrentUserService } from 'src/app/services/current-user.service';
 
 @Component({
   selector: 'app-collection-creating',
@@ -47,6 +48,7 @@ export class CollectionCreatingComponent {
     private collectionService: CollectionService,
     private serverErrorsService: ServerErrorsService,
     private authService: AuthService,
+    private currentUserService: CurrentUserService,
     private dialogService: DefaultDialogsService,
     private router: Router,
     private snackBar: MatSnackBar
@@ -126,8 +128,8 @@ export class CollectionCreatingComponent {
       this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while adding a collection.');
     }, () => {
       this.inProcess = false;
-      this.router.navigate(['']);
-      this.snackBar.open('Collection was added', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
+      this.router.navigate(['/profile', this.currentUserService?.currentUser?.login, 'collections']);
+      this.snackBar.open('Collection was added', 'OK', { horizontalPosition: 'left', verticalPosition: 'bottom', duration: 3500 });
     });
   }
 }
