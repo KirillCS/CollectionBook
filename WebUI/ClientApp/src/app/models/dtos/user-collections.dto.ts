@@ -1,3 +1,4 @@
+import { StarDto } from "./star.dto";
 import { TagDto } from "./tag.dto";
 
 export class UserCollectionDto {
@@ -8,4 +9,5 @@ export class UserCollectionDto {
   public creationTime: Date;
   public userId: string;
   public tags: TagDto[];
+  public stars: StarDto[];
 }

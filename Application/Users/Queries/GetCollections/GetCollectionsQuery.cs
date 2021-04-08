@@ -52,6 +52,7 @@ namespace Application.Users.Queries.GetCollections
 
             return await dbContext.Collections
                                   .Include(c => c.Tags)
+                                  .Include(c => c.Stars)
                                   .Where(c => c.UserId == user.Id && c.Name.Contains(request.SearchString))
                                   .OrderByDescending(c => c.CreationTime)
                                   .ProjectTo<UserCollectionDto>(mapper.ConfigurationProvider)

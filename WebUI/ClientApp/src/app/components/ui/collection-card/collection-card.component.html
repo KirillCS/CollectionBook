@@ -1,11 +1,11 @@
 <mat-card>
-  <img mat-card-image [src]="getCollectionCover(collection.coverPath)" [alt]="collection.name">
+  <img mat-card-image [src]="collectionCover" [alt]="collection.name">
   <mat-card-content>
     <main>
       <header>
         <h2>{{ collection.name }}</h2>
-        <button *ngIf="isAuthenticated()" mat-icon-button color="warn">
-          <mat-icon class="material-icons-round">star_outline</mat-icon>
+        <button *ngIf="isAuthenticated" (click)="star()" mat-icon-button color="warn">
+          <mat-icon class="material-icons-round">{{ starIcon }}</mat-icon>
         </button>
       </header>
       <p *ngIf="collection.description">{{ collection.description }}</p>
@@ -21,8 +21,8 @@
       <data>
         <div class="date">{{ collection.creationTime | date: 'medium' }}</div>
         <div class="statistics">
-          <span matTooltip="15 stars" matTooltipPosition="above">
-            15<mat-icon class="material-icons-round">star</mat-icon>
+          <span matTooltip="{{ collection.stars.length }} stars" matTooltipPosition="above">
+            {{ collection.stars.length }}<mat-icon class="material-icons-round">star</mat-icon>
           </span>
           <span matTooltip="0 items" matTooltipPosition="above">
             0<mat-icon class="material-icons-round">reorder</mat-icon>

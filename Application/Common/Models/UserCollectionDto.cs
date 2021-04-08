@@ -3,7 +3,6 @@ using AutoMapper;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Application.Common.Models
 {
@@ -21,11 +20,15 @@ namespace Application.Common.Models
 
         public string UserId { get; set; }
 
+        public List<StarDto> Stars { get; set; }
+
         public List<TagDto> Tags { get; set; }
 
         void IMapFrom<Collection>.Mapping(Profile profile)
         {
-            profile.CreateMap<Collection, UserCollectionDto>().ForMember(dto => dto.Tags, s => s.MapFrom(c => c.Tags));
+            profile.CreateMap<Collection, UserCollectionDto>()
+                   .ForMember(dto => dto.Tags, s => s.MapFrom(c => c.Tags))
+                   .ForMember(dto => dto.Stars, s => s.MapFrom(c => c.Stars));
         }
     }
 }
