@@ -84,7 +84,7 @@
       </mat-step>
     </mat-vertical-stepper>
     <div class="mt-4 row mx-0 align-items-center justify-content-end">
-      <button class="mr-3" mat-button>Cancel</button>
+      <button (click)="goBack()" class="mr-3" mat-button>Cancel</button>
       <button (click)="submit()" [disabled]="inProcess" mat-raised-button color="primary">Create</button>
     </div>
   </div>

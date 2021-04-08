@@ -23,6 +23,7 @@ import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { NotAuthenticatedGuard } from './guards/not-authenticated.guard';
 import { CollectionsComponent } from './components/profile/collections/collections.component';
 import { StarsComponent } from './components/profile/stars/stars.component';
+import { PreviousRouteService } from './services/previous-route.service';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -52,6 +53,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [PreviousRouteService]
 })
 export class AppRoutingModule { }

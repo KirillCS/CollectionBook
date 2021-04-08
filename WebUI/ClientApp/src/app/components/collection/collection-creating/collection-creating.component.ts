@@ -17,6 +17,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
 import { CurrentUserService } from 'src/app/services/current-user.service';
+import { PreviousRouteService } from 'src/app/services/previous-route.service';
 
 @Component({
   selector: 'app-collection-creating',
@@ -28,9 +29,9 @@ import { CurrentUserService } from 'src/app/services/current-user.service';
 export class CollectionCreatingComponent {
 
   private searchTagsCount = 5;
-  
+
   public matcher = new DefaultErrorStateMatcher();
-  
+
   public nameFormGroup = new FormGroup({ name: new FormControl() });
   public descriptionFormGroup = new FormGroup({ description: new FormControl() });
 
@@ -51,6 +52,7 @@ export class CollectionCreatingComponent {
     private currentUserService: CurrentUserService,
     private dialogService: DefaultDialogsService,
     private router: Router,
+    private previousRouteService: PreviousRouteService,
     private snackBar: MatSnackBar
   ) { }
 
@@ -59,6 +61,8 @@ export class CollectionCreatingComponent {
   }
 
   public addTag(event: MatChipInputEvent): void {
+
+
     const input = event.input;
     const values = event.value.split(/[ ,]/);
 
@@ -94,6 +98,10 @@ export class CollectionCreatingComponent {
     }
 
     this.tagInput.nativeElement.value = '';
+  }
+
+  public goBack(): void {
+    this.router.navigateByUrl(this.previousRouteService.getPreviousUrl());
   }
 
   public submit(): void {
