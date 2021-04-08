@@ -33,4 +33,8 @@ export class CollectionService {
 
     return this.httpClient.post<void>(`${this.apiUrl}api/collection/create`, formData);
   }
+
+  public star(id: number): Observable<void> {
+    return this.httpClient.post<void>(`${this.apiUrl}api/collection/star`, { id });
+  }
 }
