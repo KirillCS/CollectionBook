@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
       let login = params.get('login');
       this.userService.getUser(login).subscribe(response => {
         this.user = response;
-        this.isOwner = response.id == this.currentUserService.currentUser.id;
+        this.isOwner = response.id == this.currentUserService?.currentUser?.id;
 
       }, () => {
         this.router.navigateByUrl('**', { skipLocationChange: true });

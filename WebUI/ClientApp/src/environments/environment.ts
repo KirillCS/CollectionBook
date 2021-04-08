@@ -2,12 +2,18 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+const URL = 'https://localhost:44319/';
+
 export const environment = {
   production: false,
 
-  apiUrl: 'https://localhost:44319/',
+  apiUrl: URL,
   allowedDomains: ['localhost:44319'],
-  silentApis: ['https://localhost:44319/api/tag/search'],
+  silentApis: 
+  [
+    `${URL}api/tag/search`,
+    `${URL}api/collection/star`
+  ],
 
   defaultAvatar: 'assets/img/default-profile-avatar.png',
   defaultCollectionCover: 'assets/img/default-collection-cover.png'
