@@ -101,7 +101,13 @@ export class CollectionCreatingComponent {
   }
 
   public goBack(): void {
-    this.router.navigateByUrl(this.previousRouteService.getPreviousUrl());
+    let url = this.previousRouteService.getPreviousUrl()
+    if (url === this.router.url) {
+      this.router.navigate(['/profile', this.currentUserService.currentUser?.login, 'collections']);
+      return;
+    }
+
+    this.router.navigateByUrl(url);
   }
 
   public submit(): void {
