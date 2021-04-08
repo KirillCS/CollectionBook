@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class Star
     {
         public int Id { get; set; }
 
-        public List<Collection> Collections { get; } = new List<Collection>();
+        public int CollectionId { get; set; }
+
+        public string UserId { get; set; }
+
+        public Collection Collection { get; set; }
     }
 }

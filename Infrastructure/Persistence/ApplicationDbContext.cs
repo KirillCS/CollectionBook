@@ -15,6 +15,8 @@ namespace Infrastructure.Persistence
 
         public DbSet<Tag> Tags { get; set; }
 
+        public DbSet<Star> Stars { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         { }
 

@@ -11,6 +11,8 @@ namespace Application.Common.Interfaces
 
         DbSet<Tag> Tags { get; set; }
 
+        DbSet<Star> Stars { get; set; }
+
         Task<int> SaveChanges(CancellationToken cancellationToken);
     }
 }

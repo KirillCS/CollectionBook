@@ -27,9 +27,11 @@ namespace Infrastructure.Identity
 
         public string AvatarPath { get; set; }
 
-        public List<Collection> Collections { get; private set; } = new List<Collection>();
+        public List<Collection> Collections { get; } = new List<Collection>();
 
-        public User()
+        public List<Star> Stars { get; } = new List<Star>();
+
+        public User() : base()
         { }
 
         public User(string userName) : base(userName)
