@@ -1,4 +1,5 @@
 ﻿using Application.Collections.Commands.CreateCollection;
+using Application.Collections.Commands.StarCollection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,16 @@ namespace WebUI.Controllers
                 command.CoverPath = await collectionCoverService.SaveCover(cover);
             }
 
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [Route("star")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> StarCollection([FromBody] StarCollectionCommand command)
+        {
             await Mediator.Send(command);
 
             return Ok();
