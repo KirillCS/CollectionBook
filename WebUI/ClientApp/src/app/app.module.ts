@@ -61,6 +61,7 @@ import { CollectionCreatingComponent } from './components/collection/collection-
 import { DragNDropImageComponent } from './components/drag-n-drop-image/drag-n-drop-image.component';
 import { CollectionsComponent } from './components/profile/collections/collections.component';
 import { StarsComponent } from './components/profile/stars/stars.component';
+import { CollectionCardComponent } from './components/ui/collection-card/collection-card.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { StarsComponent } from './components/profile/stars/stars.component';
     CollectionCreatingComponent,
     DragNDropImageComponent,
     CollectionsComponent,
-    StarsComponent
+    StarsComponent,
+    CollectionCardComponent
   ],
   imports: [
     BrowserModule,

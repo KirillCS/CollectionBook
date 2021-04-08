@@ -1,12 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { API_URL, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
+
 import { UserCollectionDto } from 'src/app/models/dtos/user-collections.dto';
-import { AuthService } from 'src/app/services/auth.service';
-import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -32,12 +30,9 @@ export class CollectionsComponent implements OnInit {
 
   public constructor(
     private userService: UserService,
-    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
-    private dialogsService: DefaultDialogsService,
-    @Inject(API_URL) private apiUrl: string,
-    @Inject(DEFAULT_COLLECTION_COVER) private defaultCover: string
+    private dialogsService: DefaultDialogsService
   ) { }
 
   public ngOnInit(): void {
@@ -45,18 +40,6 @@ export class CollectionsComponent implements OnInit {
       this.currentUserLogin = params.get('login');
       this.getCollections('', this.pageSize, 0);
     });
-  }
-
-  public getCollectionCover(coverPath: string): string {
-    if (!coverPath) {
-      return this.defaultCover;
-    }
-
-    return this.apiUrl + coverPath;
-  }
-
-  public isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
   }
 
   public searchCollections(): void {

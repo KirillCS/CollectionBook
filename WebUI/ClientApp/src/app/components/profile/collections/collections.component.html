@@ -12,40 +12,7 @@
   </div>
 
   <div class="cards-group">
-    <mat-card *ngFor="let collection of collections | async">
-      <img mat-card-image [src]="getCollectionCover(collection.coverPath)" [alt]="collection.name">
-      <mat-card-content>
-        <main>
-          <header>
-            <h2>{{ collection.name }}</h2>
-            <button *ngIf="isAuthenticated()" mat-icon-button color="warn">
-              <mat-icon class="material-icons-round">star_outline</mat-icon>
-            </button>
-          </header>
-          <p *ngIf="collection.description">{{ collection.description }}</p>
-        </main>
-        <footer>
-          <mat-chip-list *ngIf="collection.tags?.length > 0">
-            <mat-chip *ngFor="let tag of collection.tags">
-              <span>
-                {{ tag.label }}
-              </span>
-            </mat-chip>
-          </mat-chip-list>
-          <data>
-            <div class="date">{{ collection.creationTime | date: 'medium' }}</div>
-            <div class="statistics">
-              <span matTooltip="15 stars" matTooltipPosition="above">
-                15<mat-icon class="material-icons-round">star</mat-icon>
-              </span>
-              <span matTooltip="0 items" matTooltipPosition="above">
-                0<mat-icon class="material-icons-round">reorder</mat-icon>
-              </span>
-            </div>
-          </data>
-        </footer>
-      </mat-card-content>
-    </mat-card>
+    <app-collection-card *ngFor="let collection of collections | async" [collection]="collection"></app-collection-card>
   </div>
 
   <h1 *ngIf="totalCount == 0" class="row mx-0 justify-content-center">
