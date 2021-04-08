@@ -17,6 +17,8 @@ namespace Domain.Entities
 
         public string UserId { get; set; }
 
-        public List<Tag> Tags { get; private set; } = new List<Tag>();
+        public List<Tag> Tags { get; } = new List<Tag>();
+
+        public List<Star> Stars { get; } = new List<Star>();
     }
 }
