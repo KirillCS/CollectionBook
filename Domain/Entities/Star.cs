@@ -2,7 +2,7 @@
 {
     public class Star
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public int CollectionId { get; set; }
 
