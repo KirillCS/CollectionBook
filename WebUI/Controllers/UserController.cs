@@ -6,6 +6,7 @@ using Application.Users.Commands.UpdateLogin;
 using Application.Users.Commands.UpdatePassword;
 using Application.Users.Commands.UpdateProfile;
 using Application.Users.Queries.GetCollections;
+using Application.Users.Queries.GetStarredCollections;
 using Application.Users.Queries.GetUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -34,6 +35,13 @@ namespace WebUI.Controllers
         [Route("collections")]
         [HttpGet]
         public async Task<IActionResult> GetCollections([FromQuery] GetCollectionsQuery query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+
+        [Route("stars")]
+        [HttpGet]
+        public async Task<IActionResult> GetStarredCollections([FromQuery] GetStarredCollectionsQuery query)
         {
             return Ok(await Mediator.Send(query));
         }
