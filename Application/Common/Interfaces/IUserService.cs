@@ -1,21 +1,34 @@
-﻿using Application.Common.Models;
-using Application.Users.Commands.UpdateProfile;
+﻿using Domain.Entities;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Application.Common.Interfaces
 {
     public interface IUserService
     {
-        Task<UserDto> GetById(string id);
+        Task<User> Create(string login, string email, string password);
 
-        Task<UserDto> GetByLogin(string login);
+        Task<User> Authorize(string loginCredential, string password);
 
-        Task<UserDto> GetByEmail(string email);
+        Task<IEnumerable<Claim>> GetLoginClaims(User user);
 
-        Task<Result> UpdateAvatar(string userId, string newAvatarPath);
+        Task<bool> CheckPassword(string userId, string currentPassword);
 
-        Task<Result> ResetAvatar(string userId);
+        Task<bool> LoginExists(string login);
 
-        Task<Result> UpdateProfile(string userId, UpdateProfileCommand command);
+        Task<bool> EmailExists(string email);
+
+        //Task<UserDto> GetById(string id);
+
+        //Task<UserDto> GetByLogin(string login);
+
+        //Task<UserDto> GetByEmail(string email);
+
+        //Task<Result> UpdateAvatar(string userId, string newAvatarPath);
+
+        //Task<Result> ResetAvatar(string userId);
+
+        //Task<Result> UpdateProfile(string userId, UpdateProfileCommand command);
     }
 }

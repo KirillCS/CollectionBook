@@ -1,4 +1,4 @@
-﻿namespace WebUI.Options
+﻿namespace Infrastructure.Options
 {
     public class FilePathsOptions
     {

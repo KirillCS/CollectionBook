@@ -30,12 +30,12 @@ namespace Application.Collections.Commands.StarCollection
             Collection collection = dbContext.Collections.FirstOrDefault(c => c.Id == request.Id);
             Guard.Requires(() => collection is not null, new EntityNotFoundException());
 
-            string userId = currentUserService.UserId;
+            string userId = currentUserService.Id;
             Star star = dbContext.Stars.FirstOrDefault(s => s.UserId == userId && s.CollectionId == request.Id);
 
             if (star is null)
             {
-                await dbContext.Stars.AddAsync(new Star { UserId = currentUserService.UserId, CollectionId = request.Id }, cancellationToken);
+                await dbContext.Stars.AddAsync(new Star { UserId = currentUserService.Id, CollectionId = request.Id }, cancellationToken);
             }
             else
             {

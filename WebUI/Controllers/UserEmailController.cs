@@ -48,7 +48,7 @@ namespace WebUI.Controllers
         [Route("update")]
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> UpdateEmail([FromBody] UpdateEmailCommand command)
+        public async Task<IActionResult> UpdateEmail([FromBody] SendConfirmationEmailUpdateCommand command)
         {
             await Mediator.Send(command);
 
@@ -57,7 +57,7 @@ namespace WebUI.Controllers
 
         [Route("confirmupdating")]
         [HttpPut]
-        public async Task<IActionResult> ConfirmEmailUpdating([FromBody] ConfirmEmailUpdatingCommand command)
+        public async Task<IActionResult> ConfirmEmailUpdating([FromBody] UpdateEmailCommand command)
         {
             await Mediator.Send(command);
 

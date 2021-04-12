@@ -1,9 +1,9 @@
 ﻿using Application.Common.Mappings;
-using Application.Common.Models;
+using Domain.Entities;
 
-namespace Application.Auth.Commands.Register
+namespace Application.Common.Dto
 {
-    public class RegisterResponse : IMapFrom<UserDto>
+    public class RegisterDto : IMapFrom<User>
     {
         public string Id { get; set; }
 

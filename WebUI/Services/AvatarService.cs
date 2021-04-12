@@ -34,7 +34,7 @@ namespace WebUI.Services
         public async Task<string> UpdateAvatar(IFormFile avatar)
         {
             var avatarPath = await fileSaver.SaveFile(avatar, filePaths.Avatars, Guid.NewGuid().ToString());
-            var user = await userService.GetById(currentUserService.UserId);
+            var user = await userService.GetById(currentUserService.Id);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
             if (!string.IsNullOrEmpty(user.AvatarPath))
             {
@@ -46,7 +46,7 @@ namespace WebUI.Services
 
         public async Task ResetAvatar()
         {
-            var user = await userService.GetById(currentUserService.UserId);
+            var user = await userService.GetById(currentUserService.Id);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
             if (!string.IsNullOrEmpty(user.AvatarPath))
             {

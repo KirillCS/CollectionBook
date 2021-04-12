@@ -7,7 +7,6 @@ using ValidationException = Application.Common.Exceptions.ValidationException;
 using Infrastructure.Exceptions;
 using Application.Common.Exceptions;
 using WebUI.Models;
-using WebUI.Exceptions;
 
 namespace WebUI.Filters
 {
@@ -110,10 +109,9 @@ namespace WebUI.Filters
         private void HandleOperationException(ExceptionContext context)
         {
             var exception = context.Exception as OperationException;
-            var details = new OperationExceptionDetails(exception.Errors)
+            var details = new ProblemDetails()
             {
                 Status = exception.StatusCode,
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
                 Title = exception.Message,
                 Detail = exception.Message
             };

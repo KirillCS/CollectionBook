@@ -1,25 +1,25 @@
-﻿using WebUI.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
-using WebUI.Exceptions;
+using Application.Common.Interfaces;
+using Application.Common.Exceptions;
 
 namespace WebUI.Services
 {
-    public class FormFileSaver : IFormFileSaver
+    public class FileService : IFileService
     {
         private readonly IWebHostEnvironment environment;
 
-        public FormFileSaver(IWebHostEnvironment environment)
+        public FileService(IWebHostEnvironment environment)
         {
             this.environment = environment;
         }
 
-        public async Task<string> SaveFile(IFormFile file, string filePath, string fileName)
+        public async Task<string> Save(IFormFile file, string filePath, string fileName)
         {
-            var fullPath = Path.Combine(environment.WebRootPath, filePath);
+            string fullPath = Path.Combine(environment.WebRootPath, filePath);
             if (!Directory.Exists(fullPath))
             {
                 Directory.CreateDirectory(fullPath);
@@ -38,6 +38,17 @@ namespace WebUI.Services
             }
             
             return Path.Combine(filePath, fileName);
+        }
+
+        public void Remove(string path)
+        {
+            string fullPath = Path.Combine(environment.WebRootPath, path);
+            if (!File.Exists(fullPath))
+            {
+                return;
+            }
+
+            File.Delete(fullPath);
         }
     }
 }

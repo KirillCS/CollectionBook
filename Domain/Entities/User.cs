@@ -1,13 +1,9 @@
-﻿using Application.Common.Mappings;
-using Application.Common.Models;
-using AutoMapper;
-using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
-namespace Infrastructure.Identity
+namespace Domain.Entities
 {
-    public class User : IdentityUser, IMapTo<UserDto>, IMapFrom<UserDto>
+    public class User : IdentityUser
     {
         public string FirstName { get; set; }
 
@@ -36,15 +32,5 @@ namespace Infrastructure.Identity
 
         public User(string userName) : base(userName)
         { }
-
-        void IMapTo<UserDto>.Mapping(Profile profile)
-        {
-            profile.CreateMap<User, UserDto>().ForMember(d => d.Login, s => s.MapFrom(u => u.UserName));
-        }
-
-        void IMapFrom<UserDto>.Mapping(Profile profile)
-        {
-            profile.CreateMap<UserDto, User>().ForMember(d => d.UserName, s => s.MapFrom(u => u.Login));
-        }
     }
 }

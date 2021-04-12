@@ -1,35 +1,38 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Domain.Common;
+using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.UserEmail.Commands.UpdateEmail
+namespace Application.UserEmail.Commands.ConfirmEmailUpdating
 {
     public class UpdateEmailCommand : IRequest
     {
+        public string Id { get; set; }
+
         public string Email { get; set; }
+
+        public string Token { get; set; }
     }
 
-    class UpdateEmailCommandHandler : IRequestHandler<UpdateEmailCommand>
+    public class UpdateEmailCommandHandler : IRequestHandler<UpdateEmailCommand>
     {
-        private readonly IIdentityService identityService;
-        private readonly ICurrentUserService currentUserService;
-        private readonly IEmailMessageService messageService;
-        private readonly IEmailSenderService emailSenderService;
+        private readonly UserManager<User> userManager;
 
-        public UpdateEmailCommandHandler(IIdentityService identityService, ICurrentUserService currentUserService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
+        public UpdateEmailHandler(UserManager<User> userManager)
         {
-            this.identityService = identityService;
-            this.currentUserService = currentUserService;
-            this.messageService = messageService;
-            this.emailSenderService = emailSenderService;
+            this.userManager = userManager;
         }
 
         public async Task<Unit> Handle(UpdateEmailCommand request, CancellationToken cancellationToken)
         {
-            var token = await identityService.GenerateEmailChangingToken(currentUserService.UserId, request.Email);
-            var messsage = messageService.GenerateEmailChangingMessage(request.Email, currentUserService.UserId, token);
-            await emailSenderService.SendEmail(messsage);
+            User user = await userManager.FindByIdAsync(request.Id);
+            Guard.Requires(() => user is not null, new EntityNotFoundException());
+
+            IdentityResult result = await userManager.ChangeEmailAsync(user, request.Email, request.Token);
+            Guard.Requires(() => result.Succeeded, new OperationException(400));
 
             return Unit.Value;
         }

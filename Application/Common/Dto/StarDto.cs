@@ -1,7 +1,7 @@
 ﻿using Application.Common.Mappings;
 using Domain.Entities;
 
-namespace Application.Common.Models
+namespace Application.Common.Dto
 {
     public class StarDto : IMapFrom<Star>
     {

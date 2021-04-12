@@ -1,7 +1,8 @@
 ﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
 using Domain.Common;
+using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,17 +21,20 @@ namespace Application.Users.Commands.ResetPassword
 
     public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand>
     {
-        private readonly IIdentityService identityService;
+        private readonly UserManager<User> userManager;
 
-        public ResetPasswordCommandHandler(IIdentityService identityService)
+        public ResetPasswordCommandHandler(UserManager<User> userManager)
         {
-            this.identityService = identityService;
+            this.userManager = userManager;
         }
 
         public async Task<Unit> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
         {
-            var result = await identityService.ResetPassword(request.Id, request.Token, request.Password);
-            Guard.Requires(() => result.Successed, new OperationException(result.Errors));
+            User user = await userManager.FindByIdAsync(request.Id);
+            Guard.Requires(() => user is not null, new EntityNotFoundException());
+
+            IdentityResult result = await userManager.ResetPasswordAsync(user, request.Token, request.Password);
+            Guard.Requires(() => result.Succeeded, new OperationException());
 
             return Unit.Value;
         }

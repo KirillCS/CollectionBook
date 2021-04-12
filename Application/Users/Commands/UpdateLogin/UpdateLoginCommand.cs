@@ -1,39 +1,49 @@
-﻿using Application.Auth.Commands.Login;
+﻿using Application.Common.Dto;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Common;
+using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Users.Commands.UpdateLogin
 {
-    public class UpdateLoginCommand: IRequest<LoginResponse>
+    public class UpdateLoginCommand: IRequest<LoginDto>
     {
         public string Login { get; set; }
     }
 
-    public class UpdateLoginCommandHandler : IRequestHandler<UpdateLoginCommand, LoginResponse>
+    public class UpdateLoginCommandHandler : IRequestHandler<UpdateLoginCommand, LoginDto>
     {
-        private readonly IIdentityService identityService;
+        private readonly UserManager<User> userManager;
+        private readonly IUserService userService;
         private readonly ICurrentUserService currentUserService;
         private readonly IJwtService jwtService;
 
-        public UpdateLoginCommandHandler(IIdentityService identityService, ICurrentUserService currentUserService, IJwtService jwtService)
+        public UpdateLoginCommandHandler(UserManager<User> userManager, IUserService userService, ICurrentUserService currentUserService, IJwtService jwtService)
         {
-            this.identityService = identityService;
+            this.userManager = userManager;
+            this.userService = userService;
             this.currentUserService = currentUserService;
             this.jwtService = jwtService;
         }
 
-        public async Task<LoginResponse> Handle(UpdateLoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoginDto> Handle(UpdateLoginCommand request, CancellationToken cancellationToken)
         {
-            var result = await identityService.SetLogin(currentUserService.UserId, request.Login);
-            Guard.Requires(() => result.Successed, new OperationException(result.Errors));
-            var claims = await identityService.GetUserClaims(currentUserService.UserId);
-            var token = jwtService.GenerateJwt(claims);
+            User user = await userManager.FindByIdAsync(currentUserService.Id);
+            Guard.Requires(() => user is not null, new EntityNotFoundException());
 
-            return new LoginResponse { AccessToken = token };
+            IdentityResult result = await userManager.SetUserNameAsync(user, request.Login);
+            Guard.Requires(() => result.Succeeded, new OperationException());
+
+            IEnumerable<Claim> claims = await userService.GetLoginClaims(user);
+            string token = jwtService.GenerateJwt(claims);
+
+            return new LoginDto { AccessToken = token };
         }
     }
 }

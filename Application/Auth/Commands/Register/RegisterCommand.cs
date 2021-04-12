@@ -1,12 +1,16 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Dto;
+using Application.Common.Interfaces;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using MimeKit;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Auth.Commands.Register
 {
-    public class RegisterCommand : IRequest<RegisterResponse>
+    public class RegisterCommand : IRequest<RegisterDto>
     {
         public string Login { get; set; }
 
@@ -17,36 +21,35 @@ namespace Application.Auth.Commands.Register
         public string PasswordConfirmation { get; set; }
     }
 
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterDto>
     {
-        private readonly IIdentityService identityService;
         private readonly IUserService userService;
+        private readonly UserManager<User> userManager;
         private readonly IMapper mapper;
         private readonly IEmailMessageService messageService;
         private readonly IEmailSenderService emailSenderService;
 
-        public RegisterCommandHandler(IIdentityService identityService,
-                                      IUserService userService,
+        public RegisterCommandHandler(IUserService userService,
+                                      UserManager<User> userManager,
                                       IMapper mapper,
                                       IEmailMessageService messageService,
                                       IEmailSenderService emailSenderService)
         {
-            this.identityService = identityService;
             this.userService = userService;
+            this.userManager = userManager;
             this.mapper = mapper;
             this.messageService = messageService;
             this.emailSenderService = emailSenderService;
         }
 
-        public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<RegisterDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var id = await identityService.Create(request.Login, request.Email, request.Password);
-            var token = await identityService.GenerateEmailConfirmationToken(id);
-            var user = await userService.GetById(id);
-            var message = messageService.GenerateEmailConfirmationMessage(user.Email, user.Id, token);
+            User user = await userService.Create(request.Login, request.Email, request.Password);
+            string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            MimeMessage message = messageService.GenerateEmailConfirmationMessage(user.Email, user.Id, token);
             await emailSenderService.SendEmail(message);
 
-            return mapper.Map<RegisterResponse>(user);
+            return mapper.Map<RegisterDto>(user);
         }
     }
 }

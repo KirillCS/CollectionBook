@@ -6,6 +6,6 @@ namespace Application.Common.Interfaces
 {
     public interface ITagService
     {
-        Task<IEnumerable<Tag>> AddTags(IEnumerable<string> tags);
+        Task<IEnumerable<Tag>> Add(IEnumerable<string> tags);
     }
 }

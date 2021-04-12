@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interfaces;
-using Infrastructure.Models;
+using Infrastructure.Options;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;

@@ -1,35 +1,39 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Dto;
+using Application.Common.Interfaces;
+using Domain.Entities;
 using MediatR;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Auth.Commands.Login
 {
-    public class LoginCommand : IRequest<LoginResponse>
+    public class LoginCommand : IRequest<LoginDto>
     {
         public string Login { get; set; }
 
         public string Password { get; set; }
     }
 
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginDto>
     {
-        private readonly IIdentityService identityService;
+        private readonly IUserService userService;
         private readonly IJwtService jwtService;
 
-        public LoginCommandHandler(IIdentityService identityService, IJwtService jwtService)
+        public LoginCommandHandler(IUserService userService, IJwtService jwtService)
         {
-            this.identityService = identityService;
+            this.userService = userService;
             this.jwtService = jwtService;
         }
 
-        public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoginDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var id = await identityService.Authorize(request.Login, request.Password);
-            var claims = await identityService.GetUserClaims(id);
-            var token = jwtService.GenerateJwt(claims);
+            User user = await userService.Authorize(request.Login, request.Password);
+            IEnumerable<Claim> claims = await userService.GetLoginClaims(user);
+            string token = jwtService.GenerateJwt(claims);
 
-            return new LoginResponse { AccessToken = token };
+            return new LoginDto { AccessToken = token };
         }
     }
 }

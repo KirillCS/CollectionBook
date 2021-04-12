@@ -1,8 +1,10 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Models;
 using Domain.Common;
+using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using MimeKit;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,28 +17,24 @@ namespace Application.Users.Commands.SendPasswordResetConfirmation
 
     public class SendPasswordResetConfirmationCommandHandler : IRequestHandler<SendPasswordResetConfirmationCommand>
     {
-        private readonly IUserService userService;
-        private readonly IIdentityService identityService;
+        private readonly UserManager<User> userManager;
         private readonly IEmailMessageService emailMessageService;
         private readonly IEmailSenderService emailSenderService;
 
-        public SendPasswordResetConfirmationCommandHandler(IUserService userService, 
-                                                           IIdentityService identityService, 
-                                                           IEmailMessageService emailMessageService,
-                                                           IEmailSenderService emailSenderService)
+        public SendPasswordResetConfirmationCommandHandler(UserManager<User> userManager, IEmailMessageService emailMessageService, IEmailSenderService emailSenderService)
         {
-            this.userService = userService;
-            this.identityService = identityService;
+            this.userManager = userManager;
             this.emailMessageService = emailMessageService;
             this.emailSenderService = emailSenderService;
         }
 
         public async Task<Unit> Handle(SendPasswordResetConfirmationCommand request, CancellationToken cancellationToken)
         {
-            var user = await userService.GetByEmail(request.Email);
-            Guard.Requires(() => user is not null, new EntityNotFoundException(nameof(UserDto), "email", request.Email));
-            var token = await identityService.GeneratePasswordResetToken(user.Id);
-            var message = emailMessageService.GeneratePasswordResetMessage(user.Email, user.Id, token);
+            User user = await userManager.FindByEmailAsync(request.Email);
+            Guard.Requires(() => user is not null, new EntityNotFoundException());
+
+            string token = await userManager.GeneratePasswordResetTokenAsync(user);
+            MimeMessage message = emailMessageService.GeneratePasswordResetMessage(user.Email, user.Id, token);
             await emailSenderService.SendEmail(message);
 
             return Unit.Value;

@@ -2,7 +2,7 @@
 {
     public interface ICurrentUserService
     {
-        string UserId { get; }
+        string Id { get; }
 
         string Login { get; }
     }

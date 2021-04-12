@@ -4,7 +4,7 @@ using Domain.Entities;
 using System;
 using System.Collections.Generic;
 
-namespace Application.Common.Models
+namespace Application.Common.Dto
 {
     public class UserCollectionDto : IMapFrom<Collection>
     {

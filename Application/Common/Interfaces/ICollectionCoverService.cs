@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace WebUI.Interfaces
+namespace Application.Common.Interfaces
 {
     public interface ICollectionCoverService
     {
-        Task<string> SaveCover(IFormFile cover);
+        Task<string> Save(IFormFile cover);
     }
 }

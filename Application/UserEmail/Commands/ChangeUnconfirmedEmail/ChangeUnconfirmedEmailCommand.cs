@@ -1,7 +1,10 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Common;
+using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using MimeKit;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,24 +19,27 @@ namespace Application.UserEmail.Commands.ChangeUnconfirmedEmail
 
     public class ChangeUnconfirmedEmailCommandHandler : IRequestHandler<ChangeUnconfirmedEmailCommand>
     {
-        private readonly IIdentityService identityService;
+        private readonly UserManager<User> userManager;
         private readonly IEmailMessageService messageService;
         private readonly IEmailSenderService emailSenderService;
 
-        public ChangeUnconfirmedEmailCommandHandler(IIdentityService identityService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
+        public ChangeUnconfirmedEmailCommandHandler(UserManager<User> userManager, IEmailMessageService messageService, IEmailSenderService emailSenderService)
         {
-            this.identityService = identityService;
+            this.userManager = userManager;
             this.messageService = messageService;
             this.emailSenderService = emailSenderService;
         }
 
         public async Task<Unit> Handle(ChangeUnconfirmedEmailCommand request, CancellationToken cancellationToken)
         {
-            var result = await identityService.SetEmail(request.Id, request.Email);
-            Guard.Requires(() => result.Successed, new OperationException(result.Errors));
+            User user = await userManager.FindByIdAsync(request.Id);
+            Guard.Requires(() => user is not null, new EntityNotFoundException());
 
-            var token = await identityService.GenerateEmailConfirmationToken(request.Id);
-            var message = messageService.GenerateEmailConfirmationMessage(request.Email, request.Id, token);
+            IdentityResult result = await userManager.SetEmailAsync(user, request.Email);
+            Guard.Requires(() => result.Succeeded, new OperationException());
+
+            string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            MimeMessage message = messageService.GenerateEmailConfirmationMessage(request.Email, request.Id, token);
             await emailSenderService.SendEmail(message);
 
             return Unit.Value;

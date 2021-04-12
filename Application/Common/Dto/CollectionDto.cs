@@ -4,7 +4,7 @@ using Domain.Entities;
 using System;
 using System.Collections.Generic;
 
-namespace Application.Common.Models
+namespace Application.Common.Dto
 {
     public class CollectionDto : IMapFrom<Collection>
     {
@@ -29,6 +29,7 @@ namespace Application.Common.Models
         void IMapFrom<Collection>.Mapping(Profile profile)
         {
             profile.CreateMap<Collection, CollectionDto>()
+                   .ForMember(dto => dto.User, s => s.MapFrom(c => c.User))
                    .ForMember(dto => dto.Tags, s => s.MapFrom(c => c.Tags))
                    .ForMember(dto => dto.Stars, s => s.MapFrom(c => c.Stars));
         }

@@ -9,8 +9,6 @@ using Application;
 using WebUI.Filters;
 using Application.Common.Interfaces;
 using WebUI.Services;
-using WebUI.Interfaces;
-using WebUI.Options;
 
 namespace WebUI
 {
@@ -32,12 +30,6 @@ namespace WebUI
 
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
             services.AddHttpContextAccessor();
-
-            services.AddTransient<IFormFileSaver, FormFileSaver>();
-            services.AddTransient<IFileRemoverService, FileRemoverService>();
-            services.AddTransient<IAvatarService, AvatarService>();
-            services.AddTransient<ICollectionCoverService, CollectionCoverService>();
-            services.Configure<FilePathsOptions>(Configuration.GetSection("FilePaths"));
 
             services.AddSwaggerGen(c =>
             {

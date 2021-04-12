@@ -49,12 +49,8 @@ namespace WebUI.Controllers
         [Route("avatar/update")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> UpdateAvatar([FromForm] IFormFile avatar)
+        public async Task<IActionResult> UpdateAvatar([FromForm] UpdateAvatarCommand command)
         {
-            var fileName = await avatarService.UpdateAvatar(avatar);
-
-            var command = new UpdateAvatarCommand { AvatarPath = fileName };
-
             await Mediator.Send(command);
 
             return Ok();

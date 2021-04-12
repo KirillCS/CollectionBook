@@ -1,8 +1,10 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Application.Common.Models;
+﻿using Application.Common.Dto;
+using Application.Common.Exceptions;
+using AutoMapper;
 using Domain.Common;
+using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,19 +17,21 @@ namespace Application.Users.Queries.GetUser
 
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
     {
-        private readonly IUserService userService;
+        private readonly UserManager<User> userManager;
+        private readonly IMapper mapper;
 
-        public GetUserQueryHandler(IUserService userService)
+        public GetUserQueryHandler(UserManager<User> userManager, IMapper mapper)
         {
-            this.userService = userService;
+            this.userManager = userManager;
+            this.mapper = mapper;
         }
 
         public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await userService.GetByLogin(request.Login);
-            Guard.Requires(() => user is not null, new EntityNotFoundException(nameof(UserDto), "login", request.Login));
+            var user = await userManager.FindByNameAsync(request.Login);
+            Guard.Requires(() => user is not null, new EntityNotFoundException());
 
-            return user;
+            return mapper.Map<UserDto>(user);
         }
     }
 }

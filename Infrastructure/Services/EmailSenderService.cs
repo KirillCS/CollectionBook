@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interfaces;
-using Infrastructure.Models;
+using Infrastructure.Options;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;

@@ -1,7 +1,9 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Common;
+using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,19 +30,24 @@ namespace Application.Users.Commands.UpdateProfile
 
     public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand>
     {
+        private readonly UserManager<User> userManager;
         private readonly ICurrentUserService currentUserService;
-        private readonly IUserService userService;
 
-        public UpdateProfileCommandHandler(ICurrentUserService currentUserService, IUserService userService)
+        public UpdateProfileCommandHandler(UserManager<User> userManager, ICurrentUserService currentUserService)
         {
+            this.userManager = userManager;
             this.currentUserService = currentUserService;
-            this.userService = userService;
         }
 
         public async Task<Unit> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
         {
-            var result = await userService.UpdateProfile(currentUserService.UserId, request);
-            Guard.Requires(() => result.Successed, new OperationException(result.Errors));
+            User user = await userManager.FindByIdAsync(currentUserService.Id);
+            Guard.Requires(() => user is not null, new EntityNotFoundException());
+
+            request.CopyPropertiesTo(user);
+
+            IdentityResult result = await userManager.UpdateAsync(user);
+            Guard.Requires(() => result.Succeeded, new OperationException());
 
             return Unit.Value;
         }
