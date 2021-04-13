@@ -1,10 +1,11 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 
 import { API_URL, DEFAULT_AVATAR, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
 import { CollectionDto } from 'src/app/models/dtos/collection.dto';
 import { UserLoginDto } from 'src/app/models/dtos/user-login.dto';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
+import { StarChangedEvent } from '../star/star.component';
 
 @Component({
   selector: 'app-collection-card',
@@ -14,6 +15,8 @@ import { CurrentUserService } from 'src/app/services/current-user.service';
 export class CollectionCardComponent {
 
   @Input() public collection: CollectionDto;
+
+  @Output() public starChanged = new EventEmitter<StarChangedEvent>();
 
   public constructor(
     private authService: AuthService,

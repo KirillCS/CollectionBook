@@ -11,7 +11,7 @@
     <main>
       <header>
         <h2>{{ collection.name }}</h2>
-        <app-star *ngIf="isAuthenticated" [starred]="starred" [collectionId]="collection.id"></app-star>
+        <app-star *ngIf="isAuthenticated" [starred]="starred" [collectionId]="collection.id" (changed)="starChanged.emit($event)"></app-star>
       </header>
       <p *ngIf="collection.description">{{ collection.description }}</p>
     </main>

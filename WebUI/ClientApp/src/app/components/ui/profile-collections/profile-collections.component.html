@@ -12,7 +12,7 @@
   </div>
 
   <div class="cards-group">
-    <app-collection-card *ngFor="let collection of collections | async" [collection]="collection"></app-collection-card>
+    <app-collection-card *ngFor="let collection of collections | async" [collection]="collection" (starChanged)="collectionStarChanged.emit($event)"></app-collection-card>
   </div>
 
   <h1 *ngIf="totalCount == 0" class="row mx-0 justify-content-center">

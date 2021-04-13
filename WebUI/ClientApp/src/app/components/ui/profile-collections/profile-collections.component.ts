@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 
 import { CollectionDto } from 'src/app/models/dtos/collection.dto';
 import { GetProfileCollectionsRequest } from 'src/app/models/requests/user/get-profile-collections.request';
+import { StarChangedEvent } from '../star/star.component';
 
 @Component({
   selector: 'app-profile-collections',
@@ -17,8 +17,9 @@ export class ProfileCollectionsComponent implements OnInit {
   private profileLogin: string;
 
   @Output() public getCollections = new EventEmitter<GetProfileCollectionsRequest>();
+  @Output() public collectionStarChanged = new EventEmitter<StarChangedEvent>();
 
-  @Input() public collections = new Observable<CollectionDto[]>();
+  @Input() public collections = new Array<CollectionDto>();
   @Input() public totalCount = -1;
 
   public searchString = '';

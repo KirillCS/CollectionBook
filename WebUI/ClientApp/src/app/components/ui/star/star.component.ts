@@ -1,8 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { CollectionService } from 'src/app/services/collection.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
+
+export class StarChangedEvent {
+  public collectionId: number;
+  public newStatus: boolean;
+}
 
 @Component({
   selector: 'app-star',
@@ -14,6 +19,8 @@ export class StarComponent {
 
   @Input() public starred: boolean;
   @Input() public collectionId: number;
+
+  @Output() public changed = new EventEmitter<StarChangedEvent>();
 
   public constructor(private collectionService: CollectionService, private dialogsService: DefaultDialogsService) { }
 
@@ -33,6 +40,7 @@ export class StarComponent {
     this.isStarClicked = true;
     this.collectionService.star(this.collectionId).subscribe(() => {
       this.starred = !this.starred;
+      this.changed.next({ collectionId: this.collectionId, newStatus: this.starred });
     }, (errorResponse: HttpErrorResponse) => {
       this.isStarClicked = false;
       if (errorResponse.status == 401) {

@@ -1,3 +1,4 @@
 <div class="pb-4">
-  <app-profile-collections (getCollections)="getCollections($event)" [collections]="collections" [totalCount]="totalCount"></app-profile-collections>
+  <app-profile-collections (getCollections)="getCollections($event)" (collectionStarChanged)="collectionStarChanged($event)" [collections]="observableCollections"
+    [totalCount]="totalCount"></app-profile-collections>
 </div>
