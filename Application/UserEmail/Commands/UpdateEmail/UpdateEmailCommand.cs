@@ -21,7 +21,7 @@ namespace Application.UserEmail.Commands.ConfirmEmailUpdating
     {
         private readonly UserManager<User> userManager;
 
-        public UpdateEmailHandler(UserManager<User> userManager)
+        public UpdateEmailCommandHandler(UserManager<User> userManager)
         {
             this.userManager = userManager;
         }

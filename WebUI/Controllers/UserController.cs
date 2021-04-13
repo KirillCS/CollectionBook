@@ -9,22 +9,13 @@ using Application.Users.Queries.GetCollections;
 using Application.Users.Queries.GetStarredCollections;
 using Application.Users.Queries.GetUser;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using WebUI.Interfaces;
 
 namespace WebUI.Controllers
 {
     public class UserController : ApiControllerBase
     {
-        private readonly IAvatarService avatarService;
-
-        public UserController(IAvatarService avatarService)
-        {
-            this.avatarService = avatarService;
-        }
-
         [Route("{Login}")]
         [HttpGet]
         public async Task<IActionResult> GetUser([FromRoute] GetUserQuery query)
@@ -61,8 +52,6 @@ namespace WebUI.Controllers
         [Authorize]
         public async Task<IActionResult> ResetAvatar()
         {
-            await avatarService.ResetAvatar();
-
             await Mediator.Send(new ResetAvatarCommand());
 
             return Ok();
