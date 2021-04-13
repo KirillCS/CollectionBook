@@ -63,6 +63,7 @@ import { CollectionsComponent } from './components/profile/collections/collectio
 import { StarsComponent } from './components/profile/stars/stars.component';
 import { CollectionCardComponent } from './components/ui/collection-card/collection-card.component';
 import { StarComponent } from './components/ui/star/star.component';
+import { ProfileCollectionsComponent } from './components/ui/profile-collections/profile-collections.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { StarComponent } from './components/ui/star/star.component';
     CollectionsComponent,
     StarsComponent,
     CollectionCardComponent,
-    StarComponent
+    StarComponent,
+    ProfileCollectionsComponent
   ],
   imports: [
     BrowserModule,
