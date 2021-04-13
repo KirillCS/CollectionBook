@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { CollectionDto } from 'src/app/models/dtos/collection.dto';
 import { GetProfileCollectionsRequest } from 'src/app/models/requests/user/get-profile-collections.request';
+import { CurrentUserService } from 'src/app/services/current-user.service';
 import { StarChangedEvent } from '../star/star.component';
 
 @Component({
@@ -27,7 +28,11 @@ export class ProfileCollectionsComponent implements OnInit {
   public pageSize = 12;
   public pageIndex = 0;
 
-  public constructor(private route: ActivatedRoute) { }
+  public constructor(private route: ActivatedRoute, private currentUserService: CurrentUserService) { }
+
+  public get displayNewButton(): boolean {
+    return this.currentUserService?.currentUser?.login === this.profileLogin;
+  }
 
   public ngOnInit(): void {
     this.route.parent.paramMap.subscribe(params => {

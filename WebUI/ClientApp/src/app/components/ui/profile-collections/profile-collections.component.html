@@ -8,7 +8,7 @@
         <mat-icon class="material-icons-round">clear</mat-icon>
       </button>
     </mat-form-field>
-    <button mat-stroked-button routerLink="/new" color="primary">New</button>
+    <button mat-stroked-button *ngIf="displayNewButton" routerLink="/new" color="primary">New</button>
   </div>
 
   <div class="cards-group">
