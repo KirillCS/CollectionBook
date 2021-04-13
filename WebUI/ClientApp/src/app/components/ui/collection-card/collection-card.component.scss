@@ -61,14 +61,12 @@ mat-card {
       header {
         display: flex;
         justify-content: space-between;
+        align-items: flex-start;
 
         h2 {
           margin: 0;
           word-wrap: break-word;
-        }
-
-        button {
-          margin-left: 0.5rem;
+          margin-right: 0.5rem;
         }
       }
 

@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
 
 import { CollectionDto } from 'src/app/models/dtos/collection.dto';
 import { GetProfileCollectionsRequest } from 'src/app/models/requests/user/get-profile-collections.request';
+import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
 import { StarChangedEvent } from '../../ui/star/star.component';
@@ -15,6 +15,9 @@ import { StarChangedEvent } from '../../ui/star/star.component';
   templateUrl: './stars.component.html'
 })
 export class StarsComponent implements OnInit {
+
+  private currentUserLogin = '';
+  private profileUserLogin = '';
 
   private collections = new Array<CollectionDto>();
 
@@ -26,10 +29,14 @@ export class StarsComponent implements OnInit {
   public constructor(
     private userService: UserService,
     private router: Router,
+    private route: ActivatedRoute,
+    private currentUserService: CurrentUserService,
     private dialogsService: DefaultDialogsService
   ) { }
 
   public ngOnInit(): void {
+    this.route.parent.paramMap.subscribe(params => this.profileUserLogin = params.get('login'));
+    this.currentUserLogin = this.currentUserService.currentUser?.login;
     this.observableCollections.subscribe(collections => this.collections = collections);
   }
 
@@ -55,6 +62,10 @@ export class StarsComponent implements OnInit {
   }
 
   public collectionStarChanged(event: StarChangedEvent): void {
+    if (this.currentUserLogin !== this.profileUserLogin) {
+      return;
+    }
+
     this.collections$.next(this.collections.filter(c => c.id !== event.collectionId));
     this.totalCount--;
   }
