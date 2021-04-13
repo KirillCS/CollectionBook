@@ -4,9 +4,7 @@
     <main>
       <header>
         <h2>{{ collection.name }}</h2>
-        <button *ngIf="isAuthenticated" (click)="star()" mat-icon-button color="warn">
-          <mat-icon class="material-icons-round">{{ starIcon }}</mat-icon>
-        </button>
+        <app-star *ngIf="isAuthenticated" [starred]="starred" [collectionId]="collection.id"></app-star>
       </header>
       <p *ngIf="collection.description">{{ collection.description }}</p>
     </main>
