@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { FieldDialogComponent } from 'src/app/components/dialogs/field-dialog/field-dialog.component';
 import { UserService } from 'src/app/services/user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
+import { PreviousRouteService } from 'src/app/services/previous-route.service';
 
 @Component({
   selector: 'app-login',
@@ -46,7 +47,8 @@ export class LoginComponent implements OnDestroy {
     private router: Router,
     private dialog: MatDialog,
     private dialogsService: DefaultDialogsService,
-    private userService: UserService
+    private userService: UserService,
+    private previousRouteService: PreviousRouteService
   ) { }
 
   public ngOnDestroy(): void {
@@ -82,7 +84,8 @@ export class LoginComponent implements OnDestroy {
         this.unknownError = true;
       }, () => {
         this.inProcess = false;
-        this.router.navigate(['']);
+        let url = this.previousRouteService.getPreviousUrl();
+        this.router.navigateByUrl(url === this.router.url ? '/' : url);
       });
   }
 
