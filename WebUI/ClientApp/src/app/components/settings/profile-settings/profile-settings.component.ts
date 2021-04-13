@@ -88,7 +88,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   }
 
   public avatarSelected(files: FileList): void {
-    if (!files.length) {
+    if (!files.length || !files[0].type.startsWith("image/")) {
       return;
     }
 
