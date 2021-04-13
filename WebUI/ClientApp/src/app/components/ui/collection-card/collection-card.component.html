@@ -7,7 +7,7 @@
     </div>
   </header>
   <img mat-card-image [src]="collectionCover" [alt]="collection.name">
-  <mat-card-content>
+  <mat-card-content [class]="!collection.user ? 'without-header' : ''">
     <main>
       <header>
         <h2>{{ collection.name }}</h2>

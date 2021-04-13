@@ -58,6 +58,7 @@ namespace Application.Users.Queries.GetStarredCollections
                                   .Include(c => c.Stars)
                                   .Include(c => c.Tags)
                                   .Where(c => c.Stars.Any(s => s.UserId == user.Id) && c.Name.Contains(request.SearchString))
+                                  .OrderByDescending(c => c.CreationTime)
                                   .ProjectTo<CollectionDto>(mapper.ConfigurationProvider)
                                   .ToPaginatedList(request.PageIndex, request.PageSize);
         }

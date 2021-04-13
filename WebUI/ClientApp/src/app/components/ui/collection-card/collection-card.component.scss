@@ -49,6 +49,10 @@ mat-card {
     flex-direction: column;
     justify-content: space-between;
     height: calc(100% - 250px - 1rem - 3.5rem - 0.7rem);
+    
+    &.without-header {
+      height: calc(100% - 250px);
+    }
 
     main {
       display: flex;
