@@ -1,4 +1,4 @@
-export class GetUserCollectionsRequest {
+export class GetProfileCollectionsRequest {
   public login: string;
   public searchString: string;
   public pageSize: number;

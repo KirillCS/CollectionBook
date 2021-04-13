@@ -1,14 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { CollectionDto } from 'src/app/models/dtos/collection.dto';
-
-export class GetCollectionsData {
-  public searchString: string;
-  public pageSize: number;
-  public pageIndex: number;
-}
+import { GetProfileCollectionsRequest } from 'src/app/models/requests/user/get-profile-collections.request';
 
 @Component({
   selector: 'app-profile-collections',
@@ -18,8 +14,9 @@ export class GetCollectionsData {
 export class ProfileCollectionsComponent implements OnInit {
 
   private searchTimeout: any;
+  private profileLogin: string;
 
-  @Output() public getCollections = new EventEmitter<GetCollectionsData>();
+  @Output() public getCollections = new EventEmitter<GetProfileCollectionsRequest>();
 
   @Input() public collections = new Observable<CollectionDto[]>();
   @Input() public totalCount = -1;
@@ -29,29 +26,32 @@ export class ProfileCollectionsComponent implements OnInit {
   public pageSize = 12;
   public pageIndex = 0;
 
-  public constructor() { }
+  public constructor(private route: ActivatedRoute) { }
 
   public ngOnInit(): void {
-    this.getCollections.emit({ searchString: '', pageSize: this.pageSize, pageIndex: 0 });
+    this.route.parent.paramMap.subscribe(params => {
+      this.profileLogin = params.get('login');
+      this.getCollections.emit({ login: this.profileLogin, searchString: '', pageSize: this.pageSize, pageIndex: 0 });
+    });
   }
 
   public searchCollections(): void {
     clearTimeout(this.searchTimeout);
     this.searchTimeout = setTimeout(() => {
       this.pageIndex = 0;
-      this.getCollections.emit({ searchString: this.searchString, pageSize: this.pageSize, pageIndex: this.pageIndex });
+      this.getCollections.emit({ login: this.profileLogin, searchString: this.searchString, pageSize: this.pageSize, pageIndex: this.pageIndex });
     }, 700);
   }
 
   public clearSearch(): void {
     this.searchString = '';
     this.pageIndex = 0;
-    this.getCollections.emit({ searchString: '', pageSize: this.pageSize, pageIndex: this.pageIndex });
+    this.getCollections.emit({ login: this.profileLogin, searchString: '', pageSize: this.pageSize, pageIndex: this.pageIndex });
   }
 
   public pageChanged(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.getCollections.emit({ searchString: this.searchString, pageSize: event.pageSize, pageIndex: event.pageIndex });
+    this.getCollections.emit({ login: this.profileLogin, searchString: this.searchString, pageSize: event.pageSize, pageIndex: event.pageIndex });
   }
 }
