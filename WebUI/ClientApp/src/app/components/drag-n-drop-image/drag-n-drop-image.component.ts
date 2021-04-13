@@ -42,6 +42,10 @@ export class DragNDropImageComponent {
     });
 
     dialogRef.afterClosed().subscribe((imageBlob: Blob) => {
+      if (!imageBlob) {
+        return;
+      }
+
       let image: any = imageBlob;
       image.name = this.currentImage.name;
 

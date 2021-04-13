@@ -61,8 +61,6 @@ export class CollectionCreatingComponent {
   }
 
   public addTag(event: MatChipInputEvent): void {
-
-
     const input = event.input;
     const values = event.value.split(/[ ,]/);
 
