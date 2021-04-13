@@ -18,8 +18,6 @@ namespace Application.Common.Dto
 
         public DateTime CreationTime { get; set; }
 
-        public string UserId { get; set; }
-
         public List<StarDto> Stars { get; set; }
 
         public List<TagDto> Tags { get; set; }

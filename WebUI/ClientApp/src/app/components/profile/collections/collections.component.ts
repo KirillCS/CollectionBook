@@ -4,7 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
-import { UserCollectionDto } from 'src/app/models/dtos/user-collections.dto';
+import { CollectionDto } from 'src/app/models/dtos/collection.dto';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -16,7 +16,7 @@ import { UserService } from 'src/app/services/user.service';
 export class CollectionsComponent implements OnInit {
 
   private currentUserLogin = '';
-  private collections$ = new Subject<UserCollectionDto[]>();
+  private collections$ = new Subject<CollectionDto[]>();
 
   private searchTimeout: any;
 

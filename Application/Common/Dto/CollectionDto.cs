@@ -18,9 +18,7 @@ namespace Application.Common.Dto
 
         public DateTime CreationTime { get; set; }
 
-        public string UserId { get; set; }
-
-        public CoverUserDto User { get; set; }
+        public UserCoverDto User { get; set; }
 
         public List<StarDto> Stars { get; set; }
 

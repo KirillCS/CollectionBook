@@ -1,7 +1,7 @@
 import { Component, Inject, Input } from '@angular/core';
 
-import { API_URL, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
-import { UserCollectionDto } from 'src/app/models/dtos/user-collections.dto';
+import { API_URL, DEFAULT_AVATAR, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
+import { CollectionDto } from 'src/app/models/dtos/collection.dto';
 import { UserLoginDto } from 'src/app/models/dtos/user-login.dto';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
@@ -13,12 +13,13 @@ import { CurrentUserService } from 'src/app/services/current-user.service';
 })
 export class CollectionCardComponent {
 
-  @Input() public collection: UserCollectionDto;
+  @Input() public collection: CollectionDto;
 
   public constructor(
     private authService: AuthService,
     private currentUserService: CurrentUserService,
     @Inject(API_URL) private apiUrl: string,
+    @Inject(DEFAULT_AVATAR) private defaultAvatar: string,
     @Inject(DEFAULT_COLLECTION_COVER) private defaultCover: string
   ) { }
 
@@ -28,6 +29,14 @@ export class CollectionCardComponent {
 
   public get currentUser(): UserLoginDto {
     return this.currentUserService.currentUser;
+  }
+
+  public get userAvatar(): string {
+    if (!this.collection.user?.avatarPath) {
+      return this.defaultAvatar;
+    }
+
+    return `${this.apiUrl}${this.collection.user.avatarPath}`;
   }
 
   public get collectionCover(): string {

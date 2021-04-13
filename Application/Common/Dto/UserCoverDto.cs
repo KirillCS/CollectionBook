@@ -4,8 +4,10 @@ using Domain.Entities;
 
 namespace Application.Common.Dto
 {
-    public class CoverUserDto : IMapFrom<User>
+    public class UserCoverDto : IMapFrom<User>
     {
+        public string Id { get; set; }
+
         public string Login { get; set; }
 
         public string FirstName { get; set; }
@@ -16,7 +18,7 @@ namespace Application.Common.Dto
 
         void IMapFrom<User>.Mapping(Profile profile)
         {
-            profile.CreateMap<User, CoverUserDto>().ForMember(d => d.Login, s => s.MapFrom(u => u.UserName));
+            profile.CreateMap<User, UserCoverDto>().ForMember(d => d.Login, s => s.MapFrom(u => u.UserName));
         }
     }
 }

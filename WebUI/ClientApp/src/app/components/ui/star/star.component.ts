@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { CollectionService } from 'src/app/services/collection.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
@@ -8,7 +8,7 @@ import { DefaultDialogsService } from 'src/app/services/default-dialogs.service'
   selector: 'app-star',
   templateUrl: './star.component.html'
 })
-export class StarComponent implements OnInit {
+export class StarComponent {
 
   private isStarClicked = false;
 
@@ -16,9 +16,6 @@ export class StarComponent implements OnInit {
   @Input() public collectionId: number;
 
   public constructor(private collectionService: CollectionService, private dialogsService: DefaultDialogsService) { }
-
-  ngOnInit(): void {
-  }
 
   public get starIcon(): string {
     if (this.starred) {

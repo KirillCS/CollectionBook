@@ -12,7 +12,7 @@ import { sendPasswordResetConfirmation } from 'src/app/models/requests/user/send
 import { ResetPasswordRequest } from '../models/requests/user/reset-password.request';
 import { GetUserCollectionsRequest } from '../models/requests/user/get-user-collections.request';
 import { PaginatedListResponse } from '../models/responses/paginated-list.response';
-import { UserCollectionDto } from '../models/dtos/user-collections.dto';
+import { CollectionDto } from '../models/dtos/collection.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class UserService {
     return this.httpClient.get<UserDto>(`${this.apiUrl}api/user/${login ?? ''}`);
   }
 
-  public getCollections(request: GetUserCollectionsRequest): Observable<PaginatedListResponse<UserCollectionDto>> {
+  public getCollections(request: GetUserCollectionsRequest): Observable<PaginatedListResponse<CollectionDto>> {
     let params = new HttpParams({
       fromObject: {
         login: request.login,
@@ -34,7 +34,7 @@ export class UserService {
       }
     });
 
-    return this.httpClient.get<PaginatedListResponse<UserCollectionDto>>(`${this.apiUrl}api/user/collections`, { params });
+    return this.httpClient.get<PaginatedListResponse<CollectionDto>>(`${this.apiUrl}api/user/collections`, { params });
   }
 
   public updateAvatar(avatar: File): Observable<void> {

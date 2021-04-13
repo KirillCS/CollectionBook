@@ -1,13 +1,14 @@
 import { StarDto } from "./star.dto";
 import { TagDto } from "./tag.dto";
+import { UserCoverDto } from "./user-cover.dto";
 
-export class UserCollectionDto {
+export class CollectionDto {
   public id: number;
   public name: string;
   public description: string;
   public coverPath: string;
   public creationTime: Date;
-  public userId: string;
+  public user: UserCoverDto;
   public tags: TagDto[];
   public stars: StarDto[];
 }
