@@ -6,7 +6,7 @@ using System.IO;
 using Application.Common.Interfaces;
 using Application.Common.Exceptions;
 
-namespace WebUI.Services
+namespace Infrastructure.Services
 {
     public class FileService : IFileService
     {

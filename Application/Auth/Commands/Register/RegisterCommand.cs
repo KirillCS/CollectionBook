@@ -26,19 +26,19 @@ namespace Application.Auth.Commands.Register
         private readonly IUserService userService;
         private readonly UserManager<User> userManager;
         private readonly IMapper mapper;
-        private readonly IEmailMessageService messageService;
+        private readonly IEmailMessageExtensionsService emailMessageService;
         private readonly IEmailSenderService emailSenderService;
 
         public RegisterCommandHandler(IUserService userService,
                                       UserManager<User> userManager,
                                       IMapper mapper,
-                                      IEmailMessageService messageService,
+                                      IEmailMessageExtensionsService emailMessageService,
                                       IEmailSenderService emailSenderService)
         {
             this.userService = userService;
             this.userManager = userManager;
             this.mapper = mapper;
-            this.messageService = messageService;
+            this.emailMessageService = emailMessageService;
             this.emailSenderService = emailSenderService;
         }
 
@@ -46,7 +46,7 @@ namespace Application.Auth.Commands.Register
         {
             User user = await userService.Create(request.Login, request.Email, request.Password);
             string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            MimeMessage message = messageService.GenerateEmailConfirmationMessage(user.Email, user.Id, token);
+            MimeMessage message = emailMessageService.GenerateEmailConfirmationMessage(user.Email, user.Id, token);
             await emailSenderService.SendEmail(message);
 
             return mapper.Map<RegisterDto>(user);

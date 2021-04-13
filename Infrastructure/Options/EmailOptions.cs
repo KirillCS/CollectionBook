@@ -6,13 +6,13 @@
 
         public string Name { get; set; }
 
-        public string ConfirmationSubject { get; set; }
+        public string EmailConfirmationSubject { get; set; }
 
-        public string ConfirmationMessage { get; set; }
+        public string EmailConfirmationMessage { get; set; }
 
-        public string ChangingSubject { get; set; }
+        public string EmailUpdateConfirmationSubject { get; set; }
 
-        public string ChangingMessage { get; set; }
+        public string EmailUpdateConfirmationMessage { get; set; }
 
         public string PasswordResetSubject { get; set; }
 

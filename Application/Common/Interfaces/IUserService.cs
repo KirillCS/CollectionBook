@@ -18,17 +18,5 @@ namespace Application.Common.Interfaces
         Task<bool> LoginExists(string login);
 
         Task<bool> EmailExists(string email);
-
-        //Task<UserDto> GetById(string id);
-
-        //Task<UserDto> GetByLogin(string login);
-
-        //Task<UserDto> GetByEmail(string email);
-
-        //Task<Result> UpdateAvatar(string userId, string newAvatarPath);
-
-        //Task<Result> ResetAvatar(string userId);
-
-        //Task<Result> UpdateProfile(string userId, UpdateProfileCommand command);
     }
 }

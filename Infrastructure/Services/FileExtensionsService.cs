@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class AvatarService : IAvatarService
+    public class FileExtensionsService : IFileExtensionsService
     {
         private readonly IFileService fileSaver;
         private readonly FilePathsOptions filePaths;
 
-        public AvatarService(IOptions<FilePathsOptions> filePathsOptions, IFileService fileSaver)
+        public FileExtensionsService(IOptions<FilePathsOptions> filePathsOptions, IFileService fileSaver)
         {
             this.fileSaver = fileSaver;
             filePaths = filePathsOptions.Value;
         }
 
-        public async Task<string> Update(IFormFile avatar, string currentAvatar)
+        public async Task<string> UpdateAvatar(IFormFile avatar, string currentAvatar)
         {
             if (currentAvatar is not null)
             {
@@ -26,6 +26,16 @@ namespace Infrastructure.Services
             }
 
             return await fileSaver.Save(avatar, filePaths.Avatars, Guid.NewGuid().ToString());
+        }
+
+        public async Task<string> UpdateCollectionCover(IFormFile cover, string currentCover)
+        {
+            if (currentCover is not null)
+            {
+                fileSaver.Remove(currentCover);
+            }
+
+            return await fileSaver.Save(cover, filePaths.CollectionsCovers, Guid.NewGuid().ToString());
         }
     }
 }

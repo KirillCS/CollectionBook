@@ -18,13 +18,13 @@ namespace Application.UserEmail.Commands.SendConfirmationEmail
     public class SendConfirmationEmailCommandHandler : IRequestHandler<SendConfirmationEmailCommand>
     {
         private readonly UserManager<User> userManager;
-        private readonly IEmailMessageService messageService;
+        private readonly IEmailMessageExtensionsService emailMessageService;
         private readonly IEmailSenderService emailSenderService;
 
-        public SendConfirmationEmailCommandHandler(UserManager<User> userManager, IEmailMessageService messageService, IEmailSenderService emailSenderService)
+        public SendConfirmationEmailCommandHandler(UserManager<User> userManager, IEmailMessageExtensionsService emailMessageService, IEmailSenderService emailSenderService)
         {
             this.userManager = userManager;
-            this.messageService = messageService;
+            this.emailMessageService = emailMessageService;
             this.emailSenderService = emailSenderService;
         }
 
@@ -34,7 +34,7 @@ namespace Application.UserEmail.Commands.SendConfirmationEmail
             Guard.Requires(() => user is not null, new EntityNotFoundException());
 
             string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            MimeMessage message = messageService.GenerateEmailConfirmationMessage(user.Email, user.Id, token);
+            MimeMessage message = emailMessageService.GenerateEmailConfirmationMessage(user.Email, user.Id, token);
             await emailSenderService.SendEmail(message);
 
             return Unit.Value;

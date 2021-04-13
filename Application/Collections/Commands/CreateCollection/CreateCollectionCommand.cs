@@ -4,7 +4,6 @@ using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,19 +30,19 @@ namespace Application.Collections.Commands.CreateCollection
 
     public class CreateCollectionCommandHandler : IRequestHandler<CreateCollectionCommand>
     {
-        private readonly ICollectionCoverService coverService;
+        private readonly IFileExtensionsService fileService;
         private readonly ITagService tagService;
         private readonly IMapper mapper;
         private readonly ICurrentUserService currentUserService;
         private readonly IApplicationDbContext dbContext;
 
-        public CreateCollectionCommandHandler(ICollectionCoverService coverService,
+        public CreateCollectionCommandHandler(IFileExtensionsService fileService,
                                               ITagService tagService,
                                               IMapper mapper,
                                               ICurrentUserService currentUserService,
                                               IApplicationDbContext dbContext)
         {
-            this.coverService = coverService;
+            this.fileService = fileService;
             this.tagService = tagService;
             this.mapper = mapper;
             this.currentUserService = currentUserService;
@@ -55,7 +54,7 @@ namespace Application.Collections.Commands.CreateCollection
             string coverPath = null;
             if (request.Cover is not null)
             {
-                coverPath = await coverService.Save(request.Cover);
+                coverPath = await fileService.UpdateCollectionCover(request.Cover, null);
             }
 
             IEnumerable<Tag> tags = await tagService.Add(request.Tags);

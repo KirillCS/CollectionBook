@@ -6,13 +6,13 @@
 
         public string EmailConfirmedUrl { get; set; }
 
-        public string EmailChangedUrl { get; set; }
+        public string EmailUpdatedUrl { get; set; }
 
         public string PasswordResetUrl { get; set; }
 
         public string FullEmailConfirmedUrl => BaseUrl + EmailConfirmedUrl;
 
-        public string FullEmailChangedUrl => BaseUrl + EmailChangedUrl;
+        public string FullEmailUpdatedUrl => BaseUrl + EmailUpdatedUrl;
 
         public string FullPasswordResetUrl => BaseUrl + PasswordResetUrl;
     }

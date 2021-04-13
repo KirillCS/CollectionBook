@@ -65,8 +65,15 @@ namespace Infrastructure
             services.Configure<FilePathsOptions>(configuration.GetSection("FilePaths"));
 
             services.AddTransient<IUserService, UserService>();
+
             services.AddTransient<IUriService, UriService>();
+            services.AddTransient<IUriExtensionsService, UriExtensionsService>();
+
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IFileExtensionsService, FileExtensionsService>();
+
             services.AddTransient<IEmailMessageService, EmailMessageService>();
+            services.AddTransient<IEmailMessageExtensionsService, EmailMessageExtensionsService>();
             services.AddTransient<IEmailSenderService, EmailSenderService>();
 
             services.AddTransient<ITagService, TagService>();

@@ -18,10 +18,10 @@ namespace Application.Users.Commands.SendPasswordResetConfirmation
     public class SendPasswordResetConfirmationCommandHandler : IRequestHandler<SendPasswordResetConfirmationCommand>
     {
         private readonly UserManager<User> userManager;
-        private readonly IEmailMessageService emailMessageService;
+        private readonly IEmailMessageExtensionsService emailMessageService;
         private readonly IEmailSenderService emailSenderService;
 
-        public SendPasswordResetConfirmationCommandHandler(UserManager<User> userManager, IEmailMessageService emailMessageService, IEmailSenderService emailSenderService)
+        public SendPasswordResetConfirmationCommandHandler(UserManager<User> userManager, IEmailMessageExtensionsService emailMessageService, IEmailSenderService emailSenderService)
         {
             this.userManager = userManager;
             this.emailMessageService = emailMessageService;

@@ -19,14 +19,17 @@ namespace Application.UserEmail.Commands.UpdateEmail
     {
         private readonly UserManager<User> userManager;
         private readonly ICurrentUserService currentUserService;
-        private readonly IEmailMessageService messageService;
+        private readonly IEmailMessageExtensionsService emailMessageService;
         private readonly IEmailSenderService emailSenderService;
 
-        public SendConfirmationEmailUpdateCommandHandler(UserManager<User> userManager, ICurrentUserService currentUserService, IEmailMessageService messageService, IEmailSenderService emailSenderService)
+        public SendConfirmationEmailUpdateCommandHandler(UserManager<User> userManager,
+                                                         ICurrentUserService currentUserService,
+                                                         IEmailMessageExtensionsService emailMessageService,
+                                                         IEmailSenderService emailSenderService)
         {
             this.userManager = userManager;
             this.currentUserService = currentUserService;
-            this.messageService = messageService;
+            this.emailMessageService = emailMessageService;
             this.emailSenderService = emailSenderService;
         }
 
@@ -36,7 +39,7 @@ namespace Application.UserEmail.Commands.UpdateEmail
             Guard.Requires(() => user is not null, new EntityNotFoundException());
 
             string token = await userManager.GenerateChangeEmailTokenAsync(user, request.Email);
-            MimeMessage messsage = messageService.GenerateEmailChangingMessage(request.Email, currentUserService.Id, token);
+            MimeMessage messsage = emailMessageService.GenerateEmailUpdateConfirmationMessage(request.Email, currentUserService.Id, token);
             await emailSenderService.SendEmail(messsage);
 
             return Unit.Value;
