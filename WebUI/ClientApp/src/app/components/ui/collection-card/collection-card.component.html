@@ -1,9 +1,11 @@
 <mat-card>
-  <mat-card-header *ngIf="collection.user">
+  <header *ngIf="collection.user">
     <img mat-card-avatar [src]="userAvatar" alt=""/>
-    <mat-card-title>{{ collection.user.firstName }} {{ collection.user.lastName }}</mat-card-title>
-    <mat-card-subtitle>@{{ collection.user.login }}</mat-card-subtitle>
-  </mat-card-header>
+    <div class="cred">
+      <div class="name" *ngIf="collection.user.firstName?.length > 0 || collection.user.lastName?.length > 0">{{ collection.user.firstName }} {{ collection.user.lastName }}</div>
+      <div class="login">@{{ collection.user.login }}</div>
+    </div>
+  </header>
   <img mat-card-image [src]="collectionCover" [alt]="collection.name">
   <mat-card-content>
     <main>

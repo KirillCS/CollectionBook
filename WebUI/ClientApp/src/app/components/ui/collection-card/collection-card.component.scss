@@ -3,6 +3,42 @@ mat-card {
   box-shadow: 0 0 6px 0 #00000040 !important;
   border-radius: 8px;
 
+  header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0.7rem;
+
+    img {
+      width: 3.5rem;
+      height: 3.5rem;
+      margin-right: 0.7rem;
+      border-radius: 50%;
+      overflow: hidden;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .cred {
+      width: calc(100% - 3.5rem - 0.7rem);
+
+      .name {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 0.3rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+  
+      .login {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
   img {
     height: 250px;
     object-fit: cover;
@@ -12,7 +48,7 @@ mat-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: calc(100% - 250px);
+    height: calc(100% - 250px - 1rem - 3.5rem - 0.7rem);
 
     main {
       display: flex;
