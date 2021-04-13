@@ -1,5 +1,5 @@
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { ENTER, SPACE, COMMA } from '@angular/cdk/keycodes';
+import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -38,7 +38,7 @@ export class CollectionCreatingComponent {
   public image: File;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
-  public separatorKeysCodes = [ENTER, SPACE, COMMA];
+  public separatorKeysCodes = [ENTER, SPACE];
   public filteredTags: Observable<string[]>;
   public tags: string[] = [];
 
