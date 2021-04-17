@@ -15,24 +15,9 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Queries.GetCollections
 {
-    public class GetCollectionsQuery : IRequest<PaginatedList<UserCollectionDto>>
+    public class GetCollectionsQuery : PaginatedListQuery, IRequest<PaginatedList<UserCollectionDto>>
     {
-        private string searchString = string.Empty;
-
         public string Login { get; set; }
-
-        public string SearchString 
-        {
-            get => searchString; 
-            set
-            {
-                searchString = value ?? string.Empty;
-            }
-        }
-
-        public int PageSize { get; set; }
-
-        public int PageIndex { get; set; }
     }
 
     public class GetCollectionsQueryHandler : IRequestHandler<GetCollectionsQuery, PaginatedList<UserCollectionDto>>

@@ -15,24 +15,9 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Queries.GetStarredCollections
 {
-    public class GetStarredCollectionsQuery : IRequest<PaginatedList<CollectionDto>>
+    public class GetStarredCollectionsQuery : PaginatedListQuery, IRequest<PaginatedList<CollectionDto>>
     {
-        private string searchString = string.Empty;
-
         public string Login { get; set; }
-
-        public string SearchString
-        {
-            get => searchString;
-            set
-            {
-                searchString = value ?? string.Empty;
-            }
-        }
-
-        public int PageSize { get; set; }
-
-        public int PageIndex { get; set; }
     }
 
     public class GetStarredCollectionsQueryHandler : IRequestHandler<GetStarredCollectionsQuery, PaginatedList<CollectionDto>>
