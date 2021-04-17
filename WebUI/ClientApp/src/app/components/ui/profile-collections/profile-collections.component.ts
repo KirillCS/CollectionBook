@@ -9,21 +9,18 @@ import { StarChangedEvent } from '../star/star.component';
 
 @Component({
   selector: 'app-profile-collections',
-  templateUrl: './profile-collections.component.html',
-  styleUrls: ['./profile-collections.component.css']
+  templateUrl: './profile-collections.component.html'
 })
 export class ProfileCollectionsComponent implements OnInit {
 
-  private searchTimeout: any;
   private profileLogin: string;
+  private searchString = '';
 
   @Output() public getCollections = new EventEmitter<GetProfileCollectionsRequest>();
   @Output() public collectionStarChanged = new EventEmitter<StarChangedEvent>();
 
   @Input() public collections = new Array<CollectionDto>();
   @Input() public totalCount = -1;
-
-  public searchString = '';
 
   public pageSize = 12;
   public pageIndex = 0;
@@ -37,27 +34,28 @@ export class ProfileCollectionsComponent implements OnInit {
   public ngOnInit(): void {
     this.route.parent.paramMap.subscribe(params => {
       this.profileLogin = params.get('login');
-      this.getCollections.emit({ login: this.profileLogin, searchString: '', pageSize: this.pageSize, pageIndex: 0 });
+      this.emit();
     });
   }
 
-  public searchCollections(): void {
-    clearTimeout(this.searchTimeout);
-    this.searchTimeout = setTimeout(() => {
-      this.pageIndex = 0;
-      this.getCollections.emit({ login: this.profileLogin, searchString: this.searchString, pageSize: this.pageSize, pageIndex: this.pageIndex });
-    }, 700);
-  }
-
-  public clearSearch(): void {
-    this.searchString = '';
+  public searchInputChanged(searchString: string): void {
     this.pageIndex = 0;
-    this.getCollections.emit({ login: this.profileLogin, searchString: '', pageSize: this.pageSize, pageIndex: this.pageIndex });
+    this.searchString = searchString;
+    this.emit();
   }
 
   public pageChanged(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.getCollections.emit({ login: this.profileLogin, searchString: this.searchString, pageSize: event.pageSize, pageIndex: event.pageIndex });
+    this.emit();
+  }
+
+  public emit(): void {
+    this.getCollections.emit({
+      login: this.profileLogin,
+      searchString: this.searchString,
+      pageSize: this.pageSize,
+      pageIndex: this.pageIndex
+    });
   }
 }

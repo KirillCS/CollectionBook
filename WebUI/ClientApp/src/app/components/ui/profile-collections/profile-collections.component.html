@@ -1,13 +1,6 @@
 <div class="app__container px-3">
   <div class="card mt-2 mb-4 py-3 row mx-0 justify-content-between align-items-center">
-    <mat-form-field appearance="outline">
-      <input matInput type="search" placeholder="Find user collection..." autocomplete="off" [(ngModel)]="searchString"
-        (input)="searchCollections()">
-      <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="clearSearch()"
-        [disabled]="searchString.length == 0">
-        <mat-icon class="material-icons-round">clear</mat-icon>
-      </button>
-    </mat-form-field>
+    <app-search-input placeholder="Find user collections..." (changed)="searchInputChanged($event)"></app-search-input>
     <button mat-stroked-button *ngIf="displayNewButton" routerLink="/new" color="primary">New</button>
   </div>
 
