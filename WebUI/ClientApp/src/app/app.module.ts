@@ -64,6 +64,8 @@ import { StarsComponent } from './components/profile/stars/stars.component';
 import { CollectionCardComponent } from './components/ui/collection-card/collection-card.component';
 import { StarComponent } from './components/ui/star/star.component';
 import { ProfileCollectionsComponent } from './components/ui/profile-collections/profile-collections.component';
+import { SearchInputComponent } from './components/ui/search-input/search-input.component';
+import { CollectionColumnComponent } from './components/home/collections-column/collections-column.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +94,9 @@ import { ProfileCollectionsComponent } from './components/ui/profile-collections
     StarsComponent,
     CollectionCardComponent,
     StarComponent,
-    ProfileCollectionsComponent
+    ProfileCollectionsComponent,
+    SearchInputComponent,
+    CollectionColumnComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,5 @@
+$header-height: 5rem;
+
+@mixin default-shadow {
+  box-shadow: 0 0 6px 0 #00000040;
+}

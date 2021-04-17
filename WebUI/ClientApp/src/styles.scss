@@ -7,6 +7,8 @@
 // @include mat-core($typography);
 @import "bootstrap/dist/css/bootstrap-grid.min.css";
 
+@import "variables.scss";
+
 * {
   box-sizing: border-box;
 }
@@ -81,8 +83,8 @@ form {
 }
 
 .card {
+  @include default-shadow;
   background-color: white;
-  box-shadow: 0 0 6px 0 #00000040;
   border-radius: 8px;
   padding: 2rem;
   overflow: hidden;

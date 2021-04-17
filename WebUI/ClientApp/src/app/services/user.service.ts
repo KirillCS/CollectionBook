@@ -13,6 +13,7 @@ import { ResetPasswordRequest } from '../models/requests/user/reset-password.req
 import { GetProfileCollectionsRequest } from '../models/requests/user/get-profile-collections.request';
 import { PaginatedListResponse } from '../models/responses/paginated-list.response';
 import { CollectionDto } from '../models/dtos/collection.dto';
+import { CollectionNameDto } from '../models/dtos/collection-name.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,19 @@ export class UserService {
     });
 
     return this.httpClient.get<PaginatedListResponse<CollectionDto>>(`${this.apiUrl}api/user/stars`, { params });
+  }
+
+  public getCollectionsNames(request: GetProfileCollectionsRequest): Observable<PaginatedListResponse<CollectionNameDto>> {
+    let params = new HttpParams({
+      fromObject: {
+        login: request.login,
+        searchString: request.searchString,
+        pageSize: request.pageSize.toString(),
+        pageIndex: request.pageIndex.toString()
+      }
+    });
+
+    return this.httpClient.get<PaginatedListResponse<CollectionDto>>(`${this.apiUrl}api/user/collections/names`, { params });
   }
 
   public updateAvatar(avatar: File): Observable<void> {
