@@ -19,7 +19,6 @@ export class SearchInputComponent {
   public constructor() {}
 
   public inputChanged(): void {
-    console.log(this.searchString);
     clearTimeout(this.searchTimeout);
     this.searchTimeout = setTimeout(() => {
       this.changed.emit(this.searchString);

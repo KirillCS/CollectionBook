@@ -41,7 +41,7 @@ namespace Application.Users.Queries.GetStarsNotifications
             return await context.Stars.Include(s => s.User)
                                       .Include(s => s.Collection)
                                       .ThenInclude(c => c.Stars)
-                                      .Where(s => s.Collection.UserId == user.Id && s.Collection.Name.Contains(request.SearchString))
+                                      .Where(s => s.Collection.UserId == user.Id)
                                       .ProjectTo<StarNotificationDto>(mapper.ConfigurationProvider)
                                       .ToPaginatedList(request.PageIndex, request.PageSize);
         }

@@ -31,7 +31,7 @@ export class CollectionColumnComponent implements OnInit {
 
   public get collectionsNotFound(): boolean {
     return this.notFound;
-  } 
+  }
 
   public get isButtonVisible(): boolean {
     return this.collections.length < this.totalCount;
@@ -40,7 +40,7 @@ export class CollectionColumnComponent implements OnInit {
   public get total(): number {
     return this.totalCount;
   }
-  
+
   public loadMore(): void {
     this.pageIndex++;
     this.addCollections();
@@ -54,14 +54,16 @@ export class CollectionColumnComponent implements OnInit {
   }
 
   private addCollections(): void {
-    this.userService.getCollectionsNames({
-      login: this.currentUserService.currentUser?.login,
-      pageIndex: this.pageIndex,
-      pageSize: this.pageSize,
-      searchString: this.searchString
-    }).subscribe(response => {
+    this.userService.getCollectionsNames(
+      this.currentUserService.currentUser?.login,
+      {
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize,
+        searchString: this.searchString
+      }
+    ).subscribe(response => {
       this.collections.push(...response.items);
       this.totalCount = response.totalCount;
-    }, (errorResponse: HttpErrorResponse) => {}, () => this.notFound = this.collections.length == 0);
+    }, (errorResponse: HttpErrorResponse) => { }, () => this.notFound = this.collections.length == 0);
   }
 }

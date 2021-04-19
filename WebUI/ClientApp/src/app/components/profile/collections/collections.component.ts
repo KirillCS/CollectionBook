@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import { CollectionDto } from 'src/app/models/dtos/collection.dto';
-import { GetProfileCollectionsRequest } from 'src/app/models/requests/user/get-profile-collections.request';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
+import { GetCollectionsData } from '../../ui/profile-collections/profile-collections.component';
 
 @Component({
   selector: 'app-collections',
@@ -25,8 +25,8 @@ export class CollectionsComponent {
     private dialogsService: DefaultDialogsService
   ) { }
 
-  public getCollections(data: GetProfileCollectionsRequest): void {
-    this.userService.getCollections(data).subscribe(response => {
+  public getCollections(data: GetCollectionsData): void {
+    this.userService.getCollections(data.login, { pageIndex: data.pageIndex, pageSize: data.pageSize, searchString: data.searchString }).subscribe(response => {
       this.totalCount = response.totalCount;
       this.collections$.next(response.items);
     }, (errorResponse: HttpErrorResponse) => {

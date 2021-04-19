@@ -3,9 +3,15 @@ import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 
 import { CollectionDto } from 'src/app/models/dtos/collection.dto';
-import { GetProfileCollectionsRequest } from 'src/app/models/requests/user/get-profile-collections.request';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { StarChangedEvent } from '../star/star.component';
+
+export class GetCollectionsData {
+  public login: string;
+  public searchString: string;
+  public pageSize: number;
+  public pageIndex: number;
+}
 
 @Component({
   selector: 'app-profile-collections',
@@ -16,7 +22,7 @@ export class ProfileCollectionsComponent implements OnInit {
   private profileLogin: string;
   private searchString = '';
 
-  @Output() public getCollections = new EventEmitter<GetProfileCollectionsRequest>();
+  @Output() public getCollections = new EventEmitter<GetCollectionsData>();
   @Output() public collectionStarChanged = new EventEmitter<StarChangedEvent>();
 
   @Input() public collections = new Array<CollectionDto>();

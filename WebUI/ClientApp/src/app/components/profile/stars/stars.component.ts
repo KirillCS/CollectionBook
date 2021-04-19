@@ -4,10 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import { CollectionDto } from 'src/app/models/dtos/collection.dto';
-import { GetProfileCollectionsRequest } from 'src/app/models/requests/user/get-profile-collections.request';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
+import { GetCollectionsData } from '../../ui/profile-collections/profile-collections.component';
 import { StarChangedEvent } from '../../ui/star/star.component';
 
 @Component({
@@ -40,8 +40,8 @@ export class StarsComponent implements OnInit {
     this.observableCollections.subscribe(collections => this.collections = collections);
   }
 
-  public getCollections(data: GetProfileCollectionsRequest): void {
-    this.userService.getStarredCollections(data).subscribe(response => {
+  public getCollections(data: GetCollectionsData): void {
+    this.userService.getStarredCollections(data.login, { pageIndex: data.pageIndex, pageSize: data.pageSize, searchString: data.searchString }).subscribe(response => {
       this.totalCount = response.totalCount;
       this.collections$.next(response.items);
     }, (errorResponse: HttpErrorResponse) => {

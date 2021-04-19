@@ -27,16 +27,6 @@ textarea {
   line-height: 1.2rem !important;
 }
 
-a {
-  text-decoration: none;
-  color: black;
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
 .app__container {
   position: relative;
   min-width: auto;

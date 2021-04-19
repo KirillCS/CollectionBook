@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Queries.GetCollections
 {
-    public class GetCollectionsQuery : PaginatedListQuery, IRequest<PaginatedList<UserCollectionDto>>
+    public class GetCollectionsQuery : SearchPaginatedListQuery, IRequest<PaginatedList<UserCollectionDto>>
     {
         public string Login { get; set; }
     }

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Queries.GetStarredCollections
 {
-    public class GetStarredCollectionsQuery : PaginatedListQuery, IRequest<PaginatedList<CollectionDto>>
+    public class GetStarredCollectionsQuery : SearchPaginatedListQuery, IRequest<PaginatedList<CollectionDto>>
     {
         public string Login { get; set; }
     }

@@ -10,10 +10,12 @@ import { LoginResponse } from 'src/app/models/responses/auth/login.response';
 import { UpdatePasswordRequest } from 'src/app/models/requests/user/update-password.request';
 import { sendPasswordResetConfirmation } from 'src/app/models/requests/user/send-password-reset-confirmation.request';
 import { ResetPasswordRequest } from '../models/requests/user/reset-password.request';
-import { GetProfileCollectionsRequest } from '../models/requests/user/get-profile-collections.request';
+import { SearchPaginatedListRequest } from '../models/requests/search-paginated-list.request';
 import { PaginatedListResponse } from '../models/responses/paginated-list.response';
 import { CollectionDto } from '../models/dtos/collection.dto';
 import { CollectionNameDto } from '../models/dtos/collection-name.dto';
+import { StarNotificationDto } from '../models/dtos/star-notification.dto';
+import { PaginatedListRequest } from '../models/requests/paginated-list.request';
 
 @Injectable({
   providedIn: 'root'
@@ -25,10 +27,10 @@ export class UserService {
     return this.httpClient.get<UserDto>(`${this.apiUrl}api/user/${login ?? ''}`);
   }
 
-  public getCollections(request: GetProfileCollectionsRequest): Observable<PaginatedListResponse<CollectionDto>> {
+  public getCollections(login: string, request: SearchPaginatedListRequest): Observable<PaginatedListResponse<CollectionDto>> {
     let params = new HttpParams({
       fromObject: {
-        login: request.login,
+        login: login,
         searchString: request.searchString,
         pageSize: request.pageSize.toString(),
         pageIndex: request.pageIndex.toString()
@@ -38,10 +40,10 @@ export class UserService {
     return this.httpClient.get<PaginatedListResponse<CollectionDto>>(`${this.apiUrl}api/user/collections`, { params });
   }
 
-  public getStarredCollections(request: GetProfileCollectionsRequest): Observable<PaginatedListResponse<CollectionDto>> {
+  public getStarredCollections(login: string, request: SearchPaginatedListRequest): Observable<PaginatedListResponse<CollectionDto>> {
     let params = new HttpParams({
       fromObject: {
-        login: request.login,
+        login: login,
         searchString: request.searchString,
         pageSize: request.pageSize.toString(),
         pageIndex: request.pageIndex.toString()
@@ -51,10 +53,10 @@ export class UserService {
     return this.httpClient.get<PaginatedListResponse<CollectionDto>>(`${this.apiUrl}api/user/stars`, { params });
   }
 
-  public getCollectionsNames(request: GetProfileCollectionsRequest): Observable<PaginatedListResponse<CollectionNameDto>> {
+  public getCollectionsNames(login: string, request: SearchPaginatedListRequest): Observable<PaginatedListResponse<CollectionNameDto>> {
     let params = new HttpParams({
       fromObject: {
-        login: request.login,
+        login: login,
         searchString: request.searchString,
         pageSize: request.pageSize.toString(),
         pageIndex: request.pageIndex.toString()
@@ -62,6 +64,18 @@ export class UserService {
     });
 
     return this.httpClient.get<PaginatedListResponse<CollectionDto>>(`${this.apiUrl}api/user/collections/names`, { params });
+  }
+
+  public getStarsNotifications(login: string, request: PaginatedListRequest): Observable<PaginatedListResponse<StarNotificationDto>> {
+    let params = new HttpParams({
+      fromObject: {
+        login: login,
+        pageSize: request.pageSize.toString(),
+        pageIndex: request.pageIndex.toString()
+      }
+    });
+
+    return this.httpClient.get<PaginatedListResponse<StarNotificationDto>>(`${this.apiUrl}api/user/stars/notifications`, { params });
   }
 
   public updateAvatar(avatar: File): Observable<void> {

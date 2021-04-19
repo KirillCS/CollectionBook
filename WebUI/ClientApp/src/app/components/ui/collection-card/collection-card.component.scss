@@ -1,3 +1,5 @@
+@import "src/variables.scss";
+
 mat-card {
   height: 100%;
   box-shadow: 0 0 6px 0 #00000040 !important;
@@ -26,15 +28,6 @@ mat-card {
         font-size: 1rem;
         font-weight: 500;
         margin-bottom: 0.3rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-  
-      .login {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
     }
   }
