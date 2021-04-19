@@ -8,6 +8,7 @@ using Application.Users.Commands.UpdateProfile;
 using Application.Users.Queries.GetCollections;
 using Application.Users.Queries.GetCollectionsNames;
 using Application.Users.Queries.GetStarredCollections;
+using Application.Users.Queries.GetStarsNotifications;
 using Application.Users.Queries.GetUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,13 @@ namespace WebUI.Controllers
         [Route("stars")]
         [HttpGet]
         public async Task<IActionResult> GetStarredCollections([FromQuery] GetStarredCollectionsQuery query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+
+        [Route("stars/notifications")]
+        [HttpGet]
+        public async Task<IActionResult> GetStarsNotifications([FromQuery] GetStarsNotificationsQuery query)
         {
             return Ok(await Mediator.Send(query));
         }
