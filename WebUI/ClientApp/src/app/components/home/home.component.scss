@@ -1,0 +1,15 @@
+@import "/src/variables.scss";
+
+.collections {
+  min-height: calc(100vh - #{$header-height});
+  height: 100%;
+  background-color: white;
+  @include default-shadow;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .collections {
+    min-height: unset;
+  }
+}
