@@ -1,22 +1,25 @@
 <h2 class="card py-3">Last starred collections</h2>
-<div class="card py-3 px-4 my-2 row mx-0 justify-content-between align-items-center flex-nowrap"
-  *ngFor="let notification of starsNotifications" matTooltip="User '{{ notification.user.login }}' starred '{{ notification.collection.name }}'" matTooltipPosition="above">
-  <div class="user-cover">
-    <img mat-card-avatar src="{{ getFullAvatarPath(notification.user.avatarPath) }}" alt="" />
-    <div class="cred">
-      <div class="name" *ngIf="notification.user.firstName?.length > 0 || notification.user.lastName?.length > 0">{{
-        notification.user.firstName }} {{ notification.user.lastName }}</div>
-      <div class="login">@{{ notification.user.login }}</div>
+<div *ngIf="!starsNotFound">
+  <div class="card py-3 px-4 my-2 row mx-0 justify-content-between align-items-center flex-nowrap"
+    *ngFor="let notification of starsNotifications" matTooltip="User '{{ notification.user.login }}' starred '{{ notification.collection.name }}'" matTooltipPosition="above">
+    <div class="user-cover">
+      <img mat-card-avatar src="{{ getFullAvatarPath(notification.user.avatarPath) }}" alt="" />
+      <div class="cred">
+        <div class="name" *ngIf="notification.user.firstName?.length > 0 || notification.user.lastName?.length > 0">{{
+          notification.user.firstName }} {{ notification.user.lastName }}</div>
+        <div class="login">@{{ notification.user.login }}</div>
+      </div>
+    </div>
+    <div class="collection-info">
+      <div class="name">
+        {{ notification.collection.name }}
+      </div>
+      <div class="stars" matTooltip="{{ notification.starsCount }} stars" matTooltipPosition="right">
+        <span>{{ notification.starsCount }}</span>
+        <mat-icon class="material-icons-round">star</mat-icon>
+      </div>
     </div>
   </div>
-  <div class="collection-info">
-    <div class="name">
-      {{ notification.collection.name }}
-    </div>
-    <div class="stars" matTooltip="{{ notification.starsCount }} stars" matTooltipPosition="right">
-      <span>{{ notification.starsCount }}</span>
-      <mat-icon class="material-icons-round">star</mat-icon>
-    </div>
-  </div>
+  <button class="w-100" *ngIf="isButtonVisible" mat-stroked-button color="primary" (click)="loadMore()">Show earlier...</button>
 </div>
-<button class="w-100" *ngIf="isButtonVisible" mat-stroked-button color="primary" (click)="loadMore()">Show earlier...</button>
+<h3 class="not-found" *ngIf="starsNotFound">Nobody stars your collections</h3>

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 
 import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';
@@ -16,6 +17,7 @@ export class NotificationsColumnComponent implements OnInit {
   private pageSize = 10;
   private pageIndex = 0;
   private totalCount = 0;
+  private notFound = false;
 
   public constructor(
     private currentUserService: CurrentUserService,
@@ -30,6 +32,10 @@ export class NotificationsColumnComponent implements OnInit {
 
   public get isButtonVisible(): boolean {
     return this.stars.length < this.totalCount;
+  }
+
+  public get starsNotFound(): boolean {
+    return this.notFound;
   }
 
   public ngOnInit(): void {
@@ -55,6 +61,6 @@ export class NotificationsColumnComponent implements OnInit {
     ).subscribe(list => {
       this.stars.push(...list.items);
       this.totalCount = list.totalCount;
-    })
+    }, (errorResponse: HttpErrorResponse) => {}, () => this.notFound = this.totalCount == 0)
   }
 }
