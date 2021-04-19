@@ -66,6 +66,7 @@ import { StarComponent } from './components/ui/star/star.component';
 import { ProfileCollectionsComponent } from './components/ui/profile-collections/profile-collections.component';
 import { SearchInputComponent } from './components/ui/search-input/search-input.component';
 import { CollectionColumnComponent } from './components/home/collections-column/collections-column.component';
+import { NotificationsColumnComponent } from './components/home/notifications-column/notifications-column.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import { CollectionColumnComponent } from './components/home/collections-column/
     StarComponent,
     ProfileCollectionsComponent,
     SearchInputComponent,
-    CollectionColumnComponent
+    CollectionColumnComponent,
+    NotificationsColumnComponent
   ],
   imports: [
     BrowserModule,
