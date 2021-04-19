@@ -13,6 +13,9 @@ import { UserService } from 'src/app/services/user.service';
 export class NotificationsColumnComponent implements OnInit {
 
   private stars = new Array<StarNotificationDto>();
+  private pageSize = 10;
+  private pageIndex = 0;
+  private totalCount = 0;
 
   public constructor(
     private currentUserService: CurrentUserService,
@@ -25,23 +28,33 @@ export class NotificationsColumnComponent implements OnInit {
     return this.stars;
   }
 
+  public get isButtonVisible(): boolean {
+    return this.stars.length < this.totalCount;
+  }
+
   public ngOnInit(): void {
-    this.getStars();
+    this.addStars();
   }
 
   public getFullAvatarPath(avatar: string): string {
     return !avatar ? this.defaultAvatar : `${this.apiUrl}${avatar}`;
   }
 
-  private getStars(): void {
+  public loadMore(): void {
+    this.pageIndex++;
+    this.addStars();
+  }
+
+  private addStars(): void {
     this.userService.getStarsNotifications(
       this.currentUserService.currentUser?.login,
       {
-        pageIndex: 0,
-        pageSize: 10
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize
       }
     ).subscribe(list => {
       this.stars.push(...list.items);
+      this.totalCount = list.totalCount;
     })
   }
 }
