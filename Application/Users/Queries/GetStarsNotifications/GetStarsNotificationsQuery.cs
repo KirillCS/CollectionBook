@@ -42,6 +42,7 @@ namespace Application.Users.Queries.GetStarsNotifications
                                       .Include(s => s.Collection)
                                       .ThenInclude(c => c.Stars)
                                       .Where(s => s.Collection.UserId == user.Id)
+                                      .OrderByDescending(s => s.Id)
                                       .ProjectTo<StarNotificationDto>(mapper.ConfigurationProvider)
                                       .ToPaginatedList(request.PageIndex, request.PageSize);
         }
