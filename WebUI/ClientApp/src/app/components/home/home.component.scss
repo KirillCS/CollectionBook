@@ -8,6 +8,27 @@
   padding: 2rem;
 }
 
+.not-auth-card {
+  width: 600px;
+
+  h1 {
+    text-align: center;
+    font-weight: 500;
+  }
+
+  h3 {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .collections {
     min-height: unset;
