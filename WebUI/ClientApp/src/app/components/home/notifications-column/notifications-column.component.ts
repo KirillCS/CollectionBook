@@ -4,6 +4,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';
 import { StarNotificationDto } from 'src/app/models/dtos/star-notification.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
+import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class NotificationsColumnComponent implements OnInit {
   public constructor(
     private currentUserService: CurrentUserService,
     private userService: UserService,
+    private dialogService: DefaultDialogsService,
     @Inject(API_URL) private apiUrl: string,
     @Inject(DEFAULT_AVATAR) private defaultAvatar: string
   ) { }
@@ -61,6 +63,14 @@ export class NotificationsColumnComponent implements OnInit {
     ).subscribe(list => {
       this.stars.push(...list.items);
       this.totalCount = list.totalCount;
-    }, (errorResponse: HttpErrorResponse) => {}, () => this.notFound = this.totalCount == 0)
+    }, (errorResponse: HttpErrorResponse) => {
+      this.notFound = this.notFound = this.totalCount == 0;
+      if (errorResponse.status == 404) {
+        this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found.');
+        return;
+      }
+
+      this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while getting your collections. Reload the page and try again.');
+    }, () => this.notFound = this.totalCount == 0)
   }
 }

@@ -1,10 +1,13 @@
 <div class="app__container">
-  <div class="row mx-0">
+  <div *ngIf="isAuthenticated" class="row mx-0">
     <div class="col-md-5 mb-2 mb-md-0 collections">
       <app-collections-column></app-collections-column>
     </div>
     <div class="col-md-7 py-3">
       <app-notifications-column></app-notifications-column>
     </div>
+  </div>
+  <div *ngIf="!isAuthenticated">
+    You are not authenticated.
   </div>
 </div>

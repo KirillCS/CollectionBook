@@ -14,7 +14,7 @@ export class AuthTokenService {
     if (!token) {
       token = sessionStorage.getItem(ACCESS_TOKEN_KEY);
     }
-
+    
     return token && this.jwtHelper.isTokenExpired(token) ? null : token;
   }
 

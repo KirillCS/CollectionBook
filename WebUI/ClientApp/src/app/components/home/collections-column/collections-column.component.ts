@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { CollectionNameDto } from 'src/app/models/dtos/collection-name.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
+import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class CollectionColumnComponent implements OnInit {
 
   public constructor(
     private currentUserService: CurrentUserService,
-    private userService: UserService
+    private userService: UserService,
+    private dialogService: DefaultDialogsService
   ) { }
 
   public ngOnInit(): void {
@@ -54,6 +56,7 @@ export class CollectionColumnComponent implements OnInit {
   }
 
   private addCollections(): void {
+
     this.userService.getCollectionsNames(
       this.currentUserService.currentUser?.login,
       {
@@ -64,6 +67,14 @@ export class CollectionColumnComponent implements OnInit {
     ).subscribe(response => {
       this.collections.push(...response.items);
       this.totalCount = response.totalCount;
-    }, (errorResponse: HttpErrorResponse) => { }, () => this.notFound = this.collections.length == 0);
+    }, (errorResponse: HttpErrorResponse) => {
+      this.notFound = this.collections.length == 0;
+      if (errorResponse.status == 404) {
+        this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found.');
+        return;
+      }
+
+      this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while getting your collections. Reload the page and try again.');
+    }, () => this.notFound = this.collections.length == 0);
   }
 }
