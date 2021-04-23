@@ -17,6 +17,10 @@ export class CollectionService {
     return this.httpClient.get<FullCollectionDto>(`${this.apiUrl}api/collection/${id ?? ''}`);
   }
 
+  public delete(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiUrl}api/collection/${id ?? ''}`);
+  }
+
   public create(request: CollectionCreatingRequest): Observable<void> {
     let formData = new FormData();
 
