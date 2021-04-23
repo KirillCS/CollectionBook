@@ -1,5 +1,6 @@
 ﻿using Application.Collections.Commands.CreateCollection;
 using Application.Collections.Commands.StarCollection;
+using Application.Collections.Queries.GetCollectionAndItems;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -8,6 +9,13 @@ namespace WebUI.Controllers
 {
     public class CollectionController : ApiControllerBase
     {
+        [Route("collection/{Id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetCollectionAndItems([FromRoute] GetCollectionAndItemsQuery query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+
         [Route("create")]
         [HttpPost]
         [Authorize]
