@@ -19,6 +19,7 @@ namespace WebUI.Controllers
 
         [Route("{Id}")]
         [HttpDelete]
+        [Authorize]
         public async Task<IActionResult> DeleteCollection([FromRoute] DeleteCollectionCommand command)
         {
             await Mediator.Send(command);
