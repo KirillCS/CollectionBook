@@ -11,8 +11,7 @@ export class DeleteFieldDialogData {
 
 @Component({
   selector: 'app-delete-field-dialog',
-  templateUrl: './delete-field-dialog.component.html',
-  styleUrls: ['./delete-field-dialog.component.css']
+  templateUrl: './delete-field-dialog.component.html'
 })
 export class DeleteFieldDialogComponent {
 
@@ -29,6 +28,6 @@ export class DeleteFieldDialogComponent {
   }
   
   public submit(): void {
-    
+
   }
 }

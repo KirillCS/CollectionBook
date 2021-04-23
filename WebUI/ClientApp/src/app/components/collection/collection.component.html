@@ -20,7 +20,7 @@
     </button>
   </mat-menu>
   <mat-menu #editMenu="matMenu">
-    <button mat-menu-item>Collection name</button>
+    <button mat-menu-item (click)="editNameButtonClicked()">Collection name</button>
     <button mat-menu-item>Collection description</button>
     <button mat-menu-item>Collection tags</button>
   </mat-menu>

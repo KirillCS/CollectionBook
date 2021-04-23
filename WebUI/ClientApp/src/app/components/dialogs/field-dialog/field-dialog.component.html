@@ -1,22 +1,23 @@
 <div mat-dialog-title>
   <h1>
     <i class="material-icons-round">edit</i>
-    {{ data.header }}
+    {{ dialogData.header }}
   </h1>
 </div>
 <form>
   <main class="row mx-0 px-0 flex-column" mat-dialog-content>
-    <div class="mb-3">{{ data.message }}</div>
+    <div class="mb-3">{{ dialogData.message }}</div>
     <mat-form-field class="w-100" appearance="outline">
-      <mat-label>{{ data.inputLabel }}</mat-label>
-      <input type="{{ data.inputType }}" autocomplete="off" matInput [formControl]="data.formControl" [errorStateMatcher]="matcher">
-      <mat-error *ngFor="let error of data.inputErrors">
-        <span *ngIf="data.formControl.hasError(error.errorCode)">{{ error.errorMessage }}</span>
+      <mat-label>{{ dialogData.inputLabel }}</mat-label>
+      <input type="{{ dialogData.inputType }}" autocomplete="off" matInput [formControl]="dialogData.formControl"
+        [errorStateMatcher]="stateMatcher">
+      <mat-error *ngFor="let error of dialogData.inputErrors">
+        <span *ngIf="dialogData.formControl.hasError(error.errorCode)">{{ error.errorMessage }}</span>
       </mat-error>
     </mat-form-field>
   </main>
   <div mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>{{ data.closeButtonName }}</button>
-    <button (click)="submit()" mat-raised-button color="primary">{{ data.submitButtonName }}</button>
+    <button mat-button mat-dialog-close>{{ dialogData.closeButtonName }}</button>
+    <button (click)="submit()" mat-raised-button color="primary">{{ dialogData.submitButtonName }}</button>
   </div>
 </form>
