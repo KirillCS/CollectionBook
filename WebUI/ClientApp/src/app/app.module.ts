@@ -69,6 +69,8 @@ import { CollectionColumnComponent } from './components/home/collections-column/
 import { NotificationsColumnComponent } from './components/home/notifications-column/notifications-column.component';
 import { CollectionComponent } from './components/collection/collection.component';
 import { DeleteFieldDialogComponent } from './components/dialogs/delete-field-dialog/delete-field-dialog.component';
+import { TagsFieldDialogComponent } from './components/dialogs/tags-field-dialog/tags-field-dialog.component';
+import { TagInputComponent } from './components/ui/tag-input/tag-input.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +104,9 @@ import { DeleteFieldDialogComponent } from './components/dialogs/delete-field-di
     CollectionColumnComponent,
     NotificationsColumnComponent,
     CollectionComponent,
-    DeleteFieldDialogComponent
+    DeleteFieldDialogComponent,
+    TagsFieldDialogComponent,
+    TagInputComponent
   ],
   imports: [
     BrowserModule,

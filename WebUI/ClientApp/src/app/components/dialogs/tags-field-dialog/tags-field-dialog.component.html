@@ -1,0 +1,16 @@
+<div mat-dialog-title>
+  <h1 class="row mx-0 align-items-center">
+    <i class="material-icons-round mr-2">edit</i>
+    {{ dialogData.header }}
+  </h1>
+</div>
+<form>
+  <main class="row mx-0 px-0 flex-column" mat-dialog-content>
+    <div class="mb-3">{{ dialogData.message }}</div>
+    <app-tag-input [label]="dialogData.inputLabel" [(tags)]="dialogData.tags"></app-tag-input>
+  </main>
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>{{ dialogData.closeButtonName }}</button>
+    <button (click)="submit()" mat-raised-button color="primary">{{ dialogData.submitButtonName }}</button>
+  </div>
+</form>

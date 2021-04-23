@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { API_URL } from 'src/app/app-injection-tokens';
 import { CollectionCreatingRequest } from 'src/app/models/requests/collection/collection-creating.request';
 import { FullCollectionDto } from 'src/app/models/dtos/full-collection.dto';
+import { TagDto } from '../models/dtos/tag.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,11 @@ export class CollectionService {
 
   public changeDescription(id: number, newDescription: string): Observable<void> {
     return this.httpClient.post<void>(`${this.apiUrl}api/collection/change/description`, { id, newDescription });
+  }
+  
+  public changeTags(id: number, tags: string[]): Observable<TagDto[]> {
+    tags ??= new Array<string>();
+    return this.httpClient.post<TagDto[]>(`${this.apiUrl}api/collection/change/tags`, { id, tags });
   }
 
   public delete(id: number): Observable<void> {

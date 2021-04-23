@@ -12,6 +12,7 @@ import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { DeleteFieldDialogComponent } from '../dialogs/delete-field-dialog/delete-field-dialog.component';
 import { FieldDialogComponent } from '../dialogs/field-dialog/field-dialog.component';
+import { TagsFieldDialogComponent } from '../dialogs/tags-field-dialog/tags-field-dialog.component';
 import { StarChangedEvent } from '../ui/star/star.component';
 
 @Component({
@@ -153,6 +154,28 @@ export class CollectionComponent implements OnInit {
     ref.afterClosed().subscribe(() => submitSubscription.unsubscribe());
   }
 
+  public editTagsButtonClicked(): void {
+    let ref = this.dialog.open(TagsFieldDialogComponent, {
+      width: '600px',
+      position: { top: '25vh' },
+      data: {
+        header: 'Collection tags editing',
+        message: `Add or remove tags and click "Save".`,
+        inputLabel: 'Collection tags',
+        tags: this.collection.tags.map(t => t.label),
+        closeButtonName: 'Cancel',
+        submitButtonName: 'Save'
+      }
+    });
+
+    let submitSubscription = ref.componentInstance.submitEmitter.subscribe((tags: string[]) => {
+      ref.close();
+      this.changeCollectionTags(tags);
+    });
+
+    ref.afterClosed().subscribe(() => submitSubscription.unsubscribe());
+  }
+
   public deleteButtonClicked(): void {
     let ref = this.dialog.open(DeleteFieldDialogComponent, {
       width: '500px',
@@ -175,7 +198,7 @@ export class CollectionComponent implements OnInit {
 
   private changeCollectionName(newName: string): void {
     this.collectionService.changeName(this.collection.id, newName).subscribe(() => { },
-      (errorResponse: HttpErrorResponse) => this.proccessErrorStatuses(
+      (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse.status,
         'To change the collection name you must be authenticated.',
         `To change the collection name you must be its owner.`,
@@ -185,7 +208,7 @@ export class CollectionComponent implements OnInit {
 
   private changeCollectionDescription(newDescription: string): void {
     this.collectionService.changeDescription(this.collection.id, newDescription).subscribe(() => { },
-      (errorResponse: HttpErrorResponse) => this.proccessErrorStatuses(
+      (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse.status,
         'To change the collection description you must be authenticated.',
         `To change the collection description you must be its owner.`,
@@ -193,9 +216,19 @@ export class CollectionComponent implements OnInit {
       ), () => this.collection.description = newDescription);
   }
 
+  private changeCollectionTags(tags: string[]): void {
+    this.collectionService.changeTags(this.collection.id, tags).subscribe(tags => this.collection.tags = tags,
+      (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
+        errorResponse.status,
+        'To change the collection tags you must be authenticated.',
+        `To change the collection tags you must be its owner.`,
+        `Something went wrong while changing the collection tags.`
+      ));
+  }
+
   private deleteCollection(): void {
     this.collectionService.delete(this.collection.id).subscribe(() => { },
-      (errorResponse: HttpErrorResponse) => this.proccessErrorStatuses(
+      (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse.status,
         'To delete the collection you must be authenticated.',
         `To delete the collection "${this.collection.name}" you must be its owner.`,
@@ -203,7 +236,7 @@ export class CollectionComponent implements OnInit {
       ), () => this.router.navigate(['/profile', this.collection.user.login, 'collections']));
   }
 
-  private proccessErrorStatuses(status: number, notAuthMessage: string, accessErrorMessage: string, errorMessage: string): void {
+  private handleErrorStatuses(status: number, notAuthMessage: string, accessErrorMessage: string, errorMessage: string): void {
     switch (status) {
       case 400:
         break;

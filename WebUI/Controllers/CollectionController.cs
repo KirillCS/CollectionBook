@@ -1,5 +1,6 @@
 ﻿using Application.Collections.Commands.ChangeCollectionDescription;
 using Application.Collections.Commands.ChangeCollectionName;
+using Application.Collections.Commands.ChangeCollectionTags;
 using Application.Collections.Commands.CreateCollection;
 using Application.Collections.Commands.DeleteCollection;
 using Application.Collections.Commands.StarCollection;
@@ -57,6 +58,14 @@ namespace WebUI.Controllers
             await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [Route("change/tags")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ChangeCollectionTags([FromBody] ChangeCollectionTagsCommand command)
+        {
+            return Ok(await Mediator.Send(command));
         }
 
         [Route("star")]

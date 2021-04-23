@@ -1,12 +1,7 @@
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { ENTER, SPACE } from '@angular/cdk/keycodes';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Observable } from 'rxjs';
 
-import { TagsService } from 'src/app/services/tags.service';
 import { CollectionService } from 'src/app/services/collection.service';
 import { CollectionCreatingRequest } from 'src/app/models/requests/collection/collection-creating.request';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -28,24 +23,17 @@ import { PreviousRouteService } from 'src/app/services/previous-route.service';
 })
 export class CollectionCreatingComponent {
 
-  private searchTagsCount = 5;
+  private tags: string[] = [];
+  private image: File;
 
   public matcher = new DefaultErrorStateMatcher();
 
   public nameFormGroup = new FormGroup({ name: new FormControl() });
   public descriptionFormGroup = new FormGroup({ description: new FormControl() });
 
-  public image: File;
-
-  @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
-  public separatorKeysCodes = [ENTER, SPACE];
-  public filteredTags: Observable<string[]>;
-  public tags: string[] = [];
-
   public inProcess = false;
 
   public constructor(
-    private tagsService: TagsService,
     private collectionService: CollectionService,
     private serverErrorsService: ServerErrorsService,
     private authService: AuthService,
@@ -60,42 +48,8 @@ export class CollectionCreatingComponent {
     this.image = image;
   }
 
-  public addTag(event: MatChipInputEvent): void {
-    const input = event.input;
-    const values = event.value.split(/[ ,]/);
-
-    values.forEach(value => {
-      if ((value || '').trim() && !this.tags.some(tag => tag === value)) {
-        this.tags.push(value.trim());
-      }
-    })
-
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  public removeTag(tag: string): void {
-    const index = this.tags.indexOf(tag);
-
-    if (index >= 0) {
-      this.tags.splice(index, 1);
-    }
-  }
-
-  public tagsInputChanged(): void {
-    let value = this.tagInput.nativeElement.value;
-
-    this.filteredTags = this.tagsService.searchTags(value, this.searchTagsCount);
-  }
-
-  public tagSelected(event: MatAutocompleteSelectedEvent): void {
-    let value = event.option.viewValue
-    if (!this.tags.some(tag => tag === value)) {
-      this.tags.push(value);
-    }
-
-    this.tagInput.nativeElement.value = '';
+  public tagInputChanged(tags: string[]): void {
+    this.tags = tags;
   }
 
   public goBack(): void {
