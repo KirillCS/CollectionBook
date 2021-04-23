@@ -10,7 +10,7 @@
   <mat-card-content [class]="!collection.user ? 'without-header' : ''">
     <main>
       <header>
-        <h2>{{ collection.name }}</h2>
+        <h2><a [routerLink]="['/collection', collection.id]">{{ collection.name }}</a></h2>
         <app-star *ngIf="isAuthenticated" [starred]="starred" [collectionId]="collection.id" (changed)="starChanged.emit($event)"></app-star>
       </header>
       <p *ngIf="collection.description">{{ collection.description }}</p>

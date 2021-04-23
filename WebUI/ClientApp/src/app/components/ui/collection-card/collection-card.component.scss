@@ -42,7 +42,7 @@ mat-card {
     flex-direction: column;
     justify-content: space-between;
     height: calc(100% - 250px - 1rem - 3.5rem - 0.7rem);
-    
+
     &.without-header {
       height: calc(100% - 250px);
     }
@@ -60,6 +60,15 @@ mat-card {
           margin: 0;
           word-wrap: break-word;
           margin-right: 0.5rem;
+
+          a {
+            text-decoration: none;
+            color: black;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
         }
       }
 

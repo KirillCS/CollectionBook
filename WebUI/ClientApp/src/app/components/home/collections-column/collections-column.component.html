@@ -8,7 +8,7 @@
 <div *ngIf="!collectionsNotFound">
   <ul>
     <li *ngFor="let collection of collections">
-      <a>
+      <a [routerLink]="['collection', collection.id]">
         {{ collection.name }}
       </a>
     </li>

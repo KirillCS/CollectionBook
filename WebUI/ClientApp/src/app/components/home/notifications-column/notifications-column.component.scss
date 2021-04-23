@@ -26,6 +26,12 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-decoration: none;
+    color: black;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
@@ -40,6 +46,12 @@
     font-weight: 500;
     margin-bottom: 0.3rem;
     text-align: right;
+    text-decoration: none;
+    color: black;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .stars {
