@@ -29,6 +29,15 @@ mat-card {
         font-weight: 500;
         margin-bottom: 0.3rem;
       }
+
+      .login {
+        text-decoration: none;
+        color: black;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
 

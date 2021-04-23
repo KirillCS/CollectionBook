@@ -1,4 +1,5 @@
 ﻿using Application.Collections.Commands.CreateCollection;
+using Application.Collections.Commands.DeleteCollection;
 using Application.Collections.Commands.StarCollection;
 using Application.Collections.Queries.GetCollectionAndItems;
 using Microsoft.AspNetCore.Authorization;
@@ -14,6 +15,15 @@ namespace WebUI.Controllers
         public async Task<IActionResult> GetCollectionAndItems([FromRoute] GetCollectionAndItemsQuery query)
         {
             return Ok(await Mediator.Send(query));
+        }
+
+        [Route("{Id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCollection([FromRoute] DeleteCollectionCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
         }
 
         [Route("create")]
