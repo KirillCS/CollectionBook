@@ -67,6 +67,7 @@ import { ProfileCollectionsComponent } from './components/ui/profile-collections
 import { SearchInputComponent } from './components/ui/search-input/search-input.component';
 import { CollectionColumnComponent } from './components/home/collections-column/collections-column.component';
 import { NotificationsColumnComponent } from './components/home/notifications-column/notifications-column.component';
+import { CollectionComponent } from './components/collection/collection.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import { NotificationsColumnComponent } from './components/home/notifications-co
     ProfileCollectionsComponent,
     SearchInputComponent,
     CollectionColumnComponent,
-    NotificationsColumnComponent
+    NotificationsColumnComponent,
+    CollectionComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,13 @@
 $header-height: 5rem;
+$app-container-width: 1200px;
+$default-card-padding: 2rem;
 
 @mixin default-shadow {
   box-shadow: 0 0 6px 0 #00000040;
+}
+
+@mixin float-image-shadow {
+  box-shadow: 0 4px 15px 0 #00000040;
 }
 
 @mixin no-wrap-text {

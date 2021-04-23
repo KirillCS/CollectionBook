@@ -30,7 +30,7 @@ textarea {
 .app__container {
   position: relative;
   min-width: auto;
-  max-width: 1200px;
+  max-width: $app-container-width;
   margin: 0 auto;
 }
 
@@ -86,7 +86,7 @@ form {
   @include default-shadow;
   background-color: white;
   border-radius: 8px;
-  padding: 2rem;
+  padding: $default-card-padding;
   overflow: hidden;
 }
 

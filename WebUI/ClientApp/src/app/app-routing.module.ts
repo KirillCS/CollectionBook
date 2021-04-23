@@ -24,6 +24,7 @@ import { NotAuthenticatedGuard } from './guards/not-authenticated.guard';
 import { CollectionsComponent } from './components/profile/collections/collections.component';
 import { StarsComponent } from './components/profile/stars/stars.component';
 import { PreviousRouteService } from './services/previous-route.service';
+import { CollectionComponent } from './components/collection/collection.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -47,6 +48,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'profile', pathMatch: 'full' }
     ]
   },
+  { path: 'collection/:id', component: CollectionComponent },
   { path: 'new', component: CollectionCreatingComponent, canActivate: [AuthenticatedGuard] },
   { path: '**', component: NotFoundComponent }
 ];
