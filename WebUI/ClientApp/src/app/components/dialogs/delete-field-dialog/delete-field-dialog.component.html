@@ -1,0 +1,17 @@
+<div mat-dialog-title>
+  <h1 class="row mx-0 align-items-center">
+    <mat-icon class="material-icons-round mr-2" color="warn">warning</mat-icon>
+    {{ dialogData.header }}
+  </h1>
+</div>
+<main class="row mx-0 px-0 flex-column" mat-dialog-content>
+  <div class="mb-3">{{ dialogData.message }}</div>
+  <mat-form-field class="w-100" appearance="outline">
+    <mat-label>{{ dialogData.label }}</mat-label>
+    <input autocomplete="off" matInput [(ngModel)]="inputString">
+  </mat-form-field>
+</main>
+<div mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-raised-button [mat-dialog-close]="true" color="warn" [disabled]="submitButtonDisabled" (click)="submit()">{{ dialogData.deleteButtonLabel }}</button>
+</div>

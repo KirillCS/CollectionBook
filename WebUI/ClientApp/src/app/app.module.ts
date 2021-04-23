@@ -68,6 +68,7 @@ import { SearchInputComponent } from './components/ui/search-input/search-input.
 import { CollectionColumnComponent } from './components/home/collections-column/collections-column.component';
 import { NotificationsColumnComponent } from './components/home/notifications-column/notifications-column.component';
 import { CollectionComponent } from './components/collection/collection.component';
+import { DeleteFieldDialogComponent } from './components/dialogs/delete-field-dialog/delete-field-dialog.component';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,8 @@ import { CollectionComponent } from './components/collection/collection.componen
     SearchInputComponent,
     CollectionColumnComponent,
     NotificationsColumnComponent,
-    CollectionComponent
+    CollectionComponent,
+    DeleteFieldDialogComponent
   ],
   imports: [
     BrowserModule,
