@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { API_URL } from 'src/app/app-injection-tokens';
 import { CollectionCreatingRequest } from 'src/app/models/requests/collection/collection-creating.request';
+import { FullCollectionDto } from 'src/app/models/dtos/full-collection.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,10 @@ import { CollectionCreatingRequest } from 'src/app/models/requests/collection/co
 export class CollectionService {
 
   constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
+
+  public getFullCollection(id: number): Observable<FullCollectionDto> {
+    return this.httpClient.get<FullCollectionDto>(`${this.apiUrl}collection/${id ?? ''}`);
+  }
 
   public create(request: CollectionCreatingRequest): Observable<void> {
     let formData = new FormData();

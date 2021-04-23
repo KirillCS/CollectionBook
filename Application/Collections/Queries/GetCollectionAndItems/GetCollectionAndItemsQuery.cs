@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace Application.Collections.Queries.GetCollectionAndItems
 {
-    public class GetCollectionAndItemsQuery : IRequest<CollectionPageDto>
+    public class GetCollectionAndItemsQuery : IRequest<FullCollectionDto>
     {
         public int Id { get; set; }
     }
 
-    public class GetCollectionAndItemsQueryHandler : IRequestHandler<GetCollectionAndItemsQuery, CollectionPageDto>
+    public class GetCollectionAndItemsQueryHandler : IRequestHandler<GetCollectionAndItemsQuery, FullCollectionDto>
     {
         private readonly IApplicationDbContext context;
         private readonly IMapper mapper;
@@ -28,7 +28,7 @@ namespace Application.Collections.Queries.GetCollectionAndItems
             this.mapper = mapper;
         }
 
-        public async Task<CollectionPageDto> Handle(GetCollectionAndItemsQuery request, CancellationToken cancellationToken)
+        public async Task<FullCollectionDto> Handle(GetCollectionAndItemsQuery request, CancellationToken cancellationToken)
         {
             Collection collection = context.Collections
                                            .Include(c => c.User)
@@ -38,7 +38,7 @@ namespace Application.Collections.Queries.GetCollectionAndItems
 
             Guard.Requires(() => collection is not null, new EntityNotFoundException());
 
-            return mapper.Map<CollectionPageDto>(collection);
+            return mapper.Map<FullCollectionDto>(collection);
         }
     }
 }
