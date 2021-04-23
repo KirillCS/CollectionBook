@@ -14,7 +14,7 @@ export class CollectionService {
   constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
 
   public getFullCollection(id: number): Observable<FullCollectionDto> {
-    return this.httpClient.get<FullCollectionDto>(`${this.apiUrl}collection/${id ?? ''}`);
+    return this.httpClient.get<FullCollectionDto>(`${this.apiUrl}api/collection/${id ?? ''}`);
   }
 
   public create(request: CollectionCreatingRequest): Observable<void> {

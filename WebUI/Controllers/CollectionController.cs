@@ -9,7 +9,7 @@ namespace WebUI.Controllers
 {
     public class CollectionController : ApiControllerBase
     {
-        [Route("collection/{Id}")]
+        [Route("{Id}")]
         [HttpGet]
         public async Task<IActionResult> GetCollectionAndItems([FromRoute] GetCollectionAndItemsQuery query)
         {

@@ -1,5 +1,5 @@
 <div class="app__container px-3">
-  <button class="menu-button" mat-mini-fab color="" [matMenuTriggerFor]="menu">
+  <button class="menu-button" *ngIf="showMenuButton" mat-mini-fab color="" [matMenuTriggerFor]="menu">
     <mat-icon class="material-icons-round">
       more_vert
     </mat-icon>
@@ -26,48 +26,21 @@
   </mat-menu>
   <main class="card">
     <div class="cover">
-      <img src="https://localhost:44319/collectionscovers\db358bf3-30ca-4258-8391-2d245e6abb11.jpg" alt="">
+      <img [src]="collectionCover" [alt]="collection?.name">
     </div>
     <div class="data">
       <header>
-        <h1>Some collection</h1>
-        <app-star></app-star>
+        <h1 *ngIf="collection?.name">{{ collection.name }}</h1>
+        <app-star *ngIf="isAuthenticated" [starred]="starred" [collectionId]="collection?.id" (changed)="starStatusChanged($event)"></app-star>
       </header>
-      <h3>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore placeat minus ducimus corrupti, odio dolor
-        dolorum! Quia, aut saepe tenetur inventore odit tempora ipsum similique, perspiciatis illum atque, quas aliquam!
-      </h3>
-      <mat-chip-list>
-        <mat-chip>
-          <span>
-            Collection
-          </span>
-        </mat-chip>
-        <mat-chip>
-          <span>
-            Coins
-          </span>
-        </mat-chip>
-        <mat-chip>
-          <span>
-            Minsk
-          </span>
-        </mat-chip>
-        <mat-chip>
-          <span>
-            Red
-          </span>
-        </mat-chip>
-        <mat-chip>
-          <span>
-            White
-          </span>
-        </mat-chip>
+      <h3 *ngIf="collection?.description">{{ collection.description }}</h3>
+      <mat-chip-list *ngIf="collection?.tags">
+        <mat-chip *ngFor="let tag of collection.tags">{{ tag.label }}</mat-chip>
       </mat-chip-list>
       <div class="meta-data">
-        <div class="date">Apr 7, 2021, 11:31:18 PM</div>
-        <div class="stars-counter" matTooltip="10 stars" matTooltipPosition="above">
-          10<mat-icon class="material-icons-round">star</mat-icon>
+        <div class="date" *ngIf="collection">{{ collection.creationTime | date: 'medium' }}</div>
+        <div class="stars-counter" *ngIf="collection" matTooltip="{{ collection.stars?.length }} stars" matTooltipPosition="above">
+          {{ collection.stars?.length }}<mat-icon class="material-icons-round">star</mat-icon>
         </div>
       </div>
     </div>
