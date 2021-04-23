@@ -3,6 +3,12 @@
 $cover-width: 350px;
 $cover-width-md: 280px;
 
+.menu-button {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+
 main {
   display: flex;
   align-items: flex-start;

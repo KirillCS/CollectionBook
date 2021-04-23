@@ -1,4 +1,29 @@
 <div class="app__container px-3">
+  <button class="menu-button" mat-mini-fab color="" [matMenuTriggerFor]="menu">
+    <mat-icon class="material-icons-round">
+      more_vert
+    </mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <mat-icon class="material-icons-round">add</mat-icon>
+      <span>Add new item</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item [matMenuTriggerFor]="editMenu">
+      <mat-icon class="material-icons-round">edit</mat-icon>
+      <span>Edit collection</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon class="material-icons-round">delete</mat-icon>
+      <span>Delete collection</span>
+    </button>
+  </mat-menu>
+  <mat-menu #editMenu="matMenu">
+    <button mat-menu-item>Collection name</button>
+    <button mat-menu-item>Collection description</button>
+    <button mat-menu-item>Collection tags</button>
+  </mat-menu>
   <main class="card">
     <div class="cover">
       <img src="https://localhost:44319/collectionscovers\db358bf3-30ca-4258-8391-2d245e6abb11.jpg" alt="">
@@ -9,7 +34,8 @@
         <app-star></app-star>
       </header>
       <h3>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore placeat minus ducimus corrupti, odio dolor dolorum! Quia, aut saepe tenetur inventore odit tempora ipsum similique, perspiciatis illum atque, quas aliquam!
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore placeat minus ducimus corrupti, odio dolor
+        dolorum! Quia, aut saepe tenetur inventore odit tempora ipsum similique, perspiciatis illum atque, quas aliquam!
       </h3>
       <mat-chip-list>
         <mat-chip>
