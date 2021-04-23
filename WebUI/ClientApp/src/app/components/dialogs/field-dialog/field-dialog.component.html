@@ -1,6 +1,6 @@
 <div mat-dialog-title>
-  <h1>
-    <i class="material-icons-round">edit</i>
+  <h1 class="row mx-0 align-items-center">
+    <i class="material-icons-round mr-2">edit</i>
     {{ dialogData.header }}
   </h1>
 </div>
@@ -9,8 +9,10 @@
     <div class="mb-3">{{ dialogData.message }}</div>
     <mat-form-field class="w-100" appearance="outline">
       <mat-label>{{ dialogData.inputLabel }}</mat-label>
-      <input type="{{ dialogData.inputType }}" autocomplete="off" matInput [formControl]="dialogData.formControl"
-        [errorStateMatcher]="stateMatcher">
+      <textarea rows="5" *ngIf="dialogData.inputType == 'textarea'" matInput [formControl]="dialogData.formControl"
+        [errorStateMatcher]="stateMatcher"></textarea>
+      <input type="{{ dialogData.inputType }}" autocomplete="off" *ngIf="dialogData.inputType != 'textarea'" matInput
+        [formControl]="dialogData.formControl" [errorStateMatcher]="stateMatcher">
       <mat-error *ngFor="let error of dialogData.inputErrors">
         <span *ngIf="dialogData.formControl.hasError(error.errorCode)">{{ error.errorMessage }}</span>
       </mat-error>

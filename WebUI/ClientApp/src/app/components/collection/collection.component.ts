@@ -77,7 +77,7 @@ export class CollectionComponent implements OnInit {
   }
 
   public editNameButtonClicked(): void {
-    let control = new FormControl('', Validators.required);
+    let control = new FormControl('', [Validators.required, Validators.maxLength(256)]);
     control.setValue(this.collection.name);
 
     let ref = this.dialog.open(FieldDialogComponent, {
@@ -85,11 +85,14 @@ export class CollectionComponent implements OnInit {
       position: { top: '30vh' },
       data: {
         header: 'Collection name editing',
-        message: `Enter a new collection name and click "Save".`,
-        inputLabel: 'New collection name',
+        message: `Edit the collection name and click "Save".`,
+        inputLabel: 'Collection name',
         inputType: 'text',
         formControl: control,
-        inputErrors: [{ errorCode: 'required', errorMessage: 'Enter a new collection name' }],
+        inputErrors: [
+          { errorCode: 'required', errorMessage: 'Collection name cannot be empty' },
+          { errorCode: 'maxlength', errorMessage: 'Maximum length of the collection name is 256' }
+        ],
         closeButtonName: 'Cancel',
         submitButtonName: 'Save'
       }
@@ -107,25 +110,44 @@ export class CollectionComponent implements OnInit {
         return;
       }
 
-      this.collectionService.changeName(this.collection.id, newName).subscribe(() => {}, (errorResponse: HttpErrorResponse) => {
-        switch (errorResponse.status) {
-          case 400:
-            break;
-          case 401:
-            this.dialogService.openWarningMessageDialog('You are not authenticated', 'To change the collection name you must be authenticated.');
-            break;
-          case 403:
-            this.dialogService.openWarningMessageDialog('You don\'t have access', `To change the collection name you must be its owner.`);
-            break;
-          case 404:
-            this.dialogService.openWarningMessageDialog('Collection not found', `Collection was not found. Maybe it was deleted.`);
-            this.router.navigate(['/profile', this.collection.user.login, 'collections']);
-            break;
-          default:
-            this.dialogService.openWarningMessageDialog('Something went wrong', `Something went wrong while changing the collection name.`);
-            break;
-        }
-      }, () => this.collection.name = newName);
+      this.changeCollectionName(newName);
+    });
+
+    ref.afterClosed().subscribe(() => submitSubscription.unsubscribe());
+  }
+
+  public editDescriptionButtonClicked(): void {
+    let control = new FormControl('', Validators.maxLength(4096));
+    control.setValue(this.collection.description);
+
+    let ref = this.dialog.open(FieldDialogComponent, {
+      width: '550px',
+      position: { top: '25vh' },
+      data: {
+        header: 'Collection description editing',
+        message: `Edit the collection description and click "Save".`,
+        inputLabel: 'Collection description',
+        inputType: 'textarea',
+        formControl: control,
+        inputErrors: [{ errorCode: 'maxlength', errorMessage: 'Maximum length of the collection description is 4096' }],
+        closeButtonName: 'Cancel',
+        submitButtonName: 'Save'
+      }
+    });
+
+    let submitSubscription = ref.componentInstance.submitEmitter.subscribe((formControl: FormControl) => {
+      if (formControl.invalid) {
+        return;
+      }
+
+      ref.close();
+
+      let newDescription = formControl.value;
+      if (newDescription == this.collection.description) {
+        return;
+      }
+
+      this.changeCollectionDescription(newDescription);
     });
 
     ref.afterClosed().subscribe(() => submitSubscription.unsubscribe());
@@ -151,21 +173,54 @@ export class CollectionComponent implements OnInit {
     });
   }
 
-  private deleteCollection(): void {
-    this.collectionService.delete(this.collection.id).subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
-      switch (errorResponse.status) {
-        case 401:
-          this.dialogService.openWarningMessageDialog('You are not authenticated', 'To delete the collection you must be authenticated.');
-          break;
-        case 403:
-          this.dialogService.openWarningMessageDialog('You don\'t have access', `To delete the collection "${this.collection.name}" you must be its owner.`);
-          break;
-        default:
-          this.dialogService.openWarningMessageDialog('Something went wrong', `Something went wrong while deleting the collection.`);
-          break;
-      }
+  private changeCollectionName(newName: string): void {
+    this.collectionService.changeName(this.collection.id, newName).subscribe(() => { },
+      (errorResponse: HttpErrorResponse) => this.proccessErrorStatuses(
+        errorResponse.status,
+        'To change the collection name you must be authenticated.',
+        `To change the collection name you must be its owner.`,
+        `Something went wrong while changing the collection name.`
+      ), () => this.collection.name = newName);
+  }
 
-    }, () => this.router.navigate(['/profile', this.collection.user.login, 'collections']));
+  private changeCollectionDescription(newDescription: string): void {
+    this.collectionService.changeDescription(this.collection.id, newDescription).subscribe(() => { },
+      (errorResponse: HttpErrorResponse) => this.proccessErrorStatuses(
+        errorResponse.status,
+        'To change the collection description you must be authenticated.',
+        `To change the collection description you must be its owner.`,
+        `Something went wrong while changing the collection description.`
+      ), () => this.collection.description = newDescription);
+  }
+
+  private deleteCollection(): void {
+    this.collectionService.delete(this.collection.id).subscribe(() => { },
+      (errorResponse: HttpErrorResponse) => this.proccessErrorStatuses(
+        errorResponse.status,
+        'To delete the collection you must be authenticated.',
+        `To delete the collection "${this.collection.name}" you must be its owner.`,
+        `Something went wrong while deleting the collection.`
+      ), () => this.router.navigate(['/profile', this.collection.user.login, 'collections']));
+  }
+
+  private proccessErrorStatuses(status: number, notAuthMessage: string, accessErrorMessage: string, errorMessage: string): void {
+    switch (status) {
+      case 400:
+        break;
+      case 401:
+        this.dialogService.openWarningMessageDialog('You are not authenticated', notAuthMessage);
+        break;
+      case 403:
+        this.dialogService.openWarningMessageDialog('You don\'t have access', accessErrorMessage);
+        break;
+      case 404:
+        this.dialogService.openWarningMessageDialog('Collection not found', `Collection was not found. Maybe it was deleted.`);
+        this.router.navigate(['/profile', this.collection.user.login, 'collections']);
+        break;
+      default:
+        this.dialogService.openWarningMessageDialog('Something went wrong', errorMessage);
+        break;
+    }
   }
 
   private getCollection(): void {

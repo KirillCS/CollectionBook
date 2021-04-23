@@ -43,6 +43,10 @@ export class CollectionService {
     return this.httpClient.post<void>(`${this.apiUrl}api/collection/change/name`, { id, newName });
   }
 
+  public changeDescription(id: number, newDescription: string): Observable<void> {
+    return this.httpClient.post<void>(`${this.apiUrl}api/collection/change/description`, { id, newDescription });
+  }
+
   public delete(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.apiUrl}api/collection/${id ?? ''}`);
   }

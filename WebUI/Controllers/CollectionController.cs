@@ -1,4 +1,5 @@
-﻿using Application.Collections.Commands.ChangeCollectionName;
+﻿using Application.Collections.Commands.ChangeCollectionDescription;
+using Application.Collections.Commands.ChangeCollectionName;
 using Application.Collections.Commands.CreateCollection;
 using Application.Collections.Commands.DeleteCollection;
 using Application.Collections.Commands.StarCollection;
@@ -42,6 +43,16 @@ namespace WebUI.Controllers
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> ChangeCollectionName([FromBody] ChangeCollectionNameCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [Route("change/description")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ChangeCollectionDescription([FromBody] ChangeCollectionDescriptionCommand command)
         {
             await Mediator.Send(command);
 
