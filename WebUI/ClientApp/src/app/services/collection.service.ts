@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -43,7 +43,7 @@ export class CollectionService {
   public changeCover(id: number, newCover: File): Observable<string> {
     const formData = new FormData();
     formData.append('id', id.toString());
-    
+
     if (newCover) {
       formData.append('cover', newCover, newCover.name);
     }
