@@ -35,6 +35,11 @@ namespace Infrastructure.Services
                 fileSaver.Remove(currentCover);
             }
 
+            if (cover is null)
+            {
+                return null;
+            }
+
             return await fileSaver.Save(cover, filePaths.CollectionsCovers, Guid.NewGuid().ToString());
         }
     }

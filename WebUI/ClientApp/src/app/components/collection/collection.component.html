@@ -27,6 +27,14 @@
   <main class="card">
     <div class="cover">
       <img [src]="collectionCover" [alt]="collection?.name">
+      <button *ngIf="showMenuButton" mat-mini-fab [matMenuTriggerFor]="coverMenu" color="">
+        <mat-icon class="material-icons-round">mode_edit</mat-icon>
+      </button>
+      <mat-menu #coverMenu="matMenu">
+        <input type="file" style="display: none;" accept="image/*" #cover (change)="coverSelected($event.target.files)">
+        <button (click)="cover.click()" mat-menu-item>Upload cover</button>
+        <button (click)="resetCover()" [disabled]="!resetCoverButtonEnabled" mat-menu-item>Reset cover</button>
+      </mat-menu>
     </div>
     <div class="data">
       <header>

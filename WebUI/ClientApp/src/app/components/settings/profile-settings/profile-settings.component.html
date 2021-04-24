@@ -9,7 +9,7 @@
       </button>
       <mat-menu #menu="matMenu">
         <input type="file" style="display: none;" accept="image/*" #avatarInput (change)="avatarSelected($event.target.files)">
-        <button (click)="selectAvatar()" mat-menu-item>Upload a photo</button>
+        <button (click)="avatarInput.click()" mat-menu-item>Upload photo</button>
         <button (click)="resetAvatar()" [disabled]="!clearAvatarEnable" mat-menu-item>Reset avatar</button>
       </mat-menu>
     </div>

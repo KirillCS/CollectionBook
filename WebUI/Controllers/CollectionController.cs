@@ -1,4 +1,5 @@
-﻿using Application.Collections.Commands.ChangeCollectionDescription;
+﻿using Application.Collections.Commands.ChangeCollectionCover;
+using Application.Collections.Commands.ChangeCollectionDescription;
 using Application.Collections.Commands.ChangeCollectionName;
 using Application.Collections.Commands.ChangeCollectionTags;
 using Application.Collections.Commands.CreateCollection;
@@ -38,6 +39,14 @@ namespace WebUI.Controllers
             await Mediator.Send(command);
 
             return Ok();
+        }
+
+        [Route("change/cover")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ChangeCollectionCover([FromForm] ChangeCollectionCoverCommand command)
+        {
+            return Ok(await Mediator.Send(command));
         }
 
         [Route("change/name")]

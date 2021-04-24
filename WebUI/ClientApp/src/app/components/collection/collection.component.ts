@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { API_URL, DEFAULT_AVATAR, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
 import { CollectionDto } from 'src/app/models/dtos/collection.dto';
 import { FullCollectionDto } from 'src/app/models/dtos/full-collection.dto';
@@ -12,6 +13,7 @@ import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { DeleteFieldDialogComponent } from '../dialogs/delete-field-dialog/delete-field-dialog.component';
 import { FieldDialogComponent } from '../dialogs/field-dialog/field-dialog.component';
+import { ImageCropperDialogComponent, ImageCropperDialogData } from '../dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { TagsFieldDialogComponent } from '../dialogs/tags-field-dialog/tags-field-dialog.component';
 import { StarChangedEvent } from '../ui/star/star.component';
 
@@ -64,6 +66,10 @@ export class CollectionComponent implements OnInit {
     return this.currentUserService.currentUser?.login == this.collection?.user?.login;
   }
 
+  public get resetCoverButtonEnabled(): boolean {
+    return this.collection?.coverPath?.length > 0;
+  }
+
   public ngOnInit(): void {
     this.getCollection();
   }
@@ -75,6 +81,58 @@ export class CollectionComponent implements OnInit {
     }
 
     this.collection.stars = this.collection.stars.filter(s => s.userId == this.currentUserService.currentUser?.id);
+  }
+
+  public coverSelected(files: File[]): void {
+    if (!files.length || !files[0].type.startsWith("image/")) {
+      return;
+    }
+
+    let file = files[0];
+    let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      width: '600px',
+      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Crop')
+    });
+
+    let sub = dialogRef.afterClosed().subscribe((blob: Blob) => {
+
+      if (!blob) {
+        return;
+      }
+
+      let cover: any = blob;
+      cover.name = file.name;
+
+      this.collectionService.changeCover(this.collection.id, <File>cover).subscribe(newCoverPath => {
+        this.collection.coverPath = newCoverPath;
+      }, (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
+        errorResponse.status,
+        'To change the collection cover you must be authenticated.',
+        `To change the collection cover you must be its owner.`,
+        `Something went wrong while changing the collection cover.`
+      ));
+    });
+
+    dialogRef.afterClosed().subscribe(() => sub.unsubscribe());
+  }
+
+  public resetCover(): void {
+    let dialogRef = this.dialogService.openYesNoDialog('Reset the collection cover?', 'Are you sure you want to reset the collection cover?');
+
+    dialogRef.afterClosed().subscribe((answer: string) => {
+      if (answer === 'No') {
+        return;
+      }
+
+      this.collectionService.changeCover(this.collection.id, null).subscribe(() => {
+        this.collection.coverPath = null;
+      }, (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
+        errorResponse.status,
+        'To reset the collection cover you must be authenticated.',
+        `To reset the collection cover you must be its owner.`,
+        `Something went wrong while reseting the collection cover.`
+      ));
+    });
   }
 
   public editNameButtonClicked(): void {

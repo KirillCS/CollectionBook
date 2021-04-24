@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -17,7 +17,7 @@ export class CollectionService {
   public getFullCollection(id: number): Observable<FullCollectionDto> {
     return this.httpClient.get<FullCollectionDto>(`${this.apiUrl}api/collection/${id ?? ''}`);
   }
-  
+
   public create(request: CollectionCreatingRequest): Observable<void> {
     let formData = new FormData();
 
@@ -40,6 +40,17 @@ export class CollectionService {
     return this.httpClient.post<void>(`${this.apiUrl}api/collection/create`, formData);
   }
 
+  public changeCover(id: number, newCover: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('id', id.toString());
+    
+    if (newCover) {
+      formData.append('cover', newCover, newCover.name);
+    }
+
+    return this.httpClient.post<string>(`${this.apiUrl}api/collection/change/cover`, formData, { responseType: 'text' as 'json' });
+  }
+
   public changeName(id: number, newName: string): Observable<void> {
     return this.httpClient.post<void>(`${this.apiUrl}api/collection/change/name`, { id, newName });
   }
@@ -47,7 +58,7 @@ export class CollectionService {
   public changeDescription(id: number, newDescription: string): Observable<void> {
     return this.httpClient.post<void>(`${this.apiUrl}api/collection/change/description`, { id, newDescription });
   }
-  
+
   public changeTags(id: number, tags: string[]): Observable<TagDto[]> {
     tags ??= new Array<string>();
     return this.httpClient.post<TagDto[]>(`${this.apiUrl}api/collection/change/tags`, { id, tags });

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -25,9 +25,6 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
   private user: UserDto;
   private subscription: Subscription;
-
-  @ViewChild('avatarInput')
-  private avatarInput: ElementRef<HTMLElement>;
 
   public form = new FormGroup({
     firstName: new FormControl(),
@@ -81,10 +78,6 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
   public getAvatarPath(): string {
     return this.user?.avatarPath?.length > 0 ? this.apiUrl + this.user.avatarPath : this.defaultAvatarPath;
-  }
-
-  public selectAvatar(): void {
-    this.avatarInput.nativeElement.click();
   }
 
   public avatarSelected(files: FileList): void {
