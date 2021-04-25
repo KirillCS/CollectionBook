@@ -80,7 +80,7 @@ export class CollectionComponent implements OnInit {
       return;
     }
 
-    this.collection.stars = this.collection.stars.filter(s => s.userId == this.currentUserService.currentUser?.id);
+    this.collection.stars = this.collection.stars.filter(s => s.userId != this.currentUserService.currentUser?.id);
   }
 
   public coverSelected(files: File[]): void {
