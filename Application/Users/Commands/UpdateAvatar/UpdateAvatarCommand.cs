@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Commands.UpdateAvatar
 {
-    public class UpdateAvatarCommand : IRequest
+    public class UpdateAvatarCommand : IRequest<string>
     {
         public IFormFile Avatar { get; set; }
     }
 
-    public class UpdateAvatarCommandHandler : IRequestHandler<UpdateAvatarCommand>
+    public class UpdateAvatarCommandHandler : IRequestHandler<UpdateAvatarCommand, string>
     {
         private readonly ICurrentUserService currentUserService;
         private readonly UserManager<User> userManager;
@@ -28,7 +28,7 @@ namespace Application.Users.Commands.UpdateAvatar
             this.fileService = fileService;
         }
 
-        public async Task<Unit> Handle(UpdateAvatarCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UpdateAvatarCommand request, CancellationToken cancellationToken)
         {
             User user = await userManager.FindByIdAsync(currentUserService.Id);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
@@ -38,7 +38,7 @@ namespace Application.Users.Commands.UpdateAvatar
             IdentityResult result = await userManager.UpdateAsync(user);
             Guard.Requires(() => result.Succeeded, new OperationException());
 
-            return Unit.Value;
+            return user.AvatarPath;
         }
     }
 }

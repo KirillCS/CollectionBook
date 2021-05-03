@@ -25,6 +25,11 @@ namespace Infrastructure.Services
                 fileSaver.Remove(currentAvatar);
             }
 
+            if (avatar is null)
+            {
+                return null;
+            }
+
             return await fileSaver.Save(avatar, filePaths.Avatars, Guid.NewGuid().ToString());
         }
 

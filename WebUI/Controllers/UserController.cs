@@ -1,5 +1,4 @@
-﻿using Application.Users.Commands.ResetAvatar;
-using Application.Users.Commands.ResetPassword;
+﻿using Application.Users.Commands.ResetPassword;
 using Application.Users.Commands.SendPasswordResetConfirmation;
 using Application.Users.Commands.UpdateAvatar;
 using Application.Users.Commands.UpdateLogin;
@@ -20,58 +19,34 @@ namespace WebUI.Controllers
     {
         [Route("{Login}")]
         [HttpGet]
-        public async Task<IActionResult> GetUser([FromRoute] GetUserQuery query)
-        {
-            return Ok(await Mediator.Send(query));
-        }
+        public async Task<IActionResult> GetUser([FromRoute] GetUserQuery query) =>
+            Ok(await Mediator.Send(query));
 
         [Route("collections")]
         [HttpGet]
-        public async Task<IActionResult> GetCollections([FromQuery] GetCollectionsQuery query)
-        {
-            return Ok(await Mediator.Send(query));
-        }
+        public async Task<IActionResult> GetCollections([FromQuery] GetCollectionsQuery query) =>
+            Ok(await Mediator.Send(query));
 
         [Route("collections/names")]
         [HttpGet]
-        public async Task<IActionResult> GetCollectionsNames([FromQuery] GetCollectionsNamesQuery query)
-        {
-            return Ok(await Mediator.Send(query));
-        }
+        public async Task<IActionResult> GetCollectionsNames([FromQuery] GetCollectionsNamesQuery query) =>
+            Ok(await Mediator.Send(query));
 
         [Route("stars")]
         [HttpGet]
-        public async Task<IActionResult> GetStarredCollections([FromQuery] GetStarredCollectionsQuery query)
-        {
-            return Ok(await Mediator.Send(query));
-        }
+        public async Task<IActionResult> GetStarredCollections([FromQuery] GetStarredCollectionsQuery query) =>
+            Ok(await Mediator.Send(query));
 
         [Route("stars/notifications")]
         [HttpGet]
-        public async Task<IActionResult> GetStarsNotifications([FromQuery] GetStarsNotificationsQuery query)
-        {
-            return Ok(await Mediator.Send(query));
-        }
+        public async Task<IActionResult> GetStarsNotifications([FromQuery] GetStarsNotificationsQuery query) =>
+            Ok(await Mediator.Send(query));
 
         [Route("avatar/update")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> UpdateAvatar([FromForm] UpdateAvatarCommand command)
-        {
-            await Mediator.Send(command);
-
-            return Ok();
-        }
-
-        [Route("avatar/reset")]
-        [HttpDelete]
-        [Authorize]
-        public async Task<IActionResult> ResetAvatar()
-        {
-            await Mediator.Send(new ResetAvatarCommand());
-
-            return Ok();
-        }
+        public async Task<IActionResult> UpdateAvatar([FromForm] UpdateAvatarCommand command) =>
+            Ok(await Mediator.Send(command));
 
         [Route("profile/update")]
         [HttpPut]

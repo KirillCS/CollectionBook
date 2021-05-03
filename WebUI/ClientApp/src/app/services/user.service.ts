@@ -78,14 +78,13 @@ export class UserService {
     return this.httpClient.get<PaginatedListResponse<StarNotificationDto>>(`${this.apiUrl}api/user/stars/notifications`, { params });
   }
 
-  public updateAvatar(avatar: File): Observable<void> {
+  public updateAvatar(avatar: File): Observable<string> {
     let formData = new FormData();
-    formData.append('avatar', avatar, avatar.name);
-    return this.httpClient.post<void>(`${this.apiUrl}api/user/avatar/update`, formData);
-  }
+    if (avatar) {
+      formData.append('avatar', avatar, avatar.name);
+    }
 
-  public resetAvatar(): Observable<void> {
-    return this.httpClient.delete<void>(`${this.apiUrl}api/user/avatar/reset`);
+    return this.httpClient.post<string>(`${this.apiUrl}api/user/avatar/update`, formData, { responseType: 'text' as 'json' });
   }
 
   public updateProfile(request: UpdateProfileRequest): Observable<void> {

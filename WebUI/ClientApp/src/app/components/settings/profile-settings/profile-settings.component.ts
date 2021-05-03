@@ -92,7 +92,6 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((avatarBlob: Blob) => {
-      
       if (!avatarBlob) {
         return;
       }
@@ -100,26 +99,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
       let avatar: any = avatarBlob;
       avatar.name = file.name;
 
-      this.userService.updateAvatar(<File>avatar).subscribe(() => {
-        this.dialogService.openSuccessMessageDialog('Profile avatar updated', 'Profile avatar has been successfully updated. Reload the page to see the new profile avatar.');
-      }, (errorResponse: HttpErrorResponse) => {
-
-        if (errorResponse.status == 401) {
-          this.authService.logout();
-          this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'You must be authenticated to update your profile avatar.');
-
-          return;
-        }
-        
-        if (errorResponse.status == 404) {
-          this.authService.logout();
-          this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
-
-          return;
-        }
-
-        this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'Something went wrong while profile avatar was updating. Try update avatar again.');
-      });
+      this.updateAvatar(<File>avatar);
     })
   }
 
@@ -127,29 +107,11 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     let dialogRef = this.dialogService.openYesNoDialog('Reset profile avatar?', 'Are you sure you want to reset profile avatar?');
 
     dialogRef.afterClosed().subscribe((answer: string) => {
-      if (answer === 'No') {
+      if (answer !== 'Yes') {
         return;
       }
 
-      this.userService.resetAvatar().subscribe(() => {
-        this.dialogService.openSuccessMessageDialog('Profile avatar reseted', 'Profile avatar has been successfully reseted. Reload the page to see the new profile avatar.');
-      }, (errorResponse: HttpErrorResponse) => {
-        if (errorResponse.status == 401) {
-          this.authService.logout();
-          this.dialogService.openWarningMessageDialog('Failed to reset a profile avatar', 'You must be authenticated to reset your profile avatar.');
-
-          return;
-        }
-
-        if (errorResponse.status == 404) {
-          this.authService.logout();
-          this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
-          
-          return;
-        }
-        
-        this.dialogService.openWarningMessageDialog('Failed to reset a profile avatar', 'Something went wrong while profile avatar was resetting. Try reset avatar again.');
-      });
+      this.updateAvatar(null);
     });
   }
 
@@ -190,6 +152,29 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     }, () => {
       this.inProcess = false;
       this.snackBar.open('Profile was updated', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
+    });
+  }
+
+  private updateAvatar(avatar: File): void {
+    this.userService.updateAvatar(avatar).subscribe(newAvatarPath => {
+      this.user.avatarPath = newAvatarPath;
+    }, (errorResponse: HttpErrorResponse) => {
+
+      if (errorResponse.status == 401) {
+        this.authService.logout();
+        this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'You must be authenticated to update your profile avatar.');
+
+        return;
+      }
+      
+      if (errorResponse.status == 404) {
+        this.authService.logout();
+        this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
+
+        return;
+      }
+
+      this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'Something went wrong while profile avatar was updating. Try update avatar again.');
     });
   }
 
