@@ -11,6 +11,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CollectionService } from 'src/app/services/collection.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
+import { ItemService } from 'src/app/services/item.service';
+import { PreviousRouteService } from 'src/app/services/previous-route.service';
 import { DeleteFieldDialogComponent } from '../dialogs/delete-field-dialog/delete-field-dialog.component';
 import { FieldDialogComponent } from '../dialogs/field-dialog/field-dialog.component';
 import { ImageCropperDialogComponent, ImageCropperDialogData } from '../dialogs/image-cropper-dialog/image-cropper-dialog.component';
@@ -30,9 +32,11 @@ export class CollectionComponent implements OnInit {
   public constructor(
     route: ActivatedRoute,
     private collectionService: CollectionService,
+    private itemService: ItemService,
     private authService: AuthService,
     private currentUserService: CurrentUserService,
     private router: Router,
+    private previousRouteService: PreviousRouteService,
     private dialog: MatDialog,
     private dialogService: DefaultDialogsService,
     @Inject(API_URL) private apiUrl: string,
@@ -99,6 +103,7 @@ export class CollectionComponent implements OnInit {
       ref.close();
 
       let itemName = formControl.value;
+      this.createItem(itemName);
     });
 
     ref.afterClosed().subscribe(() => submitSubscription.unsubscribe());
@@ -282,6 +287,34 @@ export class CollectionComponent implements OnInit {
         this.deleteCollection();
       }
     });
+  }
+
+  private createItem(name: string): void {
+    this.itemService.create(name, this.collection.id).subscribe(itemId => {
+      // redirect
+    }, (errorResponse: HttpErrorResponse) => {
+      switch (true) {
+        case errorResponse.status === 400:
+          this.dialogService.openWarningMessageDialog('Item name cannot be empty', 'You must enter a name of a new item.');
+          break;
+        case errorResponse.status === 401:
+          this.dialogService.openWarningMessageDialog('You are not authenticated', 'You must be authenticated to create a new item.');
+          break;
+        case errorResponse.status === 403:
+          this.dialogService.openWarningMessageDialog('You don\'t have access', 'You must be the the owner of this collection to create a new item.');
+          break;
+        case errorResponse.status === 404 && errorResponse.error.entityType === 'Collection':
+          this.router.navigateByUrl(this.previousRouteService.getPreviousUrl());
+          this.dialogService.openWarningMessageDialog('Collection not found', `Collection ${this.collection.name} was not found. Maybe it was deleted.`);
+          break;
+        case errorResponse.status === 404 && errorResponse.error.entityType === 'User':
+          this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
+          break;
+        default:
+          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while creating a new item.');
+          break;
+      }
+    })
   }
 
   private changeCollectionName(newName: string): void {

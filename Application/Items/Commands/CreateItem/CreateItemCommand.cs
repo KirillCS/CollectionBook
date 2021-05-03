@@ -37,6 +37,8 @@ namespace Application.Items.Commands.CreateItem
             Collection collection = await context.Collections.FindAsync(new object[] { request.CollectionId }, cancellationToken);
             Guard.Requires(() => collection is not null, new EntityNotFoundException(nameof(Collection)));
 
+            Guard.Requires(() => collection.UserId == user.Id, new OperationException(403));
+
             var item = new Item() { Name = request.Name, CollectionId = request.CollectionId };
             await context.Items.AddAsync(item, cancellationToken);
             await context.SaveChanges(cancellationToken);
