@@ -12,7 +12,7 @@ import { TagDto } from '../models/dtos/tag.dto';
 })
 export class CollectionService {
 
-  constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
+  public constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
 
   public getFullCollection(id: number): Observable<FullCollectionDto> {
     return this.httpClient.get<FullCollectionDto>(`${this.apiUrl}api/collection/${id ?? ''}`);

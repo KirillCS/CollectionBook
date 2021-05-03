@@ -11,9 +11,9 @@ namespace Application.Items.Commands.CreateItem
 {
     public class CreateItemCommand : IRequest<int>
     {
-        public int CollectionId { get; set; }
-
         public string Name { get; set; }
+
+        public int CollectionId { get; set; }
     }
 
     public class CreateItemCommandHandler : IRequestHandler<CreateItemCommand, int>
