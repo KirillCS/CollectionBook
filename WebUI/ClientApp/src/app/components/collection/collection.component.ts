@@ -74,6 +74,36 @@ export class CollectionComponent implements OnInit {
     this.getCollection();
   }
 
+  public addItemButtonClicked(): void {
+
+    let ref = this.dialog.open(FieldDialogComponent, {
+      width: '500px',
+      position: { top: '30vh' },
+      data: {
+        header: 'Item creating',
+        message: `Enter a name of a new collection item.`,
+        inputLabel: 'Item name',
+        inputType: 'text',
+        formControl: new FormControl('', Validators.required),
+        inputErrors: [{ errorCode: 'required', errorMessage: 'Item name cannot be empty' }],
+        closeButtonName: 'Cancel',
+        submitButtonName: 'Create'
+      }
+    });
+
+    let submitSubscription = ref.componentInstance.submitEmitter.subscribe((formControl: FormControl) => {
+      if (formControl.invalid) {
+        return;
+      }
+
+      ref.close();
+
+      let itemName = formControl.value;
+    });
+
+    ref.afterClosed().subscribe(() => submitSubscription.unsubscribe());
+  }
+
   public starStatusChanged(event: StarChangedEvent): void {
     if (event.newStatus && !this.starred) {
       this.collection.stars.push({ userId: this.currentUserService.currentUser?.id });
