@@ -11,6 +11,10 @@ namespace Application.Common.Interfaces
 
         DbSet<Collection> Collections { get; set; }
 
+        DbSet<Item> Items { get; set; }
+
+        DbSet<ItemImage> ItemImages { get; set; }
+
         DbSet<Tag> Tags { get; set; }
 
         DbSet<Star> Stars { get; set; }

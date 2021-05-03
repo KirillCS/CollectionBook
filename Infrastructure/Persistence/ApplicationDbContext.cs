@@ -12,6 +12,10 @@ namespace Infrastructure.Persistence
     {
         public DbSet<Collection> Collections { get; set; }
 
+        public DbSet<Item> Items { get; set; }
+
+        public DbSet<ItemImage> ItemImages { get; set; }
+
         public DbSet<Tag> Tags { get; set; }
 
         public DbSet<Star> Stars { get; set; }

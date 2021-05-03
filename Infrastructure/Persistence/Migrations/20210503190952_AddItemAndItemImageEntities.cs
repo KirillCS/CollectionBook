@@ -8,7 +8,7 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Item",
+                name: "Items",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -20,9 +20,9 @@ namespace Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Item", x => x.Id);
+                    table.PrimaryKey("PK_Items", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Item_Collections_CollectionId",
+                        name: "FK_Items_Collections_CollectionId",
                         column: x => x.CollectionId,
                         principalTable: "Collections",
                         principalColumn: "Id",
@@ -30,7 +30,7 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemImage",
+                name: "ItemImages",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -40,11 +40,11 @@ namespace Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemImage", x => x.Id);
+                    table.PrimaryKey("PK_ItemImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ItemImage_Item_ItemId",
+                        name: "FK_ItemImages_Items_ItemId",
                         column: x => x.ItemId,
-                        principalTable: "Item",
+                        principalTable: "Items",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -60,9 +60,9 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_ItemTag", x => new { x.ItemsId, x.TagsId });
                     table.ForeignKey(
-                        name: "FK_ItemTag_Item_ItemsId",
+                        name: "FK_ItemTag_Items_ItemsId",
                         column: x => x.ItemsId,
-                        principalTable: "Item",
+                        principalTable: "Items",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -74,14 +74,14 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Item_CollectionId",
-                table: "Item",
-                column: "CollectionId");
+                name: "IX_ItemImages_ItemId",
+                table: "ItemImages",
+                column: "ItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemImage_ItemId",
-                table: "ItemImage",
-                column: "ItemId");
+                name: "IX_Items_CollectionId",
+                table: "Items",
+                column: "CollectionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemTag_TagsId",
@@ -92,13 +92,13 @@ namespace Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ItemImage");
+                name: "ItemImages");
 
             migrationBuilder.DropTable(
                 name: "ItemTag");
 
             migrationBuilder.DropTable(
-                name: "Item");
+                name: "Items");
         }
     }
 }

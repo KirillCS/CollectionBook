@@ -97,7 +97,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("CollectionId");
 
-                    b.ToTable("Item");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("Domain.Entities.ItemImage", b =>
@@ -118,7 +118,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("ItemImage");
+                    b.ToTable("ItemImages");
                 });
 
             modelBuilder.Entity("Domain.Entities.Star", b =>
