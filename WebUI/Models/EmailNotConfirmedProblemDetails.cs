@@ -2,7 +2,7 @@
 
 namespace WebUI.Models
 {
-    public class EmailNotConfirmedDetails : ProblemDetails
+    public class EmailNotConfirmedProblemDetails : ProblemDetails
     {
         public string Id { get; set; }
 

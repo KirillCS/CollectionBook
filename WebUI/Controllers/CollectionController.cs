@@ -16,10 +16,8 @@ namespace WebUI.Controllers
     {
         [Route("{Id}")]
         [HttpGet]
-        public async Task<IActionResult> GetCollectionAndItems([FromRoute] GetCollectionAndItemsQuery query)
-        {
-            return Ok(await Mediator.Send(query));
-        }
+        public async Task<IActionResult> GetCollectionAndItems([FromRoute] GetCollectionAndItemsQuery query) =>
+            Ok(await Mediator.Send(query));
 
         [Route("{Id}")]
         [HttpDelete]
@@ -44,10 +42,8 @@ namespace WebUI.Controllers
         [Route("change/cover")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> ChangeCollectionCover([FromForm] ChangeCollectionCoverCommand command)
-        {
-            return Ok(await Mediator.Send(command));
-        }
+        public async Task<IActionResult> ChangeCollectionCover([FromForm] ChangeCollectionCoverCommand command) =>
+            Ok(await Mediator.Send(command));
 
         [Route("change/name")]
         [HttpPost]
@@ -72,10 +68,8 @@ namespace WebUI.Controllers
         [Route("change/tags")]
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> ChangeCollectionTags([FromBody] ChangeCollectionTagsCommand command)
-        {
-            return Ok(await Mediator.Send(command));
-        }
+        public async Task<IActionResult> ChangeCollectionTags([FromBody] ChangeCollectionTagsCommand command) =>
+            Ok(await Mediator.Send(command));
 
         [Route("star")]
         [HttpPost]

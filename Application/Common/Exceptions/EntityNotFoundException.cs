@@ -7,8 +7,12 @@ namespace Application.Common.Exceptions
         public EntityNotFoundException() : base("Entity was not found")
         { }
 
-        public EntityNotFoundException(string entityType, string param, string paramValue) : 
-            base($"Entity \"{entityType}\" with {param} \"{paramValue ?? string.Empty}\" was not found")
-        { }
+        public EntityNotFoundException(string entityType) : 
+            base($"Entity \"{entityType}\" with was not found")
+        {
+            EntityType = entityType;
+        }
+
+        public string EntityType { get; }
     }
 }

@@ -77,7 +77,7 @@ namespace WebUI.Filters
         private void HandleEmailNotConfirmedException(ExceptionContext context)
         {
             var exception = context.Exception as EmailNotConfirmedException;
-            var details = new EmailNotConfirmedDetails()
+            var details = new EmailNotConfirmedProblemDetails()
             {
                 Status = StatusCodes.Status403Forbidden,
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
@@ -94,12 +94,13 @@ namespace WebUI.Filters
         private void HandleEntityNotFoundException(ExceptionContext context)
         {
             var exception = context.Exception as EntityNotFoundException;
-            var details = new ProblemDetails()
+            var details = new EntityNotFoundProblemDetails()
             {
                 Status = StatusCodes.Status404NotFound,
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                 Title = exception.Message,
-                Detail = exception.Message
+                Detail = exception.Message,
+                EntityType = exception.EntityType
             };
 
             context.Result = new NotFoundObjectResult(details);
