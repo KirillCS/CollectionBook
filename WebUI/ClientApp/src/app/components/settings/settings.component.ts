@@ -1,8 +1,10 @@
 import { Component, Inject } from '@angular/core';
 
 import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';
+import { UserCoverDto } from 'src/app/models/dtos/user-cover.dto';
 import { UserDto } from 'src/app/models/dtos/user.dto';
 import { SettingsService } from 'src/app/services/settings.service';
+import { ProfileCoverSize } from '../ui/profile-cover/profile-cover.component';
 
 @Component({
   selector: 'app-settings',
@@ -11,7 +13,7 @@ import { SettingsService } from 'src/app/services/settings.service';
 })
 export class SettingsComponent {
 
-  public user = new UserDto();
+  private user = new UserDto();
 
   constructor(
     @Inject(API_URL) private apiUrl: string,
@@ -22,8 +24,18 @@ export class SettingsComponent {
       this.user = user;
     });
   }
-  
-  public getAvatarPath(): string {
-    return this.user?.avatarPath?.length > 0 ? this.apiUrl + this.user.avatarPath : this.defaultAvatarPath;
+
+  public get userCover() : UserCoverDto {
+    return this.user as UserCoverDto;
   }
+
+  public get login() : string {
+    return this.user?.login;
+  }
+
+  
+  public get profileCoverSize() : ProfileCoverSize {
+    return ProfileCoverSize.Large
+  }
+  
 }

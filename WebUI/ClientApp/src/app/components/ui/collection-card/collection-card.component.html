@@ -1,10 +1,6 @@
 <mat-card>
   <header *ngIf="collection.user">
-    <img mat-card-avatar [src]="userAvatar" alt=""/>
-    <div class="cred">
-      <div class="name" *ngIf="collection.user.firstName?.length > 0 || collection.user.lastName?.length > 0">{{ collection.user.firstName }} {{ collection.user.lastName }}</div>
-      <a class="login" [routerLink]="['/profile', collection.user.login]">@{{ collection.user.login }}</a>
-    </div>
+    <app-profile-cover [user]="collection.user"></app-profile-cover>
   </header>
   <img mat-card-image [src]="collectionCover" [alt]="collection.name">
   <mat-card-content [class]="!collection.user ? 'without-header' : ''">

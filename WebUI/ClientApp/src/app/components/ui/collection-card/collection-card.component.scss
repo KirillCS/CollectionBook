@@ -6,39 +6,7 @@ mat-card {
   border-radius: 8px;
 
   header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     margin-bottom: 0.7rem;
-
-    img {
-      width: 3.5rem;
-      height: 3.5rem;
-      margin-right: 0.7rem;
-      border-radius: 50%;
-      overflow: hidden;
-      border-radius: 50%;
-      overflow: hidden;
-    }
-
-    .cred {
-      width: calc(100% - 3.5rem - 0.7rem);
-
-      .name {
-        font-size: 1rem;
-        font-weight: 500;
-        margin-bottom: 0.3rem;
-      }
-
-      .login {
-        text-decoration: none;
-        color: black;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
   }
 
   img {

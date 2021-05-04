@@ -1,0 +1,9 @@
+<main [ngClass]="{'sm': size === sizes.Small, 'lg': size === sizes.Large}">
+  <section class="avatar">
+    <img [src]="avatarPath" alt="">
+  </section>
+  <section class="creds">
+    <span class="name">{{ name }}</span>
+    <span class="login" [routerLink]="['/profile', login]">@{{ login }}</span>
+  </section>
+</main>

@@ -1,0 +1,84 @@
+$avatar-diameter-sm: 3rem;
+$font-size-sm: 0.9rem;
+
+$avatar-diameter-md: 3.5rem;
+$font-size-md: 1rem;
+
+$avatar-diameter-lg: 4rem;
+$font-size-lg: 1.15rem;
+
+@mixin profile-cover($avatar-diameter, $font-size) {
+  $sections-margin: calc(#{$avatar-diameter} / 4);
+
+  > .avatar {
+    width: $avatar-diameter;
+    height: $avatar-diameter;
+    margin-right: $sections-margin;
+  }
+
+  > .creds {
+    max-width: calc(100% - #{$avatar-diameter} - #{$sections-margin});
+    height: $avatar-diameter;
+
+    > .name {
+      font-size: $font-size;
+    }
+
+    > .login {
+      font-size: calc(#{$font-size} * 0.9);
+    }
+  }
+}
+
+main {
+  display: flex;
+  align-items: center;
+
+  > .avatar {
+    border-radius: 50%;
+    overflow: hidden;
+
+    > img {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  > .creds {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+
+    > .name {
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    > .login {
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  @include profile-cover($avatar-diameter-md, $font-size-md);
+  
+  &.sm {
+    @include profile-cover($avatar-diameter-sm, $font-size-sm);
+  }
+
+  &.lg {
+    @include profile-cover($avatar-diameter-lg, $font-size-lg);
+  }
+}

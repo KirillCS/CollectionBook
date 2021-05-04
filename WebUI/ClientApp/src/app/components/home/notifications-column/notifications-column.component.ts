@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';
 import { StarNotificationDto } from 'src/app/models/dtos/star-notification.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
@@ -23,9 +22,7 @@ export class NotificationsColumnComponent implements OnInit {
   public constructor(
     private currentUserService: CurrentUserService,
     private userService: UserService,
-    private dialogService: DefaultDialogsService,
-    @Inject(API_URL) private apiUrl: string,
-    @Inject(DEFAULT_AVATAR) private defaultAvatar: string
+    private dialogService: DefaultDialogsService
   ) { }
 
   public get starsNotifications(): StarNotificationDto[] {
@@ -42,10 +39,6 @@ export class NotificationsColumnComponent implements OnInit {
 
   public ngOnInit(): void {
     this.addStars();
-  }
-
-  public getFullAvatarPath(avatar: string): string {
-    return !avatar ? this.defaultAvatar : `${this.apiUrl}${avatar}`;
   }
 
   public loadMore(): void {
