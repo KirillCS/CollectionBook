@@ -1,0 +1,11 @@
+<main>
+  <mat-icon *ngIf="icon" class="material-icons-round">{{ icon }}</mat-icon>
+  <section *ngFor="let node of nodes; let i = index">
+    <span *ngIf="i != 0">&nbsp;/ </span>
+    <span *ngIf="node.path; else withoutLink" class="link"
+      [ngClass]="{'highlight': highlight && i == (nodes.length - 1)}" [routerLink]="node.path">{{ node.name }}</span>
+    <ng-template #withoutLink>
+      <span [ngClass]="{'highlight': highlight && i == (nodes.length - 1)}">{{ node.name }}</span>
+    </ng-template>
+  </section>
+</main>
