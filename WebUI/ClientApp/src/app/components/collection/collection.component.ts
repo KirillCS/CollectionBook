@@ -4,7 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { API_URL, DEFAULT_AVATAR, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
 import { CollectionDto } from 'src/app/models/dtos/collection.dto';
 import { FullCollectionDto } from 'src/app/models/dtos/full-collection.dto';
 import { AuthService } from 'src/app/services/auth.service';
@@ -17,6 +17,7 @@ import { DeleteFieldDialogComponent } from '../dialogs/delete-field-dialog/delet
 import { FieldDialogComponent } from '../dialogs/field-dialog/field-dialog.component';
 import { ImageCropperDialogComponent, ImageCropperDialogData } from '../dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { TagsFieldDialogComponent } from '../dialogs/tags-field-dialog/tags-field-dialog.component';
+import { PathNode } from '../ui/path/path-node';
 import { StarChangedEvent } from '../ui/star/star.component';
 
 @Component({
@@ -28,6 +29,7 @@ export class CollectionComponent implements OnInit {
 
   private collectionId: number;
   private collectionDto: FullCollectionDto;
+  private _pathNodes: Array<PathNode>;
 
   public constructor(
     route: ActivatedRoute,
@@ -40,7 +42,6 @@ export class CollectionComponent implements OnInit {
     private dialog: MatDialog,
     private dialogService: DefaultDialogsService,
     @Inject(API_URL) private apiUrl: string,
-    @Inject(DEFAULT_AVATAR) private defaultAvatar: string,
     @Inject(DEFAULT_COLLECTION_COVER) private defaultCover: string
   ) {
     route.paramMap.subscribe(params => this.collectionId = parseInt(params.get("id")));
@@ -48,6 +49,10 @@ export class CollectionComponent implements OnInit {
 
   public get collection(): CollectionDto {
     return this.collectionDto?.collection;
+  }
+
+  public get pathNodes(): Array<PathNode> {
+    return this._pathNodes;
   }
 
   public get collectionCover(): string {
@@ -291,23 +296,23 @@ export class CollectionComponent implements OnInit {
 
   private createItem(name: string): void {
     this.itemService.create(name, this.collection.id).subscribe(itemId => {
-      // redirect
+      this.router.navigate(['/item', itemId]);
     }, (errorResponse: HttpErrorResponse) => {
       switch (true) {
-        case errorResponse.status === 400:
+        case errorResponse.status == 400:
           this.dialogService.openWarningMessageDialog('Item name cannot be empty', 'You must enter a name of a new item.');
           break;
-        case errorResponse.status === 401:
+        case errorResponse.status == 401:
           this.dialogService.openWarningMessageDialog('You are not authenticated', 'You must be authenticated to create a new item.');
           break;
-        case errorResponse.status === 403:
+        case errorResponse.status == 403:
           this.dialogService.openWarningMessageDialog('You don\'t have access', 'You must be the the owner of this collection to create a new item.');
           break;
-        case errorResponse.status === 404 && errorResponse.error.entityType === 'Collection':
+        case errorResponse.status == 404 && errorResponse.error.entityType == 'Collection':
           this.router.navigateByUrl(this.previousRouteService.getPreviousUrl());
           this.dialogService.openWarningMessageDialog('Collection not found', `Collection ${this.collection.name} was not found. Maybe it was deleted.`);
           break;
-        case errorResponse.status === 404 && errorResponse.error.entityType === 'User':
+        case errorResponse.status == 404 && errorResponse.error.entityType == 'User':
           this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
           break;
         default:
@@ -378,6 +383,22 @@ export class CollectionComponent implements OnInit {
   }
 
   private getCollection(): void {
-    this.collectionService.getFullCollection(this.collectionId).subscribe(collection => this.collectionDto = collection)
+    this.collectionService.getFullCollection(this.collectionId).subscribe(collection => {
+      this.collectionDto = collection;
+      this.setPath();
+    }, (errorResponse: HttpErrorResponse) => {
+      if (errorResponse.status == 404) {
+        this.router.navigateByUrl('**', { skipLocationChange: true });
+      } else {
+        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
+      }
+    })
+  }
+
+  private setPath(): void {
+    this._pathNodes = [
+      new PathNode(this.collection.user.login, `/profile/${this.collection.user.login}`),
+      new PathNode(this.collection.name),
+    ]
   }
 }

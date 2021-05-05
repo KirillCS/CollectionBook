@@ -1,30 +1,33 @@
 <div class="app__container px-3">
-  <button class="menu-button" *ngIf="showMenuButton" mat-mini-fab color="" [matMenuTriggerFor]="menu">
-    <mat-icon class="material-icons-round">
-      more_vert
-    </mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="addItemButtonClicked()">
-      <mat-icon class="material-icons-round">add</mat-icon>
-      <span>Add new item</span>
-    </button>
-    <mat-divider></mat-divider>
-    <button mat-menu-item [matMenuTriggerFor]="editMenu">
-      <mat-icon class="material-icons-round">edit</mat-icon>
-      <span>Edit collection</span>
-    </button>
-    <button mat-menu-item (click)="deleteButtonClicked()">
-      <mat-icon class="material-icons-round">delete</mat-icon>
-      <span>Delete collection</span>
-    </button>
-  </mat-menu>
-  <mat-menu #editMenu="matMenu">
-    <button mat-menu-item (click)="editNameButtonClicked()">Collection name</button>
-    <button mat-menu-item (click)="editDescriptionButtonClicked()">Collection description</button>
-    <button mat-menu-item (click)="editTagsButtonClicked()">Collection tags</button>
-  </mat-menu>
+  <div class="card mt-md-4 mt-3 py-3 px-4">
+    <app-path [nodes]="pathNodes" icon="collections" highlight="true"></app-path>
+  </div>
   <main class="card">
+    <button class="menu-button" *ngIf="showMenuButton" mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon class="material-icons-round">
+        more_vert
+      </mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="addItemButtonClicked()">
+        <mat-icon class="material-icons-round">add</mat-icon>
+        <span>Add new item</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item [matMenuTriggerFor]="editMenu">
+        <mat-icon class="material-icons-round">edit</mat-icon>
+        <span>Edit collection</span>
+      </button>
+      <button mat-menu-item (click)="deleteButtonClicked()">
+        <mat-icon class="material-icons-round">delete</mat-icon>
+        <span>Delete collection</span>
+      </button>
+    </mat-menu>
+    <mat-menu #editMenu="matMenu">
+      <button mat-menu-item (click)="editNameButtonClicked()">Collection name</button>
+      <button mat-menu-item (click)="editDescriptionButtonClicked()">Collection description</button>
+      <button mat-menu-item (click)="editTagsButtonClicked()">Collection tags</button>
+    </mat-menu>
     <div class="cover">
       <img [src]="collectionCover" [alt]="collection?.name">
       <button *ngIf="showMenuButton" mat-mini-fab [matMenuTriggerFor]="coverMenu" color="">

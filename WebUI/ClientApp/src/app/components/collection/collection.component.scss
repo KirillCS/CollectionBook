@@ -3,19 +3,20 @@
 $cover-width: 350px;
 $cover-width-md: 280px;
 
-.menu-button {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-}
-
 main {
+  position: relative;
   display: flex;
   align-items: flex-start;
   margin-top: 5rem;
   width: calc(100% - (#{$cover-width} / 2));
   float: right;
   overflow: unset;
+
+  .menu-button {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+  }
 
   .cover {
     position: relative;
@@ -103,9 +104,6 @@ main {
 }
 
 @media (max-width: 768px) {
-  .menu-button {
-    top: 0.8rem;
-  }
 
   main {
     flex-direction: column;
