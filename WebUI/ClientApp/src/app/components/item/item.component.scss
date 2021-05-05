@@ -1,0 +1,31 @@
+carousel {
+  z-index: 3;
+}
+
+.carousel-cell {
+  position: relative;
+
+  button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 3;
+  }
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+  
+  .date {
+    opacity: 0.6;
+  }
+  
+  button {
+    opacity: 0.6;
+  }
+}

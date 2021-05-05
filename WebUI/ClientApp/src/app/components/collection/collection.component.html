@@ -24,9 +24,9 @@
       </button>
     </mat-menu>
     <mat-menu #editMenu="matMenu">
-      <button mat-menu-item (click)="editNameButtonClicked()">Collection name</button>
-      <button mat-menu-item (click)="editDescriptionButtonClicked()">Collection description</button>
-      <button mat-menu-item (click)="editTagsButtonClicked()">Collection tags</button>
+      <button mat-menu-item (click)="editNameButtonClicked()">name</button>
+      <button mat-menu-item (click)="editDescriptionButtonClicked()">description</button>
+      <button mat-menu-item (click)="editTagsButtonClicked()">tags</button>
     </mat-menu>
     <div class="cover">
       <img [src]="collectionCover" [alt]="collection?.name">

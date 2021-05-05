@@ -34,6 +34,13 @@ textarea {
   margin: 0 auto;
 }
 
+.app__container--sm {
+  position: relative;
+  min-width: auto;
+  max-width: $app-container-width-sm;
+  margin: 0 auto;
+}
+
 .app__container--form {
   position: relative;
   min-width: auto;

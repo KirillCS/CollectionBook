@@ -25,6 +25,7 @@ import { CollectionsComponent } from './components/profile/collections/collectio
 import { StarsComponent } from './components/profile/stars/stars.component';
 import { PreviousRouteService } from './services/previous-route.service';
 import { CollectionComponent } from './components/collection/collection.component';
+import { ItemComponent } from './components/item/item.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -49,6 +50,7 @@ const routes: Routes = [
     ]
   },
   { path: 'collection/:id', component: CollectionComponent },
+  { path: 'item/:id', component: ItemComponent },
   { path: 'new', component: CollectionCreatingComponent, canActivate: [AuthenticatedGuard] },
   { path: '**', component: NotFoundComponent }
 ];

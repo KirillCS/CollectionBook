@@ -31,6 +31,8 @@ import { NgProgressHttpModule } from 'ngx-progressbar/http';
 
 import { ImageCropperModule } from 'ngx-image-cropper';
 
+import {IvyCarouselModule} from 'angular-responsive-carousel';
+
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AppComponent } from 'src/app/app.component';
 import { API_URL, DEFAULT_AVATAR, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
@@ -71,6 +73,9 @@ import { CollectionComponent } from './components/collection/collection.componen
 import { DeleteFieldDialogComponent } from './components/dialogs/delete-field-dialog/delete-field-dialog.component';
 import { TagsFieldDialogComponent } from './components/dialogs/tags-field-dialog/tags-field-dialog.component';
 import { TagInputComponent } from './components/ui/tag-input/tag-input.component';
+import { ItemComponent } from './components/item/item.component';
+import { ProfileCoverComponent } from './components/ui/profile-cover/profile-cover.component';
+import { PathComponent } from './components/ui/path/path.component';
 
 @NgModule({
   declarations: [
@@ -106,7 +111,10 @@ import { TagInputComponent } from './components/ui/tag-input/tag-input.component
     CollectionComponent,
     DeleteFieldDialogComponent,
     TagsFieldDialogComponent,
-    TagInputComponent
+    TagInputComponent,
+    ItemComponent,
+    ProfileCoverComponent,
+    PathComponent
   ],
   imports: [
     BrowserModule,
@@ -142,6 +150,7 @@ import { TagInputComponent } from './components/ui/tag-input/tag-input.component
     }),
 
     ImageCropperModule,
+    IvyCarouselModule,
 
     JwtModule.forRoot({
       config: {
