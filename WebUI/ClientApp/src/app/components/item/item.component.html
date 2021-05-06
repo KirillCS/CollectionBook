@@ -1,60 +1,55 @@
-<div class="px-3">
-  <div class="app__container mt-md-4 mt-3">
-    <div class="card px-4 py-3">
-      <app-path [nodes]="pathNodes" [highlight]="true" icon="collections"></app-path>
-    </div>
+<div class="app__container mt-md-4 mt-3 px-3">
+  <div class="card px-4 py-3">
+    <app-path [nodes]="pathNodes" [highlight]="true" icon="description"></app-path>
   </div>
-  <div class="app__container--sm mt-3">
-    <div class="card">
-      <carousel [dots]="true" [cellWidth]="'100%'" [height]="400">
-        <div class="carousel-cell">
-          <button mat-mini-fab color="warn"><mat-icon class="material-icons-round">clear</mat-icon></button>
-          <img src="https://localhost:44319/collectionscovers\a4b3d82a-3a99-4f77-9531-b6b827da018e.jpg">
-        </div>
-        <div class="carousel-cell">
-          <img src="https://localhost:44319/collectionscovers\e62d1e51-c0c2-4627-85bc-9c36ace2ae01.jpg">
-        </div>
-        <div class="carousel-cell">
-          <img src="https://localhost:44319/collectionscovers\1ce9e5fd-dec5-40d5-9307-f8e93718678d.jpg">
-        </div>
-        <div class="carousel-cell">
-          <img src="https://localhost:44319/collectionscovers\9635e4e5-b1fd-4cfd-b631-fc8c87a5e903.jpg">
-        </div>
-        <div class="carousel-cell">
-          <img src="https://localhost:44319/collectionscovers\10905fd3-ce1b-4708-ab2a-5f243048e941.jpg">
-        </div>
-      </carousel>
-      <h1 class="mt-2">Some item</h1>
-      <h3>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Neque animi itaque atque alias hic expedita, error laborum explicabo. Dolore architecto ab vitae non. Nobis exercitationem repellat nihil minus voluptatem excepturi.</h3>
-      <mat-chip-list>
-        <mat-chip>Collection</mat-chip>
-        <mat-chip>Some</mat-chip>
-        <mat-chip>Item</mat-chip>
-      </mat-chip-list>
-      <footer>
-        <div class="date">26.03.2002</div>
-        <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon class="material-icons-round">more_horiz</mat-icon></button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item>
-            <mat-icon class="material-icons-round">add_photo_alternate</mat-icon>
-            <span>Add image</span>
-          </button>
-          <button mat-menu-item [matMenuTriggerFor]="editMenu">
-            <mat-icon class="material-icons-round">edit</mat-icon>
-            <span>Edit item</span>
-          </button>
-          <mat-divider></mat-divider>
-          <button mat-menu-item>
-            <mat-icon class="material-icons-round">delete</mat-icon>
-            <span>Delete item</span>
-          </button>
-        </mat-menu>
-        <mat-menu #editMenu="matMenu">
-          <button mat-menu-item>name</button>
-          <button mat-menu-item>information</button>
-          <button mat-menu-item>tags</button>
-        </mat-menu>
-      </footer>
-    </div>
+</div>
+<div class="app__container--sm mt-3 px-3">
+  <div class="card">
+    <carousel *ngIf="item?.images?.length > 1; else singleImage" [dots]="true" [cellWidth]="'100%'" [height]="400">
+      <div class="carousel-cell image removable" *ngFor="let image of item.images">
+        <button mat-mini-fab color="warn"><mat-icon class="material-icons-round">clear</mat-icon></button>
+        <img [src]="getFullImagePath(image.path)" [alt]="item?.name">
+      </div>
+    </carousel>
+    <ng-template #singleImage>
+      <div *ngIf="item?.images?.length == 1; else defaultImage" class="image removable">
+        <button mat-mini-fab color="warn"><mat-icon class="material-icons-round">clear</mat-icon></button>
+        <img [src]="getFullImagePath(item.images[0].path)" [alt]="item?.name">
+      </div>
+    </ng-template>
+    <ng-template #defaultImage>
+      <div class="image">
+        <img [src]="defaultImagePath" [alt]="item?.name">
+      </div>
+    </ng-template>
+    <h1 class="mt-2">{{ item?.name }}</h1>
+    <h3>{{ item?.information }}</h3>
+    <mat-chip-list *ngIf="item?.tags">
+      <mat-chip *ngFor="let tag of item.tags">{{ tag.label }}</mat-chip>
+    </mat-chip-list>
+    <footer>
+      <div class="date">{{ item?.creationTime | date: 'medium' }}</div>
+      <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon class="material-icons-round">more_horiz</mat-icon></button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon class="material-icons-round">add_photo_alternate</mat-icon>
+          <span>Add image</span>
+        </button>
+        <button mat-menu-item [matMenuTriggerFor]="editMenu">
+          <mat-icon class="material-icons-round">edit</mat-icon>
+          <span>Edit item</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item>
+          <mat-icon class="material-icons-round">delete</mat-icon>
+          <span>Delete item</span>
+        </button>
+      </mat-menu>
+      <mat-menu #editMenu="matMenu">
+        <button mat-menu-item>name</button>
+        <button mat-menu-item>information</button>
+        <button mat-menu-item>tags</button>
+      </mat-menu>
+    </footer>
   </div>
 </div>

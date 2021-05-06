@@ -344,3 +344,6 @@ healthchecksdb
 
 /WebUI/wwwroot/collectionscovers/*
 !/WebUI/wwwroot/collectionscovers/.gitkeep
+
+/WebUI/wwwroot/itemsimages/*
+!/WebUI/wwwroot/itemsimages/.gitkeep
