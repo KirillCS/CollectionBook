@@ -6,6 +6,7 @@ using Domain.Common;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -15,9 +16,21 @@ namespace Application.Items.Commands.ChangeItemTags
 {
     public class ChangeItemTagsCommand : IRequest<IEnumerable<TagDto>>
     {
+        private IEnumerable<string> tags = Array.Empty<string>();
+
         public int Id { get; set; }
 
-        public IEnumerable<string> Tags { get; set; }
+        public IEnumerable<string> Tags 
+        { 
+            get => tags; 
+            set
+            {
+                if (value is not null)
+                {
+                    tags = value;
+                }
+            }
+        }
     }
 
     public class ChangeItemTagsCommandHandler : IRequestHandler<ChangeItemTagsCommand, IEnumerable<TagDto>>
