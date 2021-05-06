@@ -1,5 +1,6 @@
 ﻿using Application.Items.Commands.ChangeItemInfo;
 using Application.Items.Commands.ChangeItemName;
+using Application.Items.Commands.ChangeItemTags;
 using Application.Items.Commands.CreateItem;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,16 @@ namespace WebUI.Controllers
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> ChangeItemInfo([FromBody] ChangeItemInfoCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [Route("tags")]
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> ChangeItemTags([FromBody] ChangeItemTagsCommand command)
         {
             await Mediator.Send(command);
 
