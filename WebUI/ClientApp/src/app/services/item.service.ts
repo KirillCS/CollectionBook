@@ -14,4 +14,16 @@ export class ItemService {
   public create(name: string, collectionId: number): Observable<number> {
     return this.httpClient.post<number>(`${this.apiUrl}api/item`, { name, collectionId });
   }
+
+  public changeName(id: number, newName: string): Observable<void> {
+    return this.httpClient.put<void>(`${this.apiUrl}api/item/name`, { id, newName });
+  }
+
+  public changeInfo(id: number, newInfo: string): Observable<void> {
+    return this.httpClient.put<void>(`${this.apiUrl}api/item/info`, { id, newInfo });
+  }
+
+  public changeTags(id: number, tags: string[]): Observable<void> {
+    return this.httpClient.put<void>(`${this.apiUrl}api/item/tags`, { id, tags });
+  }
 }
