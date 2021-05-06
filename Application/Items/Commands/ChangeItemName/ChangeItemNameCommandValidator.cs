@@ -7,7 +7,7 @@ namespace Application.Items.Commands.ChangeItemName
         public ChangeItemNameCommandValidator()
         {
             RuleFor(c => c.NewName).NotEmpty().WithMessage("Item name cannot be empty.")
-                                   .MaximumLength(256).WithMessage("Item name maximum length is 256 characters");
+                                   .MaximumLength(256).WithMessage("Item name length cannot be more than 256 symbols");
         }
     }
 }
