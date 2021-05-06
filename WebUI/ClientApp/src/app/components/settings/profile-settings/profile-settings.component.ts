@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { UserService } from 'src/app/services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserDto } from 'src/app/models/dtos/user.dto';
+import { UserDto } from 'src/app/models/dtos/user/user.dto';
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
 import { ImageCropperDialogComponent, ImageCropperDialogData } from 'src/app/components/dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';

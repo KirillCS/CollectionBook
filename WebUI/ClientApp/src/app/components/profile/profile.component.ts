@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { UserService } from 'src/app/services/user.service';
-import { UserDto } from 'src/app/models/dtos/user.dto';
+import { UserDto } from 'src/app/models/dtos/user/user.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';
 

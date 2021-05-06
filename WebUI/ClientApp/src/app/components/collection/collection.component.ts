@@ -5,8 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { API_URL, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
-import { CollectionDto } from 'src/app/models/dtos/collection.dto';
-import { FullCollectionDto } from 'src/app/models/dtos/full-collection.dto';
+import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
+import { FullCollectionDto } from 'src/app/models/dtos/collection/full-collection.dto';
 import { AuthService } from 'src/app/services/auth.service';
 import { CollectionService } from 'src/app/services/collection.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
-import { CollectionDto } from 'src/app/models/dtos/collection.dto';
+import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';

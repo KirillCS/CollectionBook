@@ -2,6 +2,7 @@
 using Application.Items.Commands.ChangeItemName;
 using Application.Items.Commands.ChangeItemTags;
 using Application.Items.Commands.CreateItem;
+using Application.Items.Queries.GetItem;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -10,6 +11,11 @@ namespace WebUI.Controllers
 {
     public class ItemController : ApiControllerBase
     {
+        [Route("{Id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetItem([FromRoute] GetItemQuery query) =>
+            Ok(await Mediator.Send(query));
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateItem([FromBody] CreateItemCommand command) =>

@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { UserDto } from 'src/app/models/dtos/user.dto';
+import { UserDto } from 'src/app/models/dtos/user/user.dto';
 
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { UserService } from 'src/app/services/user.service';

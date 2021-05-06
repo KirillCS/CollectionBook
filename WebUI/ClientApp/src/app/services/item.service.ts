@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { API_URL } from '../app-injection-tokens';
+import { ItemDto } from '../models/dtos/item/item.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,10 @@ import { API_URL } from '../app-injection-tokens';
 export class ItemService {
 
   public constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
+
+  public get(id: number): Observable<ItemDto> {
+    return this.httpClient.get<ItemDto>(`${this.apiUrl}api/item/${id}`);
+  }
 
   public create(name: string, collectionId: number): Observable<number> {
     return this.httpClient.post<number>(`${this.apiUrl}api/item`, { name, collectionId });

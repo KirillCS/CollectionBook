@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-import { UserLoginDto } from 'src/app/models/dtos/user-login.dto';
+import { UserLoginDto } from 'src/app/models/dtos/user/user-login.dto';
 import { AuthService } from 'src/app/services/auth.service';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
 

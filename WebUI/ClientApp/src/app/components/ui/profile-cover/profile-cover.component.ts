@@ -1,6 +1,6 @@
 import { Component, Inject, Input } from '@angular/core';
 
-import { UserCoverDto } from 'src/app/models/dtos/user-cover.dto';
+import { UserCoverDto } from 'src/app/models/dtos/user/user-cover.dto';
 import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';
 
 export enum ProfileCoverSize {

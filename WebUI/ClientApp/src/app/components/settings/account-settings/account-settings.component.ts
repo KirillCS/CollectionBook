@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-error-state-matcher'
-import { UserDto } from 'src/app/models/dtos/user.dto';
+import { UserDto } from 'src/app/models/dtos/user/user.dto';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { UserService } from 'src/app/services/user.service';

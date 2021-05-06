@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { UserDto } from 'src/app/models/dtos/user.dto';
+import { UserDto } from 'src/app/models/dtos/user/user.dto';
 import { API_URL } from 'src/app/app-injection-tokens';
 import { UpdateProfileRequest } from 'src/app/models/requests/user/update-profile.request';
 import { UpdateLoginRequest } from 'src/app/models/requests/user/update-login.request';
@@ -12,9 +12,9 @@ import { sendPasswordResetConfirmation } from 'src/app/models/requests/user/send
 import { ResetPasswordRequest } from '../models/requests/user/reset-password.request';
 import { SearchPaginatedListRequest } from '../models/requests/search-paginated-list.request';
 import { PaginatedListResponse } from '../models/responses/paginated-list.response';
-import { CollectionDto } from '../models/dtos/collection.dto';
-import { CollectionNameDto } from '../models/dtos/collection-name.dto';
-import { StarNotificationDto } from '../models/dtos/star-notification.dto';
+import { CollectionDto } from '../models/dtos/collection/collection.dto';
+import { CollectionNameDto } from '../models/dtos/collection/collection-name.dto';
+import { StarNotificationDto } from '../models/dtos/star/star-notification.dto';
 import { PaginatedListRequest } from '../models/requests/paginated-list.request';
 
 @Injectable({

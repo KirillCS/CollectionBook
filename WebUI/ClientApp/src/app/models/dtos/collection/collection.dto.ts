@@ -1,6 +1,6 @@
-import { StarDto } from "./star.dto";
-import { TagDto } from "./tag.dto";
-import { UserCoverDto } from "./user-cover.dto";
+import { StarDto } from "../star/star.dto";
+import { TagDto } from "../tag.dto";
+import { UserCoverDto } from "../user/user-cover.dto";
 
 export class CollectionDto {
   public id: number;

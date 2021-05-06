@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { API_URL } from 'src/app/app-injection-tokens';
 import { CollectionCreatingRequest } from 'src/app/models/requests/collection/collection-creating.request';
-import { FullCollectionDto } from 'src/app/models/dtos/full-collection.dto';
+import { FullCollectionDto } from 'src/app/models/dtos/collection/full-collection.dto';
 import { TagDto } from '../models/dtos/tag.dto';
 
 @Injectable({

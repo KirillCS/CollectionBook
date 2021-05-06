@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
-import { CollectionNameDto } from 'src/app/models/dtos/collection-name.dto';
+import { CollectionNameDto } from 'src/app/models/dtos/collection/collection-name.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';

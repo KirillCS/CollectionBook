@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 
-import { CollectionDto } from 'src/app/models/dtos/collection.dto';
+import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { StarChangedEvent } from '../star/star.component';
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { UserCoverDto } from 'src/app/models/dtos/user-cover.dto';
+import { UserCoverDto } from 'src/app/models/dtos/user/user-cover.dto';
 import { PathNode } from '../ui/path/path-node';
 
 @Component({

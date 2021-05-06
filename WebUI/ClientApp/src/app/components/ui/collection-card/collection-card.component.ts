@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 
 import { API_URL, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
-import { CollectionDto } from 'src/app/models/dtos/collection.dto';
-import { UserLoginDto } from 'src/app/models/dtos/user-login.dto';
+import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
+import { UserLoginDto } from 'src/app/models/dtos/user/user-login.dto';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { StarChangedEvent } from '../star/star.component';

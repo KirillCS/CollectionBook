@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
-import { StarNotificationDto } from 'src/app/models/dtos/star-notification.dto';
+import { StarNotificationDto } from 'src/app/models/dtos/star/star-notification.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';

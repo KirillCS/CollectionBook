@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
-import { UserLoginDto } from 'src/app/models/dtos/user-login.dto';
+import { UserLoginDto } from 'src/app/models/dtos/user/user-login.dto';
 import { Router } from '@angular/router';
 
 @Component({
