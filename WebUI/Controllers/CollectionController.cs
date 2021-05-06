@@ -29,7 +29,6 @@ namespace WebUI.Controllers
             return Ok();
         }
 
-        [Route("create")]
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateCollection([FromForm] CreateCollectionCommand command)
@@ -39,14 +38,14 @@ namespace WebUI.Controllers
             return Ok();
         }
 
-        [Route("change/cover")]
-        [HttpPost]
+        [Route("cover")]
+        [HttpPut]
         [Authorize]
         public async Task<IActionResult> ChangeCollectionCover([FromForm] ChangeCollectionCoverCommand command) =>
             Ok(await Mediator.Send(command));
 
-        [Route("change/name")]
-        [HttpPost]
+        [Route("name")]
+        [HttpPut]
         [Authorize]
         public async Task<IActionResult> ChangeCollectionName([FromBody] ChangeCollectionNameCommand command)
         {
@@ -55,8 +54,8 @@ namespace WebUI.Controllers
             return Ok();
         }
 
-        [Route("change/description")]
-        [HttpPost]
+        [Route("description")]
+        [HttpPut]
         [Authorize]
         public async Task<IActionResult> ChangeCollectionDescription([FromBody] ChangeCollectionDescriptionCommand command)
         {
@@ -65,8 +64,8 @@ namespace WebUI.Controllers
             return Ok();
         }
 
-        [Route("change/tags")]
-        [HttpPost]
+        [Route("tags")]
+        [HttpPut]
         [Authorize]
         public async Task<IActionResult> ChangeCollectionTags([FromBody] ChangeCollectionTagsCommand command) =>
             Ok(await Mediator.Send(command));

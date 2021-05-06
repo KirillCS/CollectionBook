@@ -37,7 +37,7 @@ export class CollectionService {
       formData.append('tags', tag);
     })
 
-    return this.httpClient.post<void>(`${this.apiUrl}api/collection/create`, formData);
+    return this.httpClient.post<void>(`${this.apiUrl}api/collection`, formData);
   }
 
   public changeCover(id: number, newCover: File): Observable<string> {
@@ -48,20 +48,20 @@ export class CollectionService {
       formData.append('cover', newCover, newCover.name);
     }
 
-    return this.httpClient.post<string>(`${this.apiUrl}api/collection/change/cover`, formData, { responseType: 'text' as 'json' });
+    return this.httpClient.put<string>(`${this.apiUrl}api/collection/cover`, formData, { responseType: 'text' as 'json' });
   }
 
   public changeName(id: number, newName: string): Observable<void> {
-    return this.httpClient.post<void>(`${this.apiUrl}api/collection/change/name`, { id, newName });
+    return this.httpClient.put<void>(`${this.apiUrl}api/collection/name`, { id, newName });
   }
 
   public changeDescription(id: number, newDescription: string): Observable<void> {
-    return this.httpClient.post<void>(`${this.apiUrl}api/collection/change/description`, { id, newDescription });
+    return this.httpClient.put<void>(`${this.apiUrl}api/collection/description`, { id, newDescription });
   }
 
   public changeTags(id: number, tags: string[]): Observable<TagDto[]> {
     tags ??= new Array<string>();
-    return this.httpClient.post<TagDto[]>(`${this.apiUrl}api/collection/change/tags`, { id, tags });
+    return this.httpClient.put<TagDto[]>(`${this.apiUrl}api/collection/tags`, { id, tags });
   }
 
   public delete(id: number): Observable<void> {
