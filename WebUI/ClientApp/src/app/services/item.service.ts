@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { API_URL } from '../app-injection-tokens';
 import { ItemDto } from '../models/dtos/item/item.dto';
+import { TagDto } from '../models/dtos/tag.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class ItemService {
     return this.httpClient.put<void>(`${this.apiUrl}api/item/info`, { id, newInfo });
   }
 
-  public changeTags(id: number, tags: string[]): Observable<void> {
-    return this.httpClient.put<void>(`${this.apiUrl}api/item/tags`, { id, tags });
+  public changeTags(id: number, tags: string[]): Observable<TagDto[]> {
+    return this.httpClient.put<TagDto[]>(`${this.apiUrl}api/item/tags`, { id, tags });
   }
 }

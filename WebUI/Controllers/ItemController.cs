@@ -44,11 +44,7 @@ namespace WebUI.Controllers
         [Route("tags")]
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> ChangeItemTags([FromBody] ChangeItemTagsCommand command)
-        {
-            await Mediator.Send(command);
-
-            return Ok();
-        }
+        public async Task<IActionResult> ChangeItemTags([FromBody] ChangeItemTagsCommand command) =>
+            Ok(await Mediator.Send(command));
     }
 }

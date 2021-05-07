@@ -3,14 +3,14 @@ carousel {
 }
 
 .image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 400px;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  // width: 100%;
+  // height: 400px;
 
   img {
-    max-height: 100%;
+    max-height: 400px;
     max-width: 100%;
   }
 

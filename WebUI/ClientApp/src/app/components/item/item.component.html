@@ -46,9 +46,9 @@
         </button>
       </mat-menu>
       <mat-menu #editMenu="matMenu">
-        <button mat-menu-item>name</button>
-        <button mat-menu-item>information</button>
-        <button mat-menu-item>tags</button>
+        <button mat-menu-item (click)="editNameButtonWasClicked()">name</button>
+        <button mat-menu-item (click)="editInfoButtonWasClicked()">information</button>
+        <button mat-menu-item (click)="editTagsButtonWasClicked()">tags</button>
       </mat-menu>
     </footer>
   </div>
