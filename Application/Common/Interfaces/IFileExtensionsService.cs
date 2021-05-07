@@ -8,5 +8,7 @@ namespace Application.Common.Interfaces
         Task<string> UpdateAvatar(IFormFile avatar, string currentAvatar);
 
         Task<string> UpdateCollectionCover(IFormFile cover, string currentCover);
+
+        Task<string> SaveItemImage(IFormFile image);
     }
 }

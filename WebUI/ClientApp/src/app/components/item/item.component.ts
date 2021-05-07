@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,6 +12,8 @@ import { PathNode } from '../ui/path/path-node';
 import { API_URL, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
 import { ItemDto } from 'src/app/models/dtos/item/item.dto';
 import { TagsFieldDialogComponent } from '../dialogs/tags-field-dialog/tags-field-dialog.component';
+import { ImageCropperDialogComponent, ImageCropperDialogData } from '../dialogs/image-cropper-dialog/image-cropper-dialog.component';
+import { CarouselComponent } from 'angular-responsive-carousel';
 
 @Component({
   selector: 'app-item',
@@ -22,6 +24,7 @@ export class ItemComponent implements OnInit {
 
   private _item: ItemDto;
   private _pathNodes: Array<PathNode>;
+  private _showCarousel: boolean = true;
 
   public constructor(
     @Inject(API_URL) private apiUrl: string,
@@ -43,6 +46,10 @@ export class ItemComponent implements OnInit {
 
   public get defaultImagePath(): string {
     return this.defaul;
+  }
+
+  public get showCarousel(): boolean {
+    return this._showCarousel;
   }
 
   public ngOnInit(): void {
@@ -162,6 +169,37 @@ export class ItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => submitSubscription.unsubscribe());
   }
 
+  public imageWasSelected(files: File[]): void {
+    if (!files.length || !files[0].type.startsWith("image/")) {
+      return;
+    }
+
+    let file = files[0];
+    let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      width: '600px',
+      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Crop')
+    });
+
+    let sub = dialogRef.afterClosed().subscribe((blob: Blob) => {
+
+      if (!blob) {
+        return;
+      }
+
+      let image: any = blob;
+      image.name = file.name;
+
+      this.addImage(<File>image);
+    });
+
+    dialogRef.afterClosed().subscribe(() => sub.unsubscribe());
+  }
+
+  public removeImageButtonWasClicked(imageId: number): void {
+    console.log(imageId);
+    
+  }
+
   private changeName(newName: string): void {
     this.itemService.changeName(this.item.id, newName).subscribe(() => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
@@ -192,6 +230,18 @@ export class ItemComponent implements OnInit {
       ));
   }
 
+  private addImage(image: File): void {
+    this.itemService.addImage(this.item.id, image).subscribe(image => {
+      this.item.images.push(image);
+      this.reinitCarousel();
+    }, (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
+      errorResponse.status,
+      'To add an item image you must be authenticated.',
+      `To add an item image you must be its owner.`,
+      `Something went wrong while adding an item image.`
+    ));
+  }
+
   private handleErrorStatuses(status: number, notAuthMessage: string, accessErrorMessage: string, errorMessage: string): void {
     switch (status) {
       case 400:
@@ -210,5 +260,12 @@ export class ItemComponent implements OnInit {
         this.dialogService.openWarningMessageDialog('Something went wrong', errorMessage);
         break;
     }
+  }
+
+  private reinitCarousel(): void {
+    this._showCarousel = false;
+    setTimeout(() => {
+      this._showCarousel = true;
+    }, 10);
   }
 }

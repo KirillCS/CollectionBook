@@ -1,4 +1,5 @@
-﻿using Application.Items.Commands.ChangeItemInfo;
+﻿using Application.Items.Commands.AddItemImage;
+using Application.Items.Commands.ChangeItemInfo;
 using Application.Items.Commands.ChangeItemName;
 using Application.Items.Commands.ChangeItemTags;
 using Application.Items.Commands.CreateItem;
@@ -19,6 +20,12 @@ namespace WebUI.Controllers
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateItem([FromBody] CreateItemCommand command) =>
+            Ok(await Mediator.Send(command));
+
+        [Route("image")]
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddItemImage([FromForm] AddItemImageCommand command) =>
             Ok(await Mediator.Send(command));
 
         [Route("name")]

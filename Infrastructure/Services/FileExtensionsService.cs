@@ -47,5 +47,8 @@ namespace Infrastructure.Services
 
             return await fileSaver.Save(cover, filePaths.CollectionsCovers, Guid.NewGuid().ToString());
         }
+
+        public async Task<string> SaveItemImage(IFormFile image) =>
+            await fileSaver.Save(image, filePaths.ItemsImages, Guid.NewGuid().ToString());
     }
 }
