@@ -30,6 +30,10 @@ export class ItemService {
     return this.httpClient.post<ImageDto>(`${this.apiUrl}api/item/image`, formData);
   }
 
+  public removeImage(imageId: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiUrl}api/item/image/${imageId}`);
+  }
+
   public changeName(id: number, newName: string): Observable<void> {
     return this.httpClient.put<void>(`${this.apiUrl}api/item/name`, { id, newName });
   }

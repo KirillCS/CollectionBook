@@ -160,7 +160,7 @@ export class CollectionComponent implements OnInit {
     let dialogRef = this.dialogService.openYesNoDialog('Reset the collection cover?', 'Are you sure you want to reset the collection cover?');
 
     dialogRef.afterClosed().subscribe((answer: string) => {
-      if (answer === 'No') {
+      if (answer !== 'Yes') {
         return;
       }
 

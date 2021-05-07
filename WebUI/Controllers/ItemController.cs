@@ -3,6 +3,7 @@ using Application.Items.Commands.ChangeItemInfo;
 using Application.Items.Commands.ChangeItemName;
 using Application.Items.Commands.ChangeItemTags;
 using Application.Items.Commands.CreateItem;
+using Application.Items.Commands.RemoveItemImage;
 using Application.Items.Queries.GetItem;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,16 @@ namespace WebUI.Controllers
         [Authorize]
         public async Task<IActionResult> AddItemImage([FromForm] AddItemImageCommand command) =>
             Ok(await Mediator.Send(command));
+
+        [Route("image/{ImageId}")]
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> RemoveItemImage([FromRoute] RemoveItemImageCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
+        }
 
         [Route("name")]
         [HttpPut]

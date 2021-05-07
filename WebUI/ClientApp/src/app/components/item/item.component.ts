@@ -196,8 +196,15 @@ export class ItemComponent implements OnInit {
   }
 
   public removeImageButtonWasClicked(imageId: number): void {
-    console.log(imageId);
-    
+    let dialogRef = this.dialogService.openYesNoDialog('Remove an item image?', 'Are you sure you want to remove the current item image?');
+
+    dialogRef.afterClosed().subscribe((answer: string) => {
+      if (answer !== 'Yes') {
+        return;
+      }
+
+      this.removeImage(imageId);
+    });
   }
 
   private changeName(newName: string): void {
@@ -240,6 +247,19 @@ export class ItemComponent implements OnInit {
       `To add an item image you must be its owner.`,
       `Something went wrong while adding an item image.`
     ));
+  }
+
+  private removeImage(imageId: number): void {
+    this.itemService.removeImage(imageId).subscribe(() => {}, (errorResponse: HttpErrorResponse) =>
+      this.handleErrorStatuses(
+        errorResponse.status,
+        'To remove an item image you must be authenticated.',
+        `To remove an item image you must be its owner.`,
+        `Something went wrong while removing an item image.`
+      ), () => {
+        this.item.images = this.item.images.filter(i => i.id !== imageId);
+        this.reinitCarousel();
+      });
   }
 
   private handleErrorStatuses(status: number, notAuthMessage: string, accessErrorMessage: string, errorMessage: string): void {
