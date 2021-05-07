@@ -3,6 +3,7 @@ using Application.Items.Commands.ChangeItemInfo;
 using Application.Items.Commands.ChangeItemName;
 using Application.Items.Commands.ChangeItemTags;
 using Application.Items.Commands.CreateItem;
+using Application.Items.Commands.RemoveItem;
 using Application.Items.Commands.RemoveItemImage;
 using Application.Items.Queries.GetItem;
 using Microsoft.AspNetCore.Authorization;
@@ -64,5 +65,15 @@ namespace WebUI.Controllers
         [Authorize]
         public async Task<IActionResult> ChangeItemTags([FromBody] ChangeItemTagsCommand command) =>
             Ok(await Mediator.Send(command));
+
+        [Route("{Id}")]
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeleteItem([FromRoute] DeleteItemCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
+        }
     }
 }

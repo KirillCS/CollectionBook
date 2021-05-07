@@ -207,6 +207,18 @@ export class ItemComponent implements OnInit {
     });
   }
 
+  public deleteItemButtonWasClicked(): void {
+    let dialogRef = this.dialogService.openYesNoDialog('Are you sure?', `Are you sure you want to DELETE the collection item "${this.item.name}"? This action cannot be undone.`);
+
+    dialogRef.afterClosed().subscribe((answer: string) => {
+      if (answer !== 'Yes') {
+        return;
+      }
+
+      this.deleteItem();
+    });
+  }
+
   private changeName(newName: string): void {
     this.itemService.changeName(this.item.id, newName).subscribe(() => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
@@ -259,6 +271,18 @@ export class ItemComponent implements OnInit {
       ), () => {
         this.item.images = this.item.images.filter(i => i.id !== imageId);
         this.reinitCarousel();
+      });
+  }
+
+  private deleteItem(): void {
+    this.itemService.delete(this.item.id).subscribe(() => {}, (errorResponse: HttpErrorResponse) =>
+      this.handleErrorStatuses(
+        errorResponse.status,
+        'To delete the item you must be authenticated.',
+        `To delete the item you must be its owner.`,
+        `Something went wrong while deleting the item.`
+      ), () => {
+        this.router.navigate(['/collection', this.item.collection.id]);
       });
   }
 

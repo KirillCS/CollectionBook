@@ -45,4 +45,8 @@ export class ItemService {
   public changeTags(id: number, tags: string[]): Observable<TagDto[]> {
     return this.httpClient.put<TagDto[]>(`${this.apiUrl}api/item/tags`, { id, tags });
   }
+
+  public delete(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiUrl}api/item/${id}`);
+  }
 }
