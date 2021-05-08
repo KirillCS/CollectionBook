@@ -15,7 +15,7 @@ export class NotificationsColumnComponent implements OnInit {
 
   private stars = new Array<StarNotificationDto>();
   private _notificationsLoading: boolean;
-  private pageSize = 3;
+  private pageSize = 5;
   private pageIndex = 0;
   private totalCount = 0;
   private notFound = false;
