@@ -66,6 +66,12 @@ export class ItemComponent implements OnInit {
           new PathNode(item.collection.name, `/collection/${item.collection.id}`),
           new PathNode(item.name)
         ]
+      }, (errorResponse: HttpErrorResponse) => {
+        if (errorResponse.status == 404) {
+          this.router.navigateByUrl('**', { skipLocationChange: true });
+        } else {
+          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
+        }
       });
     });
   }
@@ -266,7 +272,7 @@ export class ItemComponent implements OnInit {
   }
 
   private removeImage(imageId: number): void {
-    this.itemService.removeImage(imageId).subscribe(() => {}, (errorResponse: HttpErrorResponse) =>
+    this.itemService.removeImage(imageId).subscribe(() => { }, (errorResponse: HttpErrorResponse) =>
       this.handleErrorStatuses(
         errorResponse.status,
         'To remove an item image you must be authenticated.',
@@ -279,7 +285,7 @@ export class ItemComponent implements OnInit {
   }
 
   private deleteItem(): void {
-    this.itemService.delete(this.item.id).subscribe(() => {}, (errorResponse: HttpErrorResponse) =>
+    this.itemService.delete(this.item.id).subscribe(() => { }, (errorResponse: HttpErrorResponse) =>
       this.handleErrorStatuses(
         errorResponse.status,
         'To delete the item you must be authenticated.',
