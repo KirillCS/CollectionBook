@@ -30,6 +30,7 @@ export class CollectionComponent implements OnInit {
   private collectionId: number;
   private collectionDto: FullCollectionDto;
   private _pathNodes: Array<PathNode>;
+  private _contentLoaded: boolean;
 
   public constructor(
     route: ActivatedRoute,
@@ -71,7 +72,7 @@ export class CollectionComponent implements OnInit {
     return this.authService.isAuthenticated();
   }
 
-  public get showMenuButton(): boolean {
+  public get isOwner(): boolean {
     return this.currentUserService.currentUser?.login == this.collection?.user?.login;
   }
 
@@ -79,8 +80,21 @@ export class CollectionComponent implements OnInit {
     return this.collection?.coverPath?.length > 0;
   }
 
+  public get contentLoaded(): boolean {
+    return this._contentLoaded;
+  }
+
   public ngOnInit(): void {
-    this.getCollection();
+    this.collectionService.getFullCollection(this.collectionId).subscribe(collection => {
+      this.collectionDto = collection;
+      this.setPath();
+    }, (errorResponse: HttpErrorResponse) => {
+      if (errorResponse.status == 404) {
+        this.router.navigateByUrl('**', { skipLocationChange: true });
+      } else {
+        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
+      }
+    }, () => this._contentLoaded = true);
   }
 
   public addItemButtonClicked(): void {
@@ -380,19 +394,6 @@ export class CollectionComponent implements OnInit {
         this.dialogService.openWarningMessageDialog('Something went wrong', errorMessage);
         break;
     }
-  }
-
-  private getCollection(): void {
-    this.collectionService.getFullCollection(this.collectionId).subscribe(collection => {
-      this.collectionDto = collection;
-      this.setPath();
-    }, (errorResponse: HttpErrorResponse) => {
-      if (errorResponse.status == 404) {
-        this.router.navigateByUrl('**', { skipLocationChange: true });
-      } else {
-        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
-      }
-    })
   }
 
   private setPath(): void {

@@ -5,18 +5,20 @@
 <div class="mb-3">
   <app-search-input placeholder="Find your collection..." (changed)="search($event)"></app-search-input>
 </div>
-<div *ngIf="!collectionsNotFound">
-  <ul>
-    <li *ngFor="let collection of collections">
-      <a [routerLink]="['collection', collection.id]">
-        {{ collection.name }}
-      </a>
-    </li>
-  </ul>
-  <button class="w-100 mb-1" mat-stroked-button *ngIf="isButtonVisible" (click)="loadMore()" color="primary">Show
-    more...</button>
-  <div class="total">
-    Total: {{ total }}
-  </div>
+
+<ul *ngIf="!collectionsNotFound">
+  <li *ngFor="let collection of collections">
+    <a [routerLink]="['collection', collection.id]">
+      {{ collection.name }}
+    </a>
+  </li>
+</ul>
+<div class="row mx-0 my-3 justify-content-center" *ngIf="collectionsLoading">
+  <mat-spinner [diameter]="30"></mat-spinner>
+</div>
+<button class="w-100 mb-1" mat-stroked-button *ngIf="!collectionsLoading && isButtonVisible" (click)="loadMore()" color="primary">Show
+  more...</button>
+<div class="total">
+  Total: {{ total }}
 </div>
 <h3 class="not-found" *ngIf="collectionsNotFound">No collections found</h3>

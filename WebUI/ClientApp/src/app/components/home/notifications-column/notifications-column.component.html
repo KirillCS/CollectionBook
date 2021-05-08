@@ -15,7 +15,11 @@
       </div>
     </div>
   </div>
-  <button class="w-100" *ngIf="isButtonVisible" mat-stroked-button color="primary" (click)="loadMore()">Show
-    earlier...</button>
 </div>
+<div class="row mx-0 my-3 justify-content-center" *ngIf="notificationsLoading">
+  <mat-spinner [diameter]="30"></mat-spinner>
+</div>
+<button class="w-100" *ngIf="!notificationsLoading && isButtonVisible" mat-stroked-button color="primary"
+  (click)="loadMore()">Show
+  earlier...</button>
 <h3 class="not-found" *ngIf="starsNotFound">Nobody stars your collections</h3>

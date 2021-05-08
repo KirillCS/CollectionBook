@@ -14,7 +14,8 @@ import { UserService } from 'src/app/services/user.service';
 export class NotificationsColumnComponent implements OnInit {
 
   private stars = new Array<StarNotificationDto>();
-  private pageSize = 10;
+  private _notificationsLoading: boolean;
+  private pageSize = 3;
   private pageIndex = 0;
   private totalCount = 0;
   private notFound = false;
@@ -27,6 +28,10 @@ export class NotificationsColumnComponent implements OnInit {
 
   public get starsNotifications(): StarNotificationDto[] {
     return this.stars;
+  }
+
+  public get notificationsLoading(): boolean {
+    return this._notificationsLoading;
   }
 
   public get isButtonVisible(): boolean {
@@ -42,11 +47,17 @@ export class NotificationsColumnComponent implements OnInit {
   }
 
   public loadMore(): void {
+    if (this.notificationsLoading) {
+      return;
+    }
+
     this.pageIndex++;
     this.addStars();
   }
 
   private addStars(): void {
+
+    this._notificationsLoading = true;
     this.userService.getStarsNotifications(
       this.currentUserService.currentUser?.login,
       {
@@ -58,12 +69,16 @@ export class NotificationsColumnComponent implements OnInit {
       this.totalCount = list.totalCount;
     }, (errorResponse: HttpErrorResponse) => {
       this.notFound = this.notFound = this.totalCount == 0;
+      this._notificationsLoading = false;
       if (errorResponse.status == 404) {
         this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found.');
         return;
       }
 
       this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while getting your collections. Reload the page and try again.');
-    }, () => this.notFound = this.totalCount == 0)
+    }, () => {
+      this.notFound = this.totalCount == 0;
+      this._notificationsLoading = false;
+    });
   }
 }

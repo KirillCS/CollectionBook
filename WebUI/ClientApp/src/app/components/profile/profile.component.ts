@@ -5,6 +5,8 @@ import { UserService } from 'src/app/services/user.service';
 import { UserDto } from 'src/app/models/dtos/user/user.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +14,8 @@ import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+
+  private _contentLoaded = false;
 
   public user = new UserDto();
   public isOwner = false;
@@ -22,7 +26,8 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    private currentUserService: CurrentUserService
+    private currentUserService: CurrentUserService,
+    private dialogService: DefaultDialogsService
   ) { }
 
   public ngOnInit(): void {
@@ -32,10 +37,18 @@ export class ProfileComponent implements OnInit {
         this.user = response;
         this.isOwner = response.id == this.currentUserService?.currentUser?.id;
 
-      }, () => {
-        this.router.navigateByUrl('**', { skipLocationChange: true });
-      });
+      }, (errorResponse: HttpErrorResponse) => {
+        if (errorResponse.status == 404) {
+          this.router.navigateByUrl('**', { skipLocationChange: true });
+        } else {
+          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
+        }
+      }, () => this._contentLoaded = true);
     });
+  }
+
+  public get contentLoaded(): boolean {
+    return this._contentLoaded;
   }
 
   public getAvatarPath(): string {

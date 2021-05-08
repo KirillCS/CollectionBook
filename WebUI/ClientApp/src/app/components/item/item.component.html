@@ -1,12 +1,17 @@
 <div class="app__container mt-md-4 mt-3 px-3">
-  <div class="card px-4 py-3">
+  <div class="card px-4 py-3" *ngIf="contentLoaded">
     <app-path [nodes]="pathNodes" [highlight]="true" icon="description"></app-path>
+  </div>
+  <div class="card loader-path-card mt-md-4 mt-3 py-3 px-4" *ngIf="!contentLoaded">
+    <ngx-skeleton-loader
+      [theme]="{ 'max-width': '100%', width: '500px', height: '27px', marging: 0, 'background-color': '#ECECEC' }">
+    </ngx-skeleton-loader>
   </div>
 </div>
 <div class="app__container--sm mt-3 px-3">
   <div class="card">
     <div class="images-frame">
-      <carousel style="height: 100%;" *ngIf="showCarousel && item?.images?.length > 1; else singleImage" [dots]="true"
+      <carousel style="height: 100%;" *ngIf="contentLoaded && showCarousel && item?.images?.length > 1; else singleImage" [dots]="true"
         [cellWidth]="'100%'">
         <div class="carousel-cell removable" *ngFor="let image of item.images">
           <button *ngIf="isOwner" mat-mini-fab color="warn" (click)="removeImageButtonWasClicked(image.id)">
@@ -16,7 +21,7 @@
         </div>
       </carousel>
       <ng-template #singleImage>
-        <div *ngIf="item?.images?.length == 1; else defaultImage" class="image removable">
+        <div *ngIf="contentLoaded && item?.images?.length == 1; else defaultImage" class="image removable">
           <button *ngIf="isOwner" mat-mini-fab color="warn" (click)="removeImageButtonWasClicked(item.images[0].id)">
             <mat-icon class="material-icons-round">clear</mat-icon>
           </button>
@@ -24,18 +29,35 @@
         </div>
       </ng-template>
       <ng-template #defaultImage>
-        <div class="image">
+        <div class="image" *ngIf="contentLoaded">
           <img [src]="defaultImagePath" [alt]="item?.name">
         </div>
       </ng-template>
+      <ngx-skeleton-loader *ngIf="!contentLoaded"
+        [theme]="{ width: '100%', height: '100%', margin: 0, 'background-color': '#ECECEC' }">
+      </ngx-skeleton-loader>
     </div>
-    <h1 class="mt-2">{{ item?.name }}</h1>
-    <h3>{{ item?.information }}</h3>
-    <mat-chip-list *ngIf="item?.tags">
+    <h1 class="mt-3" *ngIf="contentLoaded">{{ item?.name }}</h1>
+    <div class="mt-3">
+      <ngx-skeleton-loader *ngIf="!contentLoaded"
+        [theme]="{ 'max-width': '100%', width: '250px', height: '32px', 'background-color': '#ECECEC' }">
+      </ngx-skeleton-loader>
+    </div>
+    <h3 *ngIf="contentLoaded">{{ item?.information }}</h3>
+    <ngx-skeleton-loader *ngIf="!contentLoaded" count="4"
+      [theme]="{ width: '100%', height: '16px', margin: '1px 0', 'background-color': '#ECECEC' }">
+    </ngx-skeleton-loader>
+    <mat-chip-list *ngIf="contentLoaded && item?.tags">
       <mat-chip *ngFor="let tag of item.tags">{{ tag.label }}</mat-chip>
     </mat-chip-list>
+    <ngx-skeleton-loader *ngIf="!contentLoaded" count="3"
+      [theme]="{ 'max-width': '100%', width: '80px', height: '30px', 'border-radius': '15px', margin: '10px 8px 0 0', 'background-color': '#ECECEC' }">
+    </ngx-skeleton-loader>
     <footer>
-      <div class="date">{{ item?.creationTime | date: 'medium' }}</div>
+      <div class="date" *ngIf="contentLoaded">{{ item?.creationTime | date: 'medium' }}</div>
+      <ngx-skeleton-loader *ngIf="!contentLoaded"
+        [theme]="{ 'max-width': '100%', width: '150px', height: '14px', 'margin-top': '5px', 'background-color': '#ECECEC' }">
+      </ngx-skeleton-loader>
       <button mat-icon-button *ngIf="isOwner" [matMenuTriggerFor]="menu">
         <mat-icon class="material-icons-round">more_horiz</mat-icon>
       </button>

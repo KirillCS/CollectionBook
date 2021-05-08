@@ -25,9 +25,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
@@ -142,15 +144,17 @@ import { PathComponent } from './components/ui/path/path.component';
     MatAutocompleteModule,
     MatCardModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
 
     NgProgressModule,
     NgProgressHttpModule.withConfig({
       silentApis: environment.silentApis
     }),
+    NgxSkeletonLoaderModule,
 
     ImageCropperModule,
     IvyCarouselModule,
-    
+
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {

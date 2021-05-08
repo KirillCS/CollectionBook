@@ -3,6 +3,10 @@
 $cover-width: 350px;
 $cover-width-md: 280px;
 
+.loader-path-card {
+  height: calc(27px + 2rem);
+}
+
 main {
   position: relative;
   display: flex;

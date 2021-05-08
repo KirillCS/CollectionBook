@@ -15,6 +15,7 @@ import { GetCollectionsData } from '../../ui/profile-collections/profile-collect
 export class CollectionsComponent {
   
   private collections$ = new Subject<CollectionDto[]>();
+  private _collectionsLoaded = false;
 
   public collections = this.collections$.asObservable();
   public totalCount = -1;
@@ -25,14 +26,20 @@ export class CollectionsComponent {
     private dialogsService: DefaultDialogsService
   ) { }
 
+  public get collectionsLoaded(): boolean {
+    return this._collectionsLoaded;
+  }
+  
   public getCollections(data: GetCollectionsData): void {
+    this._collectionsLoaded = false;
     this.userService.getCollections(data.login, { pageIndex: data.pageIndex, pageSize: data.pageSize, searchString: data.searchString }).subscribe(response => {
       this.totalCount = response.totalCount;
       this.collections$.next(response.items);
     }, (errorResponse: HttpErrorResponse) => {
+      this._collectionsLoaded = true;
       if (errorResponse.status == 400) {
         this.collections$.next(new CollectionDto[0]);
-        
+
         return;
       }
 
@@ -43,6 +50,6 @@ export class CollectionsComponent {
       }
 
       this.dialogsService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching for user collections.');
-    });
+    }, () => this._collectionsLoaded = true);
   }
 }

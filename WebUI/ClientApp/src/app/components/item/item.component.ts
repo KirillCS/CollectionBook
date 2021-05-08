@@ -23,6 +23,7 @@ export class ItemComponent implements OnInit {
 
   private _item: ItemDto;
   private _pathNodes: Array<PathNode>;
+  private _contentLoaded: boolean = false;
   private _showCarousel: boolean = true;
 
   public constructor(
@@ -46,6 +47,10 @@ export class ItemComponent implements OnInit {
 
   public get defaultImagePath(): string {
     return this.defaul;
+  }
+
+  public get contentLoaded(): boolean {
+    return this._contentLoaded;
   }
 
   public get showCarousel(): boolean {
@@ -72,7 +77,7 @@ export class ItemComponent implements OnInit {
         } else {
           this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
         }
-      });
+      }, () => this._contentLoaded = true);
     });
   }
 

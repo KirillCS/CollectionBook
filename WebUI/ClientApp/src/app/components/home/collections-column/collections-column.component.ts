@@ -13,6 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class CollectionColumnComponent implements OnInit {
 
+  private _collectionsLoading: boolean;
   private pageIndex = 0;
   private pageSize = 10;
   private searchString = '';
@@ -31,6 +32,10 @@ export class CollectionColumnComponent implements OnInit {
     this.addCollections();
   }
 
+  public get collectionsLoading(): boolean {
+    return this._collectionsLoading;
+  }
+
   public get collectionsNotFound(): boolean {
     return this.notFound;
   }
@@ -44,6 +49,10 @@ export class CollectionColumnComponent implements OnInit {
   }
 
   public loadMore(): void {
+    if (this.collectionsLoading) {
+      return;
+    }
+
     this.pageIndex++;
     this.addCollections();
   }
@@ -57,6 +66,7 @@ export class CollectionColumnComponent implements OnInit {
 
   private addCollections(): void {
 
+    this._collectionsLoading = true;
     this.userService.getCollectionsNames(
       this.currentUserService.currentUser?.login,
       {
@@ -69,12 +79,16 @@ export class CollectionColumnComponent implements OnInit {
       this.totalCount = response.totalCount;
     }, (errorResponse: HttpErrorResponse) => {
       this.notFound = this.collections.length == 0;
+      this._collectionsLoading = false;
       if (errorResponse.status == 404) {
         this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found.');
         return;
       }
 
       this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while getting your collections. Reload the page and try again.');
-    }, () => this.notFound = this.collections.length == 0);
+    }, () => {
+      this.notFound = this.collections.length == 0;
+      this._collectionsLoading = false;
+    });
   }
 }

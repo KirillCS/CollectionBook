@@ -20,6 +20,7 @@ export class StarsComponent implements OnInit {
   private profileUserLogin = '';
 
   private collections = new Array<CollectionDto>();
+  private _collectionsLoaded = false;
 
   private collections$ = new Subject<CollectionDto[]>();
   public observableCollections = this.collections$.asObservable();
@@ -34,6 +35,10 @@ export class StarsComponent implements OnInit {
     private dialogsService: DefaultDialogsService
   ) { }
 
+  public get collectionsLoaded(): boolean {
+    return this._collectionsLoaded;
+  }
+
   public ngOnInit(): void {
     this.route.parent.paramMap.subscribe(params => this.profileUserLogin = params.get('login'));
     this.currentUserLogin = this.currentUserService.currentUser?.login;
@@ -41,10 +46,12 @@ export class StarsComponent implements OnInit {
   }
 
   public getCollections(data: GetCollectionsData): void {
+    this._collectionsLoaded = false;
     this.userService.getStarredCollections(data.login, { pageIndex: data.pageIndex, pageSize: data.pageSize, searchString: data.searchString }).subscribe(response => {
       this.totalCount = response.totalCount;
       this.collections$.next(response.items);
     }, (errorResponse: HttpErrorResponse) => {
+      this._collectionsLoaded = true;
       if (errorResponse.status == 400) {
         this.collections$.next(new Array<CollectionDto>());
 
@@ -58,7 +65,7 @@ export class StarsComponent implements OnInit {
       }
 
       this.dialogsService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching for user collections.');
-    });
+    }, () => this._collectionsLoaded = true);
   }
 
   public collectionStarChanged(event: StarChangedEvent): void {

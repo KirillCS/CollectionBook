@@ -21,6 +21,7 @@ export class ProfileCollectionsComponent implements OnInit {
 
   private profileLogin: string;
   private searchString = '';
+  @Input('collectionsLoaded') private _collectionsLoaded: boolean;
 
   @Output() public getCollections = new EventEmitter<GetCollectionsData>();
   @Output() public collectionStarChanged = new EventEmitter<StarChangedEvent>();
@@ -33,8 +34,12 @@ export class ProfileCollectionsComponent implements OnInit {
 
   public constructor(private route: ActivatedRoute, private currentUserService: CurrentUserService) { }
 
-  public get displayNewButton(): boolean {
+  public get isOwner(): boolean {
     return this.currentUserService?.currentUser?.login === this.profileLogin;
+  }
+
+  public get collectionsLoaded(): boolean {
+    return this._collectionsLoaded;
   }
 
   public ngOnInit(): void {
