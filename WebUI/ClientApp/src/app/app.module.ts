@@ -30,8 +30,7 @@ import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
 
 import { ImageCropperModule } from 'ngx-image-cropper';
-
-import {IvyCarouselModule} from 'angular-responsive-carousel';
+import { IvyCarouselModule } from 'angular-responsive-carousel';
 
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AppComponent } from 'src/app/app.component';
@@ -151,7 +150,7 @@ import { PathComponent } from './components/ui/path/path.component';
 
     ImageCropperModule,
     IvyCarouselModule,
-
+    
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {

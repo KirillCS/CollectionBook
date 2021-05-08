@@ -1,10 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { UserCoverDto } from 'src/app/models/dtos/user/user-cover.dto';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { ItemService } from 'src/app/services/item.service';
 import { FieldDialogComponent } from '../dialogs/field-dialog/field-dialog.component';
@@ -13,7 +12,7 @@ import { API_URL, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens'
 import { ItemDto } from 'src/app/models/dtos/item/item.dto';
 import { TagsFieldDialogComponent } from '../dialogs/tags-field-dialog/tags-field-dialog.component';
 import { ImageCropperDialogComponent, ImageCropperDialogData } from '../dialogs/image-cropper-dialog/image-cropper-dialog.component';
-import { CarouselComponent } from 'angular-responsive-carousel';
+import { CurrentUserService } from 'src/app/services/current-user.service';
 
 @Component({
   selector: 'app-item',
@@ -33,7 +32,8 @@ export class ItemComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private dialogService: DefaultDialogsService
+    private dialogService: DefaultDialogsService,
+    private currentUserService: CurrentUserService
   ) { }
 
   public get pathNodes(): Array<PathNode> {
@@ -50,6 +50,10 @@ export class ItemComponent implements OnInit {
 
   public get showCarousel(): boolean {
     return this._showCarousel;
+  }
+
+  public get isOwner(): boolean {
+    return this.currentUserService.currentUser && this.item && this.currentUserService.currentUser.id === this.item.user.id;
   }
 
   public ngOnInit(): void {

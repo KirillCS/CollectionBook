@@ -9,7 +9,7 @@
       <carousel style="height: 100%;" *ngIf="showCarousel && item?.images?.length > 1; else singleImage" [dots]="true"
         [cellWidth]="'100%'">
         <div class="carousel-cell removable" *ngFor="let image of item.images">
-          <button mat-mini-fab color="warn" (click)="removeImageButtonWasClicked(image.id)">
+          <button *ngIf="isOwner" mat-mini-fab color="warn" (click)="removeImageButtonWasClicked(image.id)">
             <mat-icon class="material-icons-round">clear</mat-icon>
           </button>
           <img [src]="getFullImagePath(image.path)" [alt]="item?.name">
@@ -17,7 +17,7 @@
       </carousel>
       <ng-template #singleImage>
         <div *ngIf="item?.images?.length == 1; else defaultImage" class="image removable">
-          <button mat-mini-fab color="warn" (click)="removeImageButtonWasClicked(item.images[0].id)">
+          <button *ngIf="isOwner" mat-mini-fab color="warn" (click)="removeImageButtonWasClicked(item.images[0].id)">
             <mat-icon class="material-icons-round">clear</mat-icon>
           </button>
           <img [src]="getFullImagePath(item.images[0].path)" [alt]="item?.name">
@@ -36,7 +36,7 @@
     </mat-chip-list>
     <footer>
       <div class="date">{{ item?.creationTime | date: 'medium' }}</div>
-      <button mat-icon-button [matMenuTriggerFor]="menu">
+      <button mat-icon-button *ngIf="isOwner" [matMenuTriggerFor]="menu">
         <mat-icon class="material-icons-round">more_horiz</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
