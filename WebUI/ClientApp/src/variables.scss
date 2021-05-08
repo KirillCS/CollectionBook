@@ -11,8 +11,10 @@ $default-card-padding: 2rem;
   box-shadow: 0 4px 15px 0 #00000040;
 }
 
-@mixin no-wrap-text {
-  white-space: nowrap;
+@mixin no-wrap-text($line-count: 1) {
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $line-count;
+  -webkit-box-orient: vertical;
 }

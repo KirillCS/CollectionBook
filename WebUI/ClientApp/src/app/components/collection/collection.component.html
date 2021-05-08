@@ -7,79 +7,84 @@
       [theme]="{ 'max-width': '100%', width: '500px', height: '27px', marging: 0, 'background-color': '#ECECEC' }">
     </ngx-skeleton-loader>
   </div>
-  <main class="card">
-    <button class="menu-button" *ngIf="isOwner" mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon class="material-icons-round">
-        more_vert
-      </mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="addItemButtonClicked()">
-        <mat-icon class="material-icons-round">add</mat-icon>
-        <span>Add new item</span>
+  <section class="row mx-0 justify-content-end">
+    <main class="card">
+      <button class="menu-button" *ngIf="isOwner" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon class="material-icons-round">
+          more_vert
+        </mat-icon>
       </button>
-      <mat-divider></mat-divider>
-      <button mat-menu-item [matMenuTriggerFor]="editMenu">
-        <mat-icon class="material-icons-round">edit</mat-icon>
-        <span>Edit collection</span>
-      </button>
-      <button mat-menu-item (click)="deleteButtonClicked()">
-        <mat-icon class="material-icons-round">delete</mat-icon>
-        <span>Delete collection</span>
-      </button>
-    </mat-menu>
-    <mat-menu #editMenu="matMenu">
-      <button mat-menu-item (click)="editNameButtonClicked()">name</button>
-      <button mat-menu-item (click)="editDescriptionButtonClicked()">description</button>
-      <button mat-menu-item (click)="editTagsButtonClicked()">tags</button>
-    </mat-menu>
-    <div class="cover">
-      <ngx-skeleton-loader *ngIf="!contentLoaded"
-        [theme]="{ display: 'block', width: '100%', height: '200px', margin: 0, 'background-color': '#ECECEC' }">
-      </ngx-skeleton-loader>
-      <img *ngIf="contentLoaded" [src]="collectionCover" [alt]="collection?.name">
-      <button *ngIf="contentLoaded && isOwner" mat-mini-fab [matMenuTriggerFor]="coverMenu" color="">
-        <mat-icon class="material-icons-round">mode_edit</mat-icon>
-      </button>
-      <mat-menu #coverMenu="matMenu">
-        <input type="file" style="display: none;" accept="image/*" #cover (change)="coverSelected($event.target.files)">
-        <button (click)="cover.click()" mat-menu-item>Upload cover</button>
-        <button (click)="resetCover()" [disabled]="!resetCoverButtonEnabled" mat-menu-item>Reset cover</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="addItemButtonClicked()">
+          <mat-icon class="material-icons-round">add</mat-icon>
+          <span>Add new item</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item [matMenuTriggerFor]="editMenu">
+          <mat-icon class="material-icons-round">edit</mat-icon>
+          <span>Edit collection</span>
+        </button>
+        <button mat-menu-item (click)="deleteButtonClicked()">
+          <mat-icon class="material-icons-round">delete</mat-icon>
+          <span>Delete collection</span>
+        </button>
       </mat-menu>
-    </div>
-    <div class="data">
-      <header>
-        <h1 *ngIf="contentLoaded && collection?.name">{{ collection.name }}</h1>
-        <ngx-skeleton-loader *ngIf="!contentLoaded" style="margin-bottom: 10px;"
-          [theme]="{ 'max-width': '100%', width: '250px', height: '32px', 'background-color': '#ECECEC' }">
-        </ngx-skeleton-loader>
-        <app-star *ngIf="isAuthenticated" [starred]="starred" [collectionId]="collection?.id"
-          (changed)="starStatusChanged($event)"></app-star>
-      </header>
-      <h3 *ngIf="contentLoaded && collection?.description">{{ collection.description }}</h3>
-      <ngx-skeleton-loader *ngIf="!contentLoaded" count="4"
-        [theme]="{ width: '100%', height: '16px', margin: '1px 0', 'background-color': '#ECECEC' }">
-      </ngx-skeleton-loader>
-      <mat-chip-list *ngIf="contentLoaded && collection?.tags">
-        <mat-chip *ngFor="let tag of collection.tags">{{ tag.label }}</mat-chip>
-      </mat-chip-list>
-      <ngx-skeleton-loader *ngIf="!contentLoaded" count="3"
-        [theme]="{ 'max-width': '100%', width: '80px', height: '30px', 'border-radius': '15px', margin: '10px 8px 0 0', 'background-color': '#ECECEC' }">
-      </ngx-skeleton-loader>
-      <div class="meta-data">
-        <div class="date" *ngIf="contentLoaded && collection">{{ collection.creationTime | date: 'medium' }}</div>
+      <mat-menu #editMenu="matMenu">
+        <button mat-menu-item (click)="editNameButtonClicked()">name</button>
+        <button mat-menu-item (click)="editDescriptionButtonClicked()">description</button>
+        <button mat-menu-item (click)="editTagsButtonClicked()">tags</button>
+      </mat-menu>
+      <div class="cover">
         <ngx-skeleton-loader *ngIf="!contentLoaded"
-          [theme]="{ 'max-width': '100%', width: '150px', height: '14px', 'margin-top': '5px', 'background-color': '#ECECEC' }">
+          [theme]="{ display: 'block', width: '100%', height: '200px', margin: 0, 'background-color': '#ECECEC' }">
         </ngx-skeleton-loader>
-
-        <div class="stars-counter" *ngIf="contentLoaded && collection" matTooltip="{{ collection.stars?.length }} stars"
-          matTooltipPosition="above">
-          {{ collection.stars?.length }}<mat-icon class="material-icons-round">star</mat-icon>
-        </div>
-        <ngx-skeleton-loader *ngIf="!contentLoaded"
-          [theme]="{ 'max-width': '100%', width: '30px', height: '14px', 'margin-top': '5px', 'background-color': '#ECECEC' }">
-        </ngx-skeleton-loader>
+        <img *ngIf="contentLoaded" [src]="collectionCover" [alt]="collection?.name">
+        <button *ngIf="contentLoaded && isOwner" mat-mini-fab [matMenuTriggerFor]="coverMenu" color="">
+          <mat-icon class="material-icons-round">mode_edit</mat-icon>
+        </button>
+        <mat-menu #coverMenu="matMenu">
+          <input type="file" style="display: none;" accept="image/*" #cover (change)="coverSelected($event.target.files)">
+          <button (click)="cover.click()" mat-menu-item>Upload cover</button>
+          <button (click)="resetCover()" [disabled]="!resetCoverButtonEnabled" mat-menu-item>Reset cover</button>
+        </mat-menu>
       </div>
-    </div>
-  </main>
+      <div class="data">
+        <header>
+          <h1 *ngIf="contentLoaded && collection?.name">{{ collection.name }}</h1>
+          <ngx-skeleton-loader *ngIf="!contentLoaded" style="margin-bottom: 10px;"
+            [theme]="{ 'max-width': '100%', width: '250px', height: '32px', 'background-color': '#ECECEC' }">
+          </ngx-skeleton-loader>
+          <app-star *ngIf="isAuthenticated" [starred]="starred" [collectionId]="collection?.id"
+            (changed)="starStatusChanged($event)"></app-star>
+        </header>
+        <h3 *ngIf="contentLoaded && collection?.description">{{ collection.description }}</h3>
+        <ngx-skeleton-loader *ngIf="!contentLoaded" count="4"
+          [theme]="{ width: '100%', height: '16px', margin: '1px 0', 'background-color': '#ECECEC' }">
+        </ngx-skeleton-loader>
+        <mat-chip-list *ngIf="contentLoaded && collection?.tags">
+          <mat-chip *ngFor="let tag of collection.tags">{{ tag.label }}</mat-chip>
+        </mat-chip-list>
+        <ngx-skeleton-loader *ngIf="!contentLoaded" count="3"
+          [theme]="{ 'max-width': '100%', width: '80px', height: '30px', 'border-radius': '15px', margin: '10px 8px 0 0', 'background-color': '#ECECEC' }">
+        </ngx-skeleton-loader>
+        <div class="meta-data">
+          <div class="date" *ngIf="contentLoaded && collection">{{ collection.creationTime | date: 'medium' }}</div>
+          <ngx-skeleton-loader *ngIf="!contentLoaded"
+            [theme]="{ 'max-width': '100%', width: '150px', height: '14px', 'margin-top': '5px', 'background-color': '#ECECEC' }">
+          </ngx-skeleton-loader>
+
+          <div class="stars-counter" *ngIf="contentLoaded && collection" matTooltip="{{ collection.stars?.length }} stars"
+            matTooltipPosition="above">
+            {{ collection.stars?.length }}<mat-icon class="material-icons-round">star</mat-icon>
+          </div>
+          <ngx-skeleton-loader *ngIf="!contentLoaded"
+            [theme]="{ 'max-width': '100%', width: '30px', height: '14px', 'margin-top': '5px', 'background-color': '#ECECEC' }">
+          </ngx-skeleton-loader>
+        </div>
+      </div>
+    </main>
+  </section>
+  <section class="items mt-5">
+    <app-item-card></app-item-card>
+  </section>
 </div>

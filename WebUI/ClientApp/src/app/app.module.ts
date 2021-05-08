@@ -77,6 +77,7 @@ import { TagInputComponent } from './components/ui/tag-input/tag-input.component
 import { ItemComponent } from './components/item/item.component';
 import { ProfileCoverComponent } from './components/ui/profile-cover/profile-cover.component';
 import { PathComponent } from './components/ui/path/path.component';
+import { ItemCardComponent } from './components/ui/item-card/item-card.component';
 
 @NgModule({
   declarations: [
@@ -115,7 +116,8 @@ import { PathComponent } from './components/ui/path/path.component';
     TagInputComponent,
     ItemComponent,
     ProfileCoverComponent,
-    PathComponent
+    PathComponent,
+    ItemCardComponent
   ],
   imports: [
     BrowserModule,
