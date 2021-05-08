@@ -1,16 +1,16 @@
 <main class="card p-0">
   <section>
     <div class="image">
-      <img src="https://localhost:44319/collectionscovers\a71ffa36-3262-469c-a7a3-1004f5f4afd8.jpg" alt="">
+      <img [src]="imagePath" [alt]="item.name">
     </div>
   </section>
   <section class="data px-3 py-4">
     <main>
-      <h2>Some collection item</h2>
-      <p class="info">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae dolorum nulla ipsa. Vero amet hic consequuntur, delectus, ad, voluptas culpa magnam tempora quo nostrum pariatur magni nihil rerum libero id.</p>
+      <h2 [routerLink]="['/item', item.id]">{{ item.name }}</h2>
+      <p class="info" *ngIf="item.info">{{ item.info }}</p>
     </main>
     <footer>
-      <span class="date">Apr 25, 2021, 4:18:53 PM</span>
+      <span class="date">{{ item.creationTime | date: 'medium' }}</span>
     </footer>
   </section>
 </main>
