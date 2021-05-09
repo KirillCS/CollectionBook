@@ -10,13 +10,7 @@ import { ItemCoverDto } from 'src/app/models/dtos/item/item-cover.dto';
 })
 export class ItemCardComponent {
 
-  @Input('item') private _item: ItemCoverDto = {
-    id: 6,
-    name: 'Some item',
-    info: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae dolorum nulla ipsa. Vero amet hic consequuntur, delectus, ad, voluptas culpa magnam tempora quo nostrum pariatur magni nihil rerum libero id.',
-    creationTime: new Date(),
-    imagePath: 'collectionscovers/a71ffa36-3262-469c-a7a3-1004f5f4afd8.jpg',
-  };
+  @Input('item') private _item: ItemCoverDto;
 
   public constructor(@Inject(API_URL) private apiUrl: string, @Inject(DEFAULT_COLLECTION_COVER) private defaultImagePath: string) { }
 

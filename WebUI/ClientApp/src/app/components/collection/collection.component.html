@@ -84,7 +84,13 @@
       </div>
     </main>
   </section>
-  <section class="items mt-5">
-    <app-item-card></app-item-card>
+  <section class="items mt-4">
+    <div class="card py-3 row mx-0 flex-column">
+      <h3>Items of the collection "{{ collection?.name }}"</h3>
+      <div class="row mx-0 justify-content-between align-items-center">
+        <app-search-input placeholder="Find collection's items..."></app-search-input>
+        <button mat-icon-button color="primary"><mat-icon class="material-round-icons">note_add</mat-icon></button>
+      </div>
+    </div>
   </section>
 </div>

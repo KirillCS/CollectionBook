@@ -6,6 +6,7 @@ using Application.Collections.Commands.CreateCollection;
 using Application.Collections.Commands.DeleteCollection;
 using Application.Collections.Commands.StarCollection;
 using Application.Collections.Queries.GetCollectionAndItems;
+using Application.Collections.Queries.GetItems;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -17,6 +18,11 @@ namespace WebUI.Controllers
         [Route("{Id}")]
         [HttpGet]
         public async Task<IActionResult> GetCollectionAndItems([FromRoute] GetCollectionAndItemsQuery query) =>
+            Ok(await Mediator.Send(query));
+
+        [Route("items")]
+        [HttpGet]
+        public async Task<IActionResult> GetItems([FromBody] GetItemsQuery query) =>
             Ok(await Mediator.Send(query));
 
         [Route("{Id}")]
