@@ -2,7 +2,7 @@
   <h1>Collection's items</h1>
   <div class="row mx-0 justify-content-between align-items-center">
     <app-search-input placeholder="Find collection's items..." (changed)="searchInputChanged($event)"></app-search-input>
-    <button mat-icon-button color="primary"><mat-icon class="material-round-icons">note_add</mat-icon></button>
+    <button *ngIf="showAddButton" mat-icon-button color="primary" (click)="addButtonWasClicked()"><mat-icon class="material-round-icons">note_add</mat-icon></button>
   </div>
 </div>
 <div class="row mx-0 my-3 justify-content-center" *ngIf="!itemsLoaded">
@@ -11,7 +11,7 @@
 <div class="mb-3" *ngFor="let item of items">
   <app-item-card [item]="item"></app-item-card>
 </div>
-<h1 class="row mx-0 justify-content-center" *ngIf="itemsLoaded && totalCount == 0">
+<h1 class="row mx-0 pb-5 justify-content-center" *ngIf="itemsLoaded && totalCount == 0">
   No items found
 </h1>
 <div class="mt-4">

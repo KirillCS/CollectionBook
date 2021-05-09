@@ -1,13 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
-import { CollectionNameDto } from 'src/app/models/dtos/collection/collection-name.dto';
 import { ItemCoverDto } from 'src/app/models/dtos/item/item-cover.dto';
 import { CollectionService } from 'src/app/services/collection.service';
-import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-collection-items',
@@ -26,9 +24,14 @@ export class ItemsComponent implements OnInit {
   private readonly _items = new Array<ItemCoverDto>();
 
   @Input() private collectionId: number;
+  @Input('showAddButton') private _showAddButton: boolean;
+
+  @Output('addButtonWasClicked') private _addButtonWasClicked = new EventEmitter();
 
   public constructor(
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private router: Router,
+    private dialogService: DefaultDialogsService
   ) { }
 
   public ngOnInit(): void {
@@ -59,6 +62,14 @@ export class ItemsComponent implements OnInit {
     return this._items;
   }
 
+  public get showAddButton(): boolean {
+    return this._showAddButton;
+  }
+
+  public addButtonWasClicked(): void {
+    this._addButtonWasClicked.emit();
+  }
+
   public searchInputChanged(searchString: string): void {
     this.searchString = searchString;
     this.getItems();
@@ -84,7 +95,12 @@ export class ItemsComponent implements OnInit {
         this.items.length = 0;
         this.items.push(...list.items);
       }, (errorResponse: HttpErrorResponse) => {
-
+        if (errorResponse.status === 404) {
+          this.router.navigateByUrl('**', { skipLocationChange: true });
+        } else {
+          this._itemsLoaded = true;
+          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server. Try to reload the page to solve this problem.');
+        }
       }, () => this._itemsLoaded = true);
   }
 }

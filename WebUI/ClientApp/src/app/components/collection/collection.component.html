@@ -43,7 +43,8 @@
           <mat-icon class="material-icons-round">mode_edit</mat-icon>
         </button>
         <mat-menu #coverMenu="matMenu">
-          <input type="file" style="display: none;" accept="image/*" #cover (change)="coverSelected($event.target.files)">
+          <input type="file" style="display: none;" accept="image/*" #cover
+            (change)="coverSelected($event.target.files)">
           <button (click)="cover.click()" mat-menu-item>Upload cover</button>
           <button (click)="resetCover()" [disabled]="!resetCoverButtonEnabled" mat-menu-item>Reset cover</button>
         </mat-menu>
@@ -73,8 +74,8 @@
             [theme]="{ 'max-width': '100%', width: '150px', height: '14px', 'margin-top': '5px', 'background-color': '#ECECEC' }">
           </ngx-skeleton-loader>
 
-          <div class="stars-counter" *ngIf="contentLoaded && collection" matTooltip="{{ collection.stars?.length }} stars"
-            matTooltipPosition="above">
+          <div class="stars-counter" *ngIf="contentLoaded && collection"
+            matTooltip="{{ collection.stars?.length }} stars" matTooltipPosition="above">
             {{ collection.stars?.length }}<mat-icon class="material-icons-round">star</mat-icon>
           </div>
           <ngx-skeleton-loader *ngIf="!contentLoaded"
@@ -84,5 +85,6 @@
       </div>
     </div>
   </main>
-  <app-collection-items [collectionId]="collectionId"></app-collection-items>
+  <app-collection-items [collectionId]="collectionId" [showAddButton]="isOwner"
+    (addButtonWasClicked)="addItemButtonClicked()"></app-collection-items>
 </div>
