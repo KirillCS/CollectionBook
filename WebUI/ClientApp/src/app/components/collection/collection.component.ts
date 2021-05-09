@@ -27,7 +27,7 @@ import { StarChangedEvent } from '../ui/star/star.component';
 })
 export class CollectionComponent implements OnInit {
 
-  private collectionId: number;
+  private _collectionId: number;
   private collectionDto: FullCollectionDto;
   private _pathNodes: Array<PathNode>;
   private _contentLoaded: boolean;
@@ -45,7 +45,11 @@ export class CollectionComponent implements OnInit {
     @Inject(API_URL) private apiUrl: string,
     @Inject(DEFAULT_COLLECTION_COVER) private defaultCover: string
   ) {
-    route.paramMap.subscribe(params => this.collectionId = parseInt(params.get("id")));
+    route.paramMap.subscribe(params => this._collectionId = parseInt(params.get("id")));
+  }
+
+  public get collectionId(): number {
+    return this._collectionId;
   }
 
   public get collection(): CollectionDto {
@@ -85,7 +89,7 @@ export class CollectionComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.collectionService.getFullCollection(this.collectionId).subscribe(collection => {
+    this.collectionService.getFullCollection(this._collectionId).subscribe(collection => {
       this.collectionDto = collection;
       this.setPath();
     }, (errorResponse: HttpErrorResponse) => {

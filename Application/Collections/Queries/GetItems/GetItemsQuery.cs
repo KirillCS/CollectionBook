@@ -16,7 +16,7 @@ namespace Application.Collections.Queries.GetItems
 {
     public class GetItemsQuery : SearchPaginatedListQuery, IRequest<PaginatedList<ItemCoverDto>>
     {
-        public int CollectionId { get; set; }
+        public int Id { get; set; }
     }
 
     public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, PaginatedList<ItemCoverDto>>
@@ -32,11 +32,11 @@ namespace Application.Collections.Queries.GetItems
 
         public async Task<PaginatedList<ItemCoverDto>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
         {
-            Collection collection = await context.Collections.FindAsync(request.CollectionId);
+            Collection collection = await context.Collections.FindAsync(request.Id);
             Guard.Requires(() => collection is not null, new EntityNotFoundException());
 
             return await context.Items.Include(i => i.Images)
-                                      .Where(i => i.CollectionId == request.CollectionId && i.Name.Contains(request.SearchString))
+                                      .Where(i => i.CollectionId == request.Id && i.Name.Contains(request.SearchString))
                                       .OrderByDescending(i => i.CreationTime)
                                       .ProjectTo<ItemCoverDto>(mapper.ConfigurationProvider)
                                       .ToPaginatedList(request.PageIndex, request.PageSize);

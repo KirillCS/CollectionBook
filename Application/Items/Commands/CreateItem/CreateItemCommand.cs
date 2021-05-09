@@ -34,7 +34,7 @@ namespace Application.Items.Commands.CreateItem
             User user = await userManager.FindByIdAsync(currentUserService.Id);
             Guard.Requires(() => user is not null, new EntityNotFoundException(nameof(User)));
 
-            Collection collection = await context.Collections.FindAsync(new object[] { request.CollectionId }, cancellationToken);
+            Collection collection = await context.Collections.FindAsync(request.CollectionId);
             Guard.Requires(() => collection is not null, new EntityNotFoundException(nameof(Collection)));
 
             Guard.Requires(() => collection.UserId == user.Id, new OperationException(403));

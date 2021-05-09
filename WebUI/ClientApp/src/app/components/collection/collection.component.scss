@@ -7,7 +7,7 @@ $cover-width-md: 280px;
   height: calc(27px + 2rem);
 }
 
-main {
+.collection {
   position: relative;
   display: flex;
   align-items: flex-start;
@@ -89,10 +89,6 @@ main {
       }
     }
   }
-}
-
-.items {
-  position: relative;
 }
 
 @media (max-width: 992px) {

@@ -78,6 +78,7 @@ import { ItemComponent } from './components/item/item.component';
 import { ProfileCoverComponent } from './components/ui/profile-cover/profile-cover.component';
 import { PathComponent } from './components/ui/path/path.component';
 import { ItemCardComponent } from './components/ui/item-card/item-card.component';
+import { ItemsComponent } from './components/collection/items/items.component'
 
 @NgModule({
   declarations: [
@@ -117,7 +118,8 @@ import { ItemCardComponent } from './components/ui/item-card/item-card.component
     ItemComponent,
     ProfileCoverComponent,
     PathComponent,
-    ItemCardComponent
+    ItemCardComponent,
+    ItemsComponent
   ],
   imports: [
     BrowserModule,

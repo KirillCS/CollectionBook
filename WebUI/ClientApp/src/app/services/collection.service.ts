@@ -22,9 +22,10 @@ export class CollectionService {
   }
 
   public getItems(id: number, request: SearchPaginatedListRequest): Observable<PaginatedListResponse<ItemCoverDto>> {
+
     let params = new HttpParams({
       fromObject: {
-        collectionId: id.toString(),
+        id: id.toString(),
         searchString: request.searchString,
         pageSize: request.pageSize.toString(),
         pageIndex: request.pageIndex.toString()

@@ -22,7 +22,7 @@ namespace WebUI.Controllers
 
         [Route("items")]
         [HttpGet]
-        public async Task<IActionResult> GetItems([FromBody] GetItemsQuery query) =>
+        public async Task<IActionResult> GetItems([FromQuery] GetItemsQuery query) =>
             Ok(await Mediator.Send(query));
 
         [Route("{Id}")]
