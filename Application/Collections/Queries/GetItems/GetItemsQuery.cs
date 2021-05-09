@@ -35,11 +35,6 @@ namespace Application.Collections.Queries.GetItems
             Collection collection = await context.Collections.FindAsync(request.CollectionId);
             Guard.Requires(() => collection is not null, new EntityNotFoundException());
 
-            //var items = await context.Items.Include(i => i.Images)
-            //                          .Where(i => i.CollectionId == request.CollectionId && i.Name.Contains(request.SearchString))
-            //                          .OrderByDescending(i => i.CreationTime)
-            //                          .ToPaginatedList(request.PageIndex, request.PageSize);
-
             return await context.Items.Include(i => i.Images)
                                       .Where(i => i.CollectionId == request.CollectionId && i.Name.Contains(request.SearchString))
                                       .OrderByDescending(i => i.CreationTime)

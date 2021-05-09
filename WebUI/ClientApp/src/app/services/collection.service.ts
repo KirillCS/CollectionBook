@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,6 +6,9 @@ import { API_URL } from 'src/app/app-injection-tokens';
 import { CollectionCreatingRequest } from 'src/app/models/requests/collection/collection-creating.request';
 import { FullCollectionDto } from 'src/app/models/dtos/collection/full-collection.dto';
 import { TagDto } from '../models/dtos/tag.dto';
+import { SearchPaginatedListRequest } from '../models/requests/search-paginated-list.request';
+import { ItemCoverDto } from '../models/dtos/item/item-cover.dto';
+import { PaginatedListResponse } from '../models/responses/paginated-list.response';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +19,19 @@ export class CollectionService {
 
   public getFullCollection(id: number): Observable<FullCollectionDto> {
     return this.httpClient.get<FullCollectionDto>(`${this.apiUrl}api/collection/${id ?? ''}`);
+  }
+
+  public getItems(id: number, request: SearchPaginatedListRequest): Observable<PaginatedListResponse<ItemCoverDto>> {
+    let params = new HttpParams({
+      fromObject: {
+        collectionId: id.toString(),
+        searchString: request.searchString,
+        pageSize: request.pageSize.toString(),
+        pageIndex: request.pageIndex.toString()
+      }
+    });
+
+    return this.httpClient.get<PaginatedListResponse<ItemCoverDto>>(`${this.apiUrl}api/collection/items`, { params });
   }
 
   public create(request: CollectionCreatingRequest): Observable<void> {
