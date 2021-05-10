@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 
 import { API_URL } from 'src/app/app-injection-tokens';
 import { CollectionCreatingRequest } from 'src/app/models/requests/collection/collection-creating.request';
-import { FullCollectionDto } from 'src/app/models/dtos/collection/full-collection.dto';
 import { TagDto } from '../models/dtos/tag.dto';
 import { SearchPaginatedListRequest } from '../models/requests/search-paginated-list.request';
 import { ItemCoverDto } from '../models/dtos/item/item-cover.dto';
 import { PaginatedListResponse } from '../models/responses/paginated-list.response';
+import { CollectionDto } from '../models/dtos/collection/collection.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,8 @@ export class CollectionService {
 
   public constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
 
-  public getFullCollection(id: number): Observable<FullCollectionDto> {
-    return this.httpClient.get<FullCollectionDto>(`${this.apiUrl}api/collection/${id ?? ''}`);
+  public getCollection(id: number): Observable<CollectionDto> {
+    return this.httpClient.get<CollectionDto>(`${this.apiUrl}api/collection/${id ?? ''}`);
   }
 
   public getItems(id: number, request: SearchPaginatedListRequest): Observable<PaginatedListResponse<ItemCoverDto>> {

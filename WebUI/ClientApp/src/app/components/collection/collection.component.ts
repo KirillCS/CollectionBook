@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { API_URL, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
 import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
-import { FullCollectionDto } from 'src/app/models/dtos/collection/full-collection.dto';
 import { AuthService } from 'src/app/services/auth.service';
 import { CollectionService } from 'src/app/services/collection.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
@@ -28,7 +27,7 @@ import { StarChangedEvent } from '../ui/star/star.component';
 export class CollectionComponent implements OnInit {
 
   private _collectionId: number;
-  private collectionDto: FullCollectionDto;
+  private _collection: CollectionDto;
   private _pathNodes: Array<PathNode>;
   private _contentLoaded: boolean;
 
@@ -53,7 +52,7 @@ export class CollectionComponent implements OnInit {
   }
 
   public get collection(): CollectionDto {
-    return this.collectionDto?.collection;
+    return this._collection;
   }
 
   public get pathNodes(): Array<PathNode> {
@@ -89,8 +88,8 @@ export class CollectionComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.collectionService.getFullCollection(this._collectionId).subscribe(collection => {
-      this.collectionDto = collection;
+    this.collectionService.getCollection(this._collectionId).subscribe(collection => {
+      this._collection = collection;
       this.setPath();
     }, (errorResponse: HttpErrorResponse) => {
       if (errorResponse.status == 404) {
