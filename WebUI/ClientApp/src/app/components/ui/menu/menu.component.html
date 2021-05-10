@@ -1,0 +1,5 @@
+<main class="card">
+  <header *ngIf="title">{{ title }}</header>
+  <span class="item" *ngFor="let item of items; let i = index" [ngClass]="{'active' : i == selectedIndex}"
+    (click)="itemWasClicked(item)">{{ item }}</span>
+</main>

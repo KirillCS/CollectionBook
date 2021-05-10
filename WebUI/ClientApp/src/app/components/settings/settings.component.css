@@ -1,0 +1,19 @@
+.menu {
+  width: 25%;
+  margin: 0 1.5rem 0 0;
+}
+
+.settings {
+  width: calc(75% - 1.5rem);
+}
+
+@media(max-width: 768px) {
+  .menu {
+    width: 100%;
+    margin: 0 0 1rem 0;
+  }
+
+  .settings {
+    width: 100%;
+  }
+}

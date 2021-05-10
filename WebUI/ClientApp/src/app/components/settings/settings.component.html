@@ -1,18 +1,17 @@
 <div class="app__container px-3">
-  <div class="card row mx-0 flex-sm-row flex-column align-items-sm-center justify-content-between w-100 mt-3 mt-sm-4 px-4 py-3">
+  <div
+    class="card row mx-0 flex-sm-row flex-column align-items-sm-center justify-content-between w-100 mt-3 mt-sm-4 px-4 py-3">
     <app-profile-cover [user]="userCover" [size]="profileCoverSize"></app-profile-cover>
     <button class="mt-3 mt-sm-0" mat-stroked-button [routerLink]="['/profile', login]">Go to profile</button>
   </div>
   <main class="mt-3 mx-0 row flex-md-row flex-column align-items-start">
-    <div class="card settings-menu">
-      <span class="title">Account settings</span>
-      <a routerLink="profile" routerLinkActive="active">Profile</a>
-      <a routerLink="account" routerLinkActive="active">Account</a>
-      <a routerLink="security" routerLinkActive="active">Security</a>
-    </div>
+    <section class="menu">
+      <app-menu [title]="title" [items]="items" [selectedIndex]="selectedIndex" (change)="menuItemChanged($event)">
+      </app-menu>
+    </section>
 
-    <div class="card settings">
+    <section class="card settings">
       <router-outlet></router-outlet>
-    </div>
+    </section>
   </main>
 </div>
