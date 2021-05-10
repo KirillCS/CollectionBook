@@ -92,7 +92,7 @@ $cover-width-md: 280px;
 }
 
 @media (max-width: 992px) {
-  main {
+  .collection {
     width: calc(100% - (#{$cover-width-md} / 2));
   
     .cover {
@@ -108,7 +108,7 @@ $cover-width-md: 280px;
 
 @media (max-width: 768px) {
 
-  main {
+  .collection {
     flex-direction: column;
     align-items: center;
     width: 100%;
