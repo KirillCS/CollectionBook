@@ -1,9 +1,18 @@
-<main [ngClass]="{'sm': size === sizes.Small, 'lg': size === sizes.Large}">
+<main [class]="sizeClass">
   <section class="avatar">
-    <img [src]="avatarPath" alt="">
+    <img *ngIf="userLoaded" [src]="avatarPath" [alt]="login">
+    <ngx-skeleton-loader *ngIf="!userLoaded" style="width: 100%; height: 100%;"
+      [theme]="{width: '100%', height: '100%', margin: 0, 'background-color': '#ECECEC'}" appearance="circle">
+    </ngx-skeleton-loader>
   </section>
   <section class="creds">
-    <span class="name">{{ name }}</span>
-    <span class="login" [routerLink]="['/profile', login]">@{{ login }}</span>
+    <span *ngIf="userLoaded" class="name">{{ name }}</span>
+    <ngx-skeleton-loader *ngIf="!userLoaded"
+      [theme]="{'max-width': '100%', width: '150px', height: '100%', 'background-color': '#ECECEC'}" >
+    </ngx-skeleton-loader>
+    <span *ngIf="userLoaded" class="login" [routerLink]="['/profile', login]">@{{ login }}</span>
+    <ngx-skeleton-loader *ngIf="!userLoaded"
+      [theme]="{'max-width': '100%', width: '100px', height: '100%', 'background-color': '#ECECEC'}" >
+    </ngx-skeleton-loader>
   </section>
 </main>

@@ -16,8 +16,8 @@ export enum ProfileCoverSize {
 })
 export class ProfileCoverComponent {
 
-  @Input() public user: UserCoverDto;
-  @Input() public size = ProfileCoverSize.Medium;
+  @Input('user') private user: UserCoverDto;
+  @Input() private size = ProfileCoverSize.Medium;
 
   public sizes = ProfileCoverSize;
 
@@ -25,6 +25,21 @@ export class ProfileCoverComponent {
     @Inject(API_URL) private apiUrl: string,
     @Inject(DEFAULT_AVATAR) private defaultAvatarPath: string
   ) { }
+
+  public get sizeClass(): string {
+    switch(this.size) {
+      case ProfileCoverSize.Large :
+        return 'lg';
+      case ProfileCoverSize.Small :
+        return 'sm';
+      default:
+        return '';
+    }
+  }
+
+  public get userLoaded(): boolean {
+    return this.user?.login != null;
+  }
 
   public get avatarPath(): string {
     if (this.user?.avatarPath?.length > 0) {
