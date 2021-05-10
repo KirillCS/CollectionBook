@@ -78,7 +78,9 @@ import { ItemComponent } from './components/item/item.component';
 import { ProfileCoverComponent } from './components/ui/profile-cover/profile-cover.component';
 import { PathComponent } from './components/ui/path/path.component';
 import { ItemCardComponent } from './components/ui/item-card/item-card.component';
-import { ItemsComponent } from './components/collection/items/items.component'
+import { ItemsComponent } from './components/collection/items/items.component';
+import { SearchComponent } from './components/search/search.component';
+import { MenuComponent } from './components/ui/menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -119,7 +121,9 @@ import { ItemsComponent } from './components/collection/items/items.component'
     ProfileCoverComponent,
     PathComponent,
     ItemCardComponent,
-    ItemsComponent
+    ItemsComponent,
+    SearchComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

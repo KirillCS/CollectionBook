@@ -10,9 +10,9 @@
       </button>
       <mat-form-field class="search-input" appearance="outline">
         <mat-icon class="mx-2" matPrefix>search</mat-icon>
-        <input type="search" autocomplete="off" matInput placeholder="Search">
+        <input #searchInput type="search" autocomplete="off" matInput placeholder="Search" (change)="searchInputChanged(searchInput)">
       </mat-form-field>
-      <div class="links" *ngIf="!isAuthenticated()">
+      <div class="links" *ngIf="!isAuthenticated">
         <button class="link--auth" mat-button routerLink="login">Log in</button>
         <button class="link--auth" mat-button routerLink="register">Sign up</button>
         <button id="auth-button" mat-icon-button [matMenuTriggerFor]="login">
@@ -23,7 +23,7 @@
           <button mat-menu-item routerLink="register">Sign up</button>
         </mat-menu>
       </div>
-      <div *ngIf="isAuthenticated()">
+      <div *ngIf="isAuthenticated">
         <button mat-button [matMenuTriggerFor]="account">
           @{{ currentUser.login }}
         </button>
