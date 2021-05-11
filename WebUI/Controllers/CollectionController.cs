@@ -17,7 +17,7 @@ namespace WebUI.Controllers
     {
         [Route("{Id}")]
         [HttpGet]
-        public async Task<IActionResult> GetCollectionAndItems([FromRoute] GetCollectionQuery query) =>
+        public async Task<IActionResult> GetCollection([FromRoute] GetCollectionQuery query) =>
             Ok(await Mediator.Send(query));
 
         [Route("items")]

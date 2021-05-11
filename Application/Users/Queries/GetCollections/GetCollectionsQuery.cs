@@ -8,7 +8,6 @@ using Domain.Common;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,8 +38,6 @@ namespace Application.Users.Queries.GetCollections
             Guard.Requires(() => user is not null, new EntityNotFoundException());
 
             return await dbContext.Collections
-                                  .Include(c => c.Tags)
-                                  .Include(c => c.Stars)
                                   .Where(c => c.UserId == user.Id && c.Name.Contains(request.SearchString))
                                   .OrderByDescending(c => c.CreationTime)
                                   .ProjectTo<UserCollectionDto>(mapper.ConfigurationProvider)
