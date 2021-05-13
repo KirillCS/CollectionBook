@@ -5,6 +5,7 @@ using Application.Collections.Commands.ChangeCollectionTags;
 using Application.Collections.Commands.CreateCollection;
 using Application.Collections.Commands.DeleteCollection;
 using Application.Collections.Commands.StarCollection;
+using Application.Collections.Queries.FindCollections;
 using Application.Collections.Queries.GetCollection;
 using Application.Collections.Queries.GetItems;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +19,10 @@ namespace WebUI.Controllers
         [Route("{Id}")]
         [HttpGet]
         public async Task<IActionResult> GetCollection([FromRoute] GetCollectionQuery query) =>
+            Ok(await Mediator.Send(query));
+
+        [HttpGet]
+        public async Task<IActionResult> FindCollections([FromQuery] FindCollectionsQuery query) =>
             Ok(await Mediator.Send(query));
 
         [Route("items")]
