@@ -8,8 +8,7 @@ namespace Application.Collections.Queries.FindCollections
         public FindCollectionsQueryValidator()
         {
             RuleFor(q => q.SearchCriterion).IsInEnum().WithMessage(q => $"Enum {nameof(SearchCriterion)} doesn't contain a value {q.SearchCriterion}");
-            RuleFor(q => q.SortCriterion).IsInEnum().WithMessage(q => $"Enum {nameof(CollectionSortCriterion)} doesn't contain a value {q.SortCriterion}");
-            RuleFor(q => q.CoverExistence).IsInEnum().WithMessage(q => $"Enum {nameof(ParameterExistence)} doesn't contain a value {q.CoverExistence}");
+            RuleFor(q => q.SortCriterion).IsInEnum().WithMessage(q => $"Enum {nameof(CollectionsSortCriterion)} doesn't contain a value {q.SortCriterion}");
         }
     }
 }

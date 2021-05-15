@@ -16,7 +16,10 @@ export const environment = {
   ],
 
   defaultAvatar: 'assets/img/default-profile-avatar.png',
-  defaultCollectionCover: 'assets/img/default-collection-cover.png'
+  defaultCollectionCover: 'assets/img/default-collection-cover.png',
+  searchStringKey: 'search',
+  sortByKey: 'searchby',
+  searchByKey: 'sortby'
 };
 
 /*

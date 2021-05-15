@@ -9,6 +9,7 @@ import { SearchPaginatedListRequest } from '../models/requests/search-paginated-
 import { ItemCoverDto } from '../models/dtos/item/item-cover.dto';
 import { PaginatedListResponse } from '../models/responses/paginated-list.response';
 import { CollectionDto } from '../models/dtos/collection/collection.dto';
+import { FindCollectionsRequest } from '../models/requests/collection/find-collections.request';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,20 @@ export class CollectionService {
 
   public getCollection(id: number): Observable<CollectionDto> {
     return this.httpClient.get<CollectionDto>(`${this.apiUrl}api/collection/${id ?? ''}`);
+  }
+
+  public findCollections(request: FindCollectionsRequest): Observable<PaginatedListResponse<CollectionDto>> {
+    let params = new HttpParams({
+      fromObject: {
+        searchString: request.searchString,
+        searchCriterion: request.searchCriterion.toString(),
+        sortCriterion: request.sortCriterion.toString(),
+        pageIndex: request.pageIndex.toString(),
+        pageSize: request.pageSize.toString()
+      }
+    });
+
+    return this.httpClient.get<PaginatedListResponse<CollectionDto>>(`${this.apiUrl}api/collection`, { params });
   }
 
   public getItems(id: number, request: SearchPaginatedListRequest): Observable<PaginatedListResponse<ItemCoverDto>> {

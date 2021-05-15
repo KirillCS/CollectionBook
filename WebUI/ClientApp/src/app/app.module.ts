@@ -36,7 +36,7 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
 
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AppComponent } from 'src/app/app.component';
-import { API_URL, DEFAULT_AVATAR, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_AVATAR, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY, SORT_BY_KEY } from 'src/app/app-injection-tokens';
 import { environment } from 'src/environments/environment';
 import { ACCESS_TOKEN_KEY } from 'src/app/services/auth.service';
 import { HeaderComponent } from 'src/app/components/header/header.component';
@@ -81,6 +81,7 @@ import { ItemCardComponent } from './components/ui/item-card/item-card.component
 import { ItemsComponent } from './components/collection/items/items.component';
 import { SearchComponent } from './components/search/search.component';
 import { MenuComponent } from './components/ui/menu/menu.component';
+import { SearchCollectionsComponent } from './components/search/search-collections/search-collections.component';
 
 @NgModule({
   declarations: [
@@ -123,7 +124,8 @@ import { MenuComponent } from './components/ui/menu/menu.component';
     ItemCardComponent,
     ItemsComponent,
     SearchComponent,
-    MenuComponent
+    MenuComponent,
+    SearchCollectionsComponent
   ],
   imports: [
     BrowserModule,
@@ -182,6 +184,10 @@ import { MenuComponent } from './components/ui/menu/menu.component';
     { provide: API_URL, useValue: environment.apiUrl },
     { provide: DEFAULT_AVATAR, useValue: environment.defaultAvatar },
     { provide: DEFAULT_COLLECTION_COVER, useValue: environment.defaultCollectionCover },
+    { provide: SEARCH_STRING_KEY, useValue: environment.searchStringKey },
+    { provide: SEARCH_BY_KEY, useValue: environment.searchByKey },
+    { provide: SORT_BY_KEY, useValue: environment.sortByKey },
+
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
     { provide: ErrorStateMatcher, useClass: SubmitErrorStateMatcher }
   ],

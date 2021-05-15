@@ -18,13 +18,7 @@ namespace Application.Collections.Queries.FindCollections
     {
         public SearchCriterion SearchCriterion { get; init; }
 
-        public CollectionSortCriterion SortCriterion { get; init; }
-
-        public RangeValue<int> ItemsCount { get; init; }
-
-        public RangeValue<int> StarsCount { get; init; }
-
-        public ParameterExistence CoverExistence { get; init; }
+        public CollectionsSortCriterion SortCriterion { get; init; }
     }
 
     public class FindCollectionsQueryHandler : IRequestHandler<FindCollectionsQuery, PaginatedList<CollectionDto>>
@@ -51,63 +45,9 @@ namespace Application.Collections.Queries.FindCollections
         public static IQueryable<Collection> FilterCollections(this DbSet<Collection> source, FindCollectionsQuery request) =>
             request.SearchCriterion switch
             {
-                SearchCriterion.Name => request.CoverExistence switch
-                {
-                    ParameterExistence.Required => source.Where(c => c.Name.Contains(request.SearchString)
-                                                                     && c.Items.Count >= request.ItemsCount.From && c.Items.Count <= request.ItemsCount.To
-                                                                     && c.Stars.Count >= request.StarsCount.From && c.Stars.Count <= request.StarsCount.To
-                                                                     && c.CoverPath != null),
-
-                    ParameterExistence.NotRequired => source.Where(c => c.Name.Contains(request.SearchString)
-                                                                        && c.Items.Count >= request.ItemsCount.From && c.Items.Count <= request.ItemsCount.To
-                                                                        && c.Stars.Count >= request.StarsCount.From && c.Stars.Count <= request.StarsCount.To
-                                                                        && c.CoverPath == null),
-
-                    ParameterExistence.NoDefference => source.Where(c => c.Name.Contains(request.SearchString)
-                                                                         && c.Items.Count >= request.ItemsCount.From && c.Items.Count <= request.ItemsCount.To
-                                                                         && c.Stars.Count >= request.StarsCount.From && c.Stars.Count <= request.StarsCount.To),
-
-                    _ => throw new NotImplementedException($"Method {nameof(FilterCollections)} don't have an implementation for the {request.CoverExistence} of the {nameof(ParameterExistence)} enum")
-                },
-
-                SearchCriterion.Tags => request.CoverExistence switch
-                {
-                    ParameterExistence.Required => source.Where(c => c.Tags.Any(t => t.Label.ToLower() == request.SearchString.ToLower())
-                                                                     && c.Items.Count >= request.ItemsCount.From && c.Items.Count <= request.ItemsCount.To
-                                                                     && c.Stars.Count >= request.StarsCount.From && c.Stars.Count <= request.StarsCount.To
-                                                                     && c.CoverPath != null),
-
-                    ParameterExistence.NotRequired => source.Where(c => c.Tags.Any(t => t.Label.ToLower() == request.SearchString.ToLower())
-                                                                        && c.Items.Count >= request.ItemsCount.From && c.Items.Count <= request.ItemsCount.To
-                                                                        && c.Stars.Count >= request.StarsCount.From && c.Stars.Count <= request.StarsCount.To
-                                                                        && c.CoverPath == null),
-
-                    ParameterExistence.NoDefference => source.Where(c => c.Tags.Any(t => t.Label.ToLower() == request.SearchString.ToLower())
-                                           && c.Items.Count >= request.ItemsCount.From && c.Items.Count <= request.ItemsCount.To
-                                           && c.Stars.Count >= request.StarsCount.From && c.Stars.Count <= request.StarsCount.To),
-
-                    _ => throw new NotImplementedException($"Method {nameof(FilterCollections)} don't have an implementation for the {request.CoverExistence} of the {nameof(ParameterExistence)} enum")
-                },
-
-                SearchCriterion.All => request.CoverExistence switch
-                {
-                    ParameterExistence.Required => source.Where(c => (c.Name.Contains(request.SearchString) || c.Tags.Any(t => t.Label.ToLower() == request.SearchString.ToLower()))
-                                                                     && c.Items.Count >= request.ItemsCount.From && c.Items.Count <= request.ItemsCount.To
-                                                                     && c.Stars.Count >= request.StarsCount.From && c.Stars.Count <= request.StarsCount.To
-                                                                     && c.CoverPath != null),
-
-                    ParameterExistence.NotRequired => source.Where(c => (c.Name.Contains(request.SearchString) || c.Tags.Any(t => t.Label.ToLower() == request.SearchString.ToLower()))
-                                                                        && c.Items.Count >= request.ItemsCount.From && c.Items.Count <= request.ItemsCount.To
-                                                                        && c.Stars.Count >= request.StarsCount.From && c.Stars.Count <= request.StarsCount.To
-                                                                        && c.CoverPath == null),
-
-                    ParameterExistence.NoDefference => source.Where(c => (c.Name.Contains(request.SearchString) || c.Tags.Any(t => t.Label.ToLower() == request.SearchString.ToLower()))
-                                                                         && c.Items.Count >= request.ItemsCount.From && c.Items.Count <= request.ItemsCount.To
-                                                                         && c.Stars.Count >= request.StarsCount.From && c.Stars.Count <= request.StarsCount.To),
-
-                    _ => throw new NotImplementedException($"Method {nameof(FilterCollections)} don't have an implementation for the {request.CoverExistence} of the {nameof(ParameterExistence)} enum")
-                },
-
+                SearchCriterion.Name => source.Where(c => c.Name.Contains(request.SearchString)),
+                SearchCriterion.Tags =>  source.Where(c => c.Tags.Any(t => t.Label.ToLower() == request.SearchString.ToLower())),
+                SearchCriterion.All => source.Where(c => c.Name.Contains(request.SearchString) || c.Tags.Any(t => t.Label.ToLower() == request.SearchString.ToLower())),
                 _ => throw new NotImplementedException($"Method {nameof(FilterCollections)} don't have an implementation for the {request.SearchCriterion} of the {nameof(SearchCriterion)} enum")
             };
     }

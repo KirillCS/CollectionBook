@@ -27,6 +27,7 @@ import { PreviousRouteService } from './services/previous-route.service';
 import { CollectionComponent } from './components/collection/collection.component';
 import { ItemComponent } from './components/item/item.component';
 import { SearchComponent } from './components/search/search.component';
+import { SearchCollectionsComponent } from './components/search/search-collections/search-collections.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -53,7 +54,12 @@ const routes: Routes = [
   { path: 'collection/:id', component: CollectionComponent },
   { path: 'item/:id', component: ItemComponent },
   { path: 'new', component: CollectionCreatingComponent, canActivate: [AuthenticatedGuard] },
-  { path: 'search', component: SearchComponent },
+  {
+    path: 'search', component: SearchComponent, children: [
+      { path: 'collections', component: SearchCollectionsComponent },
+      { path: '', redirectTo: 'collections', pathMatch: 'full' }
+    ]
+  },
   { path: '**', component: NotFoundComponent }
 ];
 

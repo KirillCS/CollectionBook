@@ -1,18 +1,7 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import { AuthService } from 'src/app/services/auth.service';
-import { CurrentUserService } from 'src/app/services/current-user.service';
-import { ActivatedRoute, Router } from '@angular/router';
-
-export enum SearchGroup {
-  Collections,
-  Items
-}
-
-export const SearchGroupsToStringsMap = new Map<SearchGroup, string>([
-  [SearchGroup.Collections, 'c'],
-  [SearchGroup.Items, 'i']
-]);
+import { SearchGroupInStringFormat } from './search-group';
 
 @Component({
   selector: 'app-search',
@@ -21,22 +10,31 @@ export const SearchGroupsToStringsMap = new Map<SearchGroup, string>([
 })
 export class SearchComponent {
 
-  private _searchString: string;
+  private readonly _menuItems = ['Collections', 'Items', 'Users'];
+  private _selectedIndex: number;
 
-  public constructor(
-    private authService: AuthService,
-    private currentUserService: CurrentUserService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
-    route.queryParamMap.subscribe(params => {
-      console.log(params.get('s'));
-      console.log(params.get('g'));
+  public constructor(route: ActivatedRoute) {
+    let urlSub = route.firstChild.url.subscribe(urlArray => {
+      let url = urlArray[0];
+      this._selectedIndex = 0;
+      if (!url) {
+        urlSub.unsubscribe();
+        return;
+      }
+
+      SearchGroupInStringFormat.forEach((v, k) => {
+        if (url.path === v) {
+          this._selectedIndex = k;
+        }
+      })
     });
   }
 
-  
-  public get searchString() : string {
-    return this._searchString;
+  public get menuItems(): string[] {
+    return this._menuItems;
+  }
+
+  public get selectedIndex(): number {
+    return this._selectedIndex;
   }
 }
