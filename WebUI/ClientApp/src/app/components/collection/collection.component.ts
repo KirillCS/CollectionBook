@@ -88,7 +88,7 @@ export class CollectionComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.collectionService.getCollection(this._collectionId).subscribe(collection => {
+    this.collectionService.get(this._collectionId).subscribe(collection => {
       this._collection = collection;
       this.setPath();
     }, (errorResponse: HttpErrorResponse) => {

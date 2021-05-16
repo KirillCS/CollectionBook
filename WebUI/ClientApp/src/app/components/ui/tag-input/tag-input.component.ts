@@ -63,7 +63,7 @@ export class TagInputComponent {
 
   public inputChanged(): void {
     let value = this.tagInput.nativeElement.value;
-    this._filteredTags = this.tagsService.searchTags(value, this.searchTagsCount);
+    this._filteredTags = this.tagsService.find(value, this.searchTagsCount);
   }
 
   public tagSelected(event: MatAutocompleteSelectedEvent): void {

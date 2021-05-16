@@ -26,7 +26,7 @@ export class SettingsService {
   ) { }
 
   public updateFromServer(): void {
-    this.userService.getUser(this.currentUserService.currentUser.login).subscribe(response => {
+    this.userService.get(this.currentUserService.currentUser.login).subscribe(response => {
       this.userSource.next(response);
 
     }, (errorResponse: HttpErrorResponse) => {

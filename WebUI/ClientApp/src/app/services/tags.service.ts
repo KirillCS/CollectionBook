@@ -11,7 +11,7 @@ export class TagsService {
 
   public constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
 
-  public searchTags(searchString: string, count: number): Observable<string[]> {
+  public find(searchString: string, count: number): Observable<string[]> {
     let params = new HttpParams()
       .set('searchString', searchString)
       .set('count', count.toString());

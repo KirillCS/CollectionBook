@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit {
   public ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       let login = params.get('login');
-      this.userService.getUser(login).subscribe(response => {
+      this.userService.get(login).subscribe(response => {
         this.user = response;
         this.isOwner = response.id == this.currentUserService?.currentUser?.id;
 

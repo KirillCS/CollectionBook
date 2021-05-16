@@ -23,7 +23,7 @@ import { PaginatedListRequest } from '../models/requests/paginated-list.request'
 export class UserService {
   constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
 
-  public getUser(login: string): Observable<UserDto> {
+  public get(login: string): Observable<UserDto> {
     return this.httpClient.get<UserDto>(`${this.apiUrl}api/user/${login ?? ''}`);
   }
 

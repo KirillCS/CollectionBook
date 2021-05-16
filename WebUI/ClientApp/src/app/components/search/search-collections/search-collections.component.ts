@@ -120,7 +120,7 @@ export class SearchCollectionsComponent extends SearchBaseComponent implements O
 
   private getCollections(): void {
     this._collectionsLoaded = false;
-    this.collectionService.findCollections({
+    this.collectionService.find({
       searchString: this.searchString,
       searchCriterion: this.selectedSearchCriterion,
       sortCriterion: this.selectedSortCriterion,

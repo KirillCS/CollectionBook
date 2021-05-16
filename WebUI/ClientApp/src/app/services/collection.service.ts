@@ -18,11 +18,11 @@ export class CollectionService {
 
   public constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
 
-  public getCollection(id: number): Observable<CollectionDto> {
+  public get(id: number): Observable<CollectionDto> {
     return this.httpClient.get<CollectionDto>(`${this.apiUrl}api/collection/${id ?? ''}`);
   }
 
-  public findCollections(request: FindCollectionsRequest): Observable<PaginatedListResponse<CollectionDto>> {
+  public find(request: FindCollectionsRequest): Observable<PaginatedListResponse<CollectionDto>> {
     let params = new HttpParams({
       fromObject: {
         searchString: request.searchString,
