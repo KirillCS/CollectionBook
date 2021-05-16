@@ -21,9 +21,9 @@ export class SearchComponent implements OnDestroy {
       let urlTree = this.router.parseUrl(event.url);
       let urlGroup = urlTree.root.children[PRIMARY_OUTLET];
       if (urlGroup && urlGroup.segments?.length >= 2) {
+        let segment = urlGroup.segments[1].path;
         SearchGroupInStringFormat.forEach((v, k) => {
-          let url = urlGroup.segments[1].path;
-          if (url === v) {
+          if (segment === v) {
             this._selectedIndex = k;
           }
         })

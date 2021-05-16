@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy } from '@angular/core';
+import { NavigationEnd, PRIMARY_OUTLET, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { UserCoverDto } from 'src/app/models/dtos/user/user-cover.dto';
 import { UserDto } from 'src/app/models/dtos/user/user.dto';
@@ -12,21 +14,34 @@ import { ProfileCoverSize } from '../ui/profile-cover/profile-cover.component';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnDestroy {
+
+  private readonly routerSub: Subscription;
+  private readonly userSub: Subscription;
 
   private user = new UserDto();
   private readonly _title = 'Account settings';
   private readonly _items = ['Profile', 'Account', 'Security'];
   private _selectedIndex = 0;
 
-  public constructor(private settingsService: SettingsService, private router: Router, route: ActivatedRoute) {
-    this.settingsService.user$.subscribe(user => {
+  public constructor(private settingsService: SettingsService, private router: Router) {
+    this.routerSub = router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+      let urlTree = this.router.parseUrl(event.url);
+      let urlGroup = urlTree.root.children[PRIMARY_OUTLET];
+      if (urlGroup && urlGroup.segments?.length >= 2) {
+        let segment = urlGroup.segments[1].path;
+        this._selectedIndex = this.getMenuItemIndex(segment);
+      }
+    });
+
+    this.userSub = this.settingsService.user$.subscribe(user => {
       this.user = user;
     });
-    
-    let url = router.url;
-    url = url.slice(url.lastIndexOf('/') + 1, url.length);
-    this._selectedIndex = this.getMenuItemIndex(url);
+  }
+
+  public ngOnDestroy(): void {
+    this.routerSub.unsubscribe();
+    this.userSub.unsubscribe();
   }
 
   public get userCover(): UserCoverDto {
