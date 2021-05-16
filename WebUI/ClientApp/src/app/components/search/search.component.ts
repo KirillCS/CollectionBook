@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy } from '@angular/core';
+import { NavigationEnd, PRIMARY_OUTLET, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { ItemChangeEvent } from '../ui/menu/menu.component';
 
 import { SearchGroupInStringFormat } from './search-group';
@@ -8,25 +10,29 @@ import { SearchGroupInStringFormat } from './search-group';
   selector: 'app-search',
   templateUrl: './search.component.html'
 })
-export class SearchComponent {
+export class SearchComponent implements OnDestroy {
 
+  private readonly routerSub: Subscription;
   private readonly _menuItems = ['Collections', 'Items', 'Users'];
-  private _selectedIndex: number;
+  private _selectedIndex = 0;
 
-  public constructor(route: ActivatedRoute, private router: Router) {
-    route.firstChild.url.subscribe(urlArray => {
-      let url = urlArray[0];
-      this._selectedIndex = 0;
-      if (!url) {
-        return;
+  public constructor(private router: Router) {
+    this.routerSub = router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+      let urlTree = this.router.parseUrl(event.url);
+      let urlGroup = urlTree.root.children[PRIMARY_OUTLET];
+      if (urlGroup && urlGroup.segments?.length >= 2) {
+        SearchGroupInStringFormat.forEach((v, k) => {
+          let url = urlGroup.segments[1].path;
+          if (url === v) {
+            this._selectedIndex = k;
+          }
+        })
       }
-
-      SearchGroupInStringFormat.forEach((v, k) => {
-        if (url.path === v) {
-          this._selectedIndex = k;
-        }
-      })
     });
+  }
+
+  public ngOnDestroy(): void {
+    this.routerSub.unsubscribe();
   }
 
   public get menuItems(): string[] {

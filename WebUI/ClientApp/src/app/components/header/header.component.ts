@@ -36,7 +36,7 @@ export class HeaderComponent {
 
     let urlTree = this.router.parseUrl(this.router.url);
     let urlGroup = urlTree.root.children[PRIMARY_OUTLET];
-    let url = '/search';
+    let url = '/search/collections';
     if (urlGroup && urlGroup.segments[0].path === 'search') {
       url = `/${urlGroup.segments.join('/')}`;
     }
