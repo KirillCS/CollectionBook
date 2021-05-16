@@ -14,11 +14,10 @@ export class SearchComponent {
   private _selectedIndex: number;
 
   public constructor(route: ActivatedRoute, private router: Router) {
-    let urlSub = route.firstChild.url.subscribe(urlArray => {
+    route.firstChild.url.subscribe(urlArray => {
       let url = urlArray[0];
       this._selectedIndex = 0;
       if (!url) {
-        urlSub.unsubscribe();
         return;
       }
 
