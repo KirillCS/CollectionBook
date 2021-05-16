@@ -30,6 +30,7 @@ namespace Application.Collections.Queries.GetCollection
         public async Task<CollectionDto> Handle(GetCollectionQuery request, CancellationToken cancellationToken)
         {
             Collection collection = await context.Collections
+                                                 .Include(c => c.Items)
                                                  .Include(c => c.User)
                                                  .Include(c => c.Tags)
                                                  .Include(c => c.Stars)

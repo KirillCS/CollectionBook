@@ -27,8 +27,8 @@
           <span matTooltip="{{ collection.stars.length }} stars" matTooltipPosition="above">
             {{ collection.stars.length }}<mat-icon class="material-icons-round">star</mat-icon>
           </span>
-          <span matTooltip="0 items" matTooltipPosition="above">
-            0<mat-icon class="material-icons-round">reorder</mat-icon>
+          <span matTooltip="{{ collection.itemsCount }} items" matTooltipPosition="above">
+            {{ collection.itemsCount }}<mat-icon class="material-icons-round">reorder</mat-icon>
           </span>
         </div>
       </data>

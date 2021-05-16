@@ -8,6 +8,7 @@ export class CollectionDto {
   public description: string;
   public coverPath: string;
   public creationTime: Date;
+  public itemsCount: number;
   public user: UserCoverDto;
   public tags: TagDto[];
   public stars: StarDto[];

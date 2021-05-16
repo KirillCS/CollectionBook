@@ -20,6 +20,8 @@ namespace Application.Common.Dto
 
         public UserCoverDto User { get; set; }
 
+        public int ItemsCount { get; set; }
+
         public List<StarDto> Stars { get; set; }
 
         public List<TagDto> Tags { get; set; }
