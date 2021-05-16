@@ -11,7 +11,7 @@ export const environment = {
   allowedDomains: ['localhost:44319'],
   silentApis: 
   [
-    `${URL}api/tag/search`,
+    `${URL}api/tag`,
     `${URL}api/collection/star`
   ],
 

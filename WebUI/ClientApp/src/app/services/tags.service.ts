@@ -16,6 +16,6 @@ export class TagsService {
       .set('searchString', searchString)
       .set('count', count.toString());
 
-    return this.httpClient.get<string[]>(`${this.apiUrl}api/tag/search`, { params });
+    return this.httpClient.get<string[]>(`${this.apiUrl}api/tag`, { params });
   }
 }

@@ -1,6 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -10,7 +10,13 @@ namespace Application.Tags.Query.FindTags
 {
     public class FindTagsQuery : IRequest<IEnumerable<string>>
     {
-        public string SearchString { get; set; }
+        private string searchString = string.Empty;
+
+        public string SearchString 
+        { 
+            get => searchString;
+            set => searchString = value ?? string.Empty; 
+        }
 
         public int Count { get; set; }
     }
@@ -26,10 +32,16 @@ namespace Application.Tags.Query.FindTags
 
         public async Task<IEnumerable<string>> Handle(FindTagsQuery request, CancellationToken cancellationToken)
         {
-            return await dbContext.Tags.Where(tag => tag.Label.Contains(request.SearchString))
-                                       .Take(request.Count)
-                                       .Select(tag => tag.Label)
-                                       .ToListAsync(cancellationToken);
+            string searchString = request.SearchString.ToLowerInvariant();
+            if (string.IsNullOrEmpty(searchString))
+            {
+                return Array.Empty<string>();
+            }
+
+            return await Task.Run(() => dbContext.Tags.Where(tag => tag.Label.ToLower().StartsWith(searchString))
+                                                      .Take(request.Count)
+                                                      .Select(tag => tag.Label)
+                                                      .OrderBy(tag => tag));
         }
     }
 }

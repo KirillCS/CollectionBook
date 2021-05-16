@@ -6,7 +6,6 @@ namespace WebUI.Controllers
 {
     public class TagController : ApiControllerBase
     {
-        [Route("search")]
         [HttpGet]
         public async Task<IActionResult> FindTags([FromQuery] FindTagsQuery query)
         {
