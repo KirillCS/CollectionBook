@@ -1,4 +1,4 @@
-﻿using Application.Tags.Query.SearchTags;
+﻿using Application.Tags.Query.FindTags;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -8,7 +8,7 @@ namespace WebUI.Controllers
     {
         [Route("search")]
         [HttpGet]
-        public async Task<IActionResult> SearchTags([FromQuery] SearchTagsQuery query)
+        public async Task<IActionResult> FindTags([FromQuery] FindTagsQuery query)
         {
             return Ok(await Mediator.Send(query));
         }

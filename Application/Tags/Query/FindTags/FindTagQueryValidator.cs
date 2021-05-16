@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Application.Tags.Query.SearchTags
+namespace Application.Tags.Query.FindTags
 {
-    public class SearchTagQueryValidator : AbstractValidator<SearchTagsQuery>
+    public class FindTagQueryValidator : AbstractValidator<FindTagsQuery>
     {
-        public SearchTagQueryValidator()
+        public FindTagQueryValidator()
         {
             RuleFor(q => q.Count).GreaterThan(-1).WithMessage("Returned count must be more or equal 0");
         }
