@@ -63,7 +63,8 @@
           [theme]="{ width: '100%', height: '16px', margin: '1px 0', 'background-color': '#ECECEC' }">
         </ngx-skeleton-loader>
         <mat-chip-list *ngIf="contentLoaded && collection?.tags">
-          <mat-chip *ngFor="let tag of collection.tags">{{ tag.label }}</mat-chip>
+          <mat-chip *ngFor="let tag of collection.tags" [routerLink]="['/search', 'collections']"
+            [queryParams]="getTagQueryParams(tag.label)">{{ tag.label }}</mat-chip>
         </mat-chip-list>
         <ngx-skeleton-loader *ngIf="!contentLoaded" count="3"
           [theme]="{ 'max-width': '100%', width: '80px', height: '30px', 'border-radius': '15px', margin: '10px 8px 0 0', 'background-color': '#ECECEC' }">

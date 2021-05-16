@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Params } from '@angular/router';
 
-import { API_URL, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY } from 'src/app/app-injection-tokens';
 import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
 import { UserLoginDto } from 'src/app/models/dtos/user/user-login.dto';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
+import { SearchCriteriaInStringFormat, SearchCriterion } from '../../search/search-criterion';
 import { StarChangedEvent } from '../star/star.component';
 
 @Component({
@@ -22,7 +24,9 @@ export class CollectionCardComponent {
     private authService: AuthService,
     private currentUserService: CurrentUserService,
     @Inject(API_URL) private apiUrl: string,
-    @Inject(DEFAULT_COLLECTION_COVER) private defaultCover: string
+    @Inject(DEFAULT_COLLECTION_COVER) private defaultCover: string,
+    @Inject(SEARCH_STRING_KEY) private searchStringKey: string,
+    @Inject(SEARCH_BY_KEY) private searchByKey: string
   ) { }
 
   public get isAuthenticated(): boolean {
@@ -43,5 +47,12 @@ export class CollectionCardComponent {
 
   public get starred(): boolean {
     return this.collection.stars.some(s => s.userId === this.currentUser?.id)
+  }
+
+  public getTagQueryParams(tag: string): Params {
+    return {
+      [this.searchStringKey]: tag,
+      [this.searchByKey]: SearchCriteriaInStringFormat.get(SearchCriterion.Tags)
+    }
   }
 }

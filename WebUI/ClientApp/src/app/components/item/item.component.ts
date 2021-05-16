@@ -2,17 +2,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { ItemService } from 'src/app/services/item.service';
 import { FieldDialogComponent } from '../dialogs/field-dialog/field-dialog.component';
 import { PathNode } from '../ui/path/path-node';
-import { API_URL, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY } from 'src/app/app-injection-tokens';
 import { ItemDto } from 'src/app/models/dtos/item/item.dto';
 import { TagsFieldDialogComponent } from '../dialogs/tags-field-dialog/tags-field-dialog.component';
 import { ImageCropperDialogComponent, ImageCropperDialogData } from '../dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { CurrentUserService } from 'src/app/services/current-user.service';
+import { SearchCriteriaInStringFormat, SearchCriterion } from '../search/search-criterion';
 
 @Component({
   selector: 'app-item',
@@ -34,7 +35,9 @@ export class ItemComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private dialogService: DefaultDialogsService,
-    private currentUserService: CurrentUserService
+    private currentUserService: CurrentUserService,
+    @Inject(SEARCH_STRING_KEY) private searchStringKey: string,
+    @Inject(SEARCH_BY_KEY) private searchByKey: string
   ) { }
 
   public get pathNodes(): Array<PathNode> {
@@ -232,6 +235,13 @@ export class ItemComponent implements OnInit {
 
       this.deleteItem();
     });
+  }
+
+  public getTagQueryParams(tag: string): Params {
+    return {
+      [this.searchStringKey]: tag,
+      [this.searchByKey]: SearchCriteriaInStringFormat.get(SearchCriterion.Tags)
+    }
   }
 
   private changeName(newName: string): void {

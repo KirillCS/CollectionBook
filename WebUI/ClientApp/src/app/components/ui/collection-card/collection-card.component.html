@@ -7,13 +7,15 @@
     <main>
       <header>
         <h2><a [routerLink]="['/collection', collection.id]">{{ collection.name }}</a></h2>
-        <app-star *ngIf="isAuthenticated" [starred]="starred" [collectionId]="collection.id" (changed)="starChanged.emit($event)"></app-star>
+        <app-star *ngIf="isAuthenticated" [starred]="starred" [collectionId]="collection.id"
+          (changed)="starChanged.emit($event)"></app-star>
       </header>
       <p *ngIf="collection.description">{{ collection.description }}</p>
     </main>
     <footer>
       <mat-chip-list *ngIf="collection.tags?.length > 0">
-        <mat-chip *ngFor="let tag of collection.tags">
+        <mat-chip *ngFor="let tag of collection.tags" [routerLink]="['/search', 'collections']"
+          [queryParams]="getTagQueryParams(tag.label)">
           <span>
             {{ tag.label }}
           </span>

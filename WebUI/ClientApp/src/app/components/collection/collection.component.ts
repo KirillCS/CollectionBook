@@ -2,9 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import { API_URL, DEFAULT_COLLECTION_COVER } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY } from 'src/app/app-injection-tokens';
 import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
 import { AuthService } from 'src/app/services/auth.service';
 import { CollectionService } from 'src/app/services/collection.service';
@@ -16,6 +16,7 @@ import { DeleteFieldDialogComponent } from '../dialogs/delete-field-dialog/delet
 import { FieldDialogComponent } from '../dialogs/field-dialog/field-dialog.component';
 import { ImageCropperDialogComponent, ImageCropperDialogData } from '../dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { TagsFieldDialogComponent } from '../dialogs/tags-field-dialog/tags-field-dialog.component';
+import { SearchCriteriaInStringFormat, SearchCriterion } from '../search/search-criterion';
 import { PathNode } from '../ui/path/path-node';
 import { StarChangedEvent } from '../ui/star/star.component';
 
@@ -42,7 +43,9 @@ export class CollectionComponent implements OnInit {
     private dialog: MatDialog,
     private dialogService: DefaultDialogsService,
     @Inject(API_URL) private apiUrl: string,
-    @Inject(DEFAULT_COLLECTION_COVER) private defaultCover: string
+    @Inject(DEFAULT_COLLECTION_COVER) private defaultCover: string,
+    @Inject(SEARCH_STRING_KEY) private searchStringKey: string,
+    @Inject(SEARCH_BY_KEY) private searchByKey: string
   ) {
     route.paramMap.subscribe(params => this._collectionId = parseInt(params.get("id")));
   }
@@ -309,6 +312,13 @@ export class CollectionComponent implements OnInit {
         this.deleteCollection();
       }
     });
+  }
+  
+  public getTagQueryParams(tag: string): Params {
+    return {
+      [this.searchStringKey]: tag,
+      [this.searchByKey]: SearchCriteriaInStringFormat.get(SearchCriterion.Tags)
+    }
   }
 
   private createItem(name: string): void {
