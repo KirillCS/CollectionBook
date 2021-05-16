@@ -3,7 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { UserLoginDto } from 'src/app/models/dtos/user/user-login.dto';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, PRIMARY_OUTLET, Router } from '@angular/router';
 import { SEARCH_STRING_KEY } from 'src/app/app-injection-tokens';
 
 @Component({
@@ -34,15 +34,14 @@ export class HeaderComponent {
       [this.searchStringKey]: input.value
     };
 
-    let searchGroupUrl = 'collections';
-    this.route.url.subscribe(urlArray => {
-      let url = urlArray[1];
-      if (url) {
-        searchGroupUrl = url.path;
-      }
-    });
+    let urlTree = this.router.parseUrl(this.router.url);
+    let urlGroup = urlTree.root.children[PRIMARY_OUTLET];
+    let url = '/search';
+    if (urlGroup && urlGroup.segments[0].path === 'search') {
+      url = `/${urlGroup.segments.join('/')}`;
+    }
     
-    this.router.navigate(['/search', searchGroupUrl], { queryParams, queryParamsHandling: 'merge' });
+    this.router.navigate([url], { queryParams, queryParamsHandling: 'merge' });
     input.value = '';
   }
 

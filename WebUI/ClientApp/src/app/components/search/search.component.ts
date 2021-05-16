@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ItemChangeEvent } from '../ui/menu/menu.component';
 
 import { SearchGroupInStringFormat } from './search-group';
 
 @Component({
   selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  templateUrl: './search.component.html'
 })
 export class SearchComponent {
 
   private readonly _menuItems = ['Collections', 'Items', 'Users'];
   private _selectedIndex: number;
 
-  public constructor(route: ActivatedRoute) {
+  public constructor(route: ActivatedRoute, private router: Router) {
     let urlSub = route.firstChild.url.subscribe(urlArray => {
       let url = urlArray[0];
       this._selectedIndex = 0;
@@ -36,5 +36,9 @@ export class SearchComponent {
 
   public get selectedIndex(): number {
     return this._selectedIndex;
+  }
+
+  public selectedMenuItemChanged(event: ItemChangeEvent): void {
+    this.router.navigate(['/search', SearchGroupInStringFormat.get(event.index)], { queryParamsHandling: 'preserve' });
   }
 }

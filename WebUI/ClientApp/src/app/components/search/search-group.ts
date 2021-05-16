@@ -1,7 +1,7 @@
 export enum SearchGroup {
-  Collections,
-  Items,
-  Users
+  Collections = 0,
+  Items = 1,
+  Users = 2
 }
 
 export const SearchGroupInStringFormat = new Map<SearchGroup, string>([

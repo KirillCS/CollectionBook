@@ -82,6 +82,7 @@ import { ItemsComponent } from './components/collection/items/items.component';
 import { SearchComponent } from './components/search/search.component';
 import { MenuComponent } from './components/ui/menu/menu.component';
 import { SearchCollectionsComponent } from './components/search/search-collections/search-collections.component';
+import { SearchItemsComponent } from './components/search/search-items/search-items.component';
 
 @NgModule({
   declarations: [
@@ -125,7 +126,8 @@ import { SearchCollectionsComponent } from './components/search/search-collectio
     ItemsComponent,
     SearchComponent,
     MenuComponent,
-    SearchCollectionsComponent
+    SearchCollectionsComponent,
+    SearchItemsComponent
   ],
   imports: [
     BrowserModule,

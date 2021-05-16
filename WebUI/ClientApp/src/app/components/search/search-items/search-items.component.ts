@@ -4,33 +4,32 @@ import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 
 import { SEARCH_BY_KEY, SEARCH_STRING_KEY, SORT_BY_KEY } from 'src/app/app-injection-tokens';
-import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
+import { ItemCoverDto } from 'src/app/models/dtos/item/item-cover.dto';
 import { SelectValue } from 'src/app/models/ui/select-value';
-import { CollectionService } from 'src/app/services/collection.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
+import { ItemService } from 'src/app/services/item.service';
 import { SearchBaseComponent } from '../search-base.component';
 import { SearchCriterion, SearchCriteriaSelectValues, SearchCriteriaInStringFormat } from '../search-criterion';
-import { CollectionsSortCriteriaInStringFormat, CollectionsSortCriteriaSelectValues, CollectionsSortCriterion } from './collections-sort-criterion';
+import { ItemsSortCriteriaInStringFormat, ItemsSortCriteriaSelectValues, ItemsSortCriterion } from './items-sort-criterion';
 
 @Component({
-  selector: 'app-search-collections',
-  templateUrl: './search-collections.component.html',
+  selector: 'app-search-items',
+  templateUrl: './search-items.component.html',
   styleUrls: ['../search.component.css']
 })
-export class SearchCollectionsComponent extends SearchBaseComponent implements OnDestroy {
-
+export class SearchItemsComponent extends SearchBaseComponent implements OnDestroy {
   private queryParamsSub: Subscription;
 
   private readonly _searchCriterions = SearchCriteriaSelectValues;
   private _selectedSearchCriterion = SearchCriterion.Name;
 
-  private readonly _sortCriterions = CollectionsSortCriteriaSelectValues;
-  private _selectedSortCriterion = CollectionsSortCriterion.ByPopularity;
+  private readonly _sortCriterions = ItemsSortCriteriaSelectValues;
+  private _selectedSortCriterion = ItemsSortCriterion.ByPopularity;
 
-  private _collectionsLoaded = false;
+  private _itemsLoaded = false;
 
-  private $collections = new Subject<CollectionDto[]>();
-  private _collections = this.$collections.asObservable();
+  private $items = new Subject<ItemCoverDto[]>();
+  private _items = this.$items.asObservable();
 
   public constructor(
     @Inject(SEARCH_STRING_KEY) private searchStringKey: string,
@@ -38,11 +37,11 @@ export class SearchCollectionsComponent extends SearchBaseComponent implements O
     @Inject(SORT_BY_KEY) private sortByKey: string,
     private route: ActivatedRoute,
     private router: Router,
-    private collectionService: CollectionService,
+    private itemService: ItemService,
     private dialogService: DefaultDialogsService
   ) {
     super();
-    this._pageSize = 24;
+    this._pageSize = 20;
     this.queryParamsSub = route.queryParamMap.subscribe(params => this.handleQueryParamsChanging(params));
   }
 
@@ -67,35 +66,35 @@ export class SearchCollectionsComponent extends SearchBaseComponent implements O
     this.updateQueryParams();
   }
 
-  public get sortCriterions(): SelectValue<CollectionsSortCriterion>[] {
+  public get sortCriterions(): SelectValue<ItemsSortCriterion>[] {
     return this._sortCriterions;
   }
 
-  public get selectedSortCriterion(): CollectionsSortCriterion {
+  public get selectedSortCriterion(): ItemsSortCriterion {
     return this._selectedSortCriterion;
   }
 
-  public set selectedSortCriterion(value: CollectionsSortCriterion) {
-    if (!Object.values(CollectionsSortCriterion).includes(value)) {
-      value = CollectionsSortCriterion.ByPopularity;
+  public set selectedSortCriterion(value: ItemsSortCriterion) {
+    if (!Object.values(ItemsSortCriterion).includes(value)) {
+      value = ItemsSortCriterion.ByPopularity;
     }
 
     this._selectedSortCriterion = value;
     this.updateQueryParams();
   }
 
-  public get collectionsLoaded(): boolean {
-    return this._collectionsLoaded;
+  public get itemsLoaded(): boolean {
+    return this._itemsLoaded;
   }
 
-  public get collections(): Observable<CollectionDto[]> {
-    return this._collections;
+  public get items(): Observable<ItemCoverDto[]> {
+    return this._items;
   }
 
   public pageChanged(event: PageEvent): void {
     this._pageIndex = event.pageIndex;
     this._pageSize = event.pageSize;
-    this.getCollections();
+    this.getItems();
   }
 
   private handleQueryParamsChanging(params: ParamMap): void {
@@ -108,38 +107,38 @@ export class SearchCollectionsComponent extends SearchBaseComponent implements O
       }
     });
 
-    CollectionsSortCriteriaInStringFormat.forEach((v, k) => {
+    ItemsSortCriteriaInStringFormat.forEach((v, k) => {
       if (v === params.get(this.sortByKey)) {
         this._selectedSortCriterion = k;
         return;
       }
     });
 
-    this.getCollections();
+    this.getItems();
   }
 
-  private getCollections(): void {
-    this._collectionsLoaded = false;
-    this.collectionService.findCollections({
+  private getItems(): void {
+    this._itemsLoaded = false;
+    this.itemService.find({
       searchString: this.searchString,
       searchCriterion: this.selectedSearchCriterion,
       sortCriterion: this.selectedSortCriterion,
-      pageIndex: this.pageIndex,
-      pageSize: this.pageSize
+      pageIndex: this._pageIndex,
+      pageSize: this._pageSize
     }).subscribe(list => {
-      this.$collections.next(list.items);
+      this.$items.next(list.items);
       this._totalCount = list.totalCount;
     }, () => {
-      this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching collections.');
-      this._collectionsLoaded = true;
-    }, () => this._collectionsLoaded = true);
+      this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching items.');
+      this._itemsLoaded = true;
+    }, () => this._itemsLoaded = true);
   }
 
   private updateQueryParams(): void {
     let queryParams: Params = {
       [this.searchStringKey]: this.searchString,
       [this.searchByKey]: SearchCriteriaInStringFormat.get(this.selectedSearchCriterion),
-      [this.sortByKey]: CollectionsSortCriteriaInStringFormat.get(this.selectedSortCriterion),
+      [this.sortByKey]: ItemsSortCriteriaInStringFormat.get(this.selectedSortCriterion),
     };
 
     this.router.navigate([], {

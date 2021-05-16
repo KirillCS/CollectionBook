@@ -34,7 +34,7 @@ namespace Application.Collections.Queries.FindCollections
 
         public async Task<PaginatedList<CollectionDto>> Handle(FindCollectionsQuery request, CancellationToken cancellationToken) =>
             await context.Collections
-                         .FilterCollections(request)
+                         .FilterCollections(request.SearchCriterion, request.SearchString)
                          .SortBy(request.SortCriterion)
                          .ProjectTo<CollectionDto>(mapper.ConfigurationProvider)
                          .ToPaginatedList(request.PageIndex, request.PageSize);
@@ -42,13 +42,13 @@ namespace Application.Collections.Queries.FindCollections
 
     internal static class QueryableExtensions
     {
-        public static IQueryable<Collection> FilterCollections(this DbSet<Collection> source, FindCollectionsQuery request) =>
-            request.SearchCriterion switch
+        public static IQueryable<Collection> FilterCollections(this DbSet<Collection> source, SearchCriterion criterion, string searchString) =>
+            criterion switch
             {
-                SearchCriterion.Name => source.Where(c => c.Name.Contains(request.SearchString)),
-                SearchCriterion.Tags =>  source.Where(c => c.Tags.Any(t => t.Label.ToLower() == request.SearchString.ToLower())),
-                SearchCriterion.All => source.Where(c => c.Name.Contains(request.SearchString) || c.Tags.Any(t => t.Label.ToLower() == request.SearchString.ToLower())),
-                _ => throw new NotImplementedException($"Method {nameof(FilterCollections)} don't have an implementation for the {request.SearchCriterion} of the {nameof(SearchCriterion)} enum")
+                SearchCriterion.Name => source.Where(c => c.Name.Contains(searchString)),
+                SearchCriterion.Tags =>  source.Where(c => c.Tags.Any(t => t.Label.ToLower() == searchString.ToLower())),
+                SearchCriterion.All => source.Where(c => c.Name.Contains(searchString) || c.Tags.Any(t => t.Label.ToLower() == searchString.ToLower())),
+                _ => throw new NotImplementedException($"Method {nameof(FilterCollections)} don't have an implementation for the {criterion} of the {nameof(SearchCriterion)} enum")
             };
     }
 }

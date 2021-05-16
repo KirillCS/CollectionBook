@@ -14,7 +14,7 @@ namespace Application.Collections.Queries.FindCollections
         ByCreationTimeUp
     }
 
-    internal static class CollectionSortExtensions
+    internal static class CollectionsSortExtensions
     {
         public static IQueryable<Collection> SortBy(this IQueryable<Collection> collections, CollectionsSortCriterion criterion) =>
             criterion switch

@@ -5,6 +5,7 @@ using Application.Items.Commands.ChangeItemTags;
 using Application.Items.Commands.CreateItem;
 using Application.Items.Commands.RemoveItem;
 using Application.Items.Commands.RemoveItemImage;
+using Application.Items.Queries.FindItems;
 using Application.Items.Queries.GetItem;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,10 @@ namespace WebUI.Controllers
         [Route("{Id}")]
         [HttpGet]
         public async Task<IActionResult> GetItem([FromRoute] GetItemQuery query) =>
+            Ok(await Mediator.Send(query));
+
+        [HttpGet]
+        public async Task<IActionResult> FindItems([FromQuery] FindItemsQuery query) =>
             Ok(await Mediator.Send(query));
 
         [HttpPost]
