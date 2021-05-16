@@ -1,0 +1,12 @@
+<div class="card p-3 w-100">
+  <div class="row mx-0 align-items-end justify-content-between">
+    <div class="mr-3">
+      <app-profile-cover [user]="userCover"></app-profile-cover>
+    </div>
+    <div class="data">
+      <span matTooltip="{{ collectionsCount }} collection(-s)" matTooltipPosition="above">
+        {{ collectionsCount }}<mat-icon class="material-icons-round">collections_bookmark</mat-icon>
+      </span>
+    </div>
+  </div>
+</div>

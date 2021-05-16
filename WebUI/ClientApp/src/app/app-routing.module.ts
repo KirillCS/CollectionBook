@@ -29,6 +29,7 @@ import { ItemComponent } from './components/item/item.component';
 import { SearchComponent } from './components/search/search.component';
 import { SearchCollectionsComponent } from './components/search/search-collections/search-collections.component';
 import { SearchItemsComponent } from './components/search/search-items/search-items.component';
+import { SearchUsersComponent } from './components/search/search-users/search-users.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -59,6 +60,7 @@ const routes: Routes = [
     path: 'search', component: SearchComponent, children: [
       { path: 'collections', component: SearchCollectionsComponent },
       { path: 'items', component: SearchItemsComponent },
+      { path: 'users', component: SearchUsersComponent },
       { path: '', redirectTo: 'collections', pathMatch: 'full' }
     ]
   },

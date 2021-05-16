@@ -16,6 +16,8 @@ import { CollectionDto } from '../models/dtos/collection/collection.dto';
 import { CollectionNameDto } from '../models/dtos/collection/collection-name.dto';
 import { StarNotificationDto } from '../models/dtos/star/star-notification.dto';
 import { PaginatedListRequest } from '../models/requests/paginated-list.request';
+import { FindUsersRequest } from '../models/requests/user/find-users.request';
+import { UserCardDto } from '../models/dtos/user/user-card.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +27,19 @@ export class UserService {
 
   public get(login: string): Observable<UserDto> {
     return this.httpClient.get<UserDto>(`${this.apiUrl}api/user/${login ?? ''}`);
+  }
+
+  public find(request: FindUsersRequest): Observable<PaginatedListResponse<UserCardDto>> {
+    let params = new HttpParams({
+      fromObject: {
+        searchString: request.searchString,
+        sortCriterion: request.sortCriterion.toString(),
+        pageIndex: request.pageIndex.toString(),
+        pageSize: request.pageSize.toString()
+      }
+    });
+
+    return this.httpClient.get<PaginatedListResponse<UserCardDto>>(`${this.apiUrl}api/user`, { params });
   }
 
   public getCollections(login: string, request: SearchPaginatedListRequest): Observable<PaginatedListResponse<CollectionDto>> {

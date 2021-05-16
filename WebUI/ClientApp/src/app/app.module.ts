@@ -83,6 +83,8 @@ import { SearchComponent } from './components/search/search.component';
 import { MenuComponent } from './components/ui/menu/menu.component';
 import { SearchCollectionsComponent } from './components/search/search-collections/search-collections.component';
 import { SearchItemsComponent } from './components/search/search-items/search-items.component';
+import { SearchUsersComponent } from './components/search/search-users/search-users.component';
+import { UserCardComponent } from './components/ui/user-card/user-card.component';
 
 @NgModule({
   declarations: [
@@ -127,7 +129,9 @@ import { SearchItemsComponent } from './components/search/search-items/search-it
     SearchComponent,
     MenuComponent,
     SearchCollectionsComponent,
-    SearchItemsComponent
+    SearchItemsComponent,
+    SearchUsersComponent,
+    UserCardComponent
   ],
   imports: [
     BrowserModule,

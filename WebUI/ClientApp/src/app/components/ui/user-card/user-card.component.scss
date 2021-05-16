@@ -1,0 +1,17 @@
+.data {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  cursor: default;
+
+  span {
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem;
+    
+    mat-icon {
+      font-size: 1rem;
+      width: auto;
+      height: auto;
+    }
+  }
+}

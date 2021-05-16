@@ -4,6 +4,7 @@ using Application.Users.Commands.UpdateAvatar;
 using Application.Users.Commands.UpdateLogin;
 using Application.Users.Commands.UpdatePassword;
 using Application.Users.Commands.UpdateProfile;
+using Application.Users.Queries.FindUsers;
 using Application.Users.Queries.GetCollections;
 using Application.Users.Queries.GetCollectionsNames;
 using Application.Users.Queries.GetStarredCollections;
@@ -20,6 +21,10 @@ namespace WebUI.Controllers
         [Route("{Login}")]
         [HttpGet]
         public async Task<IActionResult> GetUser([FromRoute] GetUserQuery query) =>
+            Ok(await Mediator.Send(query));
+
+        [HttpGet]
+        public async Task<IActionResult> FindUsers([FromQuery] FindUsersQuery query) =>
             Ok(await Mediator.Send(query));
 
         [Route("collections")]
