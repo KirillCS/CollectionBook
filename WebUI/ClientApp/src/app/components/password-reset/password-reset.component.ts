@@ -30,6 +30,14 @@ export class PasswordResetComponent implements OnInit {
 
   public inProcess = false;
 
+  public constructor(
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private serverErrorsService: ServerErrorsService,
+    private dialogService: DefaultDialogsService
+  ) { }
+
   public get password(): AbstractControl {
     return this.form.get('password');
   }
@@ -37,7 +45,6 @@ export class PasswordResetComponent implements OnInit {
   public get passwordConfirmation(): AbstractControl {
     return this.form.get("passwordConfirmation");
   }
-
 
   public get passwordErrorMessage(): string {
     if (this.password.hasError('required')) {
@@ -55,7 +62,6 @@ export class PasswordResetComponent implements OnInit {
     return '';
   }
 
-
   public get passwordConfirmationErrorMessage(): string {
     if (this.passwordConfirmation.hasError('required')) {
       return 'Confirm password';
@@ -68,20 +74,11 @@ export class PasswordResetComponent implements OnInit {
     return '';
   }
 
-
-  public constructor(
-    private userService: UserService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private serverErrorsService: ServerErrorsService,
-    private dialogService: DefaultDialogsService
-  ) { }
-
   public ngOnInit(): void {
-    this.route.queryParamMap.subscribe(params => {
+    let sub = this.route.queryParamMap.subscribe(params => {
       this.id = params.get('id');
       this.token = params.get('token');
-    })
+    }, () => {}, () => sub.unsubscribe());
   }
 
   public submit(): void {
@@ -103,22 +100,21 @@ export class PasswordResetComponent implements OnInit {
       passwordConfirmation: this.passwordConfirmation.value
     }
     this.userService.resetPassword(request).subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
+      switch (errorResponse.status) {
+        case 400:
+          this.serverErrorsService.setFormErrors(this.form, errorResponse);
+          break;
+        case 404:
+          this.router.navigate(['']);
+          this.dialogService.openWarningMessageDialog('Failed to reset password', 'User was not found. Maybe link was broken or user was deleted.');
+          break;
+          default:
+          this.router.navigate(['']);
+          this.dialogService.openWarningMessageDialog('Failed to reset password', 'Token is invalid.');
+          break;
+      }
+
       this.inProcess = false;
-      if (errorResponse.status == 400) {
-        this.serverErrorsService.setFormErrors(this.form, errorResponse);
-
-        return;
-      }
-
-      if (errorResponse.status == 404) {
-        this.router.navigate(['']);
-        this.dialogService.openWarningMessageDialog('Failed to reset password', 'User was not found. Maybe link was broken or user was deleted.');
-
-        return;
-      }
-
-      this.dialogService.openWarningMessageDialog('Failed to reset password', 'Token is invalid.');
-
     }, () => {
       this.router.navigate(['']);
       this.dialogService.openSuccessMessageDialog('Password reset successfully', 'Password has reseted successfully');
