@@ -16,7 +16,7 @@ import { StarToggledEventArgs } from '../star/star.component';
 })
 export class CollectionCardComponent {
 
-  @Input() public collection: CollectionDto;
+  @Input('collection') public _collection: CollectionDto;
 
   @Output() private starToggled = new EventEmitter<StarToggledEventArgs>();
 
@@ -35,6 +35,10 @@ export class CollectionCardComponent {
 
   public get currentUser(): UserLoginDto {
     return this.currentUserService.currentUser;
+  }
+
+  public get collection(): CollectionDto {
+    return this._collection;
   }
 
   public get collectionCover(): string {
@@ -58,5 +62,16 @@ export class CollectionCardComponent {
       [this.searchStringKey]: tag,
       [this.searchByKey]: SearchCriteriaInStringFormat.get(SearchCriterion.Tags)
     }
+  }
+
+  private starToggledEventHandler(args: StarToggledEventArgs): void {
+    this.starToggled.emit(args);
+
+    if (args.newStatus && !this.starred) {
+      this.collection.stars.push({ userId: this.currentUser.id });
+      return;
+    }
+    
+    this.collection.stars = this.collection.stars.filter(s => s.userId != this.currentUser.id);
   }
 }
