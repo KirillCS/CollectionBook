@@ -9,7 +9,7 @@
   </div>
 
   <div class="cards-group">
-    <app-collection-card *ngFor="let collection of collections | async" [collection]="collection" (starChanged)="collectionStarChanged.emit($event)"></app-collection-card>
+    <app-collection-card *ngFor="let collection of collections | async" [collection]="collection" (starToggled)="collectionStarToggled.emit($event)"></app-collection-card>
   </div>
 
   <h1 class="row mx-0 justify-content-center" *ngIf="collectionsLoaded && totalCount == 0">

@@ -8,7 +8,7 @@ import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
 import { GetCollectionsData } from '../../ui/profile-collections/profile-collections.component';
-import { StarChangedEvent } from '../../ui/star/star.component';
+import { StarToggledEventArgs } from '../../ui/star/star.component';
 
 @Component({
   selector: 'app-stars',
@@ -68,7 +68,8 @@ export class StarsComponent implements OnInit {
     }, () => this._collectionsLoaded = true);
   }
 
-  public collectionStarChanged(event: StarChangedEvent): void {
+  public collectionStarToggledHandler(event: StarToggledEventArgs): void {
+    console.log(event);
     if (this.currentUserLogin !== this.profileUserLogin) {
       return;
     }

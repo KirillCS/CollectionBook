@@ -12,7 +12,7 @@ export const environment = {
   silentApis: 
   [
     `${URL}api/tag`,
-    `${URL}api/collection/star`
+    `${URL}api/star`
   ],
 
   defaultAvatar: 'assets/img/default-profile-avatar.png',

@@ -18,7 +18,7 @@ import { ImageCropperDialogComponent, ImageCropperDialogData } from '../dialogs/
 import { TagsFieldDialogComponent } from '../dialogs/tags-field-dialog/tags-field-dialog.component';
 import { SearchCriteriaInStringFormat, SearchCriterion } from '../search/search-criterion';
 import { PathNode } from '../ui/path/path-node';
-import { StarChangedEvent } from '../ui/star/star.component';
+import { StarToggledEventArgs } from '../ui/star/star.component';
 
 @Component({
   selector: 'app-collection',
@@ -134,12 +134,12 @@ export class CollectionComponent implements OnInit {
     ref.afterClosed().subscribe(() => submitSubscription.unsubscribe());
   }
 
-  public starStatusChanged(event: StarChangedEvent): void {
-    if (event.newStatus && !this.starred) {
+  public starToggledHandler(args: StarToggledEventArgs): void {
+    if (args.newStatus && !this.starred) {
       this.collection.stars.push({ userId: this.currentUserService.currentUser?.id });
       return;
     }
-
+    
     this.collection.stars = this.collection.stars.filter(s => s.userId != this.currentUserService.currentUser?.id);
   }
 

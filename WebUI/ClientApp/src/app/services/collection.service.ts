@@ -99,8 +99,4 @@ export class CollectionService {
   public delete(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.apiUrl}api/collection/${id ?? ''}`);
   }
-
-  public star(id: number): Observable<void> {
-    return this.httpClient.post<void>(`${this.apiUrl}api/collection/star`, { id });
-  }
 }

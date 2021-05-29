@@ -7,7 +7,7 @@ import { UserLoginDto } from 'src/app/models/dtos/user/user-login.dto';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { SearchCriteriaInStringFormat, SearchCriterion } from '../../search/search-criterion';
-import { StarChangedEvent } from '../star/star.component';
+import { StarToggledEventArgs } from '../star/star.component';
 
 @Component({
   selector: 'app-collection-card',
@@ -18,7 +18,7 @@ export class CollectionCardComponent {
 
   @Input() public collection: CollectionDto;
 
-  @Output() public starChanged = new EventEmitter<StarChangedEvent>();
+  @Output() private starToggled = new EventEmitter<StarToggledEventArgs>();
 
   public constructor(
     private authService: AuthService,
@@ -47,6 +47,10 @@ export class CollectionCardComponent {
 
   public get starred(): boolean {
     return this.collection.stars.some(s => s.userId === this.currentUser?.id)
+  }
+  
+  public get starsCount(): number {
+    return this.collection.stars.length;
   }
 
   public getTagQueryParams(tag: string): Params {

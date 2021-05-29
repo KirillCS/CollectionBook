@@ -8,7 +8,7 @@
       <header>
         <h2><a [routerLink]="['/collection', collection.id]">{{ collection.name }}</a></h2>
         <app-star *ngIf="isAuthenticated" [starred]="starred" [collectionId]="collection.id"
-          (changed)="starChanged.emit($event)"></app-star>
+          (toggled)="starToggled.emit($event)"></app-star>
       </header>
       <p *ngIf="collection.description">{{ collection.description }}</p>
     </main>
@@ -24,9 +24,7 @@
       <data>
         <div class="date">{{ collection.creationTime | date: 'medium' }}</div>
         <div class="statistics">
-          <span matTooltip="{{ collection.stars.length }} stars" matTooltipPosition="above">
-            {{ collection.stars.length }}<mat-icon class="material-icons-round">star</mat-icon>
-          </span>
+          <app-stars-counter [count]="starsCount" [collectionId]="collection.id" [collectionName]="collection.name"></app-stars-counter>
           <span matTooltip="{{ collection.itemsCount }} items" matTooltipPosition="above">
             {{ collection.itemsCount }}<mat-icon class="material-icons-round">reorder</mat-icon>
           </span>

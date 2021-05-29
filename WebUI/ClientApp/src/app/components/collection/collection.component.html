@@ -56,7 +56,7 @@
             [theme]="{ 'max-width': '100%', width: '250px', height: '32px', 'background-color': '#ECECEC' }">
           </ngx-skeleton-loader>
           <app-star *ngIf="isAuthenticated" [starred]="starred" [collectionId]="collection?.id"
-            (changed)="starStatusChanged($event)"></app-star>
+            (toggled)="starToggledHandler($event)"></app-star>
         </header>
         <h3 *ngIf="contentLoaded && collection?.description">{{ collection.description }}</h3>
         <ngx-skeleton-loader *ngIf="!contentLoaded" count="4"

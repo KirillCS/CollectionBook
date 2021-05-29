@@ -7,35 +7,35 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Collections.Commands.StarCollection
+namespace Application.Stars.ToggleStar
 {
-    public class StarCollectionCommand : IRequest
+    public class ToggleStarCommand : IRequest
     {
-        public int Id { get; set; }
+        public int CollectionId { get; init; }
     }
 
-    public class StarCollectionCommandHandler : IRequestHandler<StarCollectionCommand>
+    public class ToggleStarCommandCommandHandler : IRequestHandler<ToggleStarCommand>
     {
         private readonly IApplicationDbContext dbContext;
         private readonly ICurrentUserService currentUserService;
 
-        public StarCollectionCommandHandler(IApplicationDbContext dbContext, ICurrentUserService currentUserService)
+        public ToggleStarCommandCommandHandler(IApplicationDbContext dbContext, ICurrentUserService currentUserService)
         {
             this.dbContext = dbContext;
             this.currentUserService = currentUserService;
         }
 
-        public async Task<Unit> Handle(StarCollectionCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(ToggleStarCommand request, CancellationToken cancellationToken)
         {
-            Collection collection = dbContext.Collections.FirstOrDefault(c => c.Id == request.Id);
+            Collection collection = dbContext.Collections.FirstOrDefault(c => c.Id == request.CollectionId);
             Guard.Requires(() => collection is not null, new EntityNotFoundException());
 
             string userId = currentUserService.Id;
-            Star star = dbContext.Stars.FirstOrDefault(s => s.UserId == userId && s.CollectionId == request.Id);
+            Star star = dbContext.Stars.FirstOrDefault(s => s.UserId == userId && s.CollectionId == request.CollectionId);
 
             if (star is null)
             {
-                await dbContext.Stars.AddAsync(new Star { UserId = currentUserService.Id, CollectionId = request.Id }, cancellationToken);
+                await dbContext.Stars.AddAsync(new Star { UserId = currentUserService.Id, CollectionId = request.CollectionId }, cancellationToken);
             }
             else
             {

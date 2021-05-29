@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
 import { CurrentUserService } from 'src/app/services/current-user.service';
-import { StarChangedEvent } from '../star/star.component';
+import { StarToggledEventArgs } from '../star/star.component';
 
 export class GetCollectionsData {
   public login: string;
@@ -24,7 +24,7 @@ export class ProfileCollectionsComponent implements OnInit {
   @Input('collectionsLoaded') private _collectionsLoaded: boolean;
 
   @Output() public getCollections = new EventEmitter<GetCollectionsData>();
-  @Output() public collectionStarChanged = new EventEmitter<StarChangedEvent>();
+  @Output() private collectionStarToggled = new EventEmitter<StarToggledEventArgs>();
 
   @Input() public collections = new Array<CollectionDto>();
   @Input() public totalCount = -1;
