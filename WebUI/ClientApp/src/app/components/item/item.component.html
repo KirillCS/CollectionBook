@@ -55,7 +55,7 @@
       [theme]="{ 'max-width': '100%', width: '80px', height: '30px', 'border-radius': '15px', margin: '10px 8px 0 0', 'background-color': '#ECECEC' }">
     </ngx-skeleton-loader>
     <footer>
-      <div class="date" *ngIf="contentLoaded">{{ item?.creationTime | date: 'medium' }}</div>
+      <div *ngIf="contentLoaded">{{ item?.creationTime | date: 'medium' }}</div>
       <ngx-skeleton-loader *ngIf="!contentLoaded"
         [theme]="{ 'max-width': '100%', width: '150px', height: '14px', 'margin-top': '5px', 'background-color': '#ECECEC' }">
       </ngx-skeleton-loader>

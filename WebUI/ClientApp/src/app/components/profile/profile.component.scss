@@ -1,4 +1,5 @@
 @import "src/variables.scss";
+@import "src/colors.scss";
 
 .profile-underlay {
   background-color: white;
@@ -58,12 +59,12 @@
         &.login {
           font-size: 1.5rem;
           font-weight: 500;
-          color: #3F3F3F;
+          color: $dark-gray;
         }
 
         &.biography {
           font-size: 1rem;
-          color: #6d6d6d;
+          color: $light-gray;
         }
 
         &.others {
@@ -82,7 +83,7 @@
               flex-direction: row;
               align-items: center;
               font-size: 1rem;
-              color: #6d6d6d;
+              color: $light-gray;
             
               i {
                 margin-right: 0.4rem;
@@ -95,7 +96,6 @@
             
                 &:hover {
                   text-decoration: underline;
-                  color: #292929;
                 }
               }
             }
@@ -109,7 +109,7 @@
     position: absolute;
     top: 1rem;
     right: 0.5rem;
-    color: #292929;
+    color: $dark-gray;
   }
 }
 

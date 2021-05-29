@@ -1,9 +1,12 @@
+@import "src/colors.scss";
+
 span {
   display: flex;
   align-items: center;
   margin-left: 0.5rem;
   font-size: 0.8rem;
   user-select: none;
+  color: $light-gray;
   
   &.active {
     cursor: pointer;

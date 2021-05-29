@@ -49,7 +49,7 @@
           <button (click)="resetCover()" [disabled]="!resetCoverButtonEnabled" mat-menu-item>Reset cover</button>
         </mat-menu>
       </div>
-      <div class="data">
+      <data>
         <header>
           <h1 *ngIf="contentLoaded && collection?.name">{{ collection.name }}</h1>
           <ngx-skeleton-loader *ngIf="!contentLoaded" style="margin-bottom: 10px;"
@@ -69,8 +69,8 @@
         <ngx-skeleton-loader *ngIf="!contentLoaded" count="3"
           [theme]="{ 'max-width': '100%', width: '80px', height: '30px', 'border-radius': '15px', margin: '10px 8px 0 0', 'background-color': '#ECECEC' }">
         </ngx-skeleton-loader>
-        <div class="meta-data">
-          <div class="date" *ngIf="contentLoaded && collection">{{ collection.creationTime | date: 'medium' }}</div>
+        <footer>
+          <span class="date" *ngIf="contentLoaded && collection">{{ collection.creationTime | date: 'medium' }}</span>
           <ngx-skeleton-loader *ngIf="!contentLoaded"
             [theme]="{ 'max-width': '100%', width: '150px', height: '14px', 'margin-top': '5px', 'background-color': '#ECECEC' }">
           </ngx-skeleton-loader>
@@ -80,8 +80,8 @@
           <ngx-skeleton-loader *ngIf="!contentLoaded"
             [theme]="{ 'max-width': '100%', width: '30px', height: '14px', 'margin-top': '5px', 'background-color': '#ECECEC' }">
           </ngx-skeleton-loader>
-        </div>
-      </div>
+        </footer>
+      </data>
     </div>
   </main>
   <app-collection-items [collectionId]="collectionId" [showAddButton]="isOwner"

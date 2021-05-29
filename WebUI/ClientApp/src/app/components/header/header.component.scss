@@ -1,4 +1,5 @@
 @import "src/variables.scss";
+@import "src/colors.scss";
 
 .maket {
   padding-bottom: 5rem;
@@ -52,7 +53,7 @@ nav {
         span {
           font-size: 1.5rem;
           font-weight: 600;
-          color: #474747;
+          color: $gray;
         }
       }
     }

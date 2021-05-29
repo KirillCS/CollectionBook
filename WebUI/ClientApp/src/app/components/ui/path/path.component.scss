@@ -1,8 +1,10 @@
+@import 'src/colors.scss';
+
 main {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  color: #444;
+  color: $dark-gray;
 
   mat-icon {
     margin-right: 0.8rem;

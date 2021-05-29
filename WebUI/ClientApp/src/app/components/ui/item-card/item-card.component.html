@@ -4,13 +4,13 @@
       <img [src]="imagePath" [alt]="item.name">
     </div>
   </section>
-  <section class="data px-3 py-4">
+  <data class="px-3 py-4">
     <main>
       <h2 [routerLink]="['/item', item.id]">{{ item.name }}</h2>
       <p class="info" *ngIf="item.info">{{ item.info }}</p>
     </main>
     <footer>
-      <span class="date">{{ item.creationTime | date: 'medium' }}</span>
+      <span>{{ item.creationTime | date: 'medium' }}</span>
     </footer>
-  </section>
+  </data>
 </main>

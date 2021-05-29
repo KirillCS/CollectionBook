@@ -1,3 +1,5 @@
+@import 'src/colors.scss';
+
 .loader-path-card {
   height: calc(27px + 2rem);
 }
@@ -40,14 +42,7 @@ footer {
   flex-wrap: wrap;
   margin-top: 0.8rem;
   font-size: 0.8rem;
-  
-  .date {
-    opacity: 0.6;
-  }
-  
-  button {
-    opacity: 0.6;
-  }
+  color: $light-gray;
 }
 
 @media (max-width: 768px) {
