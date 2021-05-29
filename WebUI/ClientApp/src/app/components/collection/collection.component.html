@@ -75,10 +75,8 @@
             [theme]="{ 'max-width': '100%', width: '150px', height: '14px', 'margin-top': '5px', 'background-color': '#ECECEC' }">
           </ngx-skeleton-loader>
 
-          <div class="stars-counter" *ngIf="contentLoaded && collection"
-            matTooltip="{{ collection.stars?.length }} stars" matTooltipPosition="above">
-            {{ collection.stars?.length }}<mat-icon class="material-icons-round">star</mat-icon>
-          </div>
+          <app-stars-counter *ngIf="contentLoaded && collection" [count]="collection.stars?.length"
+            [collectionId]="collection.id" [collectionName]="collection.name"></app-stars-counter>
           <ngx-skeleton-loader *ngIf="!contentLoaded"
             [theme]="{ 'max-width': '100%', width: '30px', height: '14px', 'margin-top': '5px', 'background-color': '#ECECEC' }">
           </ngx-skeleton-loader>

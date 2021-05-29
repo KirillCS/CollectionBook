@@ -26,6 +26,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
@@ -85,6 +86,8 @@ import { SearchCollectionsComponent } from './components/search/search-collectio
 import { SearchItemsComponent } from './components/search/search-items/search-items.component';
 import { SearchUsersComponent } from './components/search/search-users/search-users.component';
 import { UserCardComponent } from './components/ui/user-card/user-card.component';
+import { StarsCounterComponent } from './components/ui/stars-counter/stars-counter.component';
+import { UsersListDialogComponent } from './components/dialogs/users-list-dialog/users-list-dialog.component';
 
 @NgModule({
   declarations: [
@@ -131,7 +134,9 @@ import { UserCardComponent } from './components/ui/user-card/user-card.component
     SearchCollectionsComponent,
     SearchItemsComponent,
     SearchUsersComponent,
-    UserCardComponent
+    UserCardComponent,
+    StarsCounterComponent,
+    UsersListDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -161,6 +166,7 @@ import { UserCardComponent } from './components/ui/user-card/user-card.component
     MatCardModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    ScrollingModule,
 
     NgProgressModule,
     NgProgressHttpModule.withConfig({

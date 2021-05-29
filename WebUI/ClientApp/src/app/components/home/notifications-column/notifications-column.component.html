@@ -9,10 +9,8 @@
       <a class="name" [routerLink]="['collection', notification.collection.id]">
         {{ notification.collection.name }}
       </a>
-      <div class="stars" matTooltip="{{ notification.starsCount }} stars" matTooltipPosition="right">
-        <span>{{ notification.starsCount }}</span>
-        <mat-icon class="material-icons-round">star</mat-icon>
-      </div>
+      <app-stars-counter [count]="notification.starsCount" [collectionId]="notification.collection.id"
+        [collectionName]="notification.collection.name"></app-stars-counter>
     </div>
   </div>
 </div>

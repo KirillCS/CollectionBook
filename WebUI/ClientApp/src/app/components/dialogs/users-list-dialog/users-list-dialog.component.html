@@ -1,0 +1,18 @@
+<h3 mat-dialog-title>Stars of the collection "{{ collectionName }}"</h3>
+<app-search-input placeholder="Find user by login" (changed)="findUsers($event)"></app-search-input>
+<cdk-virtual-scroll-viewport itemSize="0" class="list">
+  <div class="my-3" *cdkVirtualFor="let user of users">
+    <app-profile-cover [user]="user" [size]="profileCoverSize"></app-profile-cover>
+  </div>
+  <div *ngIf="showNotFoundMessage">
+    Users with login "{{ searchString }}" not founded
+  </div>
+  <div class="row mx-0 my-2 justify-content-center" *ngIf="!(usersLoadedObservable | async)">
+    <mat-spinner [diameter]="30"></mat-spinner>
+  </div>
+  <button class="w-100" mat-stroked-button *ngIf="showLoadMore" (click)="loadMore()" color="primary">Load
+    more...</button>
+</cdk-virtual-scroll-viewport>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</div>

@@ -1,0 +1,17 @@
+span {
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  user-select: none;
+  
+  &.active {
+    cursor: pointer;
+  }
+
+  mat-icon {
+    font-size: 1rem;
+    width: auto;
+    height: auto;
+  }
+}

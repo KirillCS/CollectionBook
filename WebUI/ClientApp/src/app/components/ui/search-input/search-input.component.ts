@@ -16,8 +16,6 @@ export class SearchInputComponent {
 
   @Output() public changed = new EventEmitter<string>();
 
-  public constructor() {}
-
   public inputChanged(): void {
     clearTimeout(this.searchTimeout);
     this.searchTimeout = setTimeout(() => {
