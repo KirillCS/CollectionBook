@@ -8,7 +8,7 @@ import { DefaultDialogsService } from 'src/app/services/default-dialogs.service'
 import { ItemService } from 'src/app/services/item.service';
 import { FieldDialogComponent } from '../dialogs/field-dialog/field-dialog.component';
 import { PathNode } from '../ui/path/path-node';
-import { API_URL, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY, SUPPORTED_IMAGES_TYPES } from 'src/app/app-injection-tokens';
 import { ItemDto } from 'src/app/models/dtos/item/item.dto';
 import { TagsFieldDialogComponent } from '../dialogs/tags-field-dialog/tags-field-dialog.component';
 import { ImageCropperDialogComponent, ImageCropperDialogData } from '../dialogs/image-cropper-dialog/image-cropper-dialog.component';
@@ -26,6 +26,7 @@ export class ItemComponent implements OnInit {
   private _pathNodes: Array<PathNode>;
   private _contentLoaded: boolean = false;
   private _showCarousel: boolean = true;
+  private _acceptImagesTypes: string;
 
   public constructor(
     @Inject(API_URL) private apiUrl: string,
@@ -37,8 +38,11 @@ export class ItemComponent implements OnInit {
     private dialogService: DefaultDialogsService,
     private currentUserService: CurrentUserService,
     @Inject(SEARCH_STRING_KEY) private searchStringKey: string,
-    @Inject(SEARCH_BY_KEY) private searchByKey: string
-  ) { }
+    @Inject(SEARCH_BY_KEY) private searchByKey: string,
+    @Inject(SUPPORTED_IMAGES_TYPES) private supportedImagesTypes: string[]
+  ) {
+    this._acceptImagesTypes = supportedImagesTypes.join(',');
+  }
 
   public get pathNodes(): Array<PathNode> {
     return this._pathNodes;
@@ -50,6 +54,10 @@ export class ItemComponent implements OnInit {
 
   public get defaultImagePath(): string {
     return this.defaul;
+  }
+
+  public get acceptImagesTypes(): string {
+    return this._acceptImagesTypes;
   }
 
   public get contentLoaded(): boolean {
@@ -188,14 +196,19 @@ export class ItemComponent implements OnInit {
   }
 
   public imageWasSelected(files: File[]): void {
-    if (!files.length || !files[0].type.startsWith("image/")) {
+    if (!files.length) {
       return;
     }
 
     let file = files[0];
+    if (!this.supportedImagesTypes.includes(file.type)) {
+      this.dialogService.openInfoMessageDialog('Not supported format', 'File has not supported format. It must be image.');
+      return;
+    }
+
     let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       width: '600px',
-      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Crop')
+      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Add')
     });
 
     let sub = dialogRef.afterClosed().subscribe((blob: Blob) => {

@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserDto } from 'src/app/models/dtos/user/user.dto';
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
 import { ImageCropperDialogComponent, ImageCropperDialogData } from 'src/app/components/dialogs/image-cropper-dialog/image-cropper-dialog.component';
-import { API_URL, DEFAULT_AVATAR } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_AVATAR, SUPPORTED_IMAGES_TYPES } from 'src/app/app-injection-tokens';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 
 @Component({
@@ -25,6 +25,8 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
   private user: UserDto;
   private subscription: Subscription;
+
+  private _acceptFilesFormats: string;
 
   public form = new FormGroup({
     firstName: new FormControl(),
@@ -50,6 +52,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   public constructor(
     @Inject(API_URL) private apiUrl: string,
     @Inject(DEFAULT_AVATAR) private defaultAvatarPath: string,
+    @Inject(SUPPORTED_IMAGES_TYPES) private supportedImagesTypes: string[],
     private settingsService: SettingsService,
     private userService: UserService,
     private authService: AuthService,
@@ -58,10 +61,15 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {
+    this._acceptFilesFormats = supportedImagesTypes.join(','); 
     this.subscription = this.settingsService.user$.subscribe(user => {
       this.user = user;
       this.setForm(user);
     });
+  }
+
+  public get acceptFilesFormats(): string {
+    return this._acceptFilesFormats;
   }
 
   public ngOnInit(): void {
@@ -81,11 +89,16 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   }
 
   public avatarSelected(files: FileList): void {
-    if (!files.length || !files[0].type.startsWith("image/")) {
+    if (!files.length) {
       return;
     }
 
     let file = files[0];
+    if (!this.supportedImagesTypes.includes(file.type)) {
+      this.dialogService.openInfoMessageDialog('Not supported format', 'File has not supported format. It must be image.');
+      return;
+    }
+    
     let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       width: '600px',
       data: new ImageCropperDialogData(file, true, 1, 512, true, 'Upload')

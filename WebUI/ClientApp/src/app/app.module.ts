@@ -37,7 +37,7 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
 
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { AppComponent } from 'src/app/app.component';
-import { API_URL, DEFAULT_AVATAR, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY, SORT_BY_KEY } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_AVATAR, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY, SORT_BY_KEY, SUPPORTED_IMAGES_TYPES } from 'src/app/app-injection-tokens';
 import { environment } from 'src/environments/environment';
 import { ACCESS_TOKEN_KEY } from 'src/app/services/auth.service';
 import { HeaderComponent } from 'src/app/components/header/header.component';
@@ -199,6 +199,7 @@ import { UsersListDialogComponent } from './components/dialogs/users-list-dialog
     { provide: SEARCH_STRING_KEY, useValue: environment.searchStringKey },
     { provide: SEARCH_BY_KEY, useValue: environment.searchByKey },
     { provide: SORT_BY_KEY, useValue: environment.sortByKey },
+    { provide: SUPPORTED_IMAGES_TYPES, useValue: environment.supportedImagesTypes },
 
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
     { provide: ErrorStateMatcher, useClass: SubmitErrorStateMatcher }

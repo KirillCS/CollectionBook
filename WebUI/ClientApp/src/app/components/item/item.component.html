@@ -63,7 +63,7 @@
         <mat-icon class="material-icons-round">more_horiz</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <input type="file" style="display: none;" accept="image/*" #imageInput
+        <input type="file" style="display: none;" [accept]="acceptImagesTypes" #imageInput
           (change)="imageWasSelected($event.target.files)">
         <button mat-menu-item (click)="imageInput.click()">
           <mat-icon class="material-icons-round">add_photo_alternate</mat-icon>

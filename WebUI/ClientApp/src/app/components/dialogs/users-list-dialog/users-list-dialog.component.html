@@ -4,7 +4,7 @@
   <div class="my-3" *cdkVirtualFor="let user of users">
     <app-profile-cover [user]="user" [size]="profileCoverSize"></app-profile-cover>
   </div>
-  <div *ngIf="showNotFoundMessage">
+  <div class="row mx-0 mt-2" *ngIf="showNotFoundMessage">
     Users with login "{{ searchString }}" not founded
   </div>
   <div class="row mx-0 my-2 justify-content-center" *ngIf="!(usersLoadedObservable | async)">

@@ -9,8 +9,7 @@ export const environment = {
 
   apiUrl: URL,
   allowedDomains: ['localhost:44319'],
-  silentApis: 
-  [
+  silentApis: [
     `${URL}api/tag`,
     `${URL}api/star`
   ],
@@ -19,7 +18,9 @@ export const environment = {
   defaultCollectionCover: 'assets/img/default-collection-cover.png',
   searchStringKey: 'search',
   sortByKey: 'searchby',
-  searchByKey: 'sortby'
+  searchByKey: 'sortby',
+
+  supportedImagesTypes: [ 'image/jpg', 'image/jpeg', 'image/png' ]
 };
 
 /*

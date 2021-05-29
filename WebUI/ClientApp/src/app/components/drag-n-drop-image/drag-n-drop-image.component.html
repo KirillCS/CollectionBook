@@ -4,7 +4,7 @@
   <div class="placeholder" [style]="thumbData ? 'display: none;' : 'display: block;'">Choose an image or drag it here
   </div>
   <img [src]="thumbData" alt="" [style]="thumbData ? 'display: block;' : 'display: none;'">
-  <input type="file" accept="image/*" #input (change)="filesSelected($event)">
+  <input type="file" [accept]="acceptFilesTypes" #input (change)="filesSelected($event)">
   <div class="buttons">
     <button mat-mini-fab color="" matTooltip="Crop image" matTooltipShowDelay="500" matTooltipPosition="above"
       [style]="thumbData ? 'display: block;' : 'display: none;'" (click)="cropImage($event)">

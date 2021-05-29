@@ -43,7 +43,7 @@
           <mat-icon class="material-icons-round">mode_edit</mat-icon>
         </button>
         <mat-menu #coverMenu="matMenu">
-          <input type="file" style="display: none;" accept="image/*" #cover
+          <input type="file" style="display: none;" [accept]="acceptImagesTypes" #cover
             (change)="coverSelected($event.target.files)">
           <button (click)="cover.click()" mat-menu-item>Upload cover</button>
           <button (click)="resetCover()" [disabled]="!resetCoverButtonEnabled" mat-menu-item>Reset cover</button>

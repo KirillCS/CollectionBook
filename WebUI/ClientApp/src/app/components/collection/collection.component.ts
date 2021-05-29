@@ -4,7 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import { API_URL, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY } from 'src/app/app-injection-tokens';
+import { API_URL, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY, SUPPORTED_IMAGES_TYPES } from 'src/app/app-injection-tokens';
 import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
 import { AuthService } from 'src/app/services/auth.service';
 import { CollectionService } from 'src/app/services/collection.service';
@@ -31,6 +31,7 @@ export class CollectionComponent implements OnInit {
   private _collection: CollectionDto;
   private _pathNodes: Array<PathNode>;
   private _contentLoaded: boolean;
+  private _acceptImagesTypes: string;
 
   public constructor(
     route: ActivatedRoute,
@@ -45,8 +46,10 @@ export class CollectionComponent implements OnInit {
     @Inject(API_URL) private apiUrl: string,
     @Inject(DEFAULT_COLLECTION_COVER) private defaultCover: string,
     @Inject(SEARCH_STRING_KEY) private searchStringKey: string,
-    @Inject(SEARCH_BY_KEY) private searchByKey: string
+    @Inject(SEARCH_BY_KEY) private searchByKey: string,
+    @Inject(SUPPORTED_IMAGES_TYPES) private supportedImageTypes: string[]
   ) {
+    this._acceptImagesTypes = supportedImageTypes.join(',');
     route.paramMap.subscribe(params => this._collectionId = parseInt(params.get("id")));
   }
 
@@ -68,6 +71,10 @@ export class CollectionComponent implements OnInit {
     }
 
     return this.apiUrl + this.collection.coverPath;
+  }
+
+  public get acceptImagesTypes(): string {
+    return this._acceptImagesTypes;
   }
 
   public get starred(): boolean {
@@ -144,14 +151,19 @@ export class CollectionComponent implements OnInit {
   }
 
   public coverSelected(files: File[]): void {
-    if (!files.length || !files[0].type.startsWith("image/")) {
+    if (!files.length) {
       return;
     }
 
     let file = files[0];
+    if (!this.supportedImageTypes.includes(file.type)) {
+      this.dialogService.openInfoMessageDialog('Not supported format', 'File has not supported format. It must be image.');
+      return;
+    }
+
     let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       width: '600px',
-      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Crop')
+      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Upload')
     });
 
     let sub = dialogRef.afterClosed().subscribe((blob: Blob) => {

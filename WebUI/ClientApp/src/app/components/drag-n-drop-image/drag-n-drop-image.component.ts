@@ -1,5 +1,6 @@
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { SUPPORTED_IMAGES_TYPES } from 'src/app/app-injection-tokens';
 
 import { ImageCropperDialogComponent, ImageCropperDialogData } from '../dialogs/image-cropper-dialog/image-cropper-dialog.component';
 
@@ -12,6 +13,8 @@ export class DragNDropImageComponent {
 
   private currentImage: File;
 
+  private _acceptFilesTypes: string;
+
   @ViewChild('input')
   private input: ElementRef<HTMLInputElement>;
   
@@ -22,8 +25,17 @@ export class DragNDropImageComponent {
 
   public thumbData: string = '';
 
-  public constructor(public dialog: MatDialog) { }
+  public constructor(
+    @Inject(SUPPORTED_IMAGES_TYPES) private supportedImagesTypes: string[],
+    private dialog: MatDialog
+  ) {
+    this._acceptFilesTypes = supportedImagesTypes.join(',');
+  }
   
+  public get acceptFilesTypes(): string {
+    return this._acceptFilesTypes;
+  }
+
   public selectImage(): void {
     this.isWrongFileType = false;
     this.input.nativeElement.click();
@@ -94,9 +106,8 @@ export class DragNDropImageComponent {
       return;
     }
 
-    if (!image.type.startsWith("image/")) {
+    if (!this.supportedImagesTypes.includes(image.type)) {
       this.isWrongFileType = true;
-
       return;
     }
 

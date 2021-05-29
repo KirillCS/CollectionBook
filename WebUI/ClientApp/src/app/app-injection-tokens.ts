@@ -8,3 +8,5 @@ export const DEFAULT_COLLECTION_COVER = new InjectionToken<string>('default coll
 export const SEARCH_STRING_KEY = new InjectionToken<string>('search string symbol');
 export const SEARCH_BY_KEY = new InjectionToken<string>('search string symbol');
 export const SORT_BY_KEY = new InjectionToken<string>('search string symbol');
+
+export const SUPPORTED_IMAGES_TYPES = new InjectionToken<string[]>('supported images types');

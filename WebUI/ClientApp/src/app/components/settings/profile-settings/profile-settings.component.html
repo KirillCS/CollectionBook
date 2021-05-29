@@ -8,7 +8,7 @@
         <mat-icon class="material-icons-round">mode_edit</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <input type="file" style="display: none;" accept="image/*" #avatarInput (change)="avatarSelected($event.target.files)">
+        <input type="file" style="display: none;" [accept]="acceptFilesFormats" #avatarInput (change)="avatarSelected($event.target.files)">
         <button (click)="avatarInput.click()" mat-menu-item>Upload photo</button>
         <button (click)="resetAvatar()" [disabled]="!clearAvatarEnable" mat-menu-item>Reset avatar</button>
       </mat-menu>
