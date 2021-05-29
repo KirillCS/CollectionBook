@@ -59,6 +59,10 @@ $cover-width-md: 280px;
       width: 100%;
     }
 
+    .description {
+      white-space: pre-wrap;
+    }
+
     footer {
       display: flex;
       flex-direction: row;

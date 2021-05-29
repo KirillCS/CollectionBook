@@ -54,6 +54,7 @@ mat-card {
         @include no-wrap-text(4);
         color: black;
         margin: 0;
+        white-space: pre-wrap;
       }
     }
 

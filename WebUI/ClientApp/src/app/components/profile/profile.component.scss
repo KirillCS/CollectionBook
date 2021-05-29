@@ -65,6 +65,7 @@
         &.biography {
           font-size: 1rem;
           color: $light-gray;
+          white-space: pre-wrap;
         }
 
         &.others {
