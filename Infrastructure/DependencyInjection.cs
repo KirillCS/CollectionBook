@@ -23,7 +23,7 @@ namespace Infrastructure
             services.AddIdentityCore<User>(options => 
                     {
                         options.User.AllowedUserNameCharacters = string.Empty;
-                        options.User.RequireUniqueEmail = true;
+                        options.User.RequireUniqueEmail = false;
 
                         options.Password.RequireDigit = false;
                         options.Password.RequiredLength = 0;
@@ -63,6 +63,7 @@ namespace Infrastructure
             services.Configure<EmailOptions>(configuration.GetSection("Email"));
             services.Configure<SpaOptions>(configuration.GetSection("Spa"));
             services.Configure<FilePathsOptions>(configuration.GetSection("FilePaths"));
+            services.Configure<OwnerDefaultCreds>(configuration.GetSection("OwnerDefaultCreds"));
 
             services.AddTransient<IUserService, UserService>();
 

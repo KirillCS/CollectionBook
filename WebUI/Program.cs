@@ -1,3 +1,5 @@
+using Domain.Entities;
+using Infrastructure.Options;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -5,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
 
@@ -18,15 +21,18 @@ namespace WebUI
 
             using (IServiceScope scope = host.Services.CreateScope())
             {
-                IServiceProvider services = scope.ServiceProvider;
+                IServiceProvider servicesProvider = scope.ServiceProvider;
 
-                ApplicationDbContext context = services.GetRequiredService<ApplicationDbContext>();
+                ApplicationDbContext context = servicesProvider.GetRequiredService<ApplicationDbContext>();
                     
                 context.Database.Migrate();
 
-                RoleManager<IdentityRole> roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                RoleManager<IdentityRole> roleManager = servicesProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                UserManager<User> userManager = servicesProvider.GetRequiredService<UserManager<User>>();
+                IOptions<OwnerDefaultCreds> options = servicesProvider.GetRequiredService<IOptions<OwnerDefaultCreds>>();
 
                 await ApplicationDbContextSeed.SeedRoles(roleManager);
+                await ApplicationDbContextSeed.SeedOwner(userManager, options.Value);
             }
 
             await host.RunAsync();
