@@ -4,7 +4,7 @@ $app-container-width-sm: 900px;
 $default-card-padding: 2rem;
 
 @mixin default-shadow {
-  box-shadow: 0 0 6px 0 #00000040;
+  box-shadow: 0 0 6px 0 #00000040 !important;
 }
 
 @mixin float-image-shadow {
