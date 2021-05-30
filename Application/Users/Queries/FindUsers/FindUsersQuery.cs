@@ -28,7 +28,7 @@ namespace Application.Users.Queries.FindUsers
 
         public async Task<PaginatedList<UserCardDto>> Handle(FindUsersQuery request, CancellationToken cancellationToken) =>
             await context.Users
-                         .Where(u => u.UserName.Contains(request.SearchString))
+                         .Where(u => u.EmailConfirmed && u.UserName.Contains(request.SearchString))
                          .SortBy(request.SortCriterion)
                          .ProjectTo<UserCardDto>(mapper.ConfigurationProvider)
                          .ToPaginatedList(request.PageIndex, request.PageSize);

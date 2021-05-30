@@ -40,7 +40,7 @@
             </button>
             <mat-menu #ownerSettingsMenu="matMenu">
               <button mat-menu-item (click)="changeLogin()">Change owner login</button>
-              <button mat-menu-item>Change owner password</button>
+              <button mat-menu-item (click)="changePassword()">Change owner password</button>
             </mat-menu>
             <button mat-menu-item (click)="logout()">
               <mat-icon class="material-icons-round">logout</mat-icon>Log out

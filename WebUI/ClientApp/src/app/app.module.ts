@@ -88,6 +88,7 @@ import { SearchUsersComponent } from './components/search/search-users/search-us
 import { UserCardComponent } from './components/ui/user-card/user-card.component';
 import { StarsCounterComponent } from './components/ui/stars-counter/stars-counter.component';
 import { UsersListDialogComponent } from './components/dialogs/users-list-dialog/users-list-dialog.component';
+import { ChangeOwnerPasswordDialogComponent } from './components/dialogs/change-owner-password-dialog/change-owner-password-dialog.component';
 
 @NgModule({
   declarations: [
@@ -136,7 +137,8 @@ import { UsersListDialogComponent } from './components/dialogs/users-list-dialog
     SearchUsersComponent,
     UserCardComponent,
     StarsCounterComponent,
-    UsersListDialogComponent
+    UsersListDialogComponent,
+    ChangeOwnerPasswordDialogComponent
   ],
   imports: [
     BrowserModule,

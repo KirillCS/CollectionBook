@@ -28,8 +28,8 @@ namespace Application.Users.Queries.GetUser
 
         public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await userManager.FindByNameAsync(request.Login);
-            Guard.Requires(() => user is not null, new EntityNotFoundException());
+            User user = await userManager.FindByNameAsync(request.Login);
+            await Guard.RequiresAsync(async () => user is not null && !await userManager.IsInRoleAsync(user, Roles.Owner), new EntityNotFoundException());
 
             return mapper.Map<UserDto>(user);
         }

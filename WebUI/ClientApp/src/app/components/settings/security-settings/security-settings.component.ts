@@ -104,7 +104,7 @@ export class SecuritySettingsComponent implements OnInit {
 
       if (errorResponse.status == 401) {
         this.authService.logout();
-        this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change account email.');
+        this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change account password.');
 
         return;
       }

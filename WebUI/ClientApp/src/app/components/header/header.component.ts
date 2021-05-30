@@ -14,6 +14,7 @@ import { LoginResponse } from 'src/app/models/responses/auth/login.response';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
+import { ChangeOwnerPasswordDialogComponent } from '../dialogs/change-owner-password-dialog/change-owner-password-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -32,7 +33,7 @@ export class HeaderComponent {
     private authTokenService: AuthTokenService,
     private dialogsService: DefaultDialogsService
   ) { }
-  
+
   public get isAuthenticated(): boolean {
     return this.authService.isAuthenticated();
   }
@@ -60,7 +61,7 @@ export class HeaderComponent {
     if (urlGroup && urlGroup.segments[0].path === 'search') {
       url = `/${urlGroup.segments.join('/')}`;
     }
-    
+
     this.router.navigate([url], { queryParams, queryParamsHandling: 'merge' });
     input.value = '';
   }
@@ -116,13 +117,17 @@ export class HeaderComponent {
           default:
             this.dialogsService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
             break;
-          }
+        }
 
-          dialogRef.close();
+        dialogRef.close();
       });
     });
 
     dialogRef.afterClosed().subscribe(() => sub.unsubscribe());
+  }
+
+  public changePassword(): void {
+    this.dialog.open(ChangeOwnerPasswordDialogComponent, { width: '700px', position: { top: '30vh' } });
   }
 
   public logout(): void {
