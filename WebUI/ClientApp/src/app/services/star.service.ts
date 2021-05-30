@@ -14,7 +14,7 @@ export class StarService {
 
   public constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
 
-  public getUsersStarCollection(collectionId: number, request: SearchPaginatedListRequest): Observable<PaginatedListResponse<UserCoverDto>> {
+  public getUsers(collectionId: number, request: SearchPaginatedListRequest): Observable<PaginatedListResponse<UserCoverDto>> {
 
     let params = new HttpParams({
       fromObject: {

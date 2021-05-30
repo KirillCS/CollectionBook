@@ -98,7 +98,7 @@ export class UsersListDialogComponent implements OnInit {
   public loadMore(): void {
 
     this.usersLoaded = false;
-    this._starService.getUsersStarCollection(this._data.collectionId, {
+    this._starService.getUsers(this._data.collectionId, {
       searchString: this._searchString,
       pageSize: this._pageSize,
       pageIndex: this._pageIndex

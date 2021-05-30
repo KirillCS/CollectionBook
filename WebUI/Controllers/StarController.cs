@@ -1,4 +1,4 @@
-﻿using Application.Stars.GetUsersStarCollection;
+﻿using Application.Stars.GetUsers;
 using Application.Stars.ToggleStar;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +10,7 @@ namespace WebUI.Controllers
     {
         [HttpGet]
         [Route("users")]
-        public async Task<IActionResult> GetUsersStarCollection([FromQuery] GetUsersStarCollectionQuery query) =>
+        public async Task<IActionResult> GetUsers([FromQuery] GetUsersQuery query) =>
             Ok(await Mediator.Send(query));
 
         [HttpPost]

@@ -12,25 +12,25 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Stars.GetUsersStarCollection
+namespace Application.Stars.GetUsers
 {
-    public class GetUsersStarCollectionQuery : SearchPaginatedListQuery, IRequest<PaginatedList<UserCoverDto>>
+    public class GetUsersQuery : SearchPaginatedListQuery, IRequest<PaginatedList<UserCoverDto>>
     {
         public int CollectionId { get; init; }
     }
 
-    public class GetUsersStarCollectionQueryHandler : IRequestHandler<GetUsersStarCollectionQuery, PaginatedList<UserCoverDto>>
+    public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, PaginatedList<UserCoverDto>>
     {
         private readonly IApplicationDbContext context;
         private readonly IMapper mapper;
 
-        public GetUsersStarCollectionQueryHandler(IApplicationDbContext context, IMapper mapper)
+        public GetUsersQueryHandler(IApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
         }
 
-        public async Task<PaginatedList<UserCoverDto>> Handle(GetUsersStarCollectionQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<UserCoverDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
             Collection collection = await context.Collections.FirstOrDefaultAsync(c => c.Id == request.CollectionId, cancellationToken);
             Guard.Requires(() => collection is not null, new EntityNotFoundException());
