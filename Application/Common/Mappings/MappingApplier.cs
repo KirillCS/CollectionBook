@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -9,23 +10,21 @@ namespace Application.Common.Mappings
     {
         public static void ApplyMappingsFromAssembly(Assembly assembly, Profile profile)
         {
-            var types = assembly.GetExportedTypes()
-                                .Where(t => t.GetInterfaces().Any(i => i.IsGenericType && (i.GetGenericTypeDefinition() == typeof(IMapFrom<>) || i.GetGenericTypeDefinition() == typeof(IMapTo<>))))
-                                .ToList();
+            IEnumerable<Type> types = assembly.GetExportedTypes()
+                                              .Where(t => t.GetInterfaces().Any(i => i.IsGenericType && (i.GetGenericTypeDefinition() == typeof(IMapFrom<>) || i.GetGenericTypeDefinition() == typeof(IMapTo<>))));
 
-            foreach (var type in types)
+            foreach (Type type in types)
             {
-                var instance = Activator.CreateInstance(type);
-                if (type.GetInterface("IMapFrom`1") is not null)
+                object instance = Activator.CreateInstance(type);
+
+                foreach (Type @interface in type.GetInterfaces().Where(i => i.Name == "IMapFrom`1"))
                 {
-                    var methodInfo = type.GetMethod("Mapping") ?? type.GetInterface("IMapFrom`1").GetMethod("Mapping");
-                    methodInfo?.Invoke(instance, new object[] { profile });
+                    @interface.GetMethod("Mapping")?.Invoke(instance, new[] { profile });
                 }
 
-                if (type.GetInterface("IMapTo`1") is not null)
+                foreach (Type @interface in type.GetInterfaces().Where(i => i.Name == "IMapTo`1"))
                 {
-                    var methodInfo = type.GetMethod("Mapping") ?? type.GetInterface("IMapTo`1").GetMethod("Mapping");
-                    methodInfo?.Invoke(instance, new object[] { profile });
+                    @interface.GetMethod("Mapping")?.Invoke(instance, new[] { profile });
                 }
             }
         }
