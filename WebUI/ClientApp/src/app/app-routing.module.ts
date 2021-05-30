@@ -30,6 +30,7 @@ import { SearchComponent } from './components/search/search.component';
 import { SearchCollectionsComponent } from './components/search/search-collections/search-collections.component';
 import { SearchItemsComponent } from './components/search/search-items/search-items.component';
 import { SearchUsersComponent } from './components/search/search-users/search-users.component';
+import { OwnerGuard } from './guards/owner.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -46,7 +47,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'settings', component: SettingsComponent, canActivate: [AuthenticatedGuard], children: [
+    path: 'settings', component: SettingsComponent, canActivate: [AuthenticatedGuard, OwnerGuard], children: [
       { path: 'profile', component: ProfileSettingsComponent },
       { path: 'account', component: AccountSettingsComponent },
       { path: 'security', component: SecuritySettingsComponent },
@@ -55,7 +56,7 @@ const routes: Routes = [
   },
   { path: 'collection/:id', component: CollectionComponent },
   { path: 'item/:id', component: ItemComponent },
-  { path: 'new', component: CollectionCreatingComponent, canActivate: [AuthenticatedGuard] },
+  { path: 'new', component: CollectionCreatingComponent, canActivate: [AuthenticatedGuard, OwnerGuard] },
   {
     path: 'search', component: SearchComponent, children: [
       { path: 'collections', component: SearchCollectionsComponent },
