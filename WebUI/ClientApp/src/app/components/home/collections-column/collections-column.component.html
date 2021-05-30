@@ -16,7 +16,7 @@
 <div class="row mx-0 my-3 justify-content-center" *ngIf="collectionsLoading">
   <mat-spinner [diameter]="30"></mat-spinner>
 </div>
-<button class="w-100 mb-1" mat-stroked-button *ngIf="!collectionsLoading && isButtonVisible" (click)="loadMore()" color="primary">Show
+<button class="w-100 mb-1" mat-stroked-button *ngIf="!collectionsLoading && isButtonVisible" (click)="loadMore()">Show
   more...</button>
 <div class="total">
   Total: {{ total }}
