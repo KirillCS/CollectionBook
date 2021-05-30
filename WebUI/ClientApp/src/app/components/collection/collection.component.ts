@@ -6,6 +6,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { API_URL, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY, SUPPORTED_IMAGES_TYPES } from 'src/app/app-injection-tokens';
 import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
+import { Roles } from 'src/app/models/roles';
 import { AuthService } from 'src/app/services/auth.service';
 import { CollectionService } from 'src/app/services/collection.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
@@ -83,6 +84,10 @@ export class CollectionComponent implements OnInit {
 
   public get isAuthenticated(): boolean {
     return this.authService.isAuthenticated();
+  }
+
+  public get isCurrentUserInRoleOwner(): boolean {
+    return this.currentUserService.currentUser?.role == Roles.Owner;
   }
 
   public get isOwner(): boolean {

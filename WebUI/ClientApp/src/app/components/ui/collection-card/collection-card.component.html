@@ -7,7 +7,7 @@
     <main>
       <header>
         <h2><a [routerLink]="['/collection', collection.id]">{{ collection.name }}</a></h2>
-        <app-star *ngIf="isAuthenticated" [starred]="starred" [collectionId]="collection.id"
+        <app-star *ngIf="isAuthenticated && !isOwner" [starred]="starred" [collectionId]="collection.id"
           (toggled)="starToggledEventHandler($event)"></app-star>
       </header>
       <p *ngIf="collection.description">{{ collection.description }}</p>

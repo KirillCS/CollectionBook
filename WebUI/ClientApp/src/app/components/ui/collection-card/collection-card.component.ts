@@ -4,6 +4,7 @@ import { Params } from '@angular/router';
 import { API_URL, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY } from 'src/app/app-injection-tokens';
 import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
 import { UserLoginDto } from 'src/app/models/dtos/user/user-login.dto';
+import { Roles } from 'src/app/models/roles';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { SearchCriteriaInStringFormat, SearchCriterion } from '../../search/search-criterion';
@@ -31,6 +32,10 @@ export class CollectionCardComponent {
 
   public get isAuthenticated(): boolean {
     return this.authService.isAuthenticated();
+  }
+
+  public get isOwner(): boolean {
+    return this.currentUser?.role == Roles.Owner;
   }
 
   public get currentUser(): UserLoginDto {
