@@ -10,9 +10,10 @@
       </button>
       <mat-form-field class="search-input" appearance="outline">
         <mat-icon class="mx-2" matPrefix>search</mat-icon>
-        <input #searchInput type="search" autocomplete="off" matInput placeholder="Search" (change)="searchInputChanged(searchInput)">
+        <input #searchInput type="search" autocomplete="off" matInput placeholder="Search"
+          (change)="searchInputChanged(searchInput)">
       </mat-form-field>
-      <div class="links" *ngIf="!isAuthenticated">
+      <div class="links" *ngIf="!isAuthenticated; else authSection">
         <button class="link--auth" mat-button routerLink="login">Log in</button>
         <button class="link--auth" mat-button routerLink="register">Sign up</button>
         <button id="auth-button" mat-icon-button [matMenuTriggerFor]="login">
@@ -23,33 +24,50 @@
           <button mat-menu-item routerLink="register">Sign up</button>
         </mat-menu>
       </div>
-      <div *ngIf="isAuthenticated">
-        <button mat-button [matMenuTriggerFor]="account">
-          @{{ currentUser.login }}
-        </button>
-        <mat-menu #account>
-          <button mat-menu-item [routerLink]="['profile', currentUser.login]">
-            <mat-icon class="material-icons-round">account_circle</mat-icon>Your profile
+      <ng-template #authSection>
+        <div *ngIf="currentUser.role == ownerRole; else userSection">
+          <button mat-button [matMenuTriggerFor]="ownerMenu">Owner menu</button>
+          <mat-menu #ownerMenu>
+            <button mat-menu-item>
+              <mat-icon class="material-icons-round">people</mat-icon>User dashboard
+            </button>
+            <button mat-menu-item>
+              <mat-icon class="material-icons-round">collections_bookmark</mat-icon>Collection dashboard
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon class="material-icons-round">logout</mat-icon>Log out
+            </button>
+          </mat-menu>
+        </div>
+        <ng-template #userSection>
+          <button mat-button [matMenuTriggerFor]="userMenu">
+            @{{ currentUser.login }}
           </button>
-          <button mat-menu-item [routerLink]="['profile', currentUser.login, 'collections']">
-            <mat-icon class="material-icons-round">book</mat-icon>Your collections
-          </button>
-          <button mat-menu-item [routerLink]="['profile', currentUser.login, 'stars']">
-            <mat-icon class="material-icons-round">star</mat-icon>Your stars
-          </button>
-          <mat-divider></mat-divider>
-          <button mat-menu-item routerLink="new">
-            <mat-icon class="material-icons-round">add_box</mat-icon>Create collection
-          </button>
-          <mat-divider></mat-divider>
-          <button mat-menu-item [routerLink]="['settings', 'profile']">
-            <mat-icon class="material-icons-round">settings</mat-icon>Settings
-          </button>
-          <button mat-menu-item (click)="logout()">
-            <mat-icon class="material-icons-round">logout</mat-icon>Log out
-          </button>
-        </mat-menu>
-      </div>
+          <mat-menu #userMenu>
+            <button mat-menu-item [routerLink]="['profile', currentUser.login]">
+              <mat-icon class="material-icons-round">account_circle</mat-icon>Your profile
+            </button>
+            <button mat-menu-item [routerLink]="['profile', currentUser.login, 'collections']">
+              <mat-icon class="material-icons-round">book</mat-icon>Your collections
+            </button>
+            <button mat-menu-item [routerLink]="['profile', currentUser.login, 'stars']">
+              <mat-icon class="material-icons-round">star</mat-icon>Your stars
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item routerLink="new">
+              <mat-icon class="material-icons-round">add_box</mat-icon>Create collection
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item [routerLink]="['settings', 'profile']">
+              <mat-icon class="material-icons-round">settings</mat-icon>Settings
+            </button>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon class="material-icons-round">logout</mat-icon>Log out
+            </button>
+          </mat-menu>
+        </ng-template>
+      </ng-template>
     </div>
   </div>
 </nav>

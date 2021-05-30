@@ -3,8 +3,9 @@ import { Component, Inject } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { UserLoginDto } from 'src/app/models/dtos/user/user-login.dto';
-import { ActivatedRoute, Params, PRIMARY_OUTLET, Router } from '@angular/router';
+import { Params, PRIMARY_OUTLET, Router } from '@angular/router';
 import { SEARCH_STRING_KEY } from 'src/app/app-injection-tokens';
+import { Roles } from 'src/app/models/roles';
 
 @Component({
   selector: 'app-header',
@@ -17,16 +18,23 @@ export class HeaderComponent {
     @Inject(SEARCH_STRING_KEY) private searchStringKey: string,
     private authService: AuthService,
     private currentUserService: CurrentUserService,
-    private route: ActivatedRoute,
     private router: Router
   ) { }
+  
+  public get isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
+  }
 
   public get currentUser(): UserLoginDto {
     return this.currentUserService.currentUser;
   }
 
-  public get isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
+  public get ownerRole(): string {
+    return Roles.Owner;
+  }
+
+  public get adminRole(): string {
+    return Roles.Admin;
   }
 
   public searchInputChanged(input: HTMLInputElement): void {
