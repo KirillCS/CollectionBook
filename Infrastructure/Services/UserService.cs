@@ -23,7 +23,7 @@ namespace Infrastructure.Services
 
         public async Task<User> Create(string login, string email, string password)
         {
-            var user = new User(login) { Email = email };
+            User user = new User(login) { Email = email };
             IdentityResult result = await userManager.CreateAsync(user, password);
             Guard.Requires(() => result.Succeeded, new OperationException());
 
@@ -32,7 +32,7 @@ namespace Infrastructure.Services
 
         public async Task<User> Authorize(string loginCredential, string password)
         {
-            var user = await userManager.FindByNameAsync(loginCredential);
+            User user = await userManager.FindByNameAsync(loginCredential);
             if (user is null)
             {
                 user = await userManager.FindByEmailAsync(loginCredential);
@@ -40,6 +40,11 @@ namespace Infrastructure.Services
 
             Guard.Requires(() => user is not null, new InvalidLoginCredentialsException(loginCredential));
             await Guard.RequiresAsync(async () => await userManager.CheckPasswordAsync(user, password), new InvalidLoginCredentialsException(loginCredential));
+            if (await userManager.IsInRoleAsync(user, Roles.Owner))
+            {
+                return user;
+            }
+
             await Guard.RequiresAsync(async () => await userManager.IsEmailConfirmedAsync(user), new EmailNotConfirmedException(user.Id, user.Email));
 
             return user;
