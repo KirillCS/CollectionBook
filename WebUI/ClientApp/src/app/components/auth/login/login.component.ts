@@ -67,25 +67,25 @@ export class LoginComponent implements OnDestroy {
 
     this.inProcess = true;
     this.authService.login({ login: this.login.value, password: this.password.value }, this.rememberMe.value ?? false)
-      .subscribe(() => { }, errorResponse => {
-        this.inProcess = false;
-        if (errorResponse?.status == 401) {
-          this.invalid = true;
-          return;
-        }
-
-        if (errorResponse?.status == 403) {
-          let queryParams: Params = { id: errorResponse.error.id, email: errorResponse.error.email };
-          this.router.navigate(['emailconfirmation'], { queryParams });
-
-          return;
-        }
-
-        this.unknownError = true;
-      }, () => {
+      .subscribe(() => {
         this.inProcess = false;
         let url = this.previousRouteService.getPreviousUrl();
         this.router.navigateByUrl(url === this.router.url ? '/' : url);
+      }, (errorResponse: HttpErrorResponse) => {
+        switch (errorResponse.status) {
+          case 401:
+            this.invalid = true;
+            break;
+          case 403:
+            let queryParams: Params = { id: errorResponse.error.id, email: errorResponse.error.email };
+            this.router.navigate(['emailconfirmation'], { queryParams });
+            break;
+          default:
+            this.unknownError = true;
+            break;
+        }
+        
+        this.inProcess = false;
       });
   }
 
