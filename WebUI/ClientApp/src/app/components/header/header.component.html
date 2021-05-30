@@ -39,7 +39,7 @@
               <mat-icon class="material-icons-round">settings</mat-icon>Settings
             </button>
             <mat-menu #ownerSettingsMenu="matMenu">
-              <button mat-menu-item>Change owner login</button>
+              <button mat-menu-item (click)="changeLogin()">Change owner login</button>
               <button mat-menu-item>Change owner password</button>
             </mat-menu>
             <button mat-menu-item (click)="logout()">
