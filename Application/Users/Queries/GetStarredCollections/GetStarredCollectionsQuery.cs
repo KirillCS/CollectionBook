@@ -8,7 +8,6 @@ using Domain.Common;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,14 +37,10 @@ namespace Application.Users.Queries.GetStarredCollections
             User user = await userManager.FindByNameAsync(request.Login);
             Guard.Requires(() => user is not null, new EntityNotFoundException());
 
-            return await dbContext.Collections
-                                  .Include(c => c.User)
-                                  .Include(c => c.Stars)
-                                  .Include(c => c.Tags)
-                                  .Where(c => c.Stars.Any(s => s.UserId == user.Id) && c.Name.Contains(request.SearchString))
-                                  .OrderByDescending(c => c.CreationTime)
-                                  .ProjectTo<CollectionDto>(mapper.ConfigurationProvider)
-                                  .ToPaginatedList(request.PageIndex, request.PageSize);
+            return await dbContext.Stars.Where(s => s.UserId == user.Id && s.Collection.Name.Contains(request.SearchString))
+                                        .OrderByDescending(s => s.Id)
+                                        .ProjectTo<CollectionDto>(mapper.ConfigurationProvider)
+                                        .ToPaginatedList(request.PageIndex, request.PageSize);
         }
     }
 }

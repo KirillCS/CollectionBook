@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Application.Common.Dto
 {
-    public class CollectionDto : IMapFrom<Collection>
+    public class CollectionDto : IMapFrom<Collection>, IMapFrom<Star>
     {
         public int Id { get; set; }
 
@@ -32,6 +32,20 @@ namespace Application.Common.Dto
                    .ForMember(dto => dto.User, s => s.MapFrom(c => c.User))
                    .ForMember(dto => dto.Tags, s => s.MapFrom(c => c.Tags))
                    .ForMember(dto => dto.Stars, s => s.MapFrom(c => c.Stars));
+        }
+
+        void IMapFrom<Star>.Mapping(Profile profile)
+        {
+            profile.CreateMap<Star, CollectionDto>()
+                   .ForMember(dto => dto.Id, s => s.MapFrom(s => s.Collection.Id))
+                   .ForMember(dto => dto.Name, s => s.MapFrom(s => s.Collection.Name))
+                   .ForMember(dto => dto.Description, s => s.MapFrom(s => s.Collection.Description))
+                   .ForMember(dto => dto.CoverPath, s => s.MapFrom(s => s.Collection.CoverPath))
+                   .ForMember(dto => dto.CreationTime, s => s.MapFrom(s => s.Collection.CreationTime))
+                   .ForMember(dto => dto.User, s => s.MapFrom(s => s.Collection.User))
+                   .ForMember(dto => dto.ItemsCount, s => s.MapFrom(s => s.Collection.Items.Count))
+                   .ForMember(dto => dto.Stars, s => s.MapFrom(s => s.Collection.Stars))
+                   .ForMember(dto => dto.Tags, s => s.MapFrom(s => s.Collection.Tags));
         }
     }
 }
