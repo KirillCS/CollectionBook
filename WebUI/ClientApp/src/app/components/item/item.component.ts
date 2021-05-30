@@ -208,7 +208,7 @@ export class ItemComponent implements OnInit {
 
     let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       width: '600px',
-      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Add')
+      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Crop an item image', 'Add')
     });
 
     let sub = dialogRef.afterClosed().subscribe((blob: Blob) => {

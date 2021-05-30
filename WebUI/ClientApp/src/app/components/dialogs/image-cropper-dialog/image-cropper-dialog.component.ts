@@ -10,6 +10,7 @@ export class ImageCropperDialogData {
     public aspectRatio: number,
     public resizeToWidth: number,
     public roundCropper: boolean,
+    public message: string,
     public submitButton: string,
   ) { }
 }

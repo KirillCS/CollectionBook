@@ -163,7 +163,7 @@ export class CollectionComponent implements OnInit {
 
     let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       width: '600px',
-      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Upload')
+      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Crop a collection cover', 'Upload')
     });
 
     let sub = dialogRef.afterClosed().subscribe((blob: Blob) => {

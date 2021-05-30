@@ -101,7 +101,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     
     let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       width: '600px',
-      data: new ImageCropperDialogData(file, true, 1, 512, true, 'Upload')
+      data: new ImageCropperDialogData(file, true, 1, 512, true, 'Crop your profile avatar', 'Upload')
     });
 
     dialogRef.afterClosed().subscribe((avatarBlob: Blob) => {

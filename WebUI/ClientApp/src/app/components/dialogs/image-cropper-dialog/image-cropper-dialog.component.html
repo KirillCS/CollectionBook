@@ -5,7 +5,7 @@
   </h1>
 </div>
 <main mat-dialog-content>
-  <h2>Crop your profile avatar</h2>
+  <h2>{{ data.message }} </h2>
   <image-cropper class="p-0" #cropper [autoCrop]="false" [imageFile]="data.file" [resizeToWidth]="data.resizeToWidth"
     [roundCropper]="data.roundCropper" [maintainAspectRatio]="data.maintainAspectRatio" [aspectRatio]="data.aspectRatio"
     [format]="'png'" (imageCropped)="imageCropped($event)">

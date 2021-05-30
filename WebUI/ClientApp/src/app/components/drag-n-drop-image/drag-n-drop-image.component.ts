@@ -50,7 +50,7 @@ export class DragNDropImageComponent {
 
     let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       width: '600px',
-      data: new ImageCropperDialogData(this.currentImage, false, 1, 0, false, 'Crop')
+      data: new ImageCropperDialogData(this.currentImage, false, 1, 0, false, 'Crop a collection cover', 'Crop')
     });
 
     dialogRef.afterClosed().subscribe((imageBlob: Blob) => {
