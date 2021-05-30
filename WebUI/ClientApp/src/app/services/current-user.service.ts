@@ -21,10 +21,6 @@ export class CurrentUserService {
     }
 
     let token = this.jwtHelper.decodeToken(this.tokenService.getToken());
-
-    return {
-      id: token.sub,
-      login: token.unique_name
-    };
+    return new UserLoginDto(token.sub, token.unique_name, token.role);
   }
 }
