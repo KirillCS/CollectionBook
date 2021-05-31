@@ -11,9 +11,11 @@ namespace Application.Common.Interfaces
 
         Task<User> Authorize(string loginCredential, string password);
 
-        Task<IEnumerable<Claim>> GetLoginClaims(User user);
+        IEnumerable<Claim> GetLoginClaims(User user);
 
         Task<bool> CheckPassword(string userId, string currentPassword);
+
+        bool IsUserInRole(User user, string roleName);
 
         Task<bool> LoginExists(string login);
 

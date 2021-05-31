@@ -40,7 +40,7 @@ namespace Application.Users.Commands.UpdateLogin
             IdentityResult result = await userManager.SetUserNameAsync(user, request.Login);
             Guard.Requires(() => result.Succeeded, new OperationException());
 
-            IEnumerable<Claim> claims = await userService.GetLoginClaims(user);
+            IEnumerable<Claim> claims = userService.GetLoginClaims(user);
             string token = jwtService.GenerateJwt(claims);
 
             return new LoginDto { AccessToken = token };

@@ -8,22 +8,25 @@ using Infrastructure.Exceptions;
 using System.Security.Claims;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 
 namespace Infrastructure.Services
 {
     public class UserService : IUserService
     {
         private readonly UserManager<User> userManager;
+        private readonly IRoleService roleService;
 
-        public UserService(UserManager<User> userManager)
+        public UserService(UserManager<User> userManager, IRoleService roleService)
         {
             this.userManager = userManager;
+            this.roleService = roleService;
         }
 
         public async Task<User> Create(string login, string email, string password)
         {
-            User user = new User(login) { Email = email };
+            Role userRole = roleService.GetExistingRole(Roles.User);
+
+            User user = new User(login) { Email = email, Role = userRole };
             IdentityResult result = await userManager.CreateAsync(user, password);
             Guard.Requires(() => result.Succeeded, new OperationException());
 
@@ -40,7 +43,7 @@ namespace Infrastructure.Services
 
             Guard.Requires(() => user is not null, new InvalidLoginCredentialsException(loginCredential));
             await Guard.RequiresAsync(async () => await userManager.CheckPasswordAsync(user, password), new InvalidLoginCredentialsException(loginCredential));
-            if (await userManager.IsInRoleAsync(user, Roles.Owner))
+            if (this.IsUserInRole(user, Roles.Owner))
             {
                 return user;
             }
@@ -50,19 +53,13 @@ namespace Infrastructure.Services
             return user;
         }
 
-        public async Task<IEnumerable<Claim>> GetLoginClaims(User user)
-        {
-            var claims = new List<Claim>()
+        public IEnumerable<Claim> GetLoginClaims(User user) =>
+            new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new Claim("role", roleService.GetExistingRole(user.RoleId).Name)
             };
-
-            IEnumerable<Claim> rolesClaim = (await userManager.GetRolesAsync(user)).Select(c => new Claim("role", c));
-            claims.AddRange(rolesClaim);
-
-            return claims;
-        }
 
         public async Task<bool> CheckPassword(string userId, string currentPassword)
         {
@@ -70,6 +67,13 @@ namespace Infrastructure.Services
             Guard.Requires(() => user is not null, new EntityNotFoundException());
 
             return await userManager.CheckPasswordAsync(user, currentPassword);
+        }
+
+        public bool IsUserInRole(User user, string roleName)
+        {
+            Role role = roleService.GetExistingRole(roleName);
+
+            return user.RoleId == role.Id;
         }
 
         public async Task<bool> LoginExists(string login) =>

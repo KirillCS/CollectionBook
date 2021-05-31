@@ -9,6 +9,8 @@ namespace Application.Common.Interfaces
     {
         DbSet<User> Users { get; set; }
 
+        DbSet<Role> Roles { get; set; }
+
         DbSet<Collection> Collections { get; set; }
 
         DbSet<Item> Items { get; set; }

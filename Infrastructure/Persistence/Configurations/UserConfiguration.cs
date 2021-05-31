@@ -15,6 +15,8 @@ namespace Infrastructure.Persistence.Configurations
             builder.Property(u => u.Location).HasMaxLength(256);
 
             builder.Property(u => u.IsEmailVisible).HasDefaultValue(false);
+
+            builder.ToTable("Users");
         }
     }
 }

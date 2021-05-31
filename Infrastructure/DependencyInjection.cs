@@ -20,7 +20,7 @@ namespace Infrastructure
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionString")));
             services.AddScoped<IApplicationDbContext>(providers => providers.GetService<ApplicationDbContext>());
 
-            services.AddIdentityCore<User>(options => 
+            services.AddIdentityCore<User>(options =>
                     {
                         options.User.AllowedUserNameCharacters = string.Empty;
                         options.User.RequireUniqueEmail = false;
@@ -32,7 +32,6 @@ namespace Infrastructure
                         options.Password.RequireLowercase = false;
                         options.Password.RequireUppercase = false;
                     })
-                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultTokenProviders();
 
@@ -66,6 +65,7 @@ namespace Infrastructure
             services.Configure<OwnerDefaultCreds>(configuration.GetSection("OwnerDefaultCreds"));
 
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRoleService, RoleService>();
 
             services.AddTransient<IUriService, UriService>();
             services.AddTransient<IUriExtensionsService, UriExtensionsService>();

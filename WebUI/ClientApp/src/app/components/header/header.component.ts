@@ -100,6 +100,7 @@ export class HeaderComponent {
       }
 
       this.userService.updateLogin({ login: newLogin }).subscribe((response: LoginResponse) => {
+        dialogRef.close();
         this.authTokenService.setToken(response.accessToken);
         this.dialogsService.openSuccessMessageDialog('Login successfully changed', `Login was successfully changed to "${newLogin}".`);
       }, (errorResponse: HttpErrorResponse) => {

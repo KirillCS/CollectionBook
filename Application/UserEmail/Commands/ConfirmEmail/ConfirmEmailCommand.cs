@@ -40,7 +40,7 @@ namespace Application.UserEmail.Commands.ConfirmEmail
             IdentityResult result = await userManager.ConfirmEmailAsync(user, request.Token);
             Guard.Requires(() => result.Succeeded, new OperationException(400));
 
-            IEnumerable<Claim> claims = await userService.GetLoginClaims(user);
+            IEnumerable<Claim> claims = userService.GetLoginClaims(user);
             string token = jwtService.GenerateJwt(claims);
 
             return new LoginDto() { AccessToken = token };

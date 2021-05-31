@@ -1,5 +1,6 @@
 ﻿using Application.Common.Dto;
 using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Common;
 using Domain.Entities;
@@ -18,18 +19,20 @@ namespace Application.Users.Queries.GetUser
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
     {
         private readonly UserManager<User> userManager;
+        private readonly IUserService userService;
         private readonly IMapper mapper;
 
-        public GetUserQueryHandler(UserManager<User> userManager, IMapper mapper)
+        public GetUserQueryHandler(UserManager<User> userManager, IUserService userService, IMapper mapper)
         {
             this.userManager = userManager;
+            this.userService = userService;
             this.mapper = mapper;
         }
 
         public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
             User user = await userManager.FindByNameAsync(request.Login);
-            await Guard.RequiresAsync(async () => user is not null && !await userManager.IsInRoleAsync(user, Roles.Owner), new EntityNotFoundException());
+            Guard.Requires(() => user is not null && !userService.IsUserInRole(user, Roles.Owner), new EntityNotFoundException());
 
             return mapper.Map<UserDto>(user);
         }

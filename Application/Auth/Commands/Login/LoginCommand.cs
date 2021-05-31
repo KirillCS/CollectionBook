@@ -30,7 +30,7 @@ namespace Application.Auth.Commands.Login
         public async Task<LoginDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             User user = await userService.Authorize(request.Login, request.Password);
-            IEnumerable<Claim> claims = await userService.GetLoginClaims(user);
+            IEnumerable<Claim> claims = userService.GetLoginClaims(user);
             string token = jwtService.GenerateJwt(claims);
 
             return new LoginDto { AccessToken = token };

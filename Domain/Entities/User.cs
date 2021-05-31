@@ -23,6 +23,10 @@ namespace Domain.Entities
 
         public string AvatarPath { get; set; }
 
+        public int RoleId { get; set; }
+
+        public Role Role { get; set; }
+
         public List<Collection> Collections { get; } = new List<Collection>();
 
         public List<Star> Stars { get; } = new List<Star>();

@@ -24,15 +24,14 @@ namespace WebUI
                 IServiceProvider servicesProvider = scope.ServiceProvider;
 
                 ApplicationDbContext context = servicesProvider.GetRequiredService<ApplicationDbContext>();
-                    
+
                 context.Database.Migrate();
 
-                RoleManager<IdentityRole> roleManager = servicesProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 UserManager<User> userManager = servicesProvider.GetRequiredService<UserManager<User>>();
                 IOptions<OwnerDefaultCreds> options = servicesProvider.GetRequiredService<IOptions<OwnerDefaultCreds>>();
 
-                await ApplicationDbContextSeed.SeedRoles(roleManager);
-                await ApplicationDbContextSeed.SeedOwner(userManager, options.Value);
+                await ApplicationDbContextSeed.SeedRoles(context);
+                await ApplicationDbContextSeed.SeedOwner(userManager, context, options.Value);
             }
 
             await host.RunAsync();
