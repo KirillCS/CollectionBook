@@ -62,23 +62,23 @@
         </ul>
       </div>
     </div>
-    <button id="settings-button" mat-icon-button *ngIf="isOwner" [routerLink]="['/settings', 'profile']">
+    <button id="settings-button" mat-icon-button *ngIf="isOwner" [routerLink]="['/settings', 'profile']">`
       <mat-icon class="material-icons-round">settings</mat-icon>
     </button>
     <nav mat-tab-nav-bar mat-align-tabs="center">
-      <a mat-tab-link routerLink="collections" routerLinkActive #collections="routerLinkActive"
+      <span mat-tab-link routerLink="collections" routerLinkActive #collections="routerLinkActive"
         [active]="collections.isActive">
         <mat-icon class="material-icons-round mr-1">
           collections
         </mat-icon>
         Collections
-      </a>
-      <a mat-tab-link routerLink="stars" routerLinkActive #stars="routerLinkActive" [active]="stars.isActive">
+      </span>
+      <span mat-tab-link routerLink="stars" routerLinkActive #stars="routerLinkActive" [active]="stars.isActive">
         <mat-icon class="material-icons-round mr-1">
           star
         </mat-icon>
         Stars
-      </a>
+      </span>
     </nav>
   </div>
 </div>

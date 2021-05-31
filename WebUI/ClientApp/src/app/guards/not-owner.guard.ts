@@ -7,7 +7,7 @@ import { CurrentUserService } from '../services/current-user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class OwnerGuard implements CanActivate {
+export class NotOwnerGuard implements CanActivate {
 
   public constructor(private currentUserService: CurrentUserService) { }
 

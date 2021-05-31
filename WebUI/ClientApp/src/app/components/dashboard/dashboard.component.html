@@ -1,0 +1,14 @@
+<div class="app__container">
+  <div class="card m-md-4 m-3">
+    <h1>Administrator dashboards</h1>
+    <nav class="mb-3" mat-tab-nav-bar mat-align-tabs="start">
+      <span mat-tab-link routerLink="reports" routerLinkActive #reports="routerLinkActive"
+      [active]="reports.isActive">Reports</span>
+      <span mat-tab-link routerLink="collections" routerLinkActive #collections="routerLinkActive"
+      [active]="collections.isActive">Collections</span>
+      <span mat-tab-link routerLink="users" routerLinkActive #users="routerLinkActive"
+      [active]="users.isActive">Users</span>
+    </nav>
+    <router-outlet></router-outlet>
+  </div>
+</div>

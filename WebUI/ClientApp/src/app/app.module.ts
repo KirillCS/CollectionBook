@@ -27,6 +27,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import {MatSortModule} from '@angular/material/sort';
 
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
@@ -89,6 +90,10 @@ import { UserCardComponent } from './components/ui/user-card/user-card.component
 import { StarsCounterComponent } from './components/ui/stars-counter/stars-counter.component';
 import { UsersListDialogComponent } from './components/dialogs/users-list-dialog/users-list-dialog.component';
 import { ChangeOwnerPasswordDialogComponent } from './components/dialogs/change-owner-password-dialog/change-owner-password-dialog.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UsersDashboardComponent } from './components/dashboard/users-dashboard/users-dashboard.component';
+import { ReportsDashboardComponent } from './components/dashboard/reports-dashboard/reports-dashboard.component';
+import { CollectionsDashboardComponent } from './components/dashboard/collections-dashboard/collections-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -138,7 +143,11 @@ import { ChangeOwnerPasswordDialogComponent } from './components/dialogs/change-
     UserCardComponent,
     StarsCounterComponent,
     UsersListDialogComponent,
-    ChangeOwnerPasswordDialogComponent
+    ChangeOwnerPasswordDialogComponent,
+    DashboardComponent,
+    UsersDashboardComponent,
+    ReportsDashboardComponent,
+    CollectionsDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -169,6 +178,7 @@ import { ChangeOwnerPasswordDialogComponent } from './components/dialogs/change-
     MatPaginatorModule,
     MatProgressSpinnerModule,
     ScrollingModule,
+    MatSortModule,
 
     NgProgressModule,
     NgProgressHttpModule.withConfig({

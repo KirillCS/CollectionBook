@@ -30,7 +30,12 @@ import { SearchComponent } from './components/search/search.component';
 import { SearchCollectionsComponent } from './components/search/search-collections/search-collections.component';
 import { SearchItemsComponent } from './components/search/search-items/search-items.component';
 import { SearchUsersComponent } from './components/search/search-users/search-users.component';
-import { OwnerGuard } from './guards/owner.guard';
+import { NotOwnerGuard } from './guards/not-owner.guard';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UsersDashboardComponent } from './components/dashboard/users-dashboard/users-dashboard.component';
+import { DashboardGuard } from './guards/dashboard.guard';
+import { ReportsDashboardComponent } from './components/dashboard/reports-dashboard/reports-dashboard.component';
+import { CollectionsDashboardComponent } from './components/dashboard/collections-dashboard/collections-dashboard.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -47,7 +52,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'settings', component: SettingsComponent, canActivate: [AuthenticatedGuard, OwnerGuard], children: [
+    path: 'settings', component: SettingsComponent, canActivate: [AuthenticatedGuard, NotOwnerGuard], children: [
       { path: 'profile', component: ProfileSettingsComponent },
       { path: 'account', component: AccountSettingsComponent },
       { path: 'security', component: SecuritySettingsComponent },
@@ -56,13 +61,21 @@ const routes: Routes = [
   },
   { path: 'collection/:id', component: CollectionComponent },
   { path: 'item/:id', component: ItemComponent },
-  { path: 'new', component: CollectionCreatingComponent, canActivate: [AuthenticatedGuard, OwnerGuard] },
+  { path: 'new', component: CollectionCreatingComponent, canActivate: [AuthenticatedGuard, NotOwnerGuard] },
   {
     path: 'search', component: SearchComponent, children: [
       { path: 'collections', component: SearchCollectionsComponent },
       { path: 'items', component: SearchItemsComponent },
       { path: 'users', component: SearchUsersComponent },
       { path: '', redirectTo: 'collections', pathMatch: 'full' }
+    ]
+  },
+  {
+    path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuard], children: [
+      { path: 'reports', component: ReportsDashboardComponent },
+      { path: 'users', component: UsersDashboardComponent },
+      { path: 'collections', component: CollectionsDashboardComponent },
+      { path: '', redirectTo: 'reports', pathMatch: 'full' }
     ]
   },
   { path: '**', component: NotFoundComponent }
