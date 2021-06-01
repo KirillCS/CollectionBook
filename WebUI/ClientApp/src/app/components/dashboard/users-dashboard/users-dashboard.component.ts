@@ -1,5 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 
 import { DashboardUserDto } from 'src/app/models/dtos/user/dashboard-user.dto';
@@ -7,6 +9,7 @@ import { SearchPaginatedListRequest } from 'src/app/models/requests/search-pagin
 import { Roles } from 'src/app/models/roles';
 import { AdminService } from 'src/app/services/admin.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
+import { FieldDialogComponent } from '../../dialogs/field-dialog/field-dialog.component';
 import { SearchBaseComponent } from '../../search/search-base.component';
 
 @Component({
@@ -22,7 +25,8 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
 
   public constructor(
     private _adminService: AdminService,
-    private _dialogService: DefaultDialogsService
+    private _dialogsService: DefaultDialogsService,
+    private _dialog: MatDialog
   ) {
     super();
     this._pageSize = 30;
@@ -67,7 +71,7 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
   }
 
   public changeRoleButtonClickedHandler(user: DashboardUserDto): void {
-    let dialogRef = this._dialogService.openYesNoDialog('Are you sure?', `Change a role of the user '${user.login}' from '${user.role}' to '${user.role == Roles.User ? Roles.Admin : Roles.User}'?`);
+    let dialogRef = this._dialogsService.openYesNoDialog('Are you sure?', `Change a role of the user "${user.login}" from "${user.role}" to "${user.role == Roles.User ? Roles.Admin : Roles.User}"?`);
 
     dialogRef.afterClosed().subscribe((yes: boolean) => {
       if (!yes) {
@@ -79,13 +83,13 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
         (errorResponse: HttpErrorResponse) => {
           switch (errorResponse.status) {
             case 401:
-              this._dialogService.openWarningMessageDialog('Not authorized', 'You must be authorized to change user role.');
+              this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to change user role.');
               break;
             case 404:
               this.updateUsers();
               break;
             default:
-              this._dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
+              this._dialogsService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
               break;
           }
         });
@@ -93,7 +97,44 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
   }
 
   public blockButtonClickedHandler(user: DashboardUserDto): void {
-    user.isBlocked = !user.isBlocked;
+    if (user.isBlocked) {
+      let dialogRef = this._dialogsService.openYesNoDialog('Are you sure?', `Are you sure you want to unblock user "${user.login}"?`);
+      dialogRef.afterClosed().subscribe((yes: boolean) => {
+        if (yes) {
+          this.changeBlockStatus(user, null);
+        }
+      });
+    }
+    else {
+      let dialogRef = this._dialog.open(FieldDialogComponent, {
+        width: '550px',
+        position: { top: '25vh' },
+        data: {
+          header: 'Block reason',
+          message: 'Write the block reason and click the block button',
+          inputLabel: 'Block reason',
+          inputType: 'textarea',
+          formControl: new FormControl('', [Validators.required, Validators.maxLength(256)]),
+          inputErrors: [
+            { errorCode: 'required', errorMessage: 'Write the block reason' },
+            { errorCode: 'maxlength', errorMessage: 'Maximum length of the block reason is 256' }
+          ],
+          closeButtonName: 'Cancel',
+          submitButtonName: 'Block'
+        }
+      });
+
+      let submitSubscription = dialogRef.componentInstance.submitEmitter.subscribe((formControl: FormControl) => {
+        if (formControl.invalid) {
+          return;
+        }
+
+        dialogRef.close();
+        this.changeBlockStatus(user, formControl.value);
+      });
+
+      dialogRef.afterClosed().subscribe(() => submitSubscription.unsubscribe());
+    }
   }
 
   private updateUsers(): void {
@@ -111,5 +152,30 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
     }, (errorResponse: HttpErrorResponse) => {
 
     }, () => this._usersLoaded = true);
+  }
+
+  private changeBlockStatus(user: DashboardUserDto, blockReason: string): void {
+    this._adminService.changeUserBlockStatus(user.id, !user.isBlocked, blockReason).subscribe(
+      () => user.isBlocked = !user.isBlocked,
+      (errorResponse: HttpErrorResponse) => {
+        switch (errorResponse.status) {
+          case 400:
+            this._dialogsService.openWarningMessageDialog('Block reason is required', `You must write a block reason to block user "${user.login}".`);
+            break;
+          case 401:
+            this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to block or unblock user');
+          case 404:
+            this.updateUsers();
+          case 406:
+            if (!user.isBlocked) {
+              this._dialogsService.openInfoMessageDialog('Already blocked', `The user "${user.login}" is already blocked.`);
+            }
+
+            user.isBlocked = !user.isBlocked;
+          default:
+            break;
+        }
+      }
+    );
   }
 }
