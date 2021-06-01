@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Attributes;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Common;
 using Domain.Entities;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Collections.Commands.ChangeCollectionName
 {
+    [Authorize]
     public class ChangeCollectionNameCommand : IRequest
     {
         public int Id { get; set; }

@@ -35,6 +35,7 @@ namespace Application.Common.Behaviors
             Guard.Requires(() => currentUserService.Id is not null, new UnauthorizedAccessException());
             
             User currentUser = await context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Id == currentUserService.Id);
+            Guard.Requires(() => currentUser is not null, new EntityNotFoundException(nameof(User)));
             Guard.Requires(() => !currentUser.IsBlocked, new UserBlockedException(currentUser.BlockReason));
 
             string[] requiredRoles = attribute.Roles;

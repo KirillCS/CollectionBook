@@ -1,4 +1,5 @@
-﻿using Application.Common.Dto;
+﻿using Application.Common.Attributes;
+using Application.Common.Dto;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Common;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Commands.UpdateLogin
 {
+    [Authorize]
     public class UpdateLoginCommand: IRequest<LoginDto>
     {
         public string Login { get; set; }

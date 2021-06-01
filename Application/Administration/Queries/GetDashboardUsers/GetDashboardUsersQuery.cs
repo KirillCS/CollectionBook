@@ -1,4 +1,5 @@
-﻿using Application.Common.Dto;
+﻿using Application.Common.Attributes;
+using Application.Common.Dto;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace Application.Administration.Queries.GetDashboardUsers
 {
+    [Authorize(new[] { Roles.Admin, Roles.Owner })]
     public class GetDashboardUsersQuery : SearchPaginatedListQuery, IRequest<PaginatedList<DashboardUserDto>>
     {
     }

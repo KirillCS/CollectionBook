@@ -3,7 +3,6 @@ using Application.UserEmail.Commands.SendConfirmationEmail;
 using Application.UserEmail.Commands.ChangeUnconfirmedEmail;
 using Application.UserEmail.Commands.UpdateEmail;
 using Application.UserEmail.Queries.GetEmailConfirmationStatus;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Application.UserEmail.Commands.ConfirmEmailUpdating;
@@ -47,7 +46,6 @@ namespace WebUI.Controllers
 
         [Route("update")]
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> SendConfirmationEmailUpdate([FromBody] SendConfirmationEmailUpdateCommand command)
         {
             await Mediator.Send(command);

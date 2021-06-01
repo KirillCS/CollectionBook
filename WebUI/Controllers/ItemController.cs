@@ -7,7 +7,6 @@ using Application.Items.Commands.RemoveItem;
 using Application.Items.Commands.RemoveItemImage;
 using Application.Items.Queries.FindItems;
 using Application.Items.Queries.GetItem;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -25,19 +24,16 @@ namespace WebUI.Controllers
             Ok(await Mediator.Send(query));
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateItem([FromBody] CreateItemCommand command) =>
             Ok(await Mediator.Send(command));
 
         [Route("image")]
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> AddItemImage([FromForm] AddItemImageCommand command) =>
             Ok(await Mediator.Send(command));
 
         [Route("image/{ImageId}")]
         [HttpDelete]
-        [Authorize]
         public async Task<IActionResult> RemoveItemImage([FromRoute] RemoveItemImageCommand command)
         {
             await Mediator.Send(command);
@@ -47,7 +43,6 @@ namespace WebUI.Controllers
 
         [Route("name")]
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> ChangeItemName([FromBody] ChangeItemNameCommand command)
         {
             await Mediator.Send(command);
@@ -57,7 +52,6 @@ namespace WebUI.Controllers
 
         [Route("info")]
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> ChangeItemInfo([FromBody] ChangeItemInfoCommand command)
         {
             await Mediator.Send(command);
@@ -67,13 +61,11 @@ namespace WebUI.Controllers
 
         [Route("tags")]
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> ChangeItemTags([FromBody] ChangeItemTagsCommand command) =>
             Ok(await Mediator.Send(command));
 
         [Route("{Id}")]
         [HttpDelete]
-        [Authorize]
         public async Task<IActionResult> DeleteItem([FromRoute] DeleteItemCommand command)
         {
             await Mediator.Send(command);

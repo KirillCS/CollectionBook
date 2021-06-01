@@ -2,7 +2,7 @@
 
 namespace Application.Common.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class AuthorizeAttribute : Attribute
     {
         public AuthorizeAttribute() : this(Array.Empty<string>())

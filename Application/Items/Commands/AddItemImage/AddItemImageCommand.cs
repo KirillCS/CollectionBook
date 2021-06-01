@@ -1,4 +1,5 @@
-﻿using Application.Common.Dto;
+﻿using Application.Common.Attributes;
+using Application.Common.Dto;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.Items.Commands.AddItemImage
 {
+    [Authorize]
     public class AddItemImageCommand : IRequest<ImageDto>
     {
         public int Id { get; set; }

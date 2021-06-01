@@ -7,7 +7,6 @@ using Application.Collections.Commands.DeleteCollection;
 using Application.Collections.Queries.FindCollections;
 using Application.Collections.Queries.GetCollection;
 using Application.Collections.Queries.GetItems;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -31,7 +30,6 @@ namespace WebUI.Controllers
 
         [Route("{Id}")]
         [HttpDelete]
-        [Authorize]
         public async Task<IActionResult> DeleteCollection([FromRoute] DeleteCollectionCommand command)
         {
             await Mediator.Send(command);
@@ -40,7 +38,6 @@ namespace WebUI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateCollection([FromForm] CreateCollectionCommand command)
         {
             await Mediator.Send(command);
@@ -50,13 +47,11 @@ namespace WebUI.Controllers
 
         [Route("cover")]
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> ChangeCollectionCover([FromForm] ChangeCollectionCoverCommand command) =>
             Ok(await Mediator.Send(command));
 
         [Route("name")]
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> ChangeCollectionName([FromBody] ChangeCollectionNameCommand command)
         {
             await Mediator.Send(command);
@@ -66,7 +61,6 @@ namespace WebUI.Controllers
 
         [Route("description")]
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> ChangeCollectionDescription([FromBody] ChangeCollectionDescriptionCommand command)
         {
             await Mediator.Send(command);
@@ -76,7 +70,6 @@ namespace WebUI.Controllers
 
         [Route("tags")]
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> ChangeCollectionTags([FromBody] ChangeCollectionTagsCommand command) =>
             Ok(await Mediator.Send(command));
     }

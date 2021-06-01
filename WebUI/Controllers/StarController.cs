@@ -1,6 +1,5 @@
 ﻿using Application.Stars.GetUsers;
 using Application.Stars.ToggleStar;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -14,7 +13,6 @@ namespace WebUI.Controllers
             Ok(await Mediator.Send(query));
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> ToggleStar([FromBody] ToggleStarCommand command)
         {
             await Mediator.Send(command);

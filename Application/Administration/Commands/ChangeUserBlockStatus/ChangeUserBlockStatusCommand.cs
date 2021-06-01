@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Attributes;
+using Application.Common.Exceptions;
 using Domain.Common;
 using Domain.Entities;
 using MediatR;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Administration.Commands.ChangeUserBlockStatus
 {
+    [Authorize(new[] { Roles.Admin, Roles.Owner })]
     public class ChangeUserBlockStatusCommand : IRequest
     {
         public string Id { get; init; }

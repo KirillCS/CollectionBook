@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Attributes;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Common;
 using Domain.Entities;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Commands.UpdatePassword
 {
+    [Authorize]
     public class UpdatePasswordCommand : IRequest
     {
         public string CurrentPassword { get; set; }

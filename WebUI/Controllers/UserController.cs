@@ -10,7 +10,6 @@ using Application.Users.Queries.GetCollectionsNames;
 using Application.Users.Queries.GetStarredCollections;
 using Application.Users.Queries.GetStarsNotifications;
 using Application.Users.Queries.GetUser;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -49,13 +48,11 @@ namespace WebUI.Controllers
 
         [Route("avatar/update")]
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> UpdateAvatar([FromForm] UpdateAvatarCommand command) =>
             Ok(await Mediator.Send(command));
 
         [Route("profile/update")]
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileCommand command)
         {
             await Mediator.Send(command);
@@ -65,7 +62,6 @@ namespace WebUI.Controllers
 
         [Route("login/update")]
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> UpdateLogin([FromBody] UpdateLoginCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -73,7 +69,6 @@ namespace WebUI.Controllers
 
         [Route("password/update")]
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordCommand command)
         {
             await Mediator.Send(command);

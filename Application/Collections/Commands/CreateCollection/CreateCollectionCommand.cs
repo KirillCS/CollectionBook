@@ -1,6 +1,8 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Attributes;
+using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using AutoMapper;
+using Domain.Common;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Collections.Commands.CreateCollection
 {
+    [Authorize(new[] { Roles.User, Roles.Admin })]
     public class CreateCollectionCommand : IRequest, IMapTo<Collection>
     {
         public string Name { get; set; }

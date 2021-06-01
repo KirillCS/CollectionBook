@@ -1,4 +1,5 @@
-﻿using Application.Common.Dto;
+﻿using Application.Common.Attributes;
+using Application.Common.Dto;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace Application.Items.Commands.ChangeItemTags
 {
+    [Authorize]
     public class ChangeItemTagsCommand : IRequest<IEnumerable<TagDto>>
     {
         private IEnumerable<string> tags = Array.Empty<string>();

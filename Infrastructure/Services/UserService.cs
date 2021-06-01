@@ -43,6 +43,7 @@ namespace Infrastructure.Services
 
             Guard.Requires(() => user is not null, new InvalidLoginCredentialsException(loginCredential));
             await Guard.RequiresAsync(async () => await userManager.CheckPasswordAsync(user, password), new InvalidLoginCredentialsException(loginCredential));
+            Guard.Requires(() => !user.IsBlocked, new UserBlockedException(user.BlockReason));
             if (this.IsUserInRole(user, Roles.Owner))
             {
                 return user;
