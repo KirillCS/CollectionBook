@@ -16,6 +16,10 @@ namespace Infrastructure.Persistence.Configurations
 
             builder.Property(u => u.IsEmailVisible).HasDefaultValue(false);
 
+            builder.Property(u => u.IsBlocked).HasDefaultValue(false);
+
+            builder.Property(u => u.BlockReason).HasMaxLength(256);
+
             builder.ToTable("Users");
         }
     }

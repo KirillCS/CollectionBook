@@ -23,6 +23,10 @@ namespace Domain.Entities
 
         public string AvatarPath { get; set; }
 
+        public bool IsBlocked { get; set; }
+
+        public string BlockReason { get; set; }
+
         public int RoleId { get; set; }
 
         public Role Role { get; set; }
