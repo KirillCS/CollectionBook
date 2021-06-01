@@ -10,6 +10,7 @@ import { SettingsService } from 'src/app/services/settings.service';
 import { UserService } from 'src/app/services/user.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-security-settings',
@@ -66,7 +67,8 @@ export class SecuritySettingsComponent implements OnInit {
     private serverErrorService: ServerErrorsService,
     private authService: AuthService,
     private dialogService: DefaultDialogsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {
     this.settingsService.user$.subscribe(user => {
       this.email = user.email;
@@ -96,27 +98,29 @@ export class SecuritySettingsComponent implements OnInit {
     };
     this.userService.updatePassword(request).subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
       this.inProcess = false;
-      if (errorResponse.status == 400) {
-        this.serverErrorService.setFormErrors(this.form, errorResponse);
-
-        return;
+      switch (errorResponse.status) {
+        case 400:
+          this.serverErrorService.setFormErrors(this.form, errorResponse);
+          break;
+        case 401:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change account password.');
+          break;
+        case 404:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
+          break;
+        case 405:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
+          break;
+        default:
+          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong while updating the account password.');
+          break;
       }
-
-      if (errorResponse.status == 401) {
-        this.authService.logout();
-        this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change account password.');
-
-        return;
-      }
-
-      if (errorResponse.status == 404) {
-        this.authService.logout();
-        this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
-
-        return;
-      }
-
-      this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong while updating the account password.');
     }, () => {
       ngForm.resetForm();
       this.inProcess = false;
@@ -128,20 +132,24 @@ export class SecuritySettingsComponent implements OnInit {
     this.inProcess = true;
     this.userService.sendPasswordResetConfirmation({ email: this.email }).subscribe(() => {}, (errorResponse: HttpErrorResponse) => {
       this.inProcess = false;
-      if (errorResponse.status == 400) {
-        this.dialogService.openWarningMessageDialog('Failed to send email', 'Your account email address has not passed validation. Refresh this page and click this button again.');
-
-        return;
+      switch (errorResponse.status) {
+        case 400:
+          this.dialogService.openWarningMessageDialog('Failed to send email', 'Your account email address has not passed validation. Refresh this page and click this button again.');
+          break;
+        case 401:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change account password.');
+          break;
+        case 404:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
+          break;
+        default:
+          this.dialogService.openWarningMessageDialog('Failed to send email', 'Something went wrong on the server.');
+          break;
       }
-
-      if (errorResponse.status == 404) {
-        this.authService.logout();
-        this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted.');
-
-        return;
-      }
-
-      this.dialogService.openWarningMessageDialog('Failed to send email', 'Something went wrong on the server.');
     }, () => {
       this.inProcess = false;
       this.dialogService.openSuccessMessageDialog('Email has sent', 'Reset password confirmation has sent to your account email address. Check it and follow the link in it.');

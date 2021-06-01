@@ -183,7 +183,7 @@ export class CollectionComponent implements OnInit {
       this.collectionService.changeCover(this.collection.id, <File>cover).subscribe(newCoverPath => {
         this.collection.coverPath = newCoverPath;
       }, (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
-        errorResponse.status,
+        errorResponse,
         'To change the collection cover you must be authenticated.',
         `To change the collection cover you must be its owner.`,
         `Something went wrong while changing the collection cover.`
@@ -204,7 +204,7 @@ export class CollectionComponent implements OnInit {
       this.collectionService.changeCover(this.collection.id, null).subscribe(() => {
         this.collection.coverPath = null;
       }, (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
-        errorResponse.status,
+        errorResponse,
         'To reset the collection cover you must be authenticated.',
         `To reset the collection cover you must be its owner.`,
         `Something went wrong while reseting the collection cover.`
@@ -359,6 +359,10 @@ export class CollectionComponent implements OnInit {
         case errorResponse.status == 404 && errorResponse.error.entityType == 'User':
           this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
           break;
+        case errorResponse.status == 405:
+          this.authService.logout();
+          this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
+          break;
         default:
           this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while creating a new item.');
           break;
@@ -369,7 +373,7 @@ export class CollectionComponent implements OnInit {
   private changeCollectionName(newName: string): void {
     this.collectionService.changeName(this.collection.id, newName).subscribe(() => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
-        errorResponse.status,
+        errorResponse,
         'To change the collection name you must be authenticated.',
         `To change the collection name you must be its owner.`,
         `Something went wrong while changing the collection name.`
@@ -379,7 +383,7 @@ export class CollectionComponent implements OnInit {
   private changeCollectionDescription(newDescription: string): void {
     this.collectionService.changeDescription(this.collection.id, newDescription).subscribe(() => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
-        errorResponse.status,
+        errorResponse,
         'To change the collection description you must be authenticated.',
         `To change the collection description you must be its owner.`,
         `Something went wrong while changing the collection description.`
@@ -389,7 +393,7 @@ export class CollectionComponent implements OnInit {
   private changeCollectionTags(tags: string[]): void {
     this.collectionService.changeTags(this.collection.id, tags).subscribe(tags => this.collection.tags = tags,
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
-        errorResponse.status,
+        errorResponse,
         'To change the collection tags you must be authenticated.',
         `To change the collection tags you must be its owner.`,
         `Something went wrong while changing the collection tags.`
@@ -399,15 +403,15 @@ export class CollectionComponent implements OnInit {
   private deleteCollection(): void {
     this.collectionService.delete(this.collection.id).subscribe(() => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
-        errorResponse.status,
+        errorResponse,
         'To delete the collection you must be authenticated.',
         `To delete the collection "${this.collection.name}" you must be its owner.`,
         `Something went wrong while deleting the collection.`
       ), () => this.router.navigate(['/profile', this.collection.user.login, 'collections']));
   }
 
-  private handleErrorStatuses(status: number, notAuthMessage: string, accessErrorMessage: string, errorMessage: string): void {
-    switch (status) {
+  private handleErrorStatuses(errorResponse: HttpErrorResponse, notAuthMessage: string, accessErrorMessage: string, errorMessage: string): void {
+    switch (errorResponse.status) {
       case 400:
         break;
       case 401:
@@ -419,6 +423,10 @@ export class CollectionComponent implements OnInit {
       case 404:
         this.dialogService.openWarningMessageDialog('Collection not found', `Collection was not found. Maybe it was deleted.`);
         this.router.navigate(['/profile', this.collection.user.login, 'collections']);
+        break;
+      case 405:
+        this.authService.logout();
+        this.dialogService.openBlockReasonDialog(JSON.parse(errorResponse.error).blockReason);
         break;
       default:
         this.dialogService.openWarningMessageDialog('Something went wrong', errorMessage);

@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { StarService } from 'src/app/services/star.service';
@@ -35,7 +36,7 @@ export class StarComponent {
 
   @Output() private toggled = new EventEmitter<StarToggledEventArgs>();
 
-  public constructor(private starService: StarService, private dialogsService: DefaultDialogsService) { }
+  public constructor(private starService: StarService, private dialogsService: DefaultDialogsService, private authSerice: AuthService) { }
 
   public get starIcon(): string {
     if (this.starred) {
@@ -56,15 +57,19 @@ export class StarComponent {
       this.toggled.emit(new StarToggledEventArgs(this.collectionId, this.starred));
     }, (errorResponse: HttpErrorResponse) => {
       this.isStarClicked = false;
-      if (errorResponse.status == 401) {
-        this.dialogsService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to star collection.');
-        return;
+      switch (errorResponse.status) {
+        case 401:
+          this.dialogsService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to star collection.');
+          break;
+        case 404:
+          this.dialogsService.openWarningMessageDialog('Collection not found', 'Collection was not found. Maybe it was deleted.');
+          break;
+        case 405:
+          this.authSerice.logout();
+          this.dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
+          break;
       }
 
-      if (errorResponse.status == 404) {
-        this.dialogsService.openWarningMessageDialog('Collection not found', 'Collection was not found. Maybe it was deleted.');
-        return;
-      }
     }, () => this.isStarClicked = false)
   }
 }

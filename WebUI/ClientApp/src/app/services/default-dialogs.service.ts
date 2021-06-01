@@ -42,4 +42,8 @@ export class DefaultDialogsService {
       data: new MessageDialogData(MessageDialogType.Warning, header, message, 'Close')
     });
   }
+
+  public openBlockReasonDialog(blockReason: string): MatDialogRef<MessageDialogComponent> {
+    return this.openWarningMessageDialog('You\'re blocked', `You are blocked, because of:\n"${blockReason}"`);
+  }
 }

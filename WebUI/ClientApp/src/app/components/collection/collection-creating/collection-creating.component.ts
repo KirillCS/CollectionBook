@@ -77,21 +77,26 @@ export class CollectionCreatingComponent {
 
     this.collectionService.create(request).subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
       this.inProcess = false;
-      if (errorResponse.status == 400) {
-        this.serverErrorsService.setFormErrors(this.nameFormGroup, errorResponse);
-        this.serverErrorsService.setFormErrors(this.descriptionFormGroup, errorResponse);
-
-        return;
+      switch (errorResponse.status) {
+        case 400:
+          this.serverErrorsService.setFormErrors(this.nameFormGroup, errorResponse);
+          this.serverErrorsService.setFormErrors(this.descriptionFormGroup, errorResponse);
+          break;
+        case 401:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openWarningMessageDialog('You must be authenticated', 'You must be authenticated to create a new collection.');
+          break;
+        case 405:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
+          break;
+        default:
+          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while adding a collection.');
+          break;
       }
 
-      if (errorResponse.status == 401) {
-        this.authService.logout();
-        this.dialogService.openWarningMessageDialog('You must be authenticated', 'You must be authenticated to create a new collection.');
-
-        return;
-      }
-
-      this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while adding a collection.');
     }, () => {
       this.inProcess = false;
       this.router.navigate(['/profile', this.currentUserService?.currentUser?.login, 'collections']);

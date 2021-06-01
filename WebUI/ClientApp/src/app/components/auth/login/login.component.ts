@@ -80,6 +80,9 @@ export class LoginComponent implements OnDestroy {
             let queryParams: Params = { id: errorResponse.error.id, email: errorResponse.error.email };
             this.router.navigate(['emailconfirmation'], { queryParams });
             break;
+          case 405:
+            this.dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
+            break;
           default:
             this.unknownError = true;
             break;

@@ -14,6 +14,8 @@ import { EmailConfirmationService } from 'src/app/services/email-confirmation.se
 import { LoginResponse } from 'src/app/models/responses/auth/login.response';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
+import { Router } from '@angular/router';
+import { PreviousRouteService } from 'src/app/services/previous-route.service';
 
 @Component({
   selector: 'app-account-settings',
@@ -40,7 +42,8 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     private emailService: EmailConfirmationService,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private dialogService: DefaultDialogsService
+    private dialogService: DefaultDialogsService,
+    private router: Router
   ) {
     this.subscription = settingsService.user$.subscribe(user => {
       this.user = user;
@@ -81,29 +84,30 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
         this.settingsService.update(this.user);
 
       }, (errorResponse: HttpErrorResponse) => {
-        if (errorResponse.status == 400) {
-          this.serverErrorService.setFormErrors(this.loginForm, errorResponse);
-          this.isChangingLoginInProcess = false;
-
-          return;
-        }
-
-        if (errorResponse.status == 401) {
-          this.authService.logout();
-          this.dialogService.openWarningMessageDialog('Not authenticated', `You must be authenticated to change account login.`);
-          
-          return;
-        }
-        
-        if (errorResponse.status == 404) {
-          this.authService.logout();
-          this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
-          
-          return;
-        }
-        
-        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server. Maybe page updating will be able to help.');
         this.isChangingLoginInProcess = false;
+        switch (errorResponse.status) {
+          case 400:
+            this.serverErrorService.setFormErrors(this.loginForm, errorResponse);
+            break;
+          case 401:
+            this.authService.logout();
+            this.router.navigateByUrl('/');
+            this.dialogService.openWarningMessageDialog('Not authenticated', `You must be authenticated to change account login.`);
+            break;
+          case 404:
+            this.authService.logout();
+            this.router.navigateByUrl('/');
+            this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
+            break;
+          case 405:
+            this.authService.logout();
+            this.router.navigateByUrl('/');
+            this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
+            break;
+          default:
+            this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server. Maybe page updating will be able to help.');
+            break;
+        }
       }, () => {
         form.resetForm();
         this.isChangingLoginInProcess = false;
@@ -129,27 +133,29 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       this.dialogService.openInfoMessageDialog('Confirm email', `We've sent confirmation message to email address ${control.value}. You must confirm it to update account email.`);
     }, (errorResponse: HttpErrorResponse) => {
       this.isChangingEmailInProcess = false;
-      if (errorResponse.status == 400) {
-        this.serverErrorService.setFormErrors(this.emailForm, errorResponse);
-
-        return;
+      switch (errorResponse.status) {
+        case 400:
+          this.serverErrorService.setFormErrors(this.emailForm, errorResponse);
+          break;
+        case 401:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openWarningMessageDialog('Not authenticated', `You must be authenticated to change account email.`);
+          break;
+        case 404:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
+          break;
+        case 405:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
+          break;
+        default:
+          this.dialogService.openWarningMessageDialog('Something went wrong', `Something went wrong while updating email.`);
+          break;
       }
-
-      if (errorResponse.status == 401) {
-        this.authService.logout();
-        this.dialogService.openWarningMessageDialog('Not authenticated', `You must be authenticated to change account email.`);
-
-        return;
-      }
-
-      if (errorResponse.status == 404) {
-        this.authService.logout();
-        this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
-        
-        return;
-      }
-      
-      this.dialogService.openWarningMessageDialog('Something went wrong', `Something went wrong while updating email.`);
     }, () => {
       form.reset();
       this.isChangingEmailInProcess = false;

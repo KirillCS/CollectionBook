@@ -14,6 +14,7 @@ import { TagsFieldDialogComponent } from '../dialogs/tags-field-dialog/tags-fiel
 import { ImageCropperDialogComponent, ImageCropperDialogData } from '../dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { SearchCriteriaInStringFormat, SearchCriterion } from '../search/search-criterion';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-item',
@@ -36,6 +37,7 @@ export class ItemComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private dialogService: DefaultDialogsService,
+    private authService: AuthService,
     private currentUserService: CurrentUserService,
     @Inject(SEARCH_STRING_KEY) private searchStringKey: string,
     @Inject(SEARCH_BY_KEY) private searchByKey: string,
@@ -260,7 +262,7 @@ export class ItemComponent implements OnInit {
   private changeName(newName: string): void {
     this.itemService.changeName(this.item.id, newName).subscribe(() => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
-        errorResponse.status,
+        errorResponse,
         'To change the item name you must be authenticated.',
         `To change the item name you must be its owner.`,
         `Something went wrong while changing the item name.`
@@ -270,7 +272,7 @@ export class ItemComponent implements OnInit {
   private changeInfo(newInfo: string): void {
     this.itemService.changeInfo(this.item.id, newInfo).subscribe(() => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
-        errorResponse.status,
+        errorResponse,
         'To change the item information you must be authenticated.',
         `To change the item information you must be its owner.`,
         `Something went wrong while changing the item information.`
@@ -280,7 +282,7 @@ export class ItemComponent implements OnInit {
   private changeTags(tags: string[]): void {
     this.itemService.changeTags(this.item.id, tags).subscribe(tags => this.item.tags = tags,
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
-        errorResponse.status,
+        errorResponse,
         'To change the item tags you must be authenticated.',
         `To change the item tags you must be its owner.`,
         `Something went wrong while changing the item tags.`
@@ -292,7 +294,7 @@ export class ItemComponent implements OnInit {
       this.item.images.push(image);
       this.reinitCarousel();
     }, (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
-      errorResponse.status,
+      errorResponse,
       'To add an item image you must be authenticated.',
       `To add an item image you must be its owner.`,
       `Something went wrong while adding an item image.`
@@ -302,7 +304,7 @@ export class ItemComponent implements OnInit {
   private removeImage(imageId: number): void {
     this.itemService.removeImage(imageId).subscribe(() => { }, (errorResponse: HttpErrorResponse) =>
       this.handleErrorStatuses(
-        errorResponse.status,
+        errorResponse,
         'To remove an item image you must be authenticated.',
         `To remove an item image you must be its owner.`,
         `Something went wrong while removing an item image.`
@@ -315,7 +317,7 @@ export class ItemComponent implements OnInit {
   private deleteItem(): void {
     this.itemService.delete(this.item.id).subscribe(() => { }, (errorResponse: HttpErrorResponse) =>
       this.handleErrorStatuses(
-        errorResponse.status,
+        errorResponse,
         'To delete the item you must be authenticated.',
         `To delete the item you must be its owner.`,
         `Something went wrong while deleting the item.`
@@ -324,8 +326,8 @@ export class ItemComponent implements OnInit {
       });
   }
 
-  private handleErrorStatuses(status: number, notAuthMessage: string, accessErrorMessage: string, errorMessage: string): void {
-    switch (status) {
+  private handleErrorStatuses(errorResponse: HttpErrorResponse, notAuthMessage: string, accessErrorMessage: string, errorMessage: string): void {
+    switch (errorResponse.status) {
       case 400:
         break;
       case 401:
@@ -337,6 +339,10 @@ export class ItemComponent implements OnInit {
       case 404:
         this.dialogService.openWarningMessageDialog('Item not found', `Item was not found. Maybe it was deleted.`);
         this.router.navigate(['/profile', this.item.user.login, 'collections']);
+        break;
+      case 405:
+        this.authService.logout();
+        this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
         break;
       default:
         this.dialogService.openWarningMessageDialog('Something went wrong', errorMessage);

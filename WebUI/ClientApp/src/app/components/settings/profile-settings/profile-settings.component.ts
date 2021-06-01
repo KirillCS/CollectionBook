@@ -15,6 +15,8 @@ import { ServerErrorsService } from 'src/app/services/server-errors.service';
 import { ImageCropperDialogComponent, ImageCropperDialogData } from 'src/app/components/dialogs/image-cropper-dialog/image-cropper-dialog.component';
 import { API_URL, DEFAULT_AVATAR, SUPPORTED_IMAGES_TYPES } from 'src/app/app-injection-tokens';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
+import { Router } from '@angular/router';
+import { PreviousRouteService } from 'src/app/services/previous-route.service';
 
 @Component({
   selector: 'app-profile-settings',
@@ -43,11 +45,9 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   public unknownError = false;
   public inProcess = false;
 
-  
-  public get clearAvatarEnable() : boolean {
+  public get clearAvatarEnable(): boolean {
     return this.user?.avatarPath?.length > 0;
   }
-  
 
   public constructor(
     @Inject(API_URL) private apiUrl: string,
@@ -59,9 +59,10 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     private serverErrorsService: ServerErrorsService,
     private dialogService: DefaultDialogsService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {
-    this._acceptFilesFormats = supportedImagesTypes.join(','); 
+    this._acceptFilesFormats = supportedImagesTypes.join(',');
     this.subscription = this.settingsService.user$.subscribe(user => {
       this.user = user;
       this.setForm(user);
@@ -98,7 +99,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
       this.dialogService.openInfoMessageDialog('Not supported format', 'File has not supported format. It must be image.');
       return;
     }
-    
+
     let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       width: '600px',
       data: new ImageCropperDialogData(file, true, 1, 512, true, 'Crop your profile avatar', 'Upload')
@@ -140,27 +141,29 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
     }, (errorResponse: HttpErrorResponse) => {
       this.inProcess = false;
-      if (errorResponse.status == 400) {
-        this.serverErrorsService.setFormErrors(this.form, errorResponse);
-
-        return;
+      switch (errorResponse.status) {
+        case 400:
+          this.serverErrorsService.setFormErrors(this.form, errorResponse);
+          break;
+        case 401:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to set up account profile');
+          break;
+        case 404:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted');
+          break;
+        case 405:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
+          break;
+        default:
+          this.unknownError = true;
+          break;
       }
-
-      if (errorResponse.status == 401) {
-        this.authService.logout();
-        this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to set up account profile');
-
-        return;
-      }
-
-      if (errorResponse.status == 404) {
-        this.authService.logout();
-        this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted');
-
-        return;
-      }
-
-      this.unknownError = true;
 
     }, () => {
       this.inProcess = false;
@@ -172,22 +175,26 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     this.userService.updateAvatar(avatar).subscribe(newAvatarPath => {
       this.user.avatarPath = newAvatarPath;
     }, (errorResponse: HttpErrorResponse) => {
-
-      if (errorResponse.status == 401) {
-        this.authService.logout();
-        this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'You must be authenticated to update your profile avatar.');
-
-        return;
+      switch (errorResponse.status) {
+        case 401:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'You must be authenticated to update your profile avatar.');
+          break;
+        case 404:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
+          break;
+        case 405:
+          this.authService.logout();
+          this.router.navigateByUrl('/');
+          this.dialogService.openBlockReasonDialog(JSON.parse(errorResponse.error).blockReason);
+          break;
+        default:
+          this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'Something went wrong while profile avatar was updating. Try update avatar again.');
+          break;
       }
-      
-      if (errorResponse.status == 404) {
-        this.authService.logout();
-        this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
-
-        return;
-      }
-
-      this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'Something went wrong while profile avatar was updating. Try update avatar again.');
     });
   }
 

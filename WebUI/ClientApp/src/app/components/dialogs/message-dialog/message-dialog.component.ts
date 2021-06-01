@@ -20,7 +20,7 @@ export class MessageDialogData {
 @Component({
   selector: 'app-message-dialog',
   templateUrl: './message-dialog.component.html',
-  styleUrls: ['../dialogs-icons.scss']
+  styleUrls: ['../dialogs-icons.scss', './message-dialog.component.css']
 })
 export class MessageDialogComponent {
 
