@@ -1,0 +1,28 @@
+.mat-column-id {
+  width: 320px;
+}
+
+.mat-column-isBlocked {
+  width: 100px;
+}
+
+.mat-column-login>span {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.mat-header-cell, .mat-cell {
+  padding: 0 0.5rem !important;
+  text-align: center;
+}
+
+.lock-icon {
+  font-size: 1.3rem;
+}
+
+mat-paginator {
+  box-shadow: none !important;
+}

@@ -1,29 +1,69 @@
-<!-- <table mat-table [dataSource]="data">
+<h2>User dashboard</h2>
+<app-search-input placeholder="Find by login or id..." (changed)="searchInputChangedHandler($event)"></app-search-input>
+<div>
+<table class="w-100" mat-table [dataSource]="dataSource">
 
-  <ng-container matColumnDef="number">
-    <th mat-header-cell *matHeaderCellDef>#</th>
-    <td mat-cell *matCellDef="let row">{{row.number}}</td>
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Id</th>
+      <td mat-cell *matCellDef="let user">{{ user.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="login">
+      <th mat-header-cell *matHeaderCellDef>Login</th>
+      <td [routerLink]="['/profile', user.login]" mat-cell *matCellDef="let user">
+        <span>@{{ user.login }}</span>
+    </td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef>Role</th>
+      <td mat-cell *matCellDef="let user">{{ user.role }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="isBlocked">
+      <th mat-header-cell *matHeaderCellDef>Is blocked</th>
+      <td mat-cell *matCellDef="let user">
+        <button matTooltip="Status: {{ user.isBlocked ? 'blocked' : 'unblocked' }} blocked. Click to {{ user.isBlocked ? 'unblock' : 'block' }}" mat-icon-button (click)="blockButtonClickedHandler(user)">
+          <mat-icon class="material-icons-round lock-icon">{{ user.isBlocked ? 'lock' : 'lock_open' }}</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns" sticky></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- <tr class="mat-row" *ngIf="!(usersLoadedObservable | async)">
+      <td class="mat-cell" colspan="4"><mat-spinner [diamiter]="30"></mat-spinner></td>
+    </tr> -->
+    <tr class="mat-row" *ngIf="totalCount == 0 && usersLoaded">
+      <td class="mat-cell" colspan="4">No users matching the search string "{{ searchString }}"</td>
+    </tr>
+  </table>
+
+  <mat-paginator [length]="totalCount" [pageSizeOptions]="[20, 30, 40]" [pageSize]="pageSize" [pageIndex]="pageIndex" (page)="pageChangedHandler($event)"></mat-paginator>
+</div>
+<!-- <table class="w-100" mat-table [dataSource]="dataSource">
+
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef> No. </th>
+    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
   </ng-container>
 
-  <ng-container matColumnDef="title">
-    <th mat-header-cell *matHeaderCellDef>Title</th>
-    <td mat-cell *matCellDef="let row">{{row.title}}</td>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
   </ng-container>
 
-  <ng-container matColumnDef="state">
-    <th mat-header-cell *matHeaderCellDef>State</th>
-    <td mat-cell *matCellDef="let row">{{row.state}}</td>
+  <ng-container matColumnDef="weight">
+    <th mat-header-cell *matHeaderCellDef> Weight </th>
+    <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
   </ng-container>
 
-  <ng-container matColumnDef="created">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
-      Created
-    </th>
-    <td mat-cell *matCellDef="let row">{{row.created_at | date}}</td>
+  <ng-container matColumnDef="symbol">
+    <th mat-header-cell *matHeaderCellDef> Symbol </th>
+    <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-
-<mat-paginator [length]="resultsLength" [pageSize]="30"></mat-paginator> -->
+</table> -->

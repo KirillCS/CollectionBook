@@ -23,7 +23,7 @@ import { UserCardDto } from '../models/dtos/user/user-card.dto';
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
+  public constructor(private httpClient: HttpClient, @Inject(API_URL) private apiUrl: string) { }
 
   public get(login: string): Observable<UserDto> {
     return this.httpClient.get<UserDto>(`${this.apiUrl}api/user/${login ?? ''}`);

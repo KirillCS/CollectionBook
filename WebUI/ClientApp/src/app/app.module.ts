@@ -27,7 +27,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import {MatSortModule} from '@angular/material/sort';
+import {MatTableModule} from '@angular/material/table';
 
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
@@ -178,7 +178,7 @@ import { CollectionsDashboardComponent } from './components/dashboard/collection
     MatPaginatorModule,
     MatProgressSpinnerModule,
     ScrollingModule,
-    MatSortModule,
+    MatTableModule,
 
     NgProgressModule,
     NgProgressHttpModule.withConfig({

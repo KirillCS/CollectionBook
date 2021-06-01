@@ -19,7 +19,7 @@ namespace Application.Common.Dto
             profile.CreateMap<User, DashboardUserDto>()
                    .ForMember(d => d.Login, s => s.MapFrom(u => u.UserName))
                    .ForMember(d => d.IsBlocked, s => s.MapFrom(u => u.LockoutEnabled))
-                   .ForMember(d => d.Role, s => s.MapFrom(u => "OK"));
+                   .ForMember(d => d.Role, s => s.MapFrom(u => u.Role.Name));
         }
     }
 }
