@@ -6,6 +6,7 @@ import { DashboardUserDto } from 'src/app/models/dtos/user/dashboard-user.dto';
 import { SearchPaginatedListRequest } from 'src/app/models/requests/search-paginated-list.request';
 import { Roles } from 'src/app/models/roles';
 import { AdminService } from 'src/app/services/admin.service';
+import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { SearchBaseComponent } from '../../search/search-base.component';
 
 @Component({
@@ -19,7 +20,10 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
   private _usersLoaded = false;
   private _users = new Array<DashboardUserDto>();
 
-  public constructor(private _adminService: AdminService) {
+  public constructor(
+    private _adminService: AdminService,
+    private _dialogService: DefaultDialogsService
+  ) {
     super();
     this._pageSize = 30;
   }
@@ -62,8 +66,30 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
     this.updateUsers();
   }
 
-  public changeAdminButtonClickedHandler(user: DashboardUserDto): void {
+  public changeRoleButtonClickedHandler(user: DashboardUserDto): void {
+    let dialogRef = this._dialogService.openYesNoDialog('Are you sure?', `Change a role of the user '${user.login}' from '${user.role}' to '${user.role == Roles.User ? Roles.Admin : Roles.User}'?`);
 
+    dialogRef.afterClosed().subscribe((yes: boolean) => {
+      if (!yes) {
+        return;
+      }
+
+      this._adminService.toggleUserRole(user.id).subscribe(
+        (newRole: string) => user.role = newRole,
+        (errorResponse: HttpErrorResponse) => {
+          switch (errorResponse.status) {
+            case 401:
+              this._dialogService.openWarningMessageDialog('Not authorized', 'You must be authorized to change user role.');
+              break;
+            case 404:
+              this.updateUsers();
+              break;
+            default:
+              this._dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
+              break;
+          }
+        });
+    });
   }
 
   public blockButtonClickedHandler(user: DashboardUserDto): void {
@@ -83,7 +109,7 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
       this._users = list.items;
       this._totalCount = list.totalCount;
     }, (errorResponse: HttpErrorResponse) => {
-      
+
     }, () => this._usersLoaded = true);
   }
 }

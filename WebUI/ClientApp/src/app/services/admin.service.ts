@@ -25,4 +25,8 @@ export class AdminService {
 
     return this.httpClient.get<PaginatedListResponse<DashboardUserDto>>(`${this.apiUrl}api/admin/users`, { params });
   }
+
+  public toggleUserRole(userId: string): Observable<string> {
+    return this.httpClient.post<string>(`${this.apiUrl}api/admin/role`, { id: userId }, { responseType: 'text' as 'json' });
+  }
 }

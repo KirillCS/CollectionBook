@@ -1,9 +1,7 @@
-﻿using Application.Administration.Queries.GetDashboardUsers;
+﻿using Application.Administration.Commands.ToggleUserRole;
+using Application.Administration.Queries.GetDashboardUsers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebUI.Controllers
@@ -15,5 +13,10 @@ namespace WebUI.Controllers
         [HttpGet("users")]
         public async Task<IActionResult> GetDashboardUsers([FromQuery] GetDashboardUsersQuery query) =>
             Ok(await Mediator.Send(query));
+
+        [Authorize]
+        [HttpPost("role")]
+        public async Task<IActionResult> ToggleUserRole([FromBody] ToggleUserRoleCommand command) =>
+            Ok(await Mediator.Send(command));
     }
 }

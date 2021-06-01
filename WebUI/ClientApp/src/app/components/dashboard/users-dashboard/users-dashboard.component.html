@@ -15,7 +15,7 @@
     <ng-container matColumnDef="login">
       <th mat-header-cell *matHeaderCellDef>Login</th>
       <td mat-cell *matCellDef="let user">
-        <span [routerLink]="['/profile', user.login]">@{{ user.login }} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos voluptas repellendus aspernatur repudiandae excepturi nisi adipisci aut distinctio, nulla facilis alias optio maxime molestiae, accusamus et dolorum officiis exercitationem suscipit.</span>
+        <span [routerLink]="['/profile', user.login]">@{{ user.login }}</span>
       </td>
     </ng-container>
 
@@ -25,9 +25,9 @@
         {{ user.role }}
         <button
           matTooltip="{{ user.role == userRole ? 'Up' : 'Down' }} role to {{ user.role == userRole ? adminRole : userRole }}"
-          mat-icon-button (click)="changeAdminButtonClickedHandler(user)">
+          mat-icon-button (click)="changeRoleButtonClickedHandler(user)">
           <mat-icon class="material-icons-round cell-icon">
-            arrow_upward
+            {{ user.role == userRole ? 'arrow_upward' : 'arrow_downward' }}
           </mat-icon>
         </button>
       </td>
