@@ -1,3 +1,21 @@
+.table-container {
+  position: relative;
+}
+
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #00000020;
+  border-radius: 2px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .mat-column-id {
   width: 320px;
 }
@@ -6,7 +24,7 @@
   width: 100px;
 }
 
-.mat-column-login>span {
+.mat-column-login > span {
   cursor: pointer;
 
   &:hover {
@@ -14,7 +32,8 @@
   }
 }
 
-.mat-header-cell, .mat-cell {
+.mat-header-cell,
+.mat-cell {
   padding: 0 0.5rem !important;
   text-align: center;
 }

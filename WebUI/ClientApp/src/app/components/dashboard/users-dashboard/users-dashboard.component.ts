@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -18,8 +18,6 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
   private _displayedColumns: string[] = ['id', 'login', 'role', 'isBlocked'];
 
   private _usersLoaded = false;
-  private _usersLoaded$ = new BehaviorSubject<boolean>(this._usersLoaded);
-  private _usersLoadedObservable = this._usersLoaded$.asObservable();
   private _dataSource = new MatTableDataSource<DashboardUserDto>();
 
   @ViewChild(MatPaginator) private _paginator: MatPaginator;
@@ -27,7 +25,6 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
   public constructor(private _adminService: AdminService) {
     super();
     this._pageSize = 30;
-    this._usersLoadedObservable.subscribe(value => this._usersLoaded = value);
   }
 
   public get displayedColumns(): string[] {
@@ -36,10 +33,6 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
 
   public get usersLoaded(): boolean {
     return this._usersLoaded;
-  }
-
-  public get usersLoadedObservable(): Observable<boolean> {
-    return this._usersLoadedObservable;
   }
 
   public get dataSource(): MatTableDataSource<DashboardUserDto> {
@@ -70,7 +63,7 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
   }
 
   private updateUsers(): void {
-    this._usersLoaded$.next(false);
+    this._usersLoaded = false;
 
     setTimeout(() => {
       let request: SearchPaginatedListRequest = {
@@ -82,9 +75,11 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
       this._adminService.getDashboardUsers(request).subscribe(list => {
         this.dataSource.data = list.items;
         this._totalCount = list.totalCount;
+        this._usersLoaded = true;
       }, (errorResponse: HttpErrorResponse) => {
 
-      }, () => this._usersLoaded$.next(true));
-    }, 2000);
+      }, () => {
+      });
+    }, 1000);
   }
 }
