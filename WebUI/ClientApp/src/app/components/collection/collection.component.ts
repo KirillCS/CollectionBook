@@ -196,8 +196,8 @@ export class CollectionComponent implements OnInit {
   public resetCover(): void {
     let dialogRef = this.dialogService.openYesNoDialog('Reset the collection cover?', 'Are you sure you want to reset the collection cover?');
 
-    dialogRef.afterClosed().subscribe((answer: string) => {
-      if (answer !== 'Yes') {
+    dialogRef.afterClosed().subscribe((yes: boolean) => {
+      if (!yes) {
         return;
       }
 

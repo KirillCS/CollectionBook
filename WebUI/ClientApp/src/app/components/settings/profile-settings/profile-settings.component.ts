@@ -119,8 +119,8 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   public resetAvatar(): void {
     let dialogRef = this.dialogService.openYesNoDialog('Reset profile avatar?', 'Are you sure you want to reset profile avatar?');
 
-    dialogRef.afterClosed().subscribe((answer: string) => {
-      if (answer !== 'Yes') {
+    dialogRef.afterClosed().subscribe((yes: boolean) => {
+      if (!yes) {
         return;
       }
 

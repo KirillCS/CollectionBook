@@ -69,8 +69,8 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
 
     const dialogRef = this.dialogService.openYesNoDialog('Are you sure?', `Are you sure you want to change login from ${this.user.login} to ${control.value}? Links to your profile will be broken.`);
 
-    dialogRef.afterClosed().subscribe((result: string) => {
-      if (result == 'No') {
+    dialogRef.afterClosed().subscribe((yes: boolean) => {
+      if (!yes) {
         return;
       }
 

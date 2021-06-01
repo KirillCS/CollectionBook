@@ -229,8 +229,8 @@ export class ItemComponent implements OnInit {
   public removeImageButtonWasClicked(imageId: number): void {
     let dialogRef = this.dialogService.openYesNoDialog('Remove an item image?', 'Are you sure you want to remove the current item image?');
 
-    dialogRef.afterClosed().subscribe((answer: string) => {
-      if (answer !== 'Yes') {
+    dialogRef.afterClosed().subscribe((yes: boolean) => {
+      if (!yes) {
         return;
       }
 
@@ -241,8 +241,8 @@ export class ItemComponent implements OnInit {
   public deleteItemButtonWasClicked(): void {
     let dialogRef = this.dialogService.openYesNoDialog('Are you sure?', `Are you sure you want to DELETE the collection item "${this.item.name}"? This action cannot be undone.`);
 
-    dialogRef.afterClosed().subscribe((answer: string) => {
-      if (answer !== 'Yes') {
+    dialogRef.afterClosed().subscribe((yes: boolean) => {
+      if (!yes) {
         return;
       }
 
