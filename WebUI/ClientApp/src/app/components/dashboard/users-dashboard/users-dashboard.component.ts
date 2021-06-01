@@ -1,26 +1,23 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 
 import { DashboardUserDto } from 'src/app/models/dtos/user/dashboard-user.dto';
 import { SearchPaginatedListRequest } from 'src/app/models/requests/search-paginated-list.request';
+import { Roles } from 'src/app/models/roles';
 import { AdminService } from 'src/app/services/admin.service';
 import { SearchBaseComponent } from '../../search/search-base.component';
 
 @Component({
   selector: 'app-users-dashboard',
   templateUrl: './users-dashboard.component.html',
-  styleUrls: ['./users-dashboard.component.scss']
+  styleUrls: ['../dashboard.component.css', './users-dashboard.component.scss']
 })
 export class UsersDashboardComponent extends SearchBaseComponent implements OnInit {
   private _displayedColumns: string[] = ['id', 'login', 'role', 'isBlocked'];
 
   private _usersLoaded = false;
-  private _dataSource = new MatTableDataSource<DashboardUserDto>();
-
-  @ViewChild(MatPaginator) private _paginator: MatPaginator;
+  private _users = new Array<DashboardUserDto>();
 
   public constructor(private _adminService: AdminService) {
     super();
@@ -35,12 +32,19 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
     return this._usersLoaded;
   }
 
-  public get dataSource(): MatTableDataSource<DashboardUserDto> {
-    return this._dataSource;
+  public get users(): DashboardUserDto[] {
+    return this._users;
+  }
+
+  public get userRole(): string {
+    return Roles.User;
+  }
+
+  public get adminRole(): string {
+    return Roles.Admin;
   }
 
   public ngOnInit(): void {
-    this.dataSource.paginator = this._paginator;
     this.updateUsers();
   }
 
@@ -58,6 +62,10 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
     this.updateUsers();
   }
 
+  public changeAdminButtonClickedHandler(user: DashboardUserDto): void {
+
+  }
+
   public blockButtonClickedHandler(user: DashboardUserDto): void {
     user.isBlocked = !user.isBlocked;
   }
@@ -65,21 +73,17 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
   private updateUsers(): void {
     this._usersLoaded = false;
 
-    setTimeout(() => {
-      let request: SearchPaginatedListRequest = {
-        searchString: this.searchString,
-        pageIndex: this.pageIndex,
-        pageSize: this.pageSize
-      };
+    let request: SearchPaginatedListRequest = {
+      searchString: this.searchString,
+      pageIndex: this.pageIndex,
+      pageSize: this.pageSize
+    };
 
-      this._adminService.getDashboardUsers(request).subscribe(list => {
-        this.dataSource.data = list.items;
-        this._totalCount = list.totalCount;
-        this._usersLoaded = true;
-      }, (errorResponse: HttpErrorResponse) => {
-
-      }, () => {
-      });
-    }, 1000);
+    this._adminService.getDashboardUsers(request).subscribe(list => {
+      this._users = list.items;
+      this._totalCount = list.totalCount;
+    }, (errorResponse: HttpErrorResponse) => {
+      
+    }, () => this._usersLoaded = true);
   }
 }
