@@ -150,7 +150,9 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
       this._users = list.items;
       this._totalCount = list.totalCount;
     }, (errorResponse: HttpErrorResponse) => {
+      if (errorResponse.status == 401) {
 
+      }
     }, () => this._usersLoaded = true);
   }
 

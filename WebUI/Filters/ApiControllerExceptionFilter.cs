@@ -23,6 +23,9 @@ namespace WebUI.Filters
                 { typeof(EmailNotConfirmedException), HandleEmailNotConfirmedException },
                 { typeof(EntityNotFoundException), HandleEntityNotFoundException },
                 { typeof(OperationException), HandleOperationException },
+                { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
+                { typeof(UserBlockedException), HandleUserBlockedException },
+                { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
             };
         }
 
@@ -115,6 +118,47 @@ namespace WebUI.Filters
                 Status = exception.StatusCode,
                 Title = exception.Message,
                 Detail = exception.Message
+            };
+
+            context.Result = new ObjectResult(details);
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleUnauthorizedAccessException(ExceptionContext context)
+        {
+            var details = new ProblemDetails()
+            {
+                Status = StatusCodes.Status401Unauthorized,
+                Title = "User is unauthorized",
+                Detail = "User is unauthorized"
+            };
+
+            context.Result = new ObjectResult(details);
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleUserBlockedException(ExceptionContext context)
+        {
+            var exception = context.Exception as UserBlockedException;
+            var details = new UserBlockedProblemDetails()
+            {
+                Status = StatusCodes.Status405MethodNotAllowed,
+                Title = "User is blocked",
+                Detail = $"User is blocked. Reason: {exception.BlockReason}",
+                BlockReason = exception.BlockReason
+            };
+
+            context.Result = new ObjectResult(details);
+            context.ExceptionHandled = true;
+        }
+
+        private void HandleForbiddenAccessException(ExceptionContext context)
+        {
+            var details = new ProblemDetails()
+            {
+                Status = StatusCodes.Status403Forbidden,
+                Title = "User has not access",
+                Detail = "User has not access"
             };
 
             context.Result = new ObjectResult(details);

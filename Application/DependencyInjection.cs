@@ -1,4 +1,5 @@
-﻿using Application.Common.Behaviours;
+﻿using Application.Common.Behaviors;
+using Application.Common.Behaviours;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +16,8 @@ namespace Application
             services.AddAutoMapper(assembly);
             services.AddMediatR(assembly);
             services.AddValidatorsFromAssembly(assembly);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
 
             return services;
         }
