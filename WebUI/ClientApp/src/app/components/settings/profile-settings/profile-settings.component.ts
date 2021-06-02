@@ -17,6 +17,7 @@ import { API_URL, DEFAULT_AVATAR, SUPPORTED_IMAGES_TYPES } from 'src/app/app-inj
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { Router } from '@angular/router';
 import { PreviousRouteService } from 'src/app/services/previous-route.service';
+import { AuthTokenService, TokenSettingType } from 'src/app/services/auth-token.service';
 
 @Component({
   selector: 'app-profile-settings',
@@ -56,6 +57,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     private settingsService: SettingsService,
     private userService: UserService,
     private authService: AuthService,
+    private authTokenService: AuthTokenService,
     private serverErrorsService: ServerErrorsService,
     private dialogService: DefaultDialogsService,
     private dialog: MatDialog,
@@ -135,67 +137,82 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
     }
 
     this.inProcess = true;
-    this.userService.updateProfile(this.getRequest()).subscribe(() => {
-      this.setUser();
-      this.settingsService.update(this.user);
+    this.userService.updateProfile(this.getRequest()).subscribe(
+      () => {
+        this.setUser();
+        this.settingsService.update(this.user);
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.inProcess = false;
+        switch (errorResponse.status) {
+          case 400:
+            this.serverErrorsService.setFormErrors(this.form, errorResponse);
+            break;
+          case 401:
+            this.authService.logout(true);
+            this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to set up account profile');
+            break;
+          case 403:
+            let updatedToken = errorResponse.error.accessToken;
+            let tokenSettingType = this.authTokenService.isConstant;
+            if (updatedToken && tokenSettingType !== TokenSettingType.NotSet) {
+              this.authTokenService.setToken(updatedToken, tokenSettingType == TokenSettingType.Constant);
+            }
 
-    }, (errorResponse: HttpErrorResponse) => {
-      this.inProcess = false;
-      switch (errorResponse.status) {
-        case 400:
-          this.serverErrorsService.setFormErrors(this.form, errorResponse);
-          break;
-        case 401:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
-          this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to set up account profile');
-          break;
-        case 404:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
-          this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted');
-          break;
-        case 405:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
-          this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
-          break;
-        default:
-          this.unknownError = true;
-          break;
-      }
-
-    }, () => {
-      this.inProcess = false;
-      this.snackBar.open('Profile was updated', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
-    });
+            this.router.navigateByUrl('/');
+            this.dialogService.openWarningMessageDialog('No access', 'Your account role does not allow change account profile.');
+            break;
+          case 404:
+            this.authService.logout(true);
+            this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted');
+            break;
+          case 405:
+            this.authService.logout(true);
+            this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
+            break;
+          default:
+            this.unknownError = true;
+            break;
+        }
+      },
+      () => {
+        this.inProcess = false;
+        this.snackBar.open('Profile was updated', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
+      });
   }
 
   private updateAvatar(avatar: File): void {
-    this.userService.updateAvatar(avatar).subscribe(newAvatarPath => {
-      this.user.avatarPath = newAvatarPath;
-    }, (errorResponse: HttpErrorResponse) => {
-      switch (errorResponse.status) {
-        case 401:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
-          this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'You must be authenticated to update your profile avatar.');
-          break;
-        case 404:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
-          this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
-          break;
-        case 405:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
-          this.dialogService.openBlockReasonDialog(JSON.parse(errorResponse.error).blockReason);
-          break;
-        default:
-          this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'Something went wrong while profile avatar was updating. Try update avatar again.');
-          break;
-      }
-    });
+    this.userService.updateAvatar(avatar).subscribe(
+      newAvatarPath => this.user.avatarPath = newAvatarPath,
+      (errorResponse: HttpErrorResponse) => {
+        switch (errorResponse.status) {
+          case 401:
+            this.authService.logout(true);
+            this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'You must be authenticated to update your profile avatar.');
+            break;
+          case 403:
+            let updatedToken = errorResponse.error.accessToken;
+            let tokenSettingType = this.authTokenService.isConstant;
+            if (updatedToken && tokenSettingType !== TokenSettingType.NotSet) {
+              this.authTokenService.setToken(updatedToken, tokenSettingType == TokenSettingType.Constant);
+            }
+
+            this.router.navigateByUrl('/');
+            this.dialogService.openWarningMessageDialog('No access', 'Your account role does not allow change account avatar.');
+            break;
+          case 404:
+            this.authService.logout(true);
+            this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
+            break;
+          case 405:
+            this.authService.logout(true);
+            this.dialogService.openBlockReasonDialog(JSON.parse(errorResponse.error).blockReason);
+            break;
+          default:
+            this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'Something went wrong while profile avatar was updating. Try update avatar again.');
+            break;
+        }
+      });
   }
 
   private setForm(user: UserDto): void {

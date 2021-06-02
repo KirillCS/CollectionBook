@@ -1,7 +1,7 @@
 <div class="mt-3 mt-md-5 mx-3">
     <div class="card app__container--form">
       <h1>Login</h1>
-      <form [formGroup]="form" (submit)="submit()" (input)="formChanged()">
+      <form #loginForm="ngForm" [formGroup]="form" (submit)="submit(loginForm)" (input)="formChanged()">
         <div class="line">
           <mat-form-field class="field" appearance="outline">
             <mat-label>Login or email</mat-label>

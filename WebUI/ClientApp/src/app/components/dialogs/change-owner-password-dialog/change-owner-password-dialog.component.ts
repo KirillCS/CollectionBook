@@ -93,29 +93,35 @@ export class ChangeOwnerPasswordDialogComponent {
       newPassword: this.newPasswordControl.value,
       passwordConfirmation: this.passwordConfirmationControl.value
     };
-    this.userService.updatePassword(request).subscribe(() => {
-      this.dialogRef.close();
-      this.dialogService.openSuccessMessageDialog('Password successfully changed', `Owner password was successfully changed .`);
-    }, (errorResponse: HttpErrorResponse) => {
-      this._inProcess = false;
-      switch (errorResponse.status) {
-        case 400:
-          this.serverErrorService.setFormErrors(this.form, errorResponse);
-          return;
-        case 401:
-          this.authService.logout();
-          this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change owner password.');
-          break;
-        case 404:
-          this.authService.logout();
-          this.dialogService.openWarningMessageDialog('User not found', `User was not found`);
-          break;
-        default:
-          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong while changing the owner password.');
-          break;
-      }
-      
-      this.dialogRef.close();
-    });
+    this.userService.updatePassword(request).subscribe(
+      () => {
+        this.dialogRef.close();
+        this.dialogService.openSuccessMessageDialog('Password successfully changed', `Owner password was successfully changed .`);
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this._inProcess = false;
+        switch (errorResponse.status) {
+          case 400:
+            this.serverErrorService.setFormErrors(this.form, errorResponse);
+            return;
+          case 401:
+            this.authService.logout(true);
+            this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change owner password.');
+            break;
+          case 404:
+            this.authService.logout(true);
+            this.dialogService.openWarningMessageDialog('User not found', `User was not found`);
+            break;
+          case 405:
+            this.authService.logout(true);
+            this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
+            break;
+          default:
+            this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong while changing the owner password.');
+            break;
+        }
+
+        this.dialogRef.close();
+      });
   }
 }

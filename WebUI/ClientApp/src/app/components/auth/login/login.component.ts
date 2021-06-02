@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Params, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -10,6 +10,7 @@ import { FieldDialogComponent } from 'src/app/components/dialogs/field-dialog/fi
 import { UserService } from 'src/app/services/user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { PreviousRouteService } from 'src/app/services/previous-route.service';
+import { ServerErrorsService } from 'src/app/services/server-errors.service';
 
 @Component({
   selector: 'app-login',
@@ -48,7 +49,8 @@ export class LoginComponent implements OnDestroy {
     private dialog: MatDialog,
     private dialogsService: DefaultDialogsService,
     private userService: UserService,
-    private previousRouteService: PreviousRouteService
+    private previousRouteService: PreviousRouteService,
+    private serverErrorsService: ServerErrorsService
   ) { }
 
   public ngOnDestroy(): void {
@@ -60,36 +62,41 @@ export class LoginComponent implements OnDestroy {
     this.unknownError = false;
   }
 
-  public submit(): void {
+  public submit(loginForm: NgForm): void {
     if (this.form.invalid) {
       return;
     }
 
     this.inProcess = true;
     this.authService.login({ login: this.login.value, password: this.password.value }, this.rememberMe.value ?? false)
-      .subscribe(() => {
-        this.inProcess = false;
-        let url = this.previousRouteService.getPreviousUrl();
-        this.router.navigateByUrl(url === this.router.url ? '/' : url);
-      }, (errorResponse: HttpErrorResponse) => {
-        switch (errorResponse.status) {
-          case 401:
-            this.invalid = true;
-            break;
-          case 403:
-            let queryParams: Params = { id: errorResponse.error.id, email: errorResponse.error.email };
-            this.router.navigate(['emailconfirmation'], { queryParams });
-            break;
-          case 405:
-            this.dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
-            break;
-          default:
-            this.unknownError = true;
-            break;
-        }
-        
-        this.inProcess = false;
-      });
+      .subscribe(
+        () => {
+          let url = this.previousRouteService.getPreviousUrl();
+          this.router.navigateByUrl(url === this.router.url ? '/' : url);
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.inProcess = false;
+          switch (errorResponse.status) {
+            case 400:
+              this.serverErrorsService.setFormErrors(this.form, errorResponse)
+              break;
+            case 401:
+              this.invalid = true;
+              break;
+            case 403:
+              let queryParams: Params = { id: errorResponse.error.id, email: errorResponse.error.email };
+              this.router.navigate(['emailconfirmation'], { queryParams });
+              break;
+            case 405:
+              loginForm.resetForm();
+              this.dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
+              break;
+            default:
+              this.unknownError = true;
+              break;
+          }
+        },
+        () => this.inProcess = false);
   }
 
   public forgotPasswordButtonClicked(): void {
@@ -117,20 +124,21 @@ export class LoginComponent implements OnDestroy {
         return;
       }
 
-      this.userService.sendPasswordResetConfirmation({ email: formControl.value }).subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
-        if (errorResponse.status == 404) {
-          formControl.setErrors({ notfound: true });
+      this.userService.sendPasswordResetConfirmation({ email: formControl.value }).subscribe(
+        () => { },
+        (errorResponse: HttpErrorResponse) => {
+          if (errorResponse.status == 404) {
+            formControl.setErrors({ notfound: true });
+            return;
+          }
 
-          return;
-        }
+          dialogRef.close();
+          this.dialogsService.openWarningMessageDialog('Failed to send confirmation', 'Something went wrong while sending confirmation. You can try to reset your password again');
 
-        dialogRef.close();
-        this.dialogsService.openWarningMessageDialog('Failed to send confirmation', 'Something went wrong while sending confirmation. You can try to reset your password again');
-
-      }, () => {
-        dialogRef.close();
-        this.dialogsService.openSuccessMessageDialog('Confirmation has sent', 'Password reset confirmation has sent. Check your email and follow the link to reset account password.');
-      });
+        }, () => {
+          dialogRef.close();
+          this.dialogsService.openSuccessMessageDialog('Confirmation has sent', 'Password reset confirmation has sent. Check your email and follow the link to reset account password.');
+        });
     });
 
     dialogRef.afterClosed().subscribe(() => submitSubscription.unsubscribe());

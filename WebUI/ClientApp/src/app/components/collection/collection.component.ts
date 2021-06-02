@@ -7,6 +7,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { API_URL, DEFAULT_COLLECTION_COVER, SEARCH_BY_KEY, SEARCH_STRING_KEY, SUPPORTED_IMAGES_TYPES } from 'src/app/app-injection-tokens';
 import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
 import { Roles } from 'src/app/models/roles';
+import { AuthTokenService, TokenSettingType } from 'src/app/services/auth-token.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { CollectionService } from 'src/app/services/collection.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
@@ -44,6 +45,7 @@ export class CollectionComponent implements OnInit {
     private previousRouteService: PreviousRouteService,
     private dialog: MatDialog,
     private dialogService: DefaultDialogsService,
+    private authTokenService: AuthTokenService,
     @Inject(API_URL) private apiUrl: string,
     @Inject(DEFAULT_COLLECTION_COVER) private defaultCover: string,
     @Inject(SEARCH_STRING_KEY) private searchStringKey: string,
@@ -103,16 +105,20 @@ export class CollectionComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.collectionService.get(this._collectionId).subscribe(collection => {
-      this._collection = collection;
-      this.setPath();
-    }, (errorResponse: HttpErrorResponse) => {
-      if (errorResponse.status == 404) {
-        this.router.navigateByUrl('**', { skipLocationChange: true });
-      } else {
+    this.collectionService.get(this._collectionId).subscribe(
+      collection => {
+        this._collection = collection;
+        this.setPath();
+      },
+      (errorResponse: HttpErrorResponse) => {
+        if (errorResponse.status == 404) {
+          this.router.navigateByUrl('**', { skipLocationChange: true });
+          return;
+        }
+
         this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
-      }
-    }, () => this._contentLoaded = true);
+      },
+      () => this._contentLoaded = true);
   }
 
   public addItemButtonClicked(): void {
@@ -151,7 +157,7 @@ export class CollectionComponent implements OnInit {
       this.collection.stars.push({ userId: this.currentUserService.currentUser?.id });
       return;
     }
-    
+
     this.collection.stars = this.collection.stars.filter(s => s.userId != this.currentUserService.currentUser?.id);
   }
 
@@ -180,14 +186,14 @@ export class CollectionComponent implements OnInit {
       let cover: any = blob;
       cover.name = file.name;
 
-      this.collectionService.changeCover(this.collection.id, <File>cover).subscribe(newCoverPath => {
-        this.collection.coverPath = newCoverPath;
-      }, (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
-        errorResponse,
-        'To change the collection cover you must be authenticated.',
-        `To change the collection cover you must be its owner.`,
-        `Something went wrong while changing the collection cover.`
-      ));
+      this.collectionService.changeCover(this.collection.id, <File>cover).subscribe(
+        newCoverPath => this.collection.coverPath = newCoverPath,
+        (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
+          errorResponse,
+          'To change the collection cover you must be authenticated.',
+          `To change the collection cover you must be its owner.`,
+          `Something went wrong while changing the collection cover.`
+        ));
     });
 
     dialogRef.afterClosed().subscribe(() => sub.unsubscribe());
@@ -330,7 +336,7 @@ export class CollectionComponent implements OnInit {
       }
     });
   }
-  
+
   public getTagQueryParams(tag: string): Params {
     return {
       [this.searchStringKey]: tag,
@@ -339,59 +345,74 @@ export class CollectionComponent implements OnInit {
   }
 
   private createItem(name: string): void {
-    this.itemService.create(name, this.collection.id).subscribe(itemId => {
-      this.router.navigate(['/item', itemId]);
-    }, (errorResponse: HttpErrorResponse) => {
-      switch (true) {
-        case errorResponse.status == 400:
-          this.dialogService.openWarningMessageDialog('Item name cannot be empty', 'You must enter a name of a new item.');
-          break;
-        case errorResponse.status == 401:
-          this.dialogService.openWarningMessageDialog('You are not authenticated', 'You must be authenticated to create a new item.');
-          break;
-        case errorResponse.status == 403:
-          this.dialogService.openWarningMessageDialog('You don\'t have access', 'You must be the the owner of this collection to create a new item.');
-          break;
-        case errorResponse.status == 404 && errorResponse.error.entityType == 'Collection':
-          this.router.navigateByUrl(this.previousRouteService.getPreviousUrl());
-          this.dialogService.openWarningMessageDialog('Collection not found', `Collection ${this.collection.name} was not found. Maybe it was deleted.`);
-          break;
-        case errorResponse.status == 404 && errorResponse.error.entityType == 'User':
-          this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
-          break;
-        case errorResponse.status == 405:
-          this.authService.logout();
-          this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
-          break;
-        default:
-          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while creating a new item.');
-          break;
-      }
-    })
+    this.itemService.create(name, this.collection.id).subscribe(
+      itemId => this.router.navigate(['/item', itemId]),
+      (errorResponse: HttpErrorResponse) => {
+        switch (true) {
+          case errorResponse.status == 400:
+            this.dialogService.openWarningMessageDialog('Item name cannot be empty', 'You must enter a name of a new item.');
+            break;
+          case errorResponse.status == 401:
+            this.authService.logout();
+            this.dialogService.openWarningMessageDialog('You are not authenticated', 'You must be authenticated to create a new item.');
+            break;
+          case errorResponse.status == 403:
+            let updatedToken = errorResponse.error?.accessToken;
+            let tokenSettingType = this.authTokenService.isConstant;
+            if (updatedToken && tokenSettingType !== TokenSettingType.NotSet) {
+              this.authTokenService.setToken(updatedToken, tokenSettingType == TokenSettingType.Constant);
+              this.dialogService.openWarningMessageDialog('No access', 'You cannot create a collection item, because of your account role.');
+              break;
+            }
+
+            this.dialogService.openWarningMessageDialog('You don\'t have access', 'You must be the the owner of this collection to create a new item.');
+            break;
+          case errorResponse.status == 404 && errorResponse.error.entityType == 'Collection':
+            this.router.navigateByUrl(this.previousRouteService.getPreviousUrl());
+            this.dialogService.openWarningMessageDialog('Collection not found', `Collection ${this.collection.name} was not found. Maybe it was deleted.`);
+            break;
+          case errorResponse.status == 404 && errorResponse.error.entityType == 'User':
+            this.authService.logout();
+            this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
+            break;
+          case errorResponse.status == 405:
+            this.authService.logout();
+            this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
+            break;
+          default:
+            this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while creating a new item.');
+            break;
+        }
+      })
   }
 
   private changeCollectionName(newName: string): void {
-    this.collectionService.changeName(this.collection.id, newName).subscribe(() => { },
+    this.collectionService.changeName(this.collection.id, newName).subscribe(
+      () => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
         'To change the collection name you must be authenticated.',
         `To change the collection name you must be its owner.`,
         `Something went wrong while changing the collection name.`
-      ), () => this.collection.name = newName);
+      ),
+      () => this.collection.name = newName);
   }
 
   private changeCollectionDescription(newDescription: string): void {
-    this.collectionService.changeDescription(this.collection.id, newDescription).subscribe(() => { },
+    this.collectionService.changeDescription(this.collection.id, newDescription).subscribe(
+      () => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
         'To change the collection description you must be authenticated.',
         `To change the collection description you must be its owner.`,
         `Something went wrong while changing the collection description.`
-      ), () => this.collection.description = newDescription);
+      ),
+      () => this.collection.description = newDescription);
   }
 
   private changeCollectionTags(tags: string[]): void {
-    this.collectionService.changeTags(this.collection.id, tags).subscribe(tags => this.collection.tags = tags,
+    this.collectionService.changeTags(this.collection.id, tags).subscribe(
+      tags => this.collection.tags = tags,
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
         'To change the collection tags you must be authenticated.',
@@ -401,13 +422,15 @@ export class CollectionComponent implements OnInit {
   }
 
   private deleteCollection(): void {
-    this.collectionService.delete(this.collection.id).subscribe(() => { },
+    this.collectionService.delete(this.collection.id).subscribe(
+      () => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
         'To delete the collection you must be authenticated.',
         `To delete the collection "${this.collection.name}" you must be its owner.`,
         `Something went wrong while deleting the collection.`
-      ), () => this.router.navigate(['/profile', this.collection.user.login, 'collections']));
+      ),
+      () => this.router.navigate(['/profile', this.collection.user.login, 'collections']));
   }
 
   private handleErrorStatuses(errorResponse: HttpErrorResponse, notAuthMessage: string, accessErrorMessage: string, errorMessage: string): void {
@@ -415,18 +438,24 @@ export class CollectionComponent implements OnInit {
       case 400:
         break;
       case 401:
+        this.authService.logout();
         this.dialogService.openWarningMessageDialog('You are not authenticated', notAuthMessage);
         break;
       case 403:
         this.dialogService.openWarningMessageDialog('You don\'t have access', accessErrorMessage);
         break;
       case 404:
-        this.dialogService.openWarningMessageDialog('Collection not found', `Collection was not found. Maybe it was deleted.`);
-        this.router.navigate(['/profile', this.collection.user.login, 'collections']);
+        if (errorResponse.error?.entityType == 'User') {
+          this.authService.logout();
+          this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Try to log in again.');
+          break;
+        }
+
+        this.router.navigateByUrl('**', { skipLocationChange: true });
         break;
       case 405:
         this.authService.logout();
-        this.dialogService.openBlockReasonDialog(JSON.parse(errorResponse.error).blockReason);
+        this.dialogService.openBlockReasonDialog(errorResponse.error?.blockReason);
         break;
       default:
         this.dialogService.openWarningMessageDialog('Something went wrong', errorMessage);

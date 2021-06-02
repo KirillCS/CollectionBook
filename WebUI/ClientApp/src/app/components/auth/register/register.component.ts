@@ -7,6 +7,7 @@ import { SubmitErrorStateMatcher } from 'src/app/error-state-matchers/submit-err
 import { AuthService } from 'src/app/services/auth.service';
 import 'src/app/extensions/string-extensions';
 import { ServerErrorsService } from 'src/app/services/server-errors.service';
+import { RegisterRequest } from 'src/app/models/requests/auth/register.request';
 
 @Component({
   selector: 'app-register',
@@ -47,7 +48,7 @@ export class RegisterComponent implements OnDestroy {
   //#endregion
 
   //#region controls errors messages
-  public get loginErrorMessage() : string {
+  public get loginErrorMessage(): string {
     if (this.login.hasError('required')) {
       return 'Login is a required field';
     }
@@ -62,8 +63,8 @@ export class RegisterComponent implements OnDestroy {
 
     return '';
   }
-  
-  public get emailErrorMessage() : string {
+
+  public get emailErrorMessage(): string {
     if (this.email.hasError('required')) {
       return 'Email is a required field';
     }
@@ -75,7 +76,7 @@ export class RegisterComponent implements OnDestroy {
     return '';
   }
 
-  public get passwordErrorMessage() : string {
+  public get passwordErrorMessage(): string {
     if (this.password.hasError('required')) {
       return 'Password is a required field';
     }
@@ -90,8 +91,8 @@ export class RegisterComponent implements OnDestroy {
 
     return '';
   }
-  
-  public get passwordConfirmationErrorMessage() : string {
+
+  public get passwordConfirmationErrorMessage(): string {
     if (this.passwordConfirmation.hasError('required')) {
       return 'Confirm password';
     }
@@ -105,7 +106,7 @@ export class RegisterComponent implements OnDestroy {
   //#endregion
 
   public constructor(
-    private authService: AuthService, 
+    private authService: AuthService,
     private router: Router,
     private serverErrorsService: ServerErrorsService
   ) { }
@@ -130,19 +131,26 @@ export class RegisterComponent implements OnDestroy {
     }
 
     this.inProcess = true;
-    this.authService.register({ login: this.login.value, email: this.email.value, password: this.password.value, passwordConfirmation: this.passwordConfirmation.value })
-      .subscribe(response => {
+    let request: RegisterRequest = {
+      login: this.login.value,
+      email: this.email.value,
+      password: this.password.value,
+      passwordConfirmation: this.passwordConfirmation.value
+    }
+    this.authService.register(request).subscribe(
+      response => {
         let queryParams: Params = { id: response.id, email: response.email };
         this.router.navigate(['emailconfirmation'], { queryParams });
-      }, (errorResponse: HttpErrorResponse) => {
+      },
+      (errorResponse: HttpErrorResponse) => {
         this.inProcess = false;
         if (errorResponse.status == 400) {
           this.serverErrorsService.setFormErrors(this.form, errorResponse);
-
           return;
         }
 
         this.unknownError = true;
-      }, () => this.inProcess = false);
+      },
+      () => this.inProcess = false);
   }
 }

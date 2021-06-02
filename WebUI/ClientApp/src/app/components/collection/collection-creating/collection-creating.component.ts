@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { DefaultErrorStateMatcher } from 'src/app/error-state-matchers/default-error-state-mathcer';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { PreviousRouteService } from 'src/app/services/previous-route.service';
+import { AuthTokenService, TokenSettingType } from 'src/app/services/auth-token.service';
 
 @Component({
   selector: 'app-collection-creating',
@@ -37,6 +38,7 @@ export class CollectionCreatingComponent {
     private collectionService: CollectionService,
     private serverErrorsService: ServerErrorsService,
     private authService: AuthService,
+    private authTokenService: AuthTokenService,
     private currentUserService: CurrentUserService,
     private dialogService: DefaultDialogsService,
     private router: Router,
@@ -75,32 +77,47 @@ export class CollectionCreatingComponent {
       tags: this.tags
     };
 
-    this.collectionService.create(request).subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
-      this.inProcess = false;
-      switch (errorResponse.status) {
-        case 400:
-          this.serverErrorsService.setFormErrors(this.nameFormGroup, errorResponse);
-          this.serverErrorsService.setFormErrors(this.descriptionFormGroup, errorResponse);
-          break;
-        case 401:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
-          this.dialogService.openWarningMessageDialog('You must be authenticated', 'You must be authenticated to create a new collection.');
-          break;
-        case 405:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
-          this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
-          break;
-        default:
-          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while adding a collection.');
-          break;
-      }
+    this.collectionService.create(request).subscribe(
+      () => { },
+      (errorResponse: HttpErrorResponse) => {
+        this.inProcess = false;
+        switch (errorResponse.status) {
+          case 400:
+            this.serverErrorsService.setFormErrors(this.nameFormGroup, errorResponse);
+            this.serverErrorsService.setFormErrors(this.descriptionFormGroup, errorResponse);
+            break;
+          case 401:
+            this.authService.logout(true);
+            this.dialogService.openWarningMessageDialog('You must be authenticated', 'You must be authenticated to create a new collection.');
+            break;
+          case 403:
+            let updatedToken = errorResponse.error.accessToken;
+            let tokenSettingType = this.authTokenService.isConstant;
+            if (updatedToken && tokenSettingType !== TokenSettingType.NotSet) {
+              this.authTokenService.setToken(updatedToken, tokenSettingType == TokenSettingType.Constant);
+            }
 
-    }, () => {
-      this.inProcess = false;
-      this.router.navigate(['/profile', this.currentUserService?.currentUser?.login, 'collections']);
-      this.snackBar.open('Collection was added', 'OK', { horizontalPosition: 'left', verticalPosition: 'bottom', duration: 3500 });
-    });
+            this.router.navigateByUrl('/');
+            this.dialogService.openWarningMessageDialog('No access', 'Your account role does not allow creating a collection.');
+            break;
+          case 404:
+            this.authService.logout(true);
+            this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Try to log in again.');
+            break;
+          case 405:
+            this.authService.logout(true);
+            this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
+            break;
+          default:
+            this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while adding a collection.');
+            break;
+        }
+
+      },
+      () => {
+        this.inProcess = false;
+        this.router.navigate(['/profile', this.currentUserService?.currentUser?.login, 'collections']);
+        this.snackBar.open('Collection was added', 'OK', { horizontalPosition: 'left', verticalPosition: 'bottom', duration: 3500 });
+      });
   }
 }

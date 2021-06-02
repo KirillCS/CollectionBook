@@ -126,13 +126,16 @@ export class SearchCollectionsComponent extends SearchBaseComponent implements O
       sortCriterion: this.selectedSortCriterion,
       pageIndex: this.pageIndex,
       pageSize: this.pageSize
-    }).subscribe(list => {
-      this.$collections.next(list.items);
-      this._totalCount = list.totalCount;
-    }, () => {
-      this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching collections.');
-      this._collectionsLoaded = true;
-    }, () => this._collectionsLoaded = true);
+    }).subscribe(
+      list => {
+        this.$collections.next(list.items);
+        this._totalCount = list.totalCount;
+      },
+      () => {
+        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching collections.');
+        this._collectionsLoaded = true;
+      },
+      () => this._collectionsLoaded = true);
   }
 
   private updateQueryParams(): void {

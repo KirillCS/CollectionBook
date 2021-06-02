@@ -99,29 +99,36 @@ export class HeaderComponent {
         return;
       }
 
-      this.userService.updateLogin({ login: newLogin }).subscribe((response: LoginResponse) => {
-        dialogRef.close();
-        this.authTokenService.setToken(response.accessToken);
-        this.dialogsService.openSuccessMessageDialog('Login successfully changed', `Login was successfully changed to "${newLogin}".`);
-      }, (errorResponse: HttpErrorResponse) => {
-        switch (errorResponse.status) {
-          case 400:
-            formControl.setErrors({ exists: true });
-            return;
-          case 401:
-            this.authService.logout();
-            this.dialogsService.openWarningMessageDialog('Not authenticated', `You must be authenticated to change account login.`);
-            break;
-          case 404:
-            this.authService.logout();
-            this.dialogsService.openWarningMessageDialog('Owner not found', `Owner account was not found. Maybe it was deleted.`);
-          default:
-            this.dialogsService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
-            break;
-        }
+      this.userService.updateLogin({ login: newLogin }).subscribe(
+        response => {
+          dialogRef.close();
+          this.authTokenService.setToken(response.accessToken);
+          this.dialogsService.openSuccessMessageDialog('Login successfully changed', `Login was successfully changed to "${newLogin}".`);
+        },
+        (errorResponse: HttpErrorResponse) => {
+          switch (errorResponse.status) {
+            case 400:
+              formControl.setErrors({ exists: true });
+              return;
+            case 401:
+              this.authService.logout(true);
+              this.dialogsService.openWarningMessageDialog('Not authenticated', `You must be authenticated to change account login.`);
+              break;
+            case 404:
+              this.authService.logout(true);
+              this.dialogsService.openWarningMessageDialog('Owner not found', `Owner account was not found. Maybe it was deleted.`);
+              break;
+            case 405:
+              this.authService.logout(true);
+              this.dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
+              break;
+            default:
+              this.dialogsService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
+              break;
+          }
 
-        dialogRef.close();
-      });
+          dialogRef.close();
+        });
     });
 
     dialogRef.afterClosed().subscribe(() => sub.unsubscribe());
@@ -132,10 +139,6 @@ export class HeaderComponent {
   }
 
   public logout(): void {
-    this.authService.logout();
-    let currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([currentUrl]);
-    });
+    this.authService.logout(true);
   }
 }

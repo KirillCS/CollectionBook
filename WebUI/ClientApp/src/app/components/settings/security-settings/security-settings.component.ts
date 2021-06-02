@@ -96,54 +96,48 @@ export class SecuritySettingsComponent implements OnInit {
       newPassword: this.newPassword.value,
       passwordConfirmation: this.passwordConfirmation.value
     };
-    this.userService.updatePassword(request).subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
-      this.inProcess = false;
-      switch (errorResponse.status) {
-        case 400:
-          this.serverErrorService.setFormErrors(this.form, errorResponse);
-          break;
-        case 401:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
-          this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change account password.');
-          break;
-        case 404:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
-          this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
-          break;
-        case 405:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
-          this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
-          break;
-        default:
-          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong while updating the account password.');
-          break;
-      }
-    }, () => {
-      ngForm.resetForm();
-      this.inProcess = false;
-      this.snackBar.open('Password was updated', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
-    })
+    this.userService.updatePassword(request).subscribe(
+      () => { },
+      (errorResponse: HttpErrorResponse) => {
+        this.inProcess = false;
+        switch (errorResponse.status) {
+          case 400:
+            this.serverErrorService.setFormErrors(this.form, errorResponse);
+            break;
+          case 401:
+            this.authService.logout(true);
+            this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change account password.');
+            break;
+          case 404:
+            this.authService.logout(true);
+            this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
+            break;
+          case 405:
+            this.authService.logout(true);
+            this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
+            break;
+          default:
+            this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong while updating the account password.');
+            break;
+        }
+      },
+      () => {
+        ngForm.resetForm();
+        this.inProcess = false;
+        this.snackBar.open('Password was updated', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
+      })
   }
 
   public forgotPasswordButtonClicked() {
     this.inProcess = true;
-    this.userService.sendPasswordResetConfirmation({ email: this.email }).subscribe(() => {}, (errorResponse: HttpErrorResponse) => {
+    this.userService.sendPasswordResetConfirmation({ email: this.email }).subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
       this.inProcess = false;
       switch (errorResponse.status) {
         case 400:
           this.dialogService.openWarningMessageDialog('Failed to send email', 'Your account email address has not passed validation. Refresh this page and click this button again.');
           break;
-        case 401:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
-          this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change account password.');
-          break;
         case 404:
-          this.authService.logout();
-          this.router.navigateByUrl('/');
+          this.authService.logout(true);
           this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
           break;
         default:

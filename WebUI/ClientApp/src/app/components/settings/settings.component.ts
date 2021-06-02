@@ -25,14 +25,16 @@ export class SettingsComponent implements OnDestroy {
   private _selectedIndex = 0;
 
   public constructor(private settingsService: SettingsService, private router: Router) {
-    this.routerSub = router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-      let urlTree = this.router.parseUrl(event.url);
-      let urlGroup = urlTree.root.children[PRIMARY_OUTLET];
-      if (urlGroup && urlGroup.segments?.length >= 2) {
-        let segment = urlGroup.segments[1].path;
-        this._selectedIndex = this.getMenuItemIndex(segment);
-      }
-    });
+    this.routerSub = router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        let urlTree = this.router.parseUrl(event.url);
+        let urlGroup = urlTree.root.children[PRIMARY_OUTLET];
+        if (urlGroup && urlGroup.segments?.length >= 2) {
+          let segment = urlGroup.segments[1].path;
+          this._selectedIndex = this.getMenuItemIndex(segment);
+        }
+      });
 
     this.userSub = this.settingsService.user$.subscribe(user => {
       this.user = user;

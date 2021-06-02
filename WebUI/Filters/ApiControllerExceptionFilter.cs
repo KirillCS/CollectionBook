@@ -130,6 +130,7 @@ namespace WebUI.Filters
             var details = new ProblemDetails()
             {
                 Status = StatusCodes.Status401Unauthorized,
+                Type = "https://datatracker.ietf.org/doc/html/rfc7235#section-3.1",
                 Title = "User is unauthorized",
                 Detail = "User is unauthorized"
             };
@@ -144,6 +145,7 @@ namespace WebUI.Filters
             var details = new ProblemDetails()
             {
                 Status = StatusCodes.Status405MethodNotAllowed,
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.5",
                 Title = "User is blocked",
                 Detail = $"User is blocked. Reason: {exception.BlockReason}"
             };
@@ -160,6 +162,7 @@ namespace WebUI.Filters
             var details = new ProblemDetails()
             {
                 Status = StatusCodes.Status403Forbidden,
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.3",
                 Title = "User has not access",
                 Detail = "User has not access"
             };

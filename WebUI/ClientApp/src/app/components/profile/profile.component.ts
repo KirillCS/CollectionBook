@@ -33,17 +33,20 @@ export class ProfileComponent implements OnInit {
   public ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       let login = params.get('login');
-      this.userService.get(login).subscribe(response => {
-        this.user = response;
-        this.isOwner = response.id == this.currentUserService?.currentUser?.id;
+      this.userService.get(login).subscribe(
+        user => {
+          this.user = user;
+          this.isOwner = user.id == this.currentUserService?.currentUser?.id;
+        },
+        (errorResponse: HttpErrorResponse) => {
+          if (errorResponse.status == 404) {
+            this.router.navigateByUrl('**', { skipLocationChange: true });
+            return;
+          }
 
-      }, (errorResponse: HttpErrorResponse) => {
-        if (errorResponse.status == 404) {
-          this.router.navigateByUrl('**', { skipLocationChange: true });
-        } else {
           this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
-        }
-      }, () => this._contentLoaded = true);
+        },
+        () => this._contentLoaded = true);
     });
   }
 

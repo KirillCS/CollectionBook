@@ -78,7 +78,7 @@ export class PasswordResetComponent implements OnInit {
     let sub = this.route.queryParamMap.subscribe(params => {
       this.id = params.get('id');
       this.token = params.get('token');
-    }, () => {}, () => sub.unsubscribe());
+    }, () => { }, () => sub.unsubscribe());
   }
 
   public submit(): void {
@@ -99,25 +99,28 @@ export class PasswordResetComponent implements OnInit {
       password: this.password.value,
       passwordConfirmation: this.passwordConfirmation.value
     }
-    this.userService.resetPassword(request).subscribe(() => { }, (errorResponse: HttpErrorResponse) => {
-      switch (errorResponse.status) {
-        case 400:
-          this.serverErrorsService.setFormErrors(this.form, errorResponse);
-          break;
-        case 404:
-          this.router.navigate(['']);
-          this.dialogService.openWarningMessageDialog('Failed to reset password', 'User was not found. Maybe link was broken or user was deleted.');
-          break;
+    this.userService.resetPassword(request).subscribe(
+      () => { },
+      (errorResponse: HttpErrorResponse) => {
+        switch (errorResponse.status) {
+          case 400:
+            this.serverErrorsService.setFormErrors(this.form, errorResponse);
+            break;
+          case 404:
+            this.router.navigate(['']);
+            this.dialogService.openWarningMessageDialog('Failed to reset password', 'User was not found. Maybe link was broken or user was deleted.');
+            break;
           default:
-          this.router.navigate(['']);
-          this.dialogService.openWarningMessageDialog('Failed to reset password', 'Token is invalid.');
-          break;
-      }
+            this.router.navigate(['']);
+            this.dialogService.openWarningMessageDialog('Failed to reset password', 'Token is invalid.');
+            break;
+        }
 
-      this.inProcess = false;
-    }, () => {
-      this.router.navigate(['']);
-      this.dialogService.openSuccessMessageDialog('Password reset successfully', 'Password has reseted successfully');
-    })
+        this.inProcess = false;
+      },
+      () => {
+        this.router.navigate(['']);
+        this.dialogService.openSuccessMessageDialog('Password reset successfully', 'Password has reseted successfully');
+      })
   }
 }

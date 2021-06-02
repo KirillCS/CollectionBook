@@ -77,20 +77,24 @@ export class ItemComponent implements OnInit {
   public ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       let id = parseInt(params.get('id'));
-      this.itemService.get(id).subscribe(item => {
-        this._item = item;
-        this._pathNodes = [
-          new PathNode(item.user.login, `/profile/${item.user.login}`),
-          new PathNode(item.collection.name, `/collection/${item.collection.id}`),
-          new PathNode(item.name)
-        ]
-      }, (errorResponse: HttpErrorResponse) => {
-        if (errorResponse.status == 404) {
-          this.router.navigateByUrl('**', { skipLocationChange: true });
-        } else {
+      this.itemService.get(id).subscribe(
+        item => {
+          this._item = item;
+          this._pathNodes = [
+            new PathNode(item.user.login, `/profile/${item.user.login}`),
+            new PathNode(item.collection.name, `/collection/${item.collection.id}`),
+            new PathNode(item.name)
+          ]
+        },
+        (errorResponse: HttpErrorResponse) => {
+          if (errorResponse.status == 404) {
+            this.router.navigateByUrl('**', { skipLocationChange: true });
+            return;
+          }
+
           this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
-        }
-      }, () => this._contentLoaded = true);
+        },
+        () => this._contentLoaded = true);
     });
   }
 
@@ -260,27 +264,32 @@ export class ItemComponent implements OnInit {
   }
 
   private changeName(newName: string): void {
-    this.itemService.changeName(this.item.id, newName).subscribe(() => { },
+    this.itemService.changeName(this.item.id, newName).subscribe(
+      () => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
         'To change the item name you must be authenticated.',
         `To change the item name you must be its owner.`,
         `Something went wrong while changing the item name.`
-      ), () => this.item.name = newName);
+      ),
+      () => this.item.name = newName);
   }
 
   private changeInfo(newInfo: string): void {
-    this.itemService.changeInfo(this.item.id, newInfo).subscribe(() => { },
+    this.itemService.changeInfo(this.item.id, newInfo).subscribe(
+      () => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
         'To change the item information you must be authenticated.',
         `To change the item information you must be its owner.`,
         `Something went wrong while changing the item information.`
-      ), () => this.item.information = newInfo);
+      ),
+      () => this.item.information = newInfo);
   }
 
   private changeTags(tags: string[]): void {
-    this.itemService.changeTags(this.item.id, tags).subscribe(tags => this.item.tags = tags,
+    this.itemService.changeTags(this.item.id, tags).subscribe(
+      tags => this.item.tags = tags,
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
         'To change the item tags you must be authenticated.',
@@ -290,40 +299,45 @@ export class ItemComponent implements OnInit {
   }
 
   private addImage(image: File): void {
-    this.itemService.addImage(this.item.id, image).subscribe(image => {
-      this.item.images.push(image);
-      this.reinitCarousel();
-    }, (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
-      errorResponse,
-      'To add an item image you must be authenticated.',
-      `To add an item image you must be its owner.`,
-      `Something went wrong while adding an item image.`
-    ));
+    this.itemService.addImage(this.item.id, image).subscribe(
+      image => {
+        this.item.images.push(image);
+        this.reinitCarousel();
+      }, (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
+        errorResponse,
+        'To add an item image you must be authenticated.',
+        `To add an item image you must be its owner.`,
+        `Something went wrong while adding an item image.`
+      ));
   }
 
   private removeImage(imageId: number): void {
-    this.itemService.removeImage(imageId).subscribe(() => { }, (errorResponse: HttpErrorResponse) =>
-      this.handleErrorStatuses(
-        errorResponse,
-        'To remove an item image you must be authenticated.',
-        `To remove an item image you must be its owner.`,
-        `Something went wrong while removing an item image.`
-      ), () => {
+    this.itemService.removeImage(imageId).subscribe(
+      () => { },
+      (errorResponse: HttpErrorResponse) =>
+        this.handleErrorStatuses(
+          errorResponse,
+          'To remove an item image you must be authenticated.',
+          `To remove an item image you must be its owner.`,
+          `Something went wrong while removing an item image.`
+        ),
+      () => {
         this.item.images = this.item.images.filter(i => i.id !== imageId);
         this.reinitCarousel();
       });
   }
 
   private deleteItem(): void {
-    this.itemService.delete(this.item.id).subscribe(() => { }, (errorResponse: HttpErrorResponse) =>
-      this.handleErrorStatuses(
-        errorResponse,
-        'To delete the item you must be authenticated.',
-        `To delete the item you must be its owner.`,
-        `Something went wrong while deleting the item.`
-      ), () => {
-        this.router.navigate(['/collection', this.item.collection.id]);
-      });
+    this.itemService.delete(this.item.id).subscribe(
+      () => { },
+      (errorResponse: HttpErrorResponse) =>
+        this.handleErrorStatuses(
+          errorResponse,
+          'To delete the item you must be authenticated.',
+          `To delete the item you must be its owner.`,
+          `Something went wrong while deleting the item.`
+        ),
+      () => this.router.navigate(['/collection', this.item.collection.id]));
   }
 
   private handleErrorStatuses(errorResponse: HttpErrorResponse, notAuthMessage: string, accessErrorMessage: string, errorMessage: string): void {
@@ -331,14 +345,20 @@ export class ItemComponent implements OnInit {
       case 400:
         break;
       case 401:
+        this.authService.logout();
         this.dialogService.openWarningMessageDialog('You are not authenticated', notAuthMessage);
         break;
       case 403:
         this.dialogService.openWarningMessageDialog('You don\'t have access', accessErrorMessage);
         break;
       case 404:
-        this.dialogService.openWarningMessageDialog('Item not found', `Item was not found. Maybe it was deleted.`);
-        this.router.navigate(['/profile', this.item.user.login, 'collections']);
+        if (errorResponse.error?.entityType == 'User') {
+          this.authService.logout();
+          this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Try to log in again.');
+          break;
+        }
+
+        this.router.navigateByUrl('**', { skipLocationChange: true });
         break;
       case 405:
         this.authService.logout();

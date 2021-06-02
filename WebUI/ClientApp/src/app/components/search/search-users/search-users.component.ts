@@ -96,13 +96,16 @@ export class SearchUsersComponent extends SearchBaseComponent implements OnDestr
       sortCriterion: this.selectedSortCriterion,
       pageIndex: this._pageIndex,
       pageSize: this._pageSize
-    }).subscribe(list => {
-      this.$users.next(list.items);
-      this._totalCount = list.totalCount;
-    }, () => {
-      this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching items.');
-      this._usersLoaded = true;
-    }, () => this._usersLoaded = true);
+    }).subscribe(
+      list => {
+        this.$users.next(list.items);
+        this._totalCount = list.totalCount;
+      },
+      () => {
+        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching items.');
+        this._usersLoaded = true;
+      },
+      () => this._usersLoaded = true);
   }
 
   private updateQueryParams(): void {

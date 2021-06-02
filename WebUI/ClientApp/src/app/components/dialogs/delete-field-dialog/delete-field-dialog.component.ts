@@ -26,8 +26,4 @@ export class DeleteFieldDialogComponent {
   public get submitButtonDisabled() : boolean {
     return this.inputString !== this.data.expectedString;
   }
-  
-  public submit(): void {
-
-  }
 }

@@ -4,6 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 
 import { ItemCoverDto } from 'src/app/models/dtos/item/item-cover.dto';
+import { SearchPaginatedListRequest } from 'src/app/models/requests/search-paginated-list.request';
 import { CollectionService } from 'src/app/services/collection.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 
@@ -83,24 +84,26 @@ export class ItemsComponent implements OnInit {
 
   private getItems(): void {
     this._itemsLoaded = false;
-    this.collectionService.getItems(
-      this.collectionId,
-      {
-        searchString: this.searchString,
-        pageSize: this.pageSize,
-        pageIndex: this.pageIndex
-      }).subscribe(list => {
+    let request: SearchPaginatedListRequest = {
+      searchString: this.searchString,
+      pageSize: this.pageSize,
+      pageIndex: this.pageIndex
+    };
+    this.collectionService.getItems(this.collectionId, request).subscribe(
+      list => {
         this._totalCount = list.totalCount;
-
         this.items.length = 0;
         this.items.push(...list.items);
-      }, (errorResponse: HttpErrorResponse) => {
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this._itemsLoaded = true;
         if (errorResponse.status === 404) {
           this.router.navigateByUrl('**', { skipLocationChange: true });
-        } else {
-          this._itemsLoaded = true;
-          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server. Try to reload the page to solve this problem.');
+          return;
         }
-      }, () => this._itemsLoaded = true);
+
+        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server. Try to reload the page to solve this problem.');
+      },
+      () => this._itemsLoaded = true);
   }
 }

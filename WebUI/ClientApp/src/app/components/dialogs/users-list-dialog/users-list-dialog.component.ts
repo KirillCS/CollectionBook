@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/cor
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UserCoverDto } from 'src/app/models/dtos/user/user-cover.dto';
+import { SearchPaginatedListRequest } from 'src/app/models/requests/search-paginated-list.request';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { StarService } from 'src/app/services/star.service';
 import { ProfileCoverSize } from '../../ui/profile-cover/profile-cover.component';
@@ -98,23 +99,26 @@ export class UsersListDialogComponent implements OnInit {
   public loadMore(): void {
 
     this.usersLoaded = false;
-    this._starService.getUsers(this._data.collectionId, {
+    let request: SearchPaginatedListRequest = {
       searchString: this._searchString,
       pageSize: this._pageSize,
       pageIndex: this._pageIndex
-    }).subscribe(usersList => {
-      this._users = [...this._users, ...usersList.items];
-      this._totalCount = usersList.totalCount;
-      this.usersLoaded = true;
-      this._pageIndex++;
-    }, (errorResponse: HttpErrorResponse) => {
-      this._dialogRef.close();
-      if (errorResponse.status == 404) {
-        this._dialogsService.openWarningMessageDialog('Collection not found', `Collection "${this._data.collectionName}" was not found. Maybe it was deleted.`);
-        return;
-      }
+    };
+    this._starService.getUsers(this._data.collectionId, request).subscribe(
+      usersList => {
+        this._users = [...this._users, ...usersList.items];
+        this._totalCount = usersList.totalCount;
+        this.usersLoaded = true;
+        this._pageIndex++;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this._dialogRef.close();
+        if (errorResponse.status == 404) {
+          this._dialogsService.openWarningMessageDialog('Collection not found', `Collection "${this._data.collectionName}" was not found. Maybe it was deleted.`);
+          return;
+        }
 
-      this._dialogsService.openWarningMessageDialog('Something went wrong', `Something went wrong on the server.`);
-    });
+        this._dialogsService.openWarningMessageDialog('Something went wrong', `Something went wrong on the server.`);
+      });
   }
 }

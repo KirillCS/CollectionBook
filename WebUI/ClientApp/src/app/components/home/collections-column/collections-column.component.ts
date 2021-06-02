@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 import { CollectionNameDto } from 'src/app/models/dtos/collection/collection-name.dto';
+import { SearchPaginatedListRequest } from 'src/app/models/requests/search-paginated-list.request';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
@@ -29,7 +30,7 @@ export class CollectionColumnComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this.addCollections();
+    this.updateCollections();
   }
 
   public get collectionsLoading(): boolean {
@@ -54,41 +55,42 @@ export class CollectionColumnComponent implements OnInit {
     }
 
     this.pageIndex++;
-    this.addCollections();
+    this.updateCollections();
   }
 
   public search(searchString: string): void {
     this.searchString = searchString;
     this.collections = new Array<CollectionNameDto>();
     this.pageIndex = 0;
-    this.addCollections();
+    this.updateCollections();
   }
 
-  private addCollections(): void {
+  private updateCollections(): void {
 
     this._collectionsLoading = true;
-    this.userService.getCollectionsNames(
-      this.currentUserService.currentUser?.login,
-      {
-        pageIndex: this.pageIndex,
-        pageSize: this.pageSize,
-        searchString: this.searchString
-      }
-    ).subscribe(response => {
-      this.collections.push(...response.items);
-      this.totalCount = response.totalCount;
-    }, (errorResponse: HttpErrorResponse) => {
-      this.notFound = this.collections.length == 0;
-      this._collectionsLoading = false;
-      if (errorResponse.status == 404) {
-        this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found.');
-        return;
-      }
+    let request: SearchPaginatedListRequest = {
+      pageIndex: this.pageIndex,
+      pageSize: this.pageSize,
+      searchString: this.searchString
+    }
+    this.userService.getCollectionsNames(this.currentUserService.currentUser?.login, request).subscribe(
+      response => {
+        this.collections.push(...response.items);
+        this.totalCount = response.totalCount;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.notFound = this.collections.length == 0;
+        this._collectionsLoading = false;
+        if (errorResponse.status == 404) {
+          this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
+          return;
+        }
 
-      this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while getting your collections. Reload the page and try again.');
-    }, () => {
-      this.notFound = this.collections.length == 0;
-      this._collectionsLoading = false;
-    });
+        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while getting your collections. Reload the page and try again.');
+      },
+      () => {
+        this.notFound = this.collections.length == 0;
+        this._collectionsLoading = false;
+      });
   }
 }

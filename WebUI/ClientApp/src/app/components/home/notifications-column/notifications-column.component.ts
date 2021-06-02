@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 import { StarNotificationDto } from 'src/app/models/dtos/star/star-notification.dto';
+import { PaginatedListRequest } from 'src/app/models/requests/paginated-list.request';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
@@ -43,7 +44,7 @@ export class NotificationsColumnComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.addStars();
+    this.updateStars();
   }
 
   public loadMore(): void {
@@ -52,33 +53,34 @@ export class NotificationsColumnComponent implements OnInit {
     }
 
     this.pageIndex++;
-    this.addStars();
+    this.updateStars();
   }
 
-  private addStars(): void {
+  private updateStars(): void {
 
     this._notificationsLoading = true;
-    this.userService.getStarsNotifications(
-      this.currentUserService.currentUser?.login,
-      {
-        pageIndex: this.pageIndex,
-        pageSize: this.pageSize
-      }
-    ).subscribe(list => {
-      this.stars.push(...list.items);
-      this.totalCount = list.totalCount;
-    }, (errorResponse: HttpErrorResponse) => {
-      this.notFound = this.notFound = this.totalCount == 0;
-      this._notificationsLoading = false;
-      if (errorResponse.status == 404) {
-        this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found.');
-        return;
-      }
+    let request: PaginatedListRequest = {
+      pageIndex: this.pageIndex,
+      pageSize: this.pageSize
+    };
+    this.userService.getStarsNotifications(this.currentUserService.currentUser?.login, request).subscribe(
+      list => {
+        this.stars.push(...list.items);
+        this.totalCount = list.totalCount;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.notFound = this.notFound = this.totalCount == 0;
+        this._notificationsLoading = false;
+        if (errorResponse.status == 404) {
+          this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Please try to log in again.');
+          return;
+        }
 
-      this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while getting your collections. Reload the page and try again.');
-    }, () => {
-      this.notFound = this.totalCount == 0;
-      this._notificationsLoading = false;
-    });
+        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while getting your collections. Reload the page and try again.');
+      },
+      () => {
+        this.notFound = this.totalCount == 0;
+        this._notificationsLoading = false;
+      });
   }
 }

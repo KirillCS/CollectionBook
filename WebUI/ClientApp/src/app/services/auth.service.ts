@@ -43,7 +43,13 @@ export class AuthService {
     return this.tokenService.getToken() != null;
   }
 
-  public logout(): void {
+  public logout(reloadPage = false): void {
     this.tokenService.removeToken();
+    if (reloadPage) {
+      let currentUrl = this.router.url;
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigateByUrl(currentUrl);
+      });
+    }
   }
 }
