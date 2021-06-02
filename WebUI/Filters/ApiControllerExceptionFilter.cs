@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using ValidationException = Application.Common.Exceptions.ValidationException;
 using Infrastructure.Exceptions;
 using Application.Common.Exceptions;
-using WebUI.Models;
 
 namespace WebUI.Filters
 {
@@ -80,15 +79,16 @@ namespace WebUI.Filters
         private void HandleEmailNotConfirmedException(ExceptionContext context)
         {
             var exception = context.Exception as EmailNotConfirmedException;
-            var details = new EmailNotConfirmedProblemDetails()
+            var details = new ProblemDetails()
             {
                 Status = StatusCodes.Status403Forbidden,
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3",
                 Title = exception.Message,
-                Detail = exception.Message,
-                Id = exception.UserId,
-                Email = exception.Email
+                Detail = exception.Message
             };
+
+            details.Extensions.Add("id", exception.UserId);
+            details.Extensions.Add("email", exception.Email);
 
             context.Result = new ObjectResult(details);
             context.ExceptionHandled = true;
@@ -97,14 +97,15 @@ namespace WebUI.Filters
         private void HandleEntityNotFoundException(ExceptionContext context)
         {
             var exception = context.Exception as EntityNotFoundException;
-            var details = new EntityNotFoundProblemDetails()
+            var details = new ProblemDetails()
             {
                 Status = StatusCodes.Status404NotFound,
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                 Title = exception.Message,
-                Detail = exception.Message,
-                EntityType = exception.EntityType
+                Detail = exception.Message
             };
+
+            details.Extensions.Add("entityType", exception.EntityType);
 
             context.Result = new NotFoundObjectResult(details);
             context.ExceptionHandled = true;
@@ -140,13 +141,14 @@ namespace WebUI.Filters
         private void HandleUserBlockedException(ExceptionContext context)
         {
             var exception = context.Exception as UserBlockedException;
-            var details = new UserBlockedProblemDetails()
+            var details = new ProblemDetails()
             {
                 Status = StatusCodes.Status405MethodNotAllowed,
                 Title = "User is blocked",
-                Detail = $"User is blocked. Reason: {exception.BlockReason}",
-                BlockReason = exception.BlockReason
+                Detail = $"User is blocked. Reason: {exception.BlockReason}"
             };
+
+            details.Extensions.Add("blockReason", exception.BlockReason);
 
             context.Result = new ObjectResult(details);
             context.ExceptionHandled = true;
@@ -163,6 +165,7 @@ namespace WebUI.Filters
             };
 
             details.Extensions.Add("accessToken", exception.AccessToken);
+
             context.Result = new ObjectResult(details);
             context.ExceptionHandled = true;
         }
