@@ -4,6 +4,7 @@ using Application.Collections.Commands.ChangeCollectionName;
 using Application.Collections.Commands.ChangeCollectionTags;
 using Application.Collections.Commands.CreateCollection;
 using Application.Collections.Commands.DeleteCollection;
+using Application.Collections.Commands.ReportCollection;
 using Application.Collections.Queries.FindCollections;
 using Application.Collections.Queries.GetCollection;
 using Application.Collections.Queries.GetItems;
@@ -27,6 +28,15 @@ namespace WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetItems([FromQuery] GetItemsQuery query) =>
             Ok(await Mediator.Send(query));
+        
+        [Route("report")]
+        [HttpPost]
+        public async Task<IActionResult> ReportCollection([FromBody] ReportCollectionCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
+        }
 
         [Route("{Id}")]
         [HttpDelete]
