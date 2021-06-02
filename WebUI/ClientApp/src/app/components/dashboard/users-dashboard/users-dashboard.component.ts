@@ -11,6 +11,7 @@ import { Roles } from 'src/app/models/roles';
 import { AdminService } from 'src/app/services/admin.service';
 import { AuthTokenService, TokenSettingType } from 'src/app/services/auth-token.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { FieldDialogComponent } from '../../dialogs/field-dialog/field-dialog.component';
 import { SearchBaseComponent } from '../../search/search-base.component';
@@ -21,7 +22,7 @@ import { SearchBaseComponent } from '../../search/search-base.component';
   styleUrls: ['../dashboard.component.css', './users-dashboard.component.scss']
 })
 export class UsersDashboardComponent extends SearchBaseComponent implements OnInit {
-  private _displayedColumns: string[] = ['id', 'login', 'role', 'isBlocked'];
+  private _displayedColumns: string[];
 
   private _usersLoaded = false;
   private _users = new Array<DashboardUserDto>();
@@ -32,10 +33,13 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
     private _dialog: MatDialog,
     private _router: Router,
     private _authService: AuthService,
-    private _authTokenService: AuthTokenService
+    private _authTokenService: AuthTokenService,
+    private _currentUserService: CurrentUserService
   ) {
     super();
     this._pageSize = 30;
+
+    this.setTableColumns();
   }
 
   public get displayedColumns(): string[] {
@@ -89,17 +93,24 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
         (errorResponse: HttpErrorResponse) => {
           switch (errorResponse.status) {
             case 401:
-              this._router.navigateByUrl('/');
-              this._authService.logout();
+              this._authService.logout(true);
+              this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to change users roles.');
             case 403:
-              this._dialogsService.openWarningMessageDialog('No access', 'Your account role cannot change users roles.');
+              let updatedToken = errorResponse.error.accessToken;
+              let tokenSettingType = this._authTokenService.isConstant;
+              if (updatedToken && tokenSettingType !== TokenSettingType.NotSet) {
+                this._authTokenService.setToken(updatedToken, tokenSettingType == TokenSettingType.Constant);
+              }
+
+              this._router.navigateByUrl('/');
+              this._dialogsService.openWarningMessageDialog('No access', 'Your account role does not allow changing users roles.');
               break;
             case 404:
-              this.updateUsers();
+              this._authService.logout(true);
+              this._dialogsService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
               break;
             case 405:
-              this._router.navigateByUrl('/');
-              this._authService.logout();
+              this._authService.logout(true);
               this._dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
               break;
             default:
@@ -151,6 +162,24 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
     }
   }
 
+  private setTableColumns(): void {
+    let currentUser = this._currentUserService.currentUser;
+    switch (true) {
+      case !currentUser:
+        this._authService.logout(true);
+        break;
+      case currentUser.role == Roles.Owner:
+        this._displayedColumns = ['id', 'login', 'role', 'isBlocked'];
+        break;
+      case currentUser.role == Roles.Admin:
+        this._displayedColumns = ['id', 'login', 'isBlocked'];
+        break;
+      default:
+        this._authService.logout(true);
+        break;
+    }
+  }
+
   private updateUsers(): void {
     this._usersLoaded = false;
 
@@ -160,14 +189,40 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
       pageSize: this.pageSize
     };
 
-    this._adminService.getDashboardUsers(request).subscribe(list => {
-      this._users = list.items;
-      this._totalCount = list.totalCount;
-    }, (errorResponse: HttpErrorResponse) => {
-      if (errorResponse.status == 401) {
+    this._adminService.getDashboardUsers(request).subscribe(
+      list => {
+        this._users = list.items;
+        this._totalCount = list.totalCount;
+      },
+      (errorResponse: HttpErrorResponse) => {
+        switch (errorResponse.status) {
+          case 401:
+            this._authService.logout(true);
+            this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to get dashboard users.');
+          case 403:
+            let updatedToken = errorResponse.error.accessToken;
+            let tokenSettingType = this._authTokenService.isConstant;
+            if (updatedToken && tokenSettingType !== TokenSettingType.NotSet) {
+              this._authTokenService.setToken(updatedToken, tokenSettingType == TokenSettingType.Constant);
+            }
 
-      }
-    }, () => this._usersLoaded = true);
+            this._router.navigateByUrl('/');
+            this._dialogsService.openWarningMessageDialog('No access', 'Your account role does not have access to user dashboard.');
+            break;
+          case 404:
+            this._authService.logout(true);
+            this._dialogsService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
+            break;
+          case 405:
+            this._authService.logout(true);
+            this._dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
+            break;
+          default:
+            this._dialogsService.openWarningMessageDialog('Something went wrong', `Something went wrong on the server.`);
+            break;
+        }
+      },
+      () => this._usersLoaded = true);
   }
 
   private changeBlockStatus(user: DashboardUserDto, blockReason: string): void {
@@ -176,11 +231,11 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
       (errorResponse: HttpErrorResponse) => {
         switch (errorResponse.status) {
           case 400:
-            this._dialogsService.openWarningMessageDialog('Block reason is required', `You must write a block reason to block user "${user.login}".`);
+            this._dialogsService.openWarningMessageDialog('Block reason is required', `You must enter a block reason to block user "${user.login}".`);
             break;
           case 401:
-            this._router.navigateByUrl('/');
-            this._authService.logout();
+            this._authService.logout(true);
+            this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to change users roles.');
           case 403:
             let updatedToken = errorResponse.error.accessToken;
             let tokenSettingType = this._authTokenService.isConstant;
@@ -192,11 +247,11 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
             this._dialogsService.openWarningMessageDialog('No access', 'Your account role cannot block / unblock users.');
             break;
           case 404:
-            this.updateUsers();
+            this._authService.logout(true);
+            this._dialogsService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
             break;
           case 405:
-            this._router.navigateByUrl('/');
-            this._authService.logout();
+            this._authService.logout(true);
             this._dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
             break;
           case 406:

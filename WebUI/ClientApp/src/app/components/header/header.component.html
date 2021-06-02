@@ -28,11 +28,14 @@
         <div *ngIf="currentUser.role == ownerRole; else userSection">
           <button mat-button [matMenuTriggerFor]="ownerMenu" color="warn">Owner menu</button>
           <mat-menu #ownerMenu>
-            <button mat-menu-item>
+            <button mat-menu-item [routerLink]="['dashboard', 'users']">
               <mat-icon class="material-icons-round">people</mat-icon>User dashboard
             </button>
-            <button mat-menu-item>
+            <button mat-menu-item [routerLink]="['dashboard', 'collections']">
               <mat-icon class="material-icons-round">collections_bookmark</mat-icon>Collection dashboard
+            </button>
+            <button mat-menu-item [routerLink]="['dashboard', 'reports']">
+              <mat-icon class="material-icons-round">flag</mat-icon>Report dashboard
             </button>
             <mat-divider></mat-divider>
             <button mat-menu-item [matMenuTriggerFor]="ownerSettingsMenu">
@@ -48,7 +51,7 @@
           </mat-menu>
         </div>
         <ng-template #userSection>
-          <button mat-button [matMenuTriggerFor]="userMenu">
+          <button mat-button [matMenuTriggerFor]="userMenu" [color]="currentUser.role == adminRole ? 'primary' : ''">
             @{{ currentUser.login }}
           </button>
           <mat-menu #userMenu>
@@ -66,6 +69,21 @@
               <mat-icon class="material-icons-round">add_box</mat-icon>Create collection
             </button>
             <mat-divider></mat-divider>
+            <button *ngIf="currentUser.role == adminRole" mat-menu-item [matMenuTriggerFor]="dashboards">
+              <mat-icon class="material-icons-round">table_rows</mat-icon>Dashboards
+            </button>
+            <mat-menu #dashboards="matMenu">
+              <button mat-menu-item [routerLink]="['dashboard', 'users']">
+                <mat-icon class="material-icons-round">people</mat-icon>User dashboard
+              </button>
+              <button mat-menu-item [routerLink]="['dashboard', 'collections']">
+                <mat-icon class="material-icons-round">collections_bookmark</mat-icon>Collection dashboard
+              </button>
+              <button mat-menu-item [routerLink]="['dashboard', 'reports']">
+                <mat-icon class="material-icons-round">flag</mat-icon>Report dashboard
+              </button>
+            </mat-menu>
+            <mat-divider *ngIf="currentUser.role == adminRole"></mat-divider>
             <button mat-menu-item [routerLink]="['settings', 'profile']">
               <mat-icon class="material-icons-round">settings</mat-icon>Settings
             </button>
