@@ -1,5 +1,6 @@
 ﻿using Application.Administration.Commands.ChangeUserBlockStatus;
 using Application.Administration.Commands.ToggleUserRole;
+using Application.Administration.Queries.GetDashboardReports;
 using Application.Administration.Queries.GetDashboardUsers;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -11,6 +12,10 @@ namespace WebUI.Controllers
     {
         [HttpGet("users")]
         public async Task<IActionResult> GetDashboardUsers([FromQuery] GetDashboardUsersQuery query) =>
+            Ok(await Mediator.Send(query));
+
+        [HttpGet("reports")]
+        public async Task<IActionResult> GetReports([FromQuery] GetDashboardReportsQuery query) =>
             Ok(await Mediator.Send(query));
 
         [HttpPost("role")]
