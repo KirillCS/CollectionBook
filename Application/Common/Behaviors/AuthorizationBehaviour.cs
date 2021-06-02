@@ -10,6 +10,8 @@ using Domain.Entities;
 using Application.Common.Exceptions;
 using Domain.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Application.Common.Behaviors
 {
@@ -17,11 +19,15 @@ namespace Application.Common.Behaviors
     {
         private readonly ICurrentUserService currentUserService;
         private readonly IApplicationDbContext context;
+        private readonly IUserService userService;
+        private readonly IJwtService jwtService;
 
-        public AuthorizationBehaviour(ICurrentUserService currentUserService, IApplicationDbContext context)
+        public AuthorizationBehaviour(ICurrentUserService currentUserService, IApplicationDbContext context, IUserService userService, IJwtService jwtService)
         {
             this.currentUserService = currentUserService;
             this.context = context;
+            this.userService = userService;
+            this.jwtService = jwtService;
         }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
@@ -44,7 +50,11 @@ namespace Application.Common.Behaviors
                 return await next();
             }
 
-            Guard.Requires(() => requiredRoles.Any(r => r == currentUser.Role.Name), new ForbiddenAccessException());
+            if (!requiredRoles.Any(r => r == currentUser.Role.Name))
+            {
+                IEnumerable<Claim> claims = userService.GetLoginClaims(currentUser);
+                throw new ForbiddenAccessException(jwtService.GenerateJwt(claims));
+            }
 
             return await next();
         }

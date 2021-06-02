@@ -154,6 +154,7 @@ namespace WebUI.Filters
 
         private void HandleForbiddenAccessException(ExceptionContext context)
         {
+            var exception = context.Exception as ForbiddenAccessException;
             var details = new ProblemDetails()
             {
                 Status = StatusCodes.Status403Forbidden,
@@ -161,6 +162,7 @@ namespace WebUI.Filters
                 Detail = "User has not access"
             };
 
+            details.Extensions.Add("accessToken", exception.AccessToken);
             context.Result = new ObjectResult(details);
             context.ExceptionHandled = true;
         }
