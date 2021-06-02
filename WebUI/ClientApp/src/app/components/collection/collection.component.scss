@@ -57,6 +57,10 @@ $cover-width-md: 280px;
       align-items: flex-start;
       justify-content: space-between;
       width: 100%;
+
+      .report-button {
+        color: $gray;
+      }
     }
 
     .description {

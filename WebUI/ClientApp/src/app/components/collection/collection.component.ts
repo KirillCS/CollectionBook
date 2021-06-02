@@ -92,6 +92,10 @@ export class CollectionComponent implements OnInit {
     return this.currentUserService.currentUser?.role == Roles.Owner;
   }
 
+  public get isCurrentUserInRoleUser(): boolean {
+    return this.currentUserService.currentUser?.role == Roles.User;
+  }
+
   public get isOwner(): boolean {
     return this.currentUserService.currentUser?.login == this.collection?.user?.login;
   }
@@ -159,6 +163,77 @@ export class CollectionComponent implements OnInit {
     }
 
     this.collection.stars = this.collection.stars.filter(s => s.userId != this.currentUserService.currentUser?.id);
+  }
+
+  public reportButtonClickHandler(): void {
+
+    let ref = this.dialog.open(FieldDialogComponent, {
+      width: '550px',
+      position: { top: '25vh' },
+      data: {
+        header: 'Reporting collection',
+        message: `Enter a report description and click the report button`,
+        inputLabel: 'Report',
+        inputType: 'textarea',
+        formControl: new FormControl('', [Validators.required, Validators.maxLength(1028)]),
+        inputErrors: [
+          { errorCode: 'required', errorMessage: 'Enter report description' },
+          { errorCode: 'maxlength', errorMessage: 'Maximum length of the collection description is 4096' }
+        ],
+        closeButtonName: 'Cancel',
+        submitButtonName: 'Report'
+      }
+    });
+
+    let submitSubscription = ref.componentInstance.submitEmitter.subscribe((formControl: FormControl) => {
+      if (formControl.invalid) {
+        return;
+      }
+
+      ref.close();
+      this.collectionService.report(this.collectionId, formControl.value).subscribe(
+        () => this.dialogService.openSuccessMessageDialog('Successfully sent', 'Your repost was successfully sent. Admins will make a final decision.'),
+        (errorResponse: HttpErrorResponse) => {
+          switch (errorResponse.status) {
+            case 400:
+              this.dialogService.openWarningMessageDialog('Wrong report', 'You must enter a report description (its maximum length - 1028 symbols).');
+              break;
+            case 401:
+              this.authService.logout();
+              this.dialogService.openWarningMessageDialog('Not authorized', 'You must be authorized to report collection.');
+              break;
+            case 403:
+              let updatedToken = errorResponse.error?.accessToken;
+              let tokenSettingType = this.authTokenService.isConstant;
+              if (updatedToken && tokenSettingType !== TokenSettingType.NotSet) {
+                this.authTokenService.setToken(updatedToken, tokenSettingType == TokenSettingType.Constant);
+              }
+
+              this.dialogService.openWarningMessageDialog('No access', 'Only users can report collections');
+              break;
+            case 404:
+              if (errorResponse.error.entityType == 'User') {
+                this.authService.logout();
+                this.dialogService.openWarningMessageDialog('User not found', 'Your user account was not found. Try to log in again.');
+                break;
+              }
+
+              this.router.navigateByUrl('**', { skipLocationChange: true });
+              this.dialogService.openInfoMessageDialog('Collection not found', 'Reporting collection was not found. Maybe it is already deleted');
+              break;
+            case 405:
+              this.authService.logout();
+              this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
+              break;
+            default:
+              this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while reporting collection.');
+              break;
+          }
+        }
+      );
+    });
+
+    ref.afterClosed().subscribe(() => submitSubscription.unsubscribe());
   }
 
   public coverSelected(files: File[]): void {

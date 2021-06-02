@@ -55,8 +55,13 @@
           <ngx-skeleton-loader *ngIf="!contentLoaded" style="margin-bottom: 10px;"
             [theme]="{ 'max-width': '100%', width: '250px', height: '32px', 'background-color': '#ECECEC' }">
           </ngx-skeleton-loader>
-          <app-star *ngIf="isAuthenticated && !isCurrentUserInRoleOwner" [starred]="starred" [collectionId]="collection?.id"
-            (toggled)="starToggledHandler($event)"></app-star>
+          <div>
+            <button class="report-button" *ngIf="isAuthenticated && !isOwner && isCurrentUserInRoleUser" matTooltip="Report collection" mat-icon-button (click)="reportButtonClickHandler()">
+              <mat-icon class="material-icons-round">flag</mat-icon>
+            </button>
+            <app-star *ngIf="isAuthenticated && !isCurrentUserInRoleOwner" [starred]="starred"
+              [collectionId]="collection?.id" (toggled)="starToggledHandler($event)"></app-star>
+          </div>
         </header>
         <h3 class="description" *ngIf="contentLoaded && collection?.description">{{ collection.description }}</h3>
         <ngx-skeleton-loader *ngIf="!contentLoaded" count="4"

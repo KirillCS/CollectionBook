@@ -72,6 +72,10 @@ export class CollectionService {
     return this.httpClient.post<void>(`${this.apiUrl}api/collection`, formData);
   }
 
+  public report(id: number, reportDescription: string): Observable<void> {
+    return this.httpClient.post<void>(`${this.apiUrl}api/collection/report`, { id, reportDescription });
+  }
+
   public changeCover(id: number, newCover: File): Observable<string> {
     const formData = new FormData();
     formData.append('id', id.toString());
