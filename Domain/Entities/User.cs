@@ -5,6 +5,12 @@ namespace Domain.Entities
 {
     public class User : IdentityUser
     {
+        public User() : base()
+        { }
+
+        public User(string userName) : base(userName)
+        { }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -35,10 +41,6 @@ namespace Domain.Entities
 
         public List<Star> Stars { get; } = new List<Star>();
 
-        public User() : base()
-        { }
-
-        public User(string userName) : base(userName)
-        { }
+        public List<Report> Reports { get; } = new List<Report>();
     }
 }

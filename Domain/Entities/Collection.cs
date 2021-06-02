@@ -24,5 +24,7 @@ namespace Domain.Entities
         public List<Star> Stars { get; } = new List<Star>();
 
         public List<Item> Items { get; } = new List<Item>();
+
+        public List<Report> Reports { get; } = new List<Report>();
     }
 }

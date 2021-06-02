@@ -23,6 +23,8 @@ namespace Infrastructure.Persistence
 
         public DbSet<Star> Stars { get; set; }
 
+        public DbSet<Report> Reports { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         { }
 
