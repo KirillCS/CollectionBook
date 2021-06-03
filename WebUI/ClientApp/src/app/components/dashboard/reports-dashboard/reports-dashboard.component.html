@@ -15,14 +15,14 @@
     <ng-container matColumnDef="collection">
       <th mat-header-cell *matHeaderCellDef>Reported collection</th>
       <td mat-cell *matCellDef="let report">
-        <a class="link" [routerLink]="['/collection', report.collectionId]">{{ report.collectionName }}</a>
+        <a class="link no-wrap" [routerLink]="['/collection', report.collectionId]">{{ report.collectionName }}</a>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="user">
       <th mat-header-cell *matHeaderCellDef>From</th>
       <td mat-cell *matCellDef="let report">
-        <a class="link" [routerLink]="['/profile', report.userLogin]">@{{ report.userLogin }}</a>
+        <a class="link no-wrap" [routerLink]="['/profile', report.userLogin]">@{{ report.userLogin }}</a>
       </td>
     </ng-container>
 
@@ -30,10 +30,10 @@
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let report">
         <button matTooltip="Accept and delete collection" mat-icon-button color="warn" (click)="acceptButtonClickedHandler($event, report)">
-          <mat-icon class="material-icons-round">check</mat-icon>
+          <mat-icon class="material-icons-round cell-icon">check</mat-icon>
         </button>
         <button matTooltip="Refuse" mat-icon-button (click)="refuseButtonClickedHandler($event, report)">
-          <mat-icon class="material-icons-round">close</mat-icon>
+          <mat-icon class="material-icons-round cell-icon">close</mat-icon>
         </button>
       </td>
     </ng-container>

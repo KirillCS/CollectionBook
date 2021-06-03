@@ -1,3 +1,5 @@
+@import 'src/variables.scss'; 
+
 .table-container {
   position: relative;
   width: 100%;
@@ -30,6 +32,10 @@ table {
 
 .cell-icon {
   font-size: 1.3rem;
+}
+
+.no-wrap {
+  @include no-wrap-text();
 }
 
 mat-paginator {

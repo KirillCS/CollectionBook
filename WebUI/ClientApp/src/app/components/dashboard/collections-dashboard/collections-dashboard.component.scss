@@ -1,0 +1,17 @@
+$table-min-width: 550px;
+
+table {
+  min-width: $table-min-width;
+}
+
+.mat-column-id {
+  width: 100px;
+}
+
+.mat-column-delete {
+  width: 50px;
+}
+
+mat-paginator {
+  min-width: $table-min-width;
+}

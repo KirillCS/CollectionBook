@@ -22,15 +22,6 @@ td.mat-column-id {
   width: 100px;
 }
 
-.mat-column-login > span {
-  @include no-wrap-text();
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
 mat-paginator {
   min-width: $table-min-width;
 }

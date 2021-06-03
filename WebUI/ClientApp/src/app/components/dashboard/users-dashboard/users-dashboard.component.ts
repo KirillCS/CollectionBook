@@ -19,7 +19,7 @@ import { SearchBaseComponent } from '../../search/search-base.component';
 @Component({
   selector: 'app-users-dashboard',
   templateUrl: './users-dashboard.component.html',
-  styleUrls: ['../dashboard.component.css', './users-dashboard.component.scss']
+  styleUrls: ['../dashboard.component.scss', './users-dashboard.component.scss']
 })
 export class UsersDashboardComponent extends SearchBaseComponent implements OnInit {
   private _displayedColumns: string[];

@@ -32,13 +32,15 @@ namespace Application.Administration.Queries.GetDashboardCollections
             int.TryParse(request.SearchString, out int id) switch
             {
                 true => await context.Collections.Where(c => c.Name.Contains(request.SearchString) || c.Id == id)
-                                                        .OrderByDescending(c => c.Id == id)
-                                                        .ProjectTo<DashboardCollectionDto>(mapper.ConfigurationProvider)
-                                                        .ToPaginatedList(request.PageIndex, request.PageSize),
+                                                 .OrderByDescending(c => c.Id)
+                                                 .OrderByDescending(c => c.Id == id)
+                                                 .ProjectTo<DashboardCollectionDto>(mapper.ConfigurationProvider)
+                                                 .ToPaginatedList(request.PageIndex, request.PageSize),
 
                 _ => await context.Collections.Where(c => c.Name.Contains(request.SearchString))
-                                                    .ProjectTo<DashboardCollectionDto>(mapper.ConfigurationProvider)
-                                                    .ToPaginatedList(request.PageIndex, request.PageSize)
+                                              .OrderByDescending(c => c.Id)
+                                              .ProjectTo<DashboardCollectionDto>(mapper.ConfigurationProvider)
+                                              .ToPaginatedList(request.PageIndex, request.PageSize)
             };
     }
 }

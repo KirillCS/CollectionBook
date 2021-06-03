@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 
 import { DashboardReportDto } from 'src/app/models/dtos/report/dashboard-report.dto';
 import { PaginatedListRequest } from 'src/app/models/requests/paginated-list.request';
-import { Roles } from 'src/app/models/roles';
 import { AdminService } from 'src/app/services/admin.service';
 import { AuthTokenService, TokenSettingType } from 'src/app/services/auth-token.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -20,7 +19,7 @@ import { PaginatedBaseComponent } from '../../search/paginated-base.component';
 @Component({
   selector: 'app-reports-dashboard',
   templateUrl: './reports-dashboard.component.html',
-  styleUrls: ['../dashboard.component.css', './reports-dashboard.component.scss'],
+  styleUrls: ['../dashboard.component.scss', './reports-dashboard.component.scss'],
   animations: [
     trigger('reportDescription', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -62,14 +61,6 @@ export class ReportsDashboardComponent extends PaginatedBaseComponent implements
 
   public get reports(): DashboardReportDto[] {
     return this._reports;
-  }
-
-  public get userRole(): string {
-    return Roles.User;
-  }
-
-  public get adminRole(): string {
-    return Roles.Admin;
   }
 
   public ngOnInit(): void {
