@@ -1,4 +1,5 @@
 ﻿using Application.Administration.Commands.ChangeUserBlockStatus;
+using Application.Administration.Commands.DeleteCollection;
 using Application.Administration.Commands.ToggleUserRole;
 using Application.Administration.Queries.GetDashboardReports;
 using Application.Administration.Queries.GetDashboardUsers;
@@ -24,6 +25,14 @@ namespace WebUI.Controllers
 
         [HttpPost("block")]
         public async Task<IActionResult> ChangeUserBlockStatus([FromBody] ChangeUserBlockStatusCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpDelete("collection")]
+        public async Task<IActionResult> DeleteCollection([FromBody] DeleteCollectionCommand command)
         {
             await Mediator.Send(command);
 

@@ -9,5 +9,7 @@ namespace Application.Common.Interfaces
         MimeMessage GenerateEmailUpdateConfirmationMessage(string recipientEmail, string userId, string changingToken);
 
         MimeMessage GeneratePasswordResetMessage(string recipientEmail, string userId, string passwordResetToken);
+
+        MimeMessage GenerateCollectionDeletionMessage(string recipientEmail, string collectionName, string reason);
     }
 }

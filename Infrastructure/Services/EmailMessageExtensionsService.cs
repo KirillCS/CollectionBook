@@ -44,5 +44,13 @@ namespace Infrastructure.Services
 
             return emailMessageService.GenerateMessage(recipientEmail, subject, message);
         }
+
+        public MimeMessage GenerateCollectionDeletionMessage(string recipientEmail, string collectionName, string reason)
+        {
+            string subject = emailOptions.CollectionDeletionSubject;
+            string message = string.Format(emailOptions.CollectionDeletionMessage, collectionName, reason);
+
+            return emailMessageService.GenerateMessage(recipientEmail, subject, message);
+        }
     }
 }

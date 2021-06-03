@@ -15,7 +15,7 @@
     <ng-container matColumnDef="collection">
       <th mat-header-cell *matHeaderCellDef>Reported collection</th>
       <td mat-cell *matCellDef="let report">
-        <a class="link" [routerLink]="['/collection', report.collectionId]">@{{ report.collectionName }}</a>
+        <a class="link" [routerLink]="['/collection', report.collectionId]">{{ report.collectionName }}</a>
       </td>
     </ng-container>
 

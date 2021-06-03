@@ -17,5 +17,9 @@
         public string PasswordResetSubject { get; set; }
 
         public string PasswordResetMessage { get; set; }
+
+        public string CollectionDeletionSubject { get; set; }
+
+        public string CollectionDeletionMessage { get; set; }
     }
 }
