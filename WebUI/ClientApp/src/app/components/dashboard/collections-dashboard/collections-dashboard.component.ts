@@ -61,6 +61,12 @@ export class CollectionsDashboardComponent extends SearchBaseComponent implement
     this._updateCollections();
   }
 
+  public refreshButtonClickedHandler(): void {
+    if (this.collectionsLoaded) {
+      this._updateCollections();
+    }
+  }
+
   public deleteButtonClickedHandler(collection: DashboardCollectionDto): void {
     let ref = this._dialog.open(FieldDialogComponent, {
       width: '550px',

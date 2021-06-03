@@ -73,6 +73,12 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
     this.updateUsers();
   }
 
+  public refreshButtonClickedHandler(): void {
+    if (this.usersLoaded) {
+      this.updateUsers();
+    }
+  }
+
   public pageChangedHandler(event: PageEvent): void {
     this._pageIndex = event.pageIndex;
     this._pageSize = event.pageSize;

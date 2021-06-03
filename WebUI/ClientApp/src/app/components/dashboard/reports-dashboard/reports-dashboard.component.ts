@@ -75,6 +75,12 @@ export class ReportsDashboardComponent extends PaginatedBaseComponent implements
     this._updateReports();
   }
 
+  public refreshButtonClickedHandler(): void {
+    if (this.reportsLoaded) {
+      this._updateReports();
+    }
+  }
+
   public acceptButtonClickedHandler(event: Event, report: DashboardReportDto): void {
     event.stopPropagation();
     let ref = this._dialog.open(FieldDialogComponent, {
