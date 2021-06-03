@@ -6,7 +6,6 @@ import { DashboardCollectionDto } from 'src/app/models/dtos/collection/dashboard
 import { AdminService } from 'src/app/services/admin.service';
 import { AuthTokenService, TokenSettingType } from 'src/app/services/auth-token.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { SearchBaseComponent } from 'src/app/components/search/search-base.component';
 import { PageEvent } from '@angular/material/paginator';
@@ -33,8 +32,7 @@ export class CollectionsDashboardComponent extends SearchBaseComponent implement
     private _dialog: MatDialog,
     private _router: Router,
     private _authService: AuthService,
-    private _authTokenService: AuthTokenService,
-    private _currentUserService: CurrentUserService
+    private _authTokenService: AuthTokenService
   ) {
     super();
     this._pageSize = 30;
