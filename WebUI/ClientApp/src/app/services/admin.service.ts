@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { API_URL } from '../app-injection-tokens';
+import { DashboardCollectionDto } from '../models/dtos/collection/dashboard-collection.dto';
 import { DashboardReportDto } from '../models/dtos/report/dashboard-report.dto';
 import { DashboardUserDto } from '../models/dtos/user/dashboard-user.dto';
 import { PaginatedListRequest } from '../models/requests/paginated-list.request';
@@ -26,6 +27,18 @@ export class AdminService {
     });
 
     return this.httpClient.get<PaginatedListResponse<DashboardUserDto>>(`${this.apiUrl}api/admin/users`, { params });
+  }
+
+  public getDashboardCollections(request: SearchPaginatedListRequest): Observable<PaginatedListResponse<DashboardCollectionDto>> {
+    let params = new HttpParams({
+      fromObject: {
+        searchString: request.searchString,
+        pageIndex: request.pageIndex.toString(),
+        pageSize: request.pageSize.toString()
+      }
+    });
+
+    return this.httpClient.get<PaginatedListResponse<DashboardCollectionDto>>(`${this.apiUrl}api/admin/collections`, { params });
   }
 
   public getDashboardReports(request: PaginatedListRequest, from: Date, to: Date): Observable<PaginatedListResponse<DashboardReportDto>> {

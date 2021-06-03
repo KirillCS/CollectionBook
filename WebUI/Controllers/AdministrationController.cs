@@ -17,12 +17,12 @@ namespace WebUI.Controllers
         public async Task<IActionResult> GetDashboardUsers([FromQuery] GetDashboardUsersQuery query) =>
             Ok(await Mediator.Send(query));
 
-        [HttpGet("reports")]
-        public async Task<IActionResult> GetDashboardReports([FromQuery] GetDashboardReportsQuery query) =>
-            Ok(await Mediator.Send(query));
-
         [HttpGet("collections")]
         public async Task<IActionResult> GetDashboardCollections([FromQuery] GetDashboardCollectionsQuery query) =>
+            Ok(await Mediator.Send(query));
+
+        [HttpGet("reports")]
+        public async Task<IActionResult> GetDashboardReports([FromQuery] GetDashboardReportsQuery query) =>
             Ok(await Mediator.Send(query));
 
         [HttpPost("role")]
