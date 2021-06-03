@@ -1,5 +1,6 @@
 ﻿using Application.Administration.Commands.ChangeUserBlockStatus;
 using Application.Administration.Commands.DeleteCollection;
+using Application.Administration.Commands.DeleteReport;
 using Application.Administration.Commands.ToggleUserRole;
 using Application.Administration.Queries.GetDashboardReports;
 using Application.Administration.Queries.GetDashboardUsers;
@@ -33,6 +34,14 @@ namespace WebUI.Controllers
 
         [HttpDelete("collection")]
         public async Task<IActionResult> DeleteCollection([FromBody] DeleteCollectionCommand command)
+        {
+            await Mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpDelete("report/{Id}")]
+        public async Task<IActionResult> DeleteReport([FromRoute] DeleteReportCommand command)
         {
             await Mediator.Send(command);
 
