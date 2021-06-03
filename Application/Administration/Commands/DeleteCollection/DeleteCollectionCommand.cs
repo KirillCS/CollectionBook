@@ -35,13 +35,14 @@ namespace Application.Administration.Commands.DeleteCollection
         public async Task<Unit> Handle(DeleteCollectionCommand request, CancellationToken cancellationToken)
         {
             Collection collection = await context.Collections.Include(c => c.User).FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
-            Guard.Requires(() => collection is not null, new EntityNotFoundException(nameof(Collection)));
+            if (collection is not null)
+            {
+                MimeMessage message = service.GenerateCollectionDeletionMessage(collection.User.Email, collection.Name, request.Reason);
+                await emailSenderService.SendEmail(message);
 
-            MimeMessage message = service.GenerateCollectionDeletionMessage(collection.User.Email, collection.Name, request.Reason);
-            await emailSenderService.SendEmail(message);
-
-            context.Collections.Remove(collection);
-            await context.SaveChanges(cancellationToken);
+                context.Collections.Remove(collection);
+                await context.SaveChanges(cancellationToken);
+            }
 
             return Unit.Value;
         }

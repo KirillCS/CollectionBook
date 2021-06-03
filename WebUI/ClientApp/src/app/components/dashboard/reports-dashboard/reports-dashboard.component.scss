@@ -1,7 +1,9 @@
 @import 'src/colors.scss';
 
+$table-min-width: 550px;
+
 table {
-  min-width: 550px;
+  min-width: $table-min-width;
 }
 
 .mat-column-date {
@@ -37,4 +39,8 @@ table {
 
 .expandable-row-content {
   height: 0;
+}
+
+mat-paginator {
+  min-width: $table-min-width;
 }

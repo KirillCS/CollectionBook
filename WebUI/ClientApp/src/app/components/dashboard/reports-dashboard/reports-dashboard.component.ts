@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
@@ -14,6 +15,7 @@ import { AuthTokenService, TokenSettingType } from 'src/app/services/auth-token.
 import { AuthService } from 'src/app/services/auth.service';
 import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
+import { FieldDialogComponent } from '../../dialogs/field-dialog/field-dialog.component';
 import { PaginatedBaseComponent } from '../../search/paginated-base.component';
 
 @Component({
@@ -73,7 +75,7 @@ export class ReportsDashboardComponent extends PaginatedBaseComponent implements
   }
 
   public ngOnInit(): void {
-    this.updateReports();
+    this._updateReports();
   }
 
   public dateRangeChangedHandler(range: DateRange<Date>): void {
@@ -81,27 +83,51 @@ export class ReportsDashboardComponent extends PaginatedBaseComponent implements
     this._to = range?.end;
     this._pageIndex = 0;
 
-    this.updateReports();
+    this._updateReports();
   }
 
   public acceptButtonClickedHandler(event: Event, report: DashboardReportDto): void {
     event.stopPropagation();
-    console.log(report);
+    let ref = this._dialog.open(FieldDialogComponent, {
+      width: '550px',
+      position: { top: '25vh' },
+      data: {
+        header: 'Collection deletion',
+        message: `Are you sure you want to delete the collection "${report.collectionName}"? Enter a collection deletion reason and click the delete button.`,
+        inputLabel: 'Reason',
+        inputType: 'textarea',
+        formControl: new FormControl('', Validators.required),
+        inputErrors: [{ errorCode: 'required', errorMessage: 'Enter reason' }],
+        closeButtonName: 'Cancel',
+        submitButtonName: 'Delete'
+      }
+    });
+
+    let submitSubscription = ref.componentInstance.submitEmitter.subscribe((formControl: FormControl) => {
+      if (formControl.invalid) {
+        return;
+      }
+
+      ref.close();
+      this._deleteCollection(report.collectionId, formControl.value);
+    });
+
+    ref.afterClosed().subscribe(() => submitSubscription.unsubscribe());
   }
 
   public refuseButtonClickedHandler(event: Event, report: DashboardReportDto): void {
     event.stopPropagation();
-    console.log(report);
+    this._deleteReport(report.id);
   }
 
   public pageChangedHandler(event: PageEvent): void {
     this._pageIndex = event.pageIndex;
     this._pageSize = event.pageSize;
 
-    this.updateReports();
+    this._updateReports();
   }
 
-  private updateReports(): void {
+  private _updateReports(): void {
     this._reportsLoaded = false;
 
     let request: PaginatedListRequest = {
@@ -144,5 +170,48 @@ export class ReportsDashboardComponent extends PaginatedBaseComponent implements
         }
       },
       () => this._reportsLoaded = true);
+  }
+
+  private _deleteCollection(id: number, reason: string): void {
+    this._adminService.deleteCollection(id, reason).subscribe(
+      () => this._updateReports(),
+      (errorResponse: HttpErrorResponse) => this._handleDeletionErrors(errorResponse)
+    );
+  }
+
+  private _deleteReport(id: number): void {
+    this._adminService.deleteReport(id).subscribe(
+      () => this._updateReports(),
+      (errorResponse: HttpErrorResponse) => this._handleDeletionErrors(errorResponse)
+    );
+  }
+
+  private _handleDeletionErrors(errorResponse: HttpErrorResponse): void {
+    switch (errorResponse.status) {
+      case 401:
+        this._authService.logout(true);
+        this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to accept or refuse reports.');
+      case 403:
+        let updatedToken = errorResponse.error.accessToken;
+        let tokenSettingType = this._authTokenService.isConstant;
+        if (updatedToken && tokenSettingType !== TokenSettingType.NotSet) {
+          this._authTokenService.setToken(updatedToken, tokenSettingType == TokenSettingType.Constant);
+        }
+
+        this._router.navigateByUrl('/');
+        this._dialogsService.openWarningMessageDialog('No access', 'Your account role does not have access to accept or refuse reports.');
+        break;
+      case 404:
+        this._authService.logout(true);
+        this._dialogsService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
+        break;
+      case 405:
+        this._authService.logout(true);
+        this._dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
+        break;
+      default:
+        this._dialogsService.openWarningMessageDialog('Something went wrong', `Something went wrong on the server.`);
+        break;
+    }
   }
 }

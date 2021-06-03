@@ -1,7 +1,9 @@
 @import 'src/variables.scss'; 
 
+$table-min-width: 750px;
+
 table {
-  min-width: 750px;
+  min-width: $table-min-width;
 }
 
 .mat-column-id {
@@ -30,5 +32,5 @@ td.mat-column-id {
 }
 
 mat-paginator {
-  min-width: 750px;
+  min-width: $table-min-width;
 }
