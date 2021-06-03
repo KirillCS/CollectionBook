@@ -1,5 +1,4 @@
 ﻿using Application.Common.Attributes;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Common;
 using Domain.Entities;

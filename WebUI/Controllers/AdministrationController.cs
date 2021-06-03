@@ -2,6 +2,7 @@
 using Application.Administration.Commands.DeleteCollection;
 using Application.Administration.Commands.DeleteReport;
 using Application.Administration.Commands.ToggleUserRole;
+using Application.Administration.Queries.GetDashboardCollections;
 using Application.Administration.Queries.GetDashboardReports;
 using Application.Administration.Queries.GetDashboardUsers;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,11 @@ namespace WebUI.Controllers
             Ok(await Mediator.Send(query));
 
         [HttpGet("reports")]
-        public async Task<IActionResult> GetReports([FromQuery] GetDashboardReportsQuery query) =>
+        public async Task<IActionResult> GetDashboardReports([FromQuery] GetDashboardReportsQuery query) =>
+            Ok(await Mediator.Send(query));
+
+        [HttpGet("collections")]
+        public async Task<IActionResult> GetDashboardCollections([FromQuery] GetDashboardCollectionsQuery query) =>
             Ok(await Mediator.Send(query));
 
         [HttpPost("role")]

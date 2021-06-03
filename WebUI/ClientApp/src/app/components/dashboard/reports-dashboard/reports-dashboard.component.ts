@@ -13,7 +13,6 @@ import { Roles } from 'src/app/models/roles';
 import { AdminService } from 'src/app/services/admin.service';
 import { AuthTokenService, TokenSettingType } from 'src/app/services/auth-token.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { CurrentUserService } from 'src/app/services/current-user.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { FieldDialogComponent } from '../../dialogs/field-dialog/field-dialog.component';
 import { PaginatedBaseComponent } from '../../search/paginated-base.component';
@@ -47,8 +46,7 @@ export class ReportsDashboardComponent extends PaginatedBaseComponent implements
     private _dialog: MatDialog,
     private _router: Router,
     private _authService: AuthService,
-    private _authTokenService: AuthTokenService,
-    private _currentUserService: CurrentUserService
+    private _authTokenService: AuthTokenService
   ) {
     super();
     this._pageSize = 20;
@@ -137,7 +135,6 @@ export class ReportsDashboardComponent extends PaginatedBaseComponent implements
 
     this._adminService.getDashboardReports(request, this._from, this._to).subscribe(
       list => {
-        console.log(list);
         this._reports = list.items;
         this._totalCount = list.totalCount;
       },
