@@ -48,4 +48,12 @@ export class AdminService {
   public changeUserBlockStatus(id: string, newBlockStatus: boolean, blockReason: string): Observable<void> {
     return this.httpClient.post<void>(`${this.apiUrl}api/admin/block`, { id, newBlockStatus, blockReason });
   }
+
+  public deleteCollection(id: number, reason: string): Observable<void> {
+    return this.httpClient.request<void>('delete', `${this.apiUrl}api/admin/collection`, { body: { id, reason } });
+  }
+
+  public deleteReport(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.apiUrl}api/admin/report/${id}`);
+  }
 }
