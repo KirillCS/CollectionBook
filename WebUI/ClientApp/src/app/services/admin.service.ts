@@ -3,7 +3,9 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { API_URL } from '../app-injection-tokens';
+import { DashboardReportDto } from '../models/dtos/report/dashboard-report.dto';
 import { DashboardUserDto } from '../models/dtos/user/dashboard-user.dto';
+import { PaginatedListRequest } from '../models/requests/paginated-list.request';
 import { SearchPaginatedListRequest } from '../models/requests/search-paginated-list.request';
 import { PaginatedListResponse } from '../models/responses/paginated-list.response';
 
@@ -24,6 +26,19 @@ export class AdminService {
     });
 
     return this.httpClient.get<PaginatedListResponse<DashboardUserDto>>(`${this.apiUrl}api/admin/users`, { params });
+  }
+
+  public getDashboardReports(request: PaginatedListRequest, from: Date, to: Date): Observable<PaginatedListResponse<DashboardReportDto>> {
+    let params = new HttpParams({
+      fromObject: {
+        pageIndex: request.pageIndex.toString(),
+        pageSize: request.pageSize.toString(),
+        from: from ? from.toDateString() : '',
+        to: to ? to.toDateString() : ''
+      }
+    });
+
+    return this.httpClient.get<PaginatedListResponse<DashboardReportDto>>(`${this.apiUrl}api/admin/reports`, { params });
   }
 
   public toggleUserRole(userId: string): Observable<string> {

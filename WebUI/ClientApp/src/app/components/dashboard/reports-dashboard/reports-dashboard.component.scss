@@ -1,0 +1,40 @@
+@import 'src/colors.scss';
+
+table {
+  min-width: 550px;
+}
+
+.mat-column-date {
+  width: 150px;
+}
+
+.mat-column-decision {
+  width: 120px;
+}
+
+.description {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  white-space: pre-wrap;
+}
+
+.expandable-row {
+  &:not(.expanded) {
+    &:hover {
+      background-color: $white-1;
+    }
+
+    &:active {
+      background-color: $white-2;
+    }
+  }
+
+  td {
+    border-bottom: none;
+  }
+}
+
+.expandable-row-content {
+  height: 0;
+}

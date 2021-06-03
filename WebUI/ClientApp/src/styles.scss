@@ -106,3 +106,12 @@ mat-paginator {
   border-radius: 8px;
   box-shadow: 0 0 6px 0 #00000040 !important;
 }
+
+.link {
+  text-decoration: none;
+  color: black;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}

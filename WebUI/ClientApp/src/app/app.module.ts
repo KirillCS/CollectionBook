@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { ErrorStateMatcher, MatNativeDateModule } from '@angular/material/core';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
@@ -27,7 +27,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
@@ -94,6 +95,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UsersDashboardComponent } from './components/dashboard/users-dashboard/users-dashboard.component';
 import { ReportsDashboardComponent } from './components/dashboard/reports-dashboard/reports-dashboard.component';
 import { CollectionsDashboardComponent } from './components/dashboard/collections-dashboard/collections-dashboard.component';
+import { DateRangePickerComponent } from './components/ui/date-range-picker/date-range-picker.component';
 
 @NgModule({
   declarations: [
@@ -147,7 +149,8 @@ import { CollectionsDashboardComponent } from './components/dashboard/collection
     DashboardComponent,
     UsersDashboardComponent,
     ReportsDashboardComponent,
-    CollectionsDashboardComponent
+    CollectionsDashboardComponent,
+    DateRangePickerComponent
   ],
   imports: [
     BrowserModule,
@@ -179,6 +182,8 @@ import { CollectionsDashboardComponent } from './components/dashboard/collection
     MatProgressSpinnerModule,
     ScrollingModule,
     MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
 
     NgProgressModule,
     NgProgressHttpModule.withConfig({
@@ -205,6 +210,7 @@ import { CollectionsDashboardComponent } from './components/dashboard/collection
   ],
   providers: [
     EmailConfirmationGuard,
+    MatDatepickerModule,
     { provide: API_URL, useValue: environment.apiUrl },
     { provide: DEFAULT_AVATAR, useValue: environment.defaultAvatar },
     { provide: DEFAULT_COLLECTION_COVER, useValue: environment.defaultCollectionCover },
