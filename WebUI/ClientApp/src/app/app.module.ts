@@ -96,6 +96,8 @@ import { UsersDashboardComponent } from './components/dashboard/users-dashboard/
 import { ReportsDashboardComponent } from './components/dashboard/reports-dashboard/reports-dashboard.component';
 import { CollectionsDashboardComponent } from './components/dashboard/collections-dashboard/collections-dashboard.component';
 import { DateRangePickerComponent } from './components/ui/date-range-picker/date-range-picker.component';
+import { StatisticsComponent } from './components/home/statistics/statistics.component';
+import { CountsComponent } from './components/home/statistics/counts/counts.component';
 
 @NgModule({
   declarations: [
@@ -150,7 +152,9 @@ import { DateRangePickerComponent } from './components/ui/date-range-picker/date
     UsersDashboardComponent,
     ReportsDashboardComponent,
     CollectionsDashboardComponent,
-    DateRangePickerComponent
+    DateRangePickerComponent,
+    StatisticsComponent,
+    CountsComponent
   ],
   imports: [
     BrowserModule,

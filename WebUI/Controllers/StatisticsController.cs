@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebUI.Controllers
 {
-    [Route("stat")]
+    [Route("api/stat")]
     public class StatisticsController : ApiControllerBase
     {
         [HttpGet("counts")]

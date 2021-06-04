@@ -1,0 +1,26 @@
+<div class="table-container">
+  <table mat-table [dataSource]="data">
+    <ng-container matColumnDef="users">
+      <th mat-header-cell *matHeaderCellDef>Users count</th>
+      <td mat-cell *matCellDef="let counts">{{ counts.usersCount }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="blockedUsers">
+      <th mat-header-cell *matHeaderCellDef>Blocked users count</th>
+      <td mat-cell *matCellDef="let counts">{{ counts.blockedUsersCount }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="collections">
+      <th mat-header-cell *matHeaderCellDef>Collections count</th>
+      <td mat-cell *matCellDef="let counts">{{ counts.collectionsCount }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="items">
+      <th mat-header-cell *matHeaderCellDef>Items count</th>
+      <td mat-cell *matCellDef="let counts">{{ counts.itemsCount }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayingColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayingColumns;"></tr>
+  </table>
+</div>
