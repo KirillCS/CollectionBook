@@ -100,6 +100,7 @@ import { DateRangePickerComponent } from './components/ui/date-range-picker/date
 import { StatisticsComponent } from './components/home/statistics/statistics.component';
 import { CountsComponent } from './components/home/statistics/counts/counts.component';
 import { TopTagsComponent } from './components/home/statistics/top-tags/top-tags.component';
+import { TopCollectionsComponent } from './components/home/statistics/top-collections/top-collections.component';
 
 @NgModule({
   declarations: [
@@ -157,7 +158,8 @@ import { TopTagsComponent } from './components/home/statistics/top-tags/top-tags
     DateRangePickerComponent,
     StatisticsComponent,
     CountsComponent,
-    TopTagsComponent
+    TopTagsComponent,
+    TopCollectionsComponent
   ],
   imports: [
     BrowserModule,

@@ -115,3 +115,37 @@ mat-paginator {
     text-decoration: underline;
   }
 }
+
+.table-container {
+  position: relative;
+  width: 100%;
+  overflow: auto;
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #00000020;
+  border-radius: 2px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-header-cell,
+.mat-cell {
+  padding: 0 0.5rem !important;
+  text-align: center !important;
+}
+
+.no-wrap {
+  @include no-wrap-text();
+}

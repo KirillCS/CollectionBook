@@ -1,0 +1,11 @@
+table {
+  min-width: 500px;
+}
+
+.mat-column-name {
+  width: 500px;
+}
+
+.mat-column-starsCount {
+  width: 150px;
+}
