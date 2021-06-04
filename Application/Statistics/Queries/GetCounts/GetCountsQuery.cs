@@ -24,6 +24,7 @@ namespace Application.Statistics.Queries.GetCounts
             new CountsResponse()
             {
                 UsersCount = await context.Users.CountAsync(u => u.EmailConfirmed, cancellationToken),
+                BlockedUsersCount = await context.Users.CountAsync(u => u.EmailConfirmed && u.IsBlocked, cancellationToken),
                 CollectionsCount = await context.Collections.CountAsync(cancellationToken),
                 ItemsCount = await context.Items.CountAsync(cancellationToken)
             };
