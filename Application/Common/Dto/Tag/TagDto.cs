@@ -5,8 +5,6 @@ namespace Application.Common.Dto
 {
     public class TagDto : IMapFrom<Tag>
     {
-        public int Id { get; set; }
-
         public string Label { get; set; }
     }
 }
