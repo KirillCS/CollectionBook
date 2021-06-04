@@ -29,6 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatBadgeModule } from '@angular/material/badge';
 
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
@@ -98,6 +99,7 @@ import { CollectionsDashboardComponent } from './components/dashboard/collection
 import { DateRangePickerComponent } from './components/ui/date-range-picker/date-range-picker.component';
 import { StatisticsComponent } from './components/home/statistics/statistics.component';
 import { CountsComponent } from './components/home/statistics/counts/counts.component';
+import { TopTagsComponent } from './components/home/statistics/top-tags/top-tags.component';
 
 @NgModule({
   declarations: [
@@ -154,7 +156,8 @@ import { CountsComponent } from './components/home/statistics/counts/counts.comp
     CollectionsDashboardComponent,
     DateRangePickerComponent,
     StatisticsComponent,
-    CountsComponent
+    CountsComponent,
+    TopTagsComponent
   ],
   imports: [
     BrowserModule,
@@ -188,6 +191,7 @@ import { CountsComponent } from './components/home/statistics/counts/counts.comp
     MatTableModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatBadgeModule,
 
     NgProgressModule,
     NgProgressHttpModule.withConfig({

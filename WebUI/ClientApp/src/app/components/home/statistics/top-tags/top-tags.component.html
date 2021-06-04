@@ -1,0 +1,17 @@
+<mat-form-field appearance="outline">
+  <mat-label>Top count</mat-label>
+  <mat-select [(value)]="selectedCount">
+    <mat-option *ngFor="let count of availableCount" [value]="count">
+      {{ count }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<h3>Top-{{ selectedCount }} tags:</h3>
+<span *ngIf="noTags">No tags</span>
+<ngx-skeleton-loader *ngIf="!tagsLoaded" [count]="selectedCount"
+  [theme]="{ 'max-width': '100%', width: '90px', height: '30px', 'border-radius': '15px', 'margin-right': '0.5rem', 'background-color': '#ECECEC' }">
+</ngx-skeleton-loader>
+<mat-chip-list>
+  <mat-chip class="mr-2" *ngFor="let tag of tags | async" matBadge="{{tag.count}}"
+    [routerLink]="['/search', 'collections']" [queryParams]="getTagQueryParams(tag.label)">{{ tag.label }}</mat-chip>
+</mat-chip-list>
