@@ -41,14 +41,14 @@
           <li *ngIf="user.websiteUrl">
             <div class="icon-data">
               <i class="material-icons-round">link</i>
-              <a href="{{ user.websiteUrl }}" target="_blank" tabindex="-1"
+              <a class="link" href="{{ user.websiteUrl }}" target="_blank" tabindex="-1"
                 matTooltip="{{ user.websiteUrl }}">Website</a>
             </div>
           </li>
           <li *ngIf="user.telegramLogin">
             <div class="icon-data">
               <i class="fab fa-telegram-plane"></i>
-              <a href="https://t.me/{{ user.telegramLogin }}" target="_blank" tabindex="-1">@{{ user.telegramLogin
+              <a class="link" href="https://t.me/{{ user.telegramLogin }}" target="_blank" tabindex="-1">@{{ user.telegramLogin
                 }}</a>
             </div>
           </li>
@@ -66,19 +66,19 @@
       <mat-icon class="material-icons-round">settings</mat-icon>
     </button>
     <nav mat-tab-nav-bar mat-align-tabs="center">
-      <span mat-tab-link routerLink="collections" routerLinkActive #collections="routerLinkActive"
+      <a mat-tab-link routerLink="collections" routerLinkActive #collections="routerLinkActive"
         [active]="collections.isActive">
         <mat-icon class="material-icons-round mr-1">
           collections
         </mat-icon>
         Collections
-      </span>
-      <span mat-tab-link routerLink="stars" routerLinkActive #stars="routerLinkActive" [active]="stars.isActive">
+      </a>
+      <a mat-tab-link routerLink="stars" routerLinkActive #stars="routerLinkActive" [active]="stars.isActive">
         <mat-icon class="material-icons-round mr-1">
           star
         </mat-icon>
         Stars
-      </span>
+      </a>
     </nav>
   </div>
 </div>

@@ -6,7 +6,7 @@
     matTooltipPosition="above">
     <app-profile-cover [user]="notification?.user"></app-profile-cover>
     <div class="collection-info">
-      <a class="name" [routerLink]="['collection', notification.collection.id]">
+      <a class="link name" [routerLink]="['collection', notification.collection.id]">
         {{ notification.collection.name }}
       </a>
       <app-stars-counter [count]="notification.starsCount" [collectionId]="notification.collection.id"

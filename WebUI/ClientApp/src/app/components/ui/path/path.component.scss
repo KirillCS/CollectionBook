@@ -4,7 +4,10 @@ main {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  color: $dark-gray;
+  
+  * {
+    color: $dark-gray;
+  }
 
   mat-icon {
     margin-right: 0.8rem;
@@ -13,15 +16,6 @@ main {
   section {
     font-size: 1.4rem;
     line-height: 1.7rem;
-
-    .link {
-      cursor: pointer;
-
-      &:hover {
-        text-decoration: underline;
-        color: black;
-      }
-    }
 
     .highlight {
       font-weight: 500;

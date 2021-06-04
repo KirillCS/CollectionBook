@@ -11,7 +11,7 @@ import { DefaultDialogsService } from 'src/app/services/default-dialogs.service'
 @Component({
   selector: 'app-email-confirmation',
   templateUrl: './email-confirmation.component.html',
-  styleUrls: ['./email-confirmation.component.scss', '../email-components.styles.scss']
+  styleUrls: ['../email-components.styles.scss']
 })
 export class EmailConfirmationComponent implements OnInit {
   private _id = '';

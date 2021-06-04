@@ -1,7 +1,7 @@
 <div class="app__container px-3">
   <div class="card mt-2 mb-4 py-3 row mx-0 justify-content-between align-items-center">
     <app-search-input placeholder="Find user collections..." (changed)="searchInputChanged($event)"></app-search-input>
-    <button mat-stroked-button *ngIf="isOwner" routerLink="/new" color="primary">New</button>
+    <a mat-stroked-button *ngIf="isOwner" routerLink="/new" color="primary">New</a>
   </div>
 
   <div class="row mx-0 my-3 justify-content-center" *ngIf="!collectionsLoaded">

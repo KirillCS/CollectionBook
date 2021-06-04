@@ -11,25 +11,6 @@
     font-weight: 500;
     margin-bottom: 0.3rem;
     text-align: right;
-    text-decoration: none;
-    color: black;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .stars {
-    display: flex;
-    align-items: center;
-    cursor: default;
-    opacity: 0.6;
-
-    mat-icon {
-      font-size: 1rem;
-      width: auto;
-      height: auto;
-    }
   }
 }
 

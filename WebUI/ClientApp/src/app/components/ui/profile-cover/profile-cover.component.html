@@ -10,7 +10,7 @@
     <ngx-skeleton-loader *ngIf="!userLoaded"
       [theme]="{'max-width': '100%', width: '150px', height: '100%', 'background-color': '#ECECEC'}" >
     </ngx-skeleton-loader>
-    <span *ngIf="userLoaded" class="login" [routerLink]="['/profile', login]">@{{ login }}</span>
+    <a *ngIf="userLoaded" class="link login" [routerLink]="['/profile', login]">@{{ login }}</a>
     <ngx-skeleton-loader *ngIf="!userLoaded"
       [theme]="{'max-width': '100%', width: '100px', height: '100%', 'background-color': '#ECECEC'}" >
     </ngx-skeleton-loader>

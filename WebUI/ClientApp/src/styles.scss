@@ -149,3 +149,7 @@ table {
 .no-wrap {
   @include no-wrap-text();
 }
+
+mat-chip {
+  cursor: pointer !important;
+}

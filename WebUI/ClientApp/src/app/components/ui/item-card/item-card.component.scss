@@ -25,14 +25,6 @@ main {
     >main {
       display: block;
 
-      >h2 {
-        cursor: pointer;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-
       >.info {
         @include no-wrap-text(2);
         white-space: pre-wrap;

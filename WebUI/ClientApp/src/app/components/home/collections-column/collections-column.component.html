@@ -1,6 +1,6 @@
 <div class="row mx-0 justify-content-between align-items-center mb-1">
   <h2 class="mb-0">Collections</h2>
-  <button mat-button color="primary" routerLink="/new">New</button>
+  <a mat-button color="primary" routerLink="/new">New</a>
 </div>
 <div class="mb-3">
   <app-search-input placeholder="Find your collection..." (changed)="search($event)"></app-search-input>
@@ -8,7 +8,7 @@
 
 <ul *ngIf="!collectionsNotFound">
   <li *ngFor="let collection of collections">
-    <a [routerLink]="['collection', collection.id]">
+    <a class="link" [routerLink]="['collection', collection.id]">
       {{ collection.name }}
     </a>
   </li>
