@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { API_URL } from 'src/app/app-injection-tokens';
 import { CollectionCreatingRequest } from 'src/app/models/requests/collection/collection-creating.request';
-import { TagDto } from '../models/dtos/tag.dto';
+import { TagDto } from '../models/dtos/tag/tag.dto';
 import { SearchPaginatedListRequest } from '../models/requests/search-paginated-list.request';
 import { ItemCoverDto } from '../models/dtos/item/item-cover.dto';
 import { PaginatedListResponse } from '../models/responses/paginated-list.response';

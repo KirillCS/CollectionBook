@@ -1,6 +1,6 @@
 import { CollectionNameDto } from "../collection/collection-name.dto";
 import { ImageDto } from "../image.dto";
-import { TagDto } from "../tag.dto";
+import { TagDto } from "../tag/tag.dto";
 import { UserLoginDto } from "../user/user-login.dto";
 
 export class ItemDto {

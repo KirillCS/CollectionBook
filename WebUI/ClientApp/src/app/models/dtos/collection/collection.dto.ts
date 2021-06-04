@@ -1,5 +1,5 @@
 import { StarDto } from "../star/star.dto";
-import { TagDto } from "../tag.dto";
+import { TagDto } from "../tag/tag.dto";
 import { UserCoverDto } from "../user/user-cover.dto";
 
 export class CollectionDto {

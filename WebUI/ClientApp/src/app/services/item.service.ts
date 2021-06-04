@@ -6,7 +6,7 @@ import { API_URL } from '../app-injection-tokens';
 import { ImageDto } from '../models/dtos/image.dto';
 import { ItemCoverDto } from '../models/dtos/item/item-cover.dto';
 import { ItemDto } from '../models/dtos/item/item.dto';
-import { TagDto } from '../models/dtos/tag.dto';
+import { TagDto } from '../models/dtos/tag/tag.dto';
 import { FindItemsRequest } from '../models/requests/item/find-items.request';
 import { PaginatedListResponse } from '../models/responses/paginated-list.response';
 
