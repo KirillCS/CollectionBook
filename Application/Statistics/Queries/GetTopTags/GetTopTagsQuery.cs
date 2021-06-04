@@ -1,5 +1,6 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.Responses;
+﻿using Application.Common.Dto;
+using Application.Common.Interfaces;
+using Application.Common.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -10,26 +11,11 @@ using System.Threading.Tasks;
 
 namespace Application.Statistics.Queries.GetTopTags
 {
-    public class GetTopTagsQuery : IRequest<IEnumerable<TopTagsResponse>>
+    public class GetTopTagsQuery : TopQuery, IRequest<IEnumerable<TopTagDto>>
     {
-        private readonly int count;
-
-        public int Count 
-        { 
-            get => count; 
-            init
-            {
-                if (value < 0)
-                {
-                    value = 0;
-                }
-
-                count = value;
-            }
-        }
     }
 
-    public class GetTopTagsQueryHandler : IRequestHandler<GetTopTagsQuery, IEnumerable<TopTagsResponse>>
+    public class GetTopTagsQueryHandler : IRequestHandler<GetTopTagsQuery, IEnumerable<TopTagDto>>
     {
         private readonly IApplicationDbContext context;
         private readonly IMapper mapper;
@@ -40,11 +26,11 @@ namespace Application.Statistics.Queries.GetTopTags
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<TopTagsResponse>> Handle(GetTopTagsQuery request, CancellationToken cancellationToken) =>
-            context.Tags.ProjectTo<TopTagsResponse>(mapper.ConfigurationProvider)
-                        .Where(t => t.Count != 0)
-                        .OrderByDescending(t => t.Count)
-                        .ThenBy(t => t.Label)
-                        .Take(request.Count);
+        public async Task<IEnumerable<TopTagDto>> Handle(GetTopTagsQuery request, CancellationToken cancellationToken) =>
+            await Task.Run(() => context.Tags.ProjectTo<TopTagDto>(mapper.ConfigurationProvider)
+                                             .Where(t => t.Count != 0)
+                                             .OrderByDescending(t => t.Count)
+                                             .ThenBy(t => t.Label)
+                                             .Take(request.Count));
     }
 }
