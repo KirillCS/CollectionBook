@@ -48,8 +48,8 @@ namespace Application.Administration.Queries.GetDashboardUsers
         private static Expression<Func<User, bool>> GetFilter(Role currentUserRole, string searchString) =>
             currentUserRole.Name switch
             {
-                Roles.Owner => (User u) => u.Role.Name != Roles.Owner && (u.UserName.ToLower().StartsWith(searchString) || u.Id == searchString),
-                Roles.Admin => (User u) => u.Role.Name != Roles.Owner && u.Role.Name != Roles.Admin && (u.UserName.ToLower().StartsWith(searchString) || u.Id == searchString),
+                Roles.Owner => (User u) => u.Role.Name != Roles.Owner && u.EmailConfirmed && (u.UserName.ToLower().StartsWith(searchString) || u.Id == searchString),
+                Roles.Admin => (User u) => u.Role.Name != Roles.Owner && u.Role.Name != Roles.Admin && u.EmailConfirmed && (u.UserName.ToLower().StartsWith(searchString) || u.Id == searchString),
                 _ => throw new OperationException()
             };
     }
