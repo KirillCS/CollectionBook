@@ -2,7 +2,7 @@
 
 .collections {
   min-height: calc(100vh - #{$header-height});
-  height: 100%;
+  width: fit-content;
   background-color: white;
   @include default-shadow;
   padding: 2rem;

@@ -1,33 +1,36 @@
-<div class="mt-3 mt-md-5 mx-3">
-    <div class="card app__container--form">
-      <h1>Login</h1>
-      <form #loginForm="ngForm" [formGroup]="form" (submit)="submit(loginForm)" (input)="formChanged()">
-        <div class="line">
-          <mat-form-field class="field" appearance="outline">
-            <mat-label>Login or email</mat-label>
-            <input type="text" required autocomplete="off" matInput formControlName="login" [errorStateMatcher]="matcher">
-            <mat-error *ngIf="login.errors?.required">This field is required</mat-error>
-          </mat-form-field>
-        </div>
-        <div class="line">
-          <mat-form-field class="field" appearance="outline">
-            <mat-label>Password</mat-label>
-            <input [type]="hidePassword ? 'password' : 'text'" required matInput formControlName="password" [errorStateMatcher]="matcher">
-            <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-              <mat-icon class="material-icons-round">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-            <mat-error *ngIf="password.errors?.required">Password is a required field</mat-error>
-          </mat-form-field>
-        </div>
-        <div class="line">
-          <mat-checkbox class="field" [formControl]="rememberMe" color="primary">Remember me</mat-checkbox>
-        </div>
-        <mat-error *ngIf="invalid">Invalid login or password</mat-error>
-        <mat-error *ngIf="unknownError">Something went wrong...</mat-error>
-        <div class="actions justify-content-center">
-          <button class="w-100" type="submit" [disabled]="inProcess" mat-raised-button color="primary">Login</button>
-          <button type="button" (click)="forgotPasswordButtonClicked()" [disabled]="inProcess" mat-button>I forgot password</button>
-        </div>
-      </form>
-    </div>
+<div class="p-md-5 p-3">
+  <div class="card app__container--form">
+    <h1>Login</h1>
+    <form #loginForm="ngForm" [formGroup]="form" (submit)="submit(loginForm)" (input)="formChanged()">
+      <div class="line">
+        <mat-form-field class="field" appearance="outline">
+          <mat-label>Login or email</mat-label>
+          <input type="text" required autocomplete="off" matInput formControlName="login" [errorStateMatcher]="matcher">
+          <mat-error *ngIf="login.errors?.required">This field is required</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="line">
+        <mat-form-field class="field" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input [type]="hidePassword ? 'password' : 'text'" required matInput formControlName="password"
+            [errorStateMatcher]="matcher">
+          <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+            <mat-icon class="material-icons-round">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="password.errors?.required">Password is a required field</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="line">
+        <mat-checkbox class="field" [formControl]="rememberMe" color="primary">Remember me</mat-checkbox>
+      </div>
+      <mat-error *ngIf="invalid">Invalid login or password</mat-error>
+      <mat-error *ngIf="unknownError">Something went wrong...</mat-error>
+      <div class="actions justify-content-center">
+        <button class="w-100" type="submit" [disabled]="inProcess" mat-raised-button color="primary">Login</button>
+        <button type="button" (click)="forgotPasswordButtonClicked()" [disabled]="inProcess" mat-button>I forgot
+          password</button>
+      </div>
+    </form>
+  </div>
 </div>

@@ -1,9 +1,9 @@
-<div class="app__container mt-4">
+<div class="app__container p-md-4 p-3">
   <div class="row mx-0">
-    <div class="col-md-3 mb-3 mb-md-0">
+    <div class="col-md-3 px-0 pr-p pr-md-3 mb-3 mb-md-0">
       <app-menu [title]="'Categories'" [items]="menuItems" [selectedIndex]="selectedIndex" (change)="selectedMenuItemChanged($event)"></app-menu>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-9 px-0">
       <router-outlet></router-outlet>
     </div>
   </div>

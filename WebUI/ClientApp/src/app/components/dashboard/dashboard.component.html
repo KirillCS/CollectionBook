@@ -1,14 +1,16 @@
 <div class="app__container">
-  <div class="card m-md-4 m-3">
-    <h1>Administrator dashboards</h1>
-    <nav class="mb-3" mat-tab-nav-bar mat-stretch-tabs>
-      <a mat-tab-link routerLink="users" routerLinkActive #users="routerLinkActive"
-      [active]="users.isActive">Users</a>
-      <a mat-tab-link routerLink="collections" routerLinkActive #collections="routerLinkActive"
-      [active]="collections.isActive">Collections</a>
-      <a mat-tab-link routerLink="reports" routerLinkActive #reports="routerLinkActive"
-      [active]="reports.isActive">Reports</a>
-    </nav>
-    <router-outlet></router-outlet>
+  <div class="p-md-4 p-3">
+    <div class="card">
+      <h1>Administrator dashboards</h1>
+      <nav class="mb-3" mat-tab-nav-bar mat-stretch-tabs>
+        <a mat-tab-link routerLink="users" routerLinkActive #users="routerLinkActive"
+          [active]="users.isActive">Users</a>
+        <a mat-tab-link routerLink="collections" routerLinkActive #collections="routerLinkActive"
+          [active]="collections.isActive">Collections</a>
+        <a mat-tab-link routerLink="reports" routerLinkActive #reports="routerLinkActive"
+          [active]="reports.isActive">Reports</a>
+      </nav>
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

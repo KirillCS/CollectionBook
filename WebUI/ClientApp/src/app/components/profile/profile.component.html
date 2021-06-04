@@ -1,85 +1,89 @@
-<div class="profile-underlay mb-4">
-  <div class="app__container">
-    <div class="profile">
-      <div class="avatar-block">
-        <div class="avatar-frame">
-          <ngx-skeleton-loader class="skeleton-avatar" *ngIf="!contentLoaded" appearance="circle"
-            [theme]="{ width: '100%', height: '100%', margin: 0, 'background-color': '#ECECEC' }"></ngx-skeleton-loader>
-          <img *ngIf="contentLoaded" src="{{ getAvatarPath() }}" alt="avatar">
+<div class="pb-3">
+  <div class="profile-underlay">
+    <div class="app__container">
+      <div class="profile">
+        <div class="avatar-block">
+          <div class="avatar-frame">
+            <ngx-skeleton-loader class="skeleton-avatar" *ngIf="!contentLoaded" appearance="circle"
+              [theme]="{ width: '100%', height: '100%', margin: 0, 'background-color': '#ECECEC' }">
+            </ngx-skeleton-loader>
+            <img *ngIf="contentLoaded" src="{{ getAvatarPath() }}" alt="avatar">
+          </div>
+        </div>
+        <div class="data-block">
+          <h1 class="data-line name" *ngIf="contentLoaded && (user.firstName || user.lastName)">{{ user.firstName }} {{
+            user.lastName }}</h1>
+          <ngx-skeleton-loader class="data-line" *ngIf="!contentLoaded"
+            [theme]="{ 'max-width': '100%', width: '250px', height: '32px', 'background-color': '#ECECEC' }">
+          </ngx-skeleton-loader>
+          <div class="data-line login" *ngIf="contentLoaded && user.login">{{ user.login }}</div>
+          <ngx-skeleton-loader class="data-line" *ngIf="!contentLoaded"
+            [theme]="{ 'max-width': '100%', width: '200px', height: '20px', 'background-color': '#ECECEC' }">
+          </ngx-skeleton-loader>
+          <ngx-skeleton-loader class="data-line w-100" count="3" *ngIf="!contentLoaded"
+            [theme]="{ width: '100%', height: '16px', margin: '1px 0', 'background-color': '#ECECEC' }">
+          </ngx-skeleton-loader>
+          <div class="data-line biography" *ngIf="contentLoaded && user.biography">{{ user.biography }}</div>
+          <ngx-skeleton-loader class="icon-data" style="margin-top: 5px;" count="5" *ngIf="!contentLoaded"
+            [theme]="{ width: '100px', height: '16px', margin: '0 15px 0 0', 'background-color': '#ECECEC' }">
+          </ngx-skeleton-loader>
+          <ul class="data-line others" *ngIf="contentLoaded && isOthersDataVisible()">
+            <li *ngIf="user.location">
+              <div class="icon-data">
+                <i class="material-icons-round">location_on</i>
+                {{ user.location }}
+              </div>
+            </li>
+            <li *ngIf="user.isEmailVisible">
+              <div class="icon-data">
+                <i class="material-icons-round">email</i>
+                {{ user.email }}
+              </div>
+            </li>
+            <li *ngIf="user.websiteUrl">
+              <div class="icon-data">
+                <i class="material-icons-round">link</i>
+                <a class="link" href="{{ user.websiteUrl }}" target="_blank" tabindex="-1"
+                  matTooltip="{{ user.websiteUrl }}">Website</a>
+              </div>
+            </li>
+            <li *ngIf="user.telegramLogin">
+              <div class="icon-data">
+                <i class="fab fa-telegram-plane"></i>
+                <a class="link" href="https://t.me/{{ user.telegramLogin }}" target="_blank" tabindex="-1">@{{
+                  user.telegramLogin
+                  }}</a>
+              </div>
+            </li>
+            <li *ngIf="user.instagramLogin">
+              <div class="icon-data">
+                <i class="fab fa-instagram"></i>
+                <a href="https://www.instagram.com/{{ user.instagramLogin }}" target="_blank" tabindex="-1">@{{
+                  user.instagramLogin }}</a>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="data-block">
-        <h1 class="data-line name" *ngIf="contentLoaded && (user.firstName || user.lastName)">{{ user.firstName }} {{
-          user.lastName }}</h1>
-        <ngx-skeleton-loader class="data-line" *ngIf="!contentLoaded"
-          [theme]="{ 'max-width': '100%', width: '250px', height: '32px', 'background-color': '#ECECEC' }">
-        </ngx-skeleton-loader>
-        <div class="data-line login" *ngIf="contentLoaded && user.login">{{ user.login }}</div>
-        <ngx-skeleton-loader class="data-line" *ngIf="!contentLoaded"
-          [theme]="{ 'max-width': '100%', width: '200px', height: '20px', 'background-color': '#ECECEC' }">
-        </ngx-skeleton-loader>
-        <ngx-skeleton-loader class="data-line w-100" count="3" *ngIf="!contentLoaded"
-          [theme]="{ width: '100%', height: '16px', margin: '1px 0', 'background-color': '#ECECEC' }">
-        </ngx-skeleton-loader>
-        <div class="data-line biography" *ngIf="contentLoaded && user.biography">{{ user.biography }}</div>
-        <ngx-skeleton-loader class="icon-data" style="margin-top: 5px;" count="5" *ngIf="!contentLoaded"
-          [theme]="{ width: '100px', height: '16px', margin: '0 15px 0 0', 'background-color': '#ECECEC' }">
-        </ngx-skeleton-loader>
-        <ul class="data-line others" *ngIf="contentLoaded && isOthersDataVisible()">
-          <li *ngIf="user.location">
-            <div class="icon-data">
-              <i class="material-icons-round">location_on</i>
-              {{ user.location }}
-            </div>
-          </li>
-          <li *ngIf="user.isEmailVisible">
-            <div class="icon-data">
-              <i class="material-icons-round">email</i>
-              {{ user.email }}
-            </div>
-          </li>
-          <li *ngIf="user.websiteUrl">
-            <div class="icon-data">
-              <i class="material-icons-round">link</i>
-              <a class="link" href="{{ user.websiteUrl }}" target="_blank" tabindex="-1"
-                matTooltip="{{ user.websiteUrl }}">Website</a>
-            </div>
-          </li>
-          <li *ngIf="user.telegramLogin">
-            <div class="icon-data">
-              <i class="fab fa-telegram-plane"></i>
-              <a class="link" href="https://t.me/{{ user.telegramLogin }}" target="_blank" tabindex="-1">@{{ user.telegramLogin
-                }}</a>
-            </div>
-          </li>
-          <li *ngIf="user.instagramLogin">
-            <div class="icon-data">
-              <i class="fab fa-instagram"></i>
-              <a href="https://www.instagram.com/{{ user.instagramLogin }}" target="_blank" tabindex="-1">@{{
-                user.instagramLogin }}</a>
-            </div>
-          </li>
-        </ul>
-      </div>
+      <button id="settings-button" mat-icon-button *ngIf="isOwner" [routerLink]="['/settings', 'profile']">
+        <mat-icon class="material-icons-round">settings</mat-icon>
+      </button>
+      <nav mat-tab-nav-bar mat-align-tabs="center">
+        <a mat-tab-link routerLink="collections" routerLinkActive #collections="routerLinkActive"
+          [active]="collections.isActive">
+          <mat-icon class="material-icons-round mr-1">
+            collections
+          </mat-icon>
+          Collections
+        </a>
+        <a mat-tab-link routerLink="stars" routerLinkActive #stars="routerLinkActive" [active]="stars.isActive">
+          <mat-icon class="material-icons-round mr-1">
+            star
+          </mat-icon>
+          Stars
+        </a>
+      </nav>
     </div>
-    <button id="settings-button" mat-icon-button *ngIf="isOwner" [routerLink]="['/settings', 'profile']">
-      <mat-icon class="material-icons-round">settings</mat-icon>
-    </button>
-    <nav mat-tab-nav-bar mat-align-tabs="center">
-      <a mat-tab-link routerLink="collections" routerLinkActive #collections="routerLinkActive"
-        [active]="collections.isActive">
-        <mat-icon class="material-icons-round mr-1">
-          collections
-        </mat-icon>
-        Collections
-      </a>
-      <a mat-tab-link routerLink="stars" routerLinkActive #stars="routerLinkActive" [active]="stars.isActive">
-        <mat-icon class="material-icons-round mr-1">
-          star
-        </mat-icon>
-        Stars
-      </a>
-    </nav>
   </div>
 </div>
 
