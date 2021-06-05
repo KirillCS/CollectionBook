@@ -1,10 +1,12 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorStateMatcher, MatNativeDateModule } from '@angular/material/core';
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
@@ -101,6 +103,8 @@ import { StatisticsComponent } from './components/home/statistics/statistics.com
 import { CountsComponent } from './components/home/statistics/counts/counts.component';
 import { TopTagsComponent } from './components/home/statistics/top-tags/top-tags.component';
 import { TopCollectionsComponent } from './components/home/statistics/top-collections/top-collections.component';
+
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
   declarations: [
@@ -230,7 +234,9 @@ import { TopCollectionsComponent } from './components/home/statistics/top-collec
     { provide: SUPPORTED_IMAGES_TYPES, useValue: environment.supportedImagesTypes },
 
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
-    { provide: ErrorStateMatcher, useClass: SubmitErrorStateMatcher }
+    { provide: ErrorStateMatcher, useClass: SubmitErrorStateMatcher },
+
+    { provide: LOCALE_ID, useValue: 'ru' }
   ],
   bootstrap: [AppComponent]
 })
