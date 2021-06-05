@@ -27,7 +27,7 @@ namespace Application.Common.Dto
         void IMapFrom<Collection>.Mapping(Profile profile)
         {
             profile.CreateMap<Collection, UserCollectionDto>()
-                   .ForMember(dto => dto.ItemsCount, s => s.MapFrom(c => c.Items.Count))
+                   .ForMember(dto => dto.CreationTime, s => s.MapFrom(c => DateTime.SpecifyKind(c.CreationTime, DateTimeKind.Utc)))
                    .ForMember(dto => dto.Tags, s => s.MapFrom(c => c.Tags))
                    .ForMember(dto => dto.Stars, s => s.MapFrom(c => c.Stars));
         }

@@ -12,7 +12,7 @@ namespace Infrastructure.Persistence.Configurations
 
             builder.Property(c => c.Description).HasMaxLength(4096);
 
-            builder.Property(c => c.CreationTime).HasDefaultValueSql("getdate()");
+            builder.Property(c => c.CreationTime).HasDefaultValueSql("getutcdate()");
 
             builder.Property(c => c.UserId).IsRequired();
         }

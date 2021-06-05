@@ -21,6 +21,7 @@ namespace Application.Common.Dto
 
         void IMapFrom<Report>.Mapping(Profile profile) =>
             profile.CreateMap<Report, DashboardReportDto>()
+                   .ForMember(d => d.CreationTime, s => s.MapFrom(r => DateTime.SpecifyKind(r.CreationTime, DateTimeKind.Utc)))
                    .ForMember(d => d.CollectionName, s => s.MapFrom(r => r.Collection.Name))
                    .ForMember(d => d.UserLogin, s => s.MapFrom(r => r.User.UserName));
     }

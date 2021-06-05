@@ -21,8 +21,9 @@ namespace Application.Common.Dto
         void IMapFrom<Item>.Mapping(Profile profile)
         {
             profile.CreateMap<Item, ItemCoverDto>()
-                   .ForMember(d => d.Info, o => o.MapFrom(s => s.Information))
-                   .ForMember(d => d.ImagePath, o => o.MapFrom(s => s.Images.Count > 0 ? s.Images.First().Path : null));
+                   .ForMember(d => d.Info, s => s.MapFrom(i => i.Information))
+                   .ForMember(d => d.CreationTime, s => s.MapFrom(i => DateTime.SpecifyKind(i.CreationTime, DateTimeKind.Utc)))
+                   .ForMember(d => d.ImagePath, s => s.MapFrom(i => i.Images.Count > 0 ? i.Images.First().Path : null));
         }
     }
 }

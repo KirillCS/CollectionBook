@@ -1,4 +1,5 @@
 ﻿using Application.Common.Mappings;
+using AutoMapper;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -22,5 +23,9 @@ namespace Application.Common.Dto
         public CollectionNameDto Collection { get; set; }
 
         public UserLoginDto User { get; set; }
+
+        void IMapFrom<Item>.Mapping(Profile profile) =>
+            profile.CreateMap<Item, ItemDto>()
+                   .ForMember(d => d.CreationTime, s => s.MapFrom(i => DateTime.SpecifyKind(i.CreationTime, DateTimeKind.Utc)));
     }
 }
