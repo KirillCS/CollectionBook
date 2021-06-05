@@ -29,7 +29,7 @@ import { PaginatedBaseComponent } from '../../search/paginated-base.component';
   ]
 })
 export class ReportsDashboardComponent extends PaginatedBaseComponent implements OnInit {
-  private _displayedColumns = ['date', 'collection', 'user', 'decision'];
+  private _displayedColumns = ['date', 'collection', 'user', 'decision', 'expand'];
 
   private _from: Date = null;
   private _to: Date = null;

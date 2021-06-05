@@ -1,6 +1,4 @@
-@import 'src/colors.scss';
-
-$table-min-width: 550px;
+$table-min-width: 600px;
 
 table {
   min-width: $table-min-width;
@@ -14,6 +12,10 @@ table {
   width: 120px;
 }
 
+.mat-column-expand {
+  width: 80px;
+}
+
 .description {
   overflow: hidden;
   display: flex;
@@ -22,16 +24,6 @@ table {
 }
 
 .expandable-row {
-  &:not(.expanded) {
-    &:hover {
-      background-color: $white-1;
-    }
-
-    &:active {
-      background-color: $white-2;
-    }
-  }
-
   td {
     border-bottom: none;
   }
