@@ -120,7 +120,7 @@ export class CollectionComponent implements OnInit {
           return;
         }
 
-        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
+        this.dialogService.openWarningMessageDialog('Ошибка выборки коллекции', 'В процессе получения коллекции произошла неизвестная ошибка на сервере.');
       },
       () => this._contentLoaded = true);
   }
@@ -131,14 +131,14 @@ export class CollectionComponent implements OnInit {
       width: '500px',
       position: { top: '30vh' },
       data: {
-        header: 'Item creating',
-        message: `Enter a name of a new collection item.`,
-        inputLabel: 'Item name',
+        header: 'Создание элемента коллекции',
+        message: `Введите название создаваемого элемента коллекции и нажмите кнопку "Создать".`,
+        inputLabel: 'Название элемента',
         inputType: 'text',
         formControl: new FormControl('', Validators.required),
-        inputErrors: [{ errorCode: 'required', errorMessage: 'Item name cannot be empty' }],
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Create'
+        inputErrors: [{ errorCode: 'required', errorMessage: 'Введите название' }],
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Создать'
       }
     });
 
@@ -171,17 +171,17 @@ export class CollectionComponent implements OnInit {
       width: '550px',
       position: { top: '25vh' },
       data: {
-        header: 'Reporting collection',
-        message: `Enter a report description and click the report button`,
-        inputLabel: 'Report',
+        header: 'Создание жалобы',
+        message: `Введите причину жалобы и нажите на кнопку "Отправить".`,
+        inputLabel: 'Причина',
         inputType: 'textarea',
         formControl: new FormControl('', [Validators.required, Validators.maxLength(1028)]),
         inputErrors: [
-          { errorCode: 'required', errorMessage: 'Enter report description' },
-          { errorCode: 'maxlength', errorMessage: 'Maximum length of the collection description is 4096' }
+          { errorCode: 'required', errorMessage: 'Введите причину жалобы' },
+          { errorCode: 'maxlength', errorMessage: 'Причина жалобы не может быть более 1028 символов' }
         ],
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Report'
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Отправить'
       }
     });
 
@@ -192,15 +192,15 @@ export class CollectionComponent implements OnInit {
 
       ref.close();
       this.collectionService.report(this.collectionId, formControl.value).subscribe(
-        () => this.dialogService.openSuccessMessageDialog('Successfully sent', 'Your repost was successfully sent. Admins will make a final decision.'),
+        () => this.dialogService.openSuccessMessageDialog('Жалоба отправлена', 'Ваша жалоба успшено отправлена адмистрации портала.'),
         (errorResponse: HttpErrorResponse) => {
           switch (errorResponse.status) {
             case 400:
-              this.dialogService.openWarningMessageDialog('Wrong report', 'You must enter a report description (its maximum length - 1028 symbols).');
+              this.dialogService.openWarningMessageDialog('Ошибка валидации жалобы', 'Жалоба не прошла валидацию: максимальная длина - 1028 символов.');
               break;
             case 401:
               this.authService.logout();
-              this.dialogService.openWarningMessageDialog('Not authorized', 'You must be authorized to report collection.');
+              this.dialogService.openWarningMessageDialog('Ошибка отправки жалобы', 'Для отправки жалобы вы должны быть авторизированы.');
               break;
             case 403:
               let updatedToken = errorResponse.error?.accessToken;
@@ -209,24 +209,24 @@ export class CollectionComponent implements OnInit {
                 this.authTokenService.setToken(updatedToken, tokenSettingType == TokenSettingType.Constant);
               }
 
-              this.dialogService.openWarningMessageDialog('No access', 'Only users can report collections');
+              this.dialogService.openWarningMessageDialog('Ошибка отправки жалобы', 'У вас недостаточно прав для отправки жалоб: только пользователи могут это делать.');
               break;
             case 404:
               if (errorResponse.error.entityType == 'User') {
                 this.authService.logout();
-                this.dialogService.openWarningMessageDialog('User not found', 'Your user account was not found. Try to log in again.');
+                this.dialogService.openWarningMessageDialog('Ошибка отправки жалобы', 'В процессе отправки жалобы произошла ошибка: пользователь не найден. Попытайтесь войти в учетную запись и отправить свою жалобу снова.');
                 break;
               }
 
               this.router.navigateByUrl('**', { skipLocationChange: true });
-              this.dialogService.openInfoMessageDialog('Collection not found', 'Reporting collection was not found. Maybe it is already deleted');
+              this.dialogService.openInfoMessageDialog('Ошибка отправки жалобы', 'Данная коллекция не найдена: возможно, она уже удалена.');
               break;
             case 405:
               this.authService.logout();
               this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
               break;
             default:
-              this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while reporting collection.');
+              this.dialogService.openWarningMessageDialog('Ошибка отправки жалобы', 'На сервере произошла неизвестная ошибка в процессе отправки жалобы.');
               break;
           }
         }
@@ -243,13 +243,13 @@ export class CollectionComponent implements OnInit {
 
     let file = files[0];
     if (!this.supportedImageTypes.includes(file.type)) {
-      this.dialogService.openInfoMessageDialog('Not supported format', 'File has not supported format. It must be image.');
+      this.dialogService.openInfoMessageDialog('Не поддерживаемый формат', 'Данный формат изображения не поддерживается.');
       return;
     }
 
     let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       width: '600px',
-      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Crop a collection cover', 'Upload')
+      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Обрезка обложки коллекции', 'Загрузить')
     });
 
     let sub = dialogRef.afterClosed().subscribe((blob: Blob) => {
@@ -265,9 +265,9 @@ export class CollectionComponent implements OnInit {
         newCoverPath => this.collection.coverPath = newCoverPath,
         (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
           errorResponse,
-          'To change the collection cover you must be authenticated.',
-          `To change the collection cover you must be its owner.`,
-          `Something went wrong while changing the collection cover.`
+          'Чтобы изменить обложку коллекции, вы должны быть авторизированы. Войдите в систему и попробуйте снова.',
+          `Чтобы изменить обложку коллекции, вы должны быть владельцем данной коллекции.`,
+          `В процессе загрузки обложки коллекции произошла неизвестная ошибка.`
         ));
     });
 
@@ -275,7 +275,7 @@ export class CollectionComponent implements OnInit {
   }
 
   public resetCover(): void {
-    let dialogRef = this.dialogService.openYesNoDialog('Reset the collection cover?', 'Are you sure you want to reset the collection cover?');
+    let dialogRef = this.dialogService.openYesNoDialog('Сбросить обложку коллекции?', 'Вы уверены, что хотите сбросить обложку коллекции?');
 
     dialogRef.afterClosed().subscribe((yes: boolean) => {
       if (!yes) {
@@ -286,9 +286,9 @@ export class CollectionComponent implements OnInit {
         this.collection.coverPath = null;
       }, (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
-        'To reset the collection cover you must be authenticated.',
-        `To reset the collection cover you must be its owner.`,
-        `Something went wrong while reseting the collection cover.`
+        'Чтобы сбросить обложку коллекции, вы должны быть авторизированы. Войдите в систему и попробуйте снова.',
+        `Чтобы сбросить обложку коллекции, вы должны быть владельцем данной коллекции.`,
+        `В процессе изменения обложки коллекции произошла неизвестная ошибка.`
       ));
     });
   }
@@ -301,17 +301,17 @@ export class CollectionComponent implements OnInit {
       width: '500px',
       position: { top: '30vh' },
       data: {
-        header: 'Collection name editing',
-        message: `Edit the collection name and click "Save".`,
-        inputLabel: 'Collection name',
+        header: 'Изменение названия коллекции',
+        message: `Измените название коллекции и нажмите на кнопку "Сохранить".`,
+        inputLabel: 'Название коллекции',
         inputType: 'text',
         formControl: control,
         inputErrors: [
-          { errorCode: 'required', errorMessage: 'Collection name cannot be empty' },
-          { errorCode: 'maxlength', errorMessage: 'Maximum length of the collection name is 256' }
+          { errorCode: 'required', errorMessage: 'Введите название коллекции' },
+          { errorCode: 'maxlength', errorMessage: 'Название коллекции не может быть больше 256 символов' }
         ],
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Save'
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Сохранить'
       }
     });
 
@@ -341,14 +341,14 @@ export class CollectionComponent implements OnInit {
       width: '550px',
       position: { top: '25vh' },
       data: {
-        header: 'Collection description editing',
-        message: `Edit the collection description and click "Save".`,
-        inputLabel: 'Collection description',
+        header: 'Изменение описания коллекции',
+        message: `Измените описание коллекции и нажмите кнопку на "Сохранить".`,
+        inputLabel: 'Описание коллекции',
         inputType: 'textarea',
         formControl: control,
-        inputErrors: [{ errorCode: 'maxlength', errorMessage: 'Maximum length of the collection description is 4096' }],
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Save'
+        inputErrors: [{ errorCode: 'maxlength', errorMessage: 'Описание коллекции не может быть больше 4096 символов' }],
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Сохранить'
       }
     });
 
@@ -375,12 +375,12 @@ export class CollectionComponent implements OnInit {
       width: '600px',
       position: { top: '25vh' },
       data: {
-        header: 'Collection tags editing',
-        message: `Add or remove tags and click "Save".`,
-        inputLabel: 'Collection tags',
+        header: 'Изменение тегов коллекции',
+        message: `Добавьте или удалите теги и нажмите кнопку "Сохранить".`,
+        inputLabel: 'Теги коллекции',
         tags: this.collection.tags.map(t => t.label),
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Save'
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Сохранить'
       }
     });
 
@@ -397,11 +397,11 @@ export class CollectionComponent implements OnInit {
       width: '500px',
       position: { top: '30vh' },
       data: {
-        header: 'Are you sure?',
-        message: `Are you sure you want to DELETE your collection "${this.collection.name}"? If you do this, the items of the collection will also be DELETED. This action cannot be undone. Please type your login to confirm.`,
-        label: 'Your login',
+        header: 'Вы уверены?',
+        message: `Вы уверены, что хотите УДАЛИТЬ коллекцию "${this.collection.name}"? Удаляя коллекцию, вы также удалите элементы данной коллекции. Это действие не возвратимо. Введите свой логин для подтверждения удаления.`,
+        label: 'Логин',
         expectedString: this.collection.user.login,
-        deleteButtonLabel: 'DELETE'
+        deleteButtonLabel: 'УДАЛИТЬ'
       }
     });
 
@@ -425,37 +425,36 @@ export class CollectionComponent implements OnInit {
       (errorResponse: HttpErrorResponse) => {
         switch (true) {
           case errorResponse.status == 400:
-            this.dialogService.openWarningMessageDialog('Item name cannot be empty', 'You must enter a name of a new item.');
+            this.dialogService.openWarningMessageDialog('Ошибка валидации', 'Название элемента коллекции не может быть пустым.');
             break;
           case errorResponse.status == 401:
             this.authService.logout();
-            this.dialogService.openWarningMessageDialog('You are not authenticated', 'You must be authenticated to create a new item.');
+            this.dialogService.openWarningMessageDialog('Ошибка создания элемента', 'Вы должны быть авторизированы, чтобы создать элемент коллекции.');
             break;
           case errorResponse.status == 403:
             let updatedToken = errorResponse.error?.accessToken;
             let tokenSettingType = this.authTokenService.isConstant;
             if (updatedToken && tokenSettingType !== TokenSettingType.NotSet) {
               this.authTokenService.setToken(updatedToken, tokenSettingType == TokenSettingType.Constant);
-              this.dialogService.openWarningMessageDialog('No access', 'You cannot create a collection item, because of your account role.');
+              this.dialogService.openWarningMessageDialog('Ошибка создания элемента', 'У вас недостаточно прав для создания элементов коллекций - только пользователи и администраторы могут это делать.');
               break;
             }
 
-            this.dialogService.openWarningMessageDialog('You don\'t have access', 'You must be the the owner of this collection to create a new item.');
+            this.dialogService.openWarningMessageDialog('Ошибка создания элемента', 'Вы должны быть владельцем данной коллекции, чтобы создать элемент данной коллекции.');
             break;
           case errorResponse.status == 404 && errorResponse.error.entityType == 'Collection':
-            this.router.navigateByUrl(this.previousRouteService.getPreviousUrl());
-            this.dialogService.openWarningMessageDialog('Collection not found', `Collection ${this.collection.name} was not found. Maybe it was deleted.`);
+            this.router.navigate(['**'], {skipLocationChange: true});
             break;
           case errorResponse.status == 404 && errorResponse.error.entityType == 'User':
             this.authService.logout();
-            this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
+            this.dialogService.openWarningMessageDialog('Ошибка создания элемента', 'В процессе создания элемента коллекции произошла ошибка: ваша учетная запись не найдена.');
             break;
           case errorResponse.status == 405:
             this.authService.logout();
             this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
             break;
           default:
-            this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while creating a new item.');
+            this.dialogService.openWarningMessageDialog('Ошибка создания элемента', 'Что-то пошло не так во время создания элемента коллекции.');
             break;
         }
       })

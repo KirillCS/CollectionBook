@@ -1,8 +1,8 @@
-<h2 class="card py-3">Last starred collections</h2>
+<h2 class="card py-3">Коллекции, добавленные пользователями в "Избранное"</h2>
 <div *ngIf="!starsNotFound">
   <div class="card py-3 px-4 my-2 row mx-0 justify-content-between align-items-center flex-nowrap"
     *ngFor="let notification of starsNotifications"
-    matTooltip="User '{{ notification.user.login }}' starred '{{ notification.collection.name }}'"
+    matTooltip="Пользователь '{{ notification.user.login }}' добавил коллекцию '{{ notification.collection.name }}'"
     matTooltipPosition="above">
     <app-profile-cover [user]="notification?.user"></app-profile-cover>
     <div class="collection-info">
@@ -18,6 +18,5 @@
   <mat-spinner [diameter]="30"></mat-spinner>
 </div>
 <button class="w-100" *ngIf="!notificationsLoading && isButtonVisible" mat-raised-button
-  (click)="loadMore()">Show
-  earlier...</button>
-<h3 class="not-found" *ngIf="starsNotFound">Nobody stars your collections</h3>
+  (click)="loadMore()">Показать еще...</button>
+<h3 class="not-found" *ngIf="starsNotFound">Еще никто не добавлял ваши коллекции в "Избранное"</h3>

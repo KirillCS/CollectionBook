@@ -50,15 +50,15 @@ export class RegisterComponent implements OnDestroy {
   //#region controls errors messages
   public get loginErrorMessage(): string {
     if (this.login.hasError('required')) {
-      return 'Login is a required field';
+      return 'Введите логин';
     }
 
     if (this.login.hasError('pattern')) {
-      return 'Login can only contain english letters, numbers and symbols (_ - .)';
+      return 'Логин может содержать только английские буквы, цифры и символы: _ - .';
     }
 
     if (this.login.hasError('maxlength')) {
-      return 'Login must be no more than 256 characters long';
+      return 'Логин не может быть длинее 256 символов';
     }
 
     return '';
@@ -66,11 +66,11 @@ export class RegisterComponent implements OnDestroy {
 
   public get emailErrorMessage(): string {
     if (this.email.hasError('required')) {
-      return 'Email is a required field';
+      return 'Введите адрес электронной почты';
     }
 
     if (this.email.hasError('email')) {
-      return 'Not a valid email';
+      return 'Введенный адрес электронной почты не валиден';
     }
 
     return '';
@@ -78,15 +78,15 @@ export class RegisterComponent implements OnDestroy {
 
   public get passwordErrorMessage(): string {
     if (this.password.hasError('required')) {
-      return 'Password is a required field';
+      return 'Введите пароль';
     }
 
     if (this.password.hasError('minlength')) {
-      return 'Password must be at least 6 characters long';
+      return 'Пароль должен содержать не менее 6 символов';
     }
 
     if (this.password.hasError('pattern')) {
-      return 'Password must contain at least one lowercase english letter, one uppercase english letter and one number';
+      return 'Пароль должен содержать как минимум одну английскую букву в нижнем регистре, одну - в верхнем и одну цифру';
     }
 
     return '';
@@ -94,11 +94,11 @@ export class RegisterComponent implements OnDestroy {
 
   public get passwordConfirmationErrorMessage(): string {
     if (this.passwordConfirmation.hasError('required')) {
-      return 'Confirm password';
+      return 'Подтвердите пароль';
     }
 
     if (this.passwordConfirmation.hasError('mismatch')) {
-      return 'Password mismatch';
+      return 'Пароли не совпадают';
     }
 
     return '';

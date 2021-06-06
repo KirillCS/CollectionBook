@@ -17,22 +17,22 @@
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="addItemButtonClicked()">
           <mat-icon class="material-icons-round">add</mat-icon>
-          <span>Add new item</span>
+          <span>Добавить новый элемент</span>
         </button>
         <mat-divider></mat-divider>
         <button mat-menu-item [matMenuTriggerFor]="editMenu">
           <mat-icon class="material-icons-round">edit</mat-icon>
-          <span>Edit collection</span>
+          <span>Изменить</span>
         </button>
         <button mat-menu-item (click)="deleteButtonClicked()">
           <mat-icon class="material-icons-round">delete</mat-icon>
-          <span>Delete collection</span>
+          <span>Удалить коллекцию</span>
         </button>
       </mat-menu>
       <mat-menu #editMenu="matMenu">
-        <button mat-menu-item (click)="editNameButtonClicked()">name</button>
-        <button mat-menu-item (click)="editDescriptionButtonClicked()">description</button>
-        <button mat-menu-item (click)="editTagsButtonClicked()">tags</button>
+        <button mat-menu-item (click)="editNameButtonClicked()">название коллекции</button>
+        <button mat-menu-item (click)="editDescriptionButtonClicked()">описание коллекции</button>
+        <button mat-menu-item (click)="editTagsButtonClicked()">теги коллекции</button>
       </mat-menu>
       <div class="cover">
         <ngx-skeleton-loader *ngIf="!contentLoaded"
@@ -45,8 +45,8 @@
         <mat-menu #coverMenu="matMenu">
           <input type="file" style="display: none;" [accept]="acceptImagesTypes" #cover
             (change)="coverSelected($event.target.files)">
-          <button (click)="cover.click()" mat-menu-item>Upload cover</button>
-          <button (click)="resetCover()" [disabled]="!resetCoverButtonEnabled" mat-menu-item>Reset cover</button>
+          <button (click)="cover.click()" mat-menu-item>Загрузить обложку</button>
+          <button (click)="resetCover()" [disabled]="!resetCoverButtonEnabled" mat-menu-item>Сбросить обложку</button>
         </mat-menu>
       </div>
       <data>
@@ -56,7 +56,7 @@
             [theme]="{ 'max-width': '100%', width: '250px', height: '32px', 'background-color': '#ECECEC' }">
           </ngx-skeleton-loader>
           <div>
-            <button class="report-button" *ngIf="isAuthenticated && !isOwner && isCurrentUserInRoleUser" matTooltip="Report collection" mat-icon-button (click)="reportButtonClickHandler()">
+            <button class="report-button" *ngIf="isAuthenticated && !isOwner && isCurrentUserInRoleUser" matTooltip="Пожаловаться" mat-icon-button (click)="reportButtonClickHandler()">
               <mat-icon class="material-icons-round">flag</mat-icon>
             </button>
             <app-star *ngIf="isAuthenticated && !isCurrentUserInRoleOwner" [starred]="starred"

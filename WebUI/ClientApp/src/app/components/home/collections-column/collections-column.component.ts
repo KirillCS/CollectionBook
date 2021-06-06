@@ -82,11 +82,11 @@ export class CollectionColumnComponent implements OnInit {
         this.notFound = this.collections.length == 0;
         this._collectionsLoading = false;
         if (errorResponse.status == 404) {
-          this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
+          this.dialogService.openWarningMessageDialog('Ошибка получения коллекций', 'В процессе выборки коллекций произошла ошибка: пользователь не найден.');
           return;
         }
 
-        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while getting your collections. Reload the page and try again.');
+        this.dialogService.openWarningMessageDialog('Ошибка получения коллекций', 'В процессе выборки коллекций произошла неизвестная ошибка.');
       },
       () => {
         this.notFound = this.collections.length == 0;

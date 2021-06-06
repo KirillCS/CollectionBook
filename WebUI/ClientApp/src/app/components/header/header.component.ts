@@ -10,7 +10,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { FieldDialogComponent } from '../dialogs/field-dialog/field-dialog.component';
 import { FormControl, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
-import { LoginResponse } from 'src/app/models/responses/auth/login.response';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
@@ -71,20 +70,20 @@ export class HeaderComponent {
       width: '550px',
       position: { top: '30vh' },
       data: {
-        header: 'Changing owner login',
-        message: `Current login: "${this.currentUser.login}". Enter new login and click the change button.`,
-        inputLabel: 'New login',
+        header: 'Изменение логина',
+        message: `Введите новый логин и нажмите кнопку "Изменить". Текущий логин: ${this.currentUser.login}.`,
+        inputLabel: 'Новый логин',
         inputType: 'text',
         formControl: new FormControl('', [Validators.required, Validators.maxLength(256), Validators.pattern('^[a-zA-Z0-9-_.]+$')]),
         inputErrors: [
-          { errorCode: 'required', errorMessage: 'Enter new login' },
-          { errorCode: 'maxlength', errorMessage: 'Login must be no more than 256 characters long' },
-          { errorCode: 'pattern', errorMessage: 'Login can only contain english letters, numbers and symbols (_ - .)' },
-          { errorCode: 'using', errorMessage: 'Login is already in use' },
-          { errorCode: 'exists', errorMessage: 'This login already exists' }
+          { errorCode: 'required', errorMessage: 'Введите новый логин' },
+          { errorCode: 'maxlength', errorMessage: 'Логин не может быть длинее 256 символов' },
+          { errorCode: 'pattern', errorMessage: 'Логин может содержать только английские буквы, цифры и символы: _ - .' },
+          { errorCode: 'using', errorMessage: 'Введенный логин совпадает с используемым' },
+          { errorCode: 'exists', errorMessage: 'Данный логин уже используется' }
         ],
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Change'
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Изменить'
       }
     });
 
@@ -103,7 +102,7 @@ export class HeaderComponent {
         response => {
           dialogRef.close();
           this.authTokenService.setToken(response.accessToken);
-          this.dialogsService.openSuccessMessageDialog('Login successfully changed', `Login was successfully changed to "${newLogin}".`);
+          this.dialogsService.openSuccessMessageDialog('Логин изменен', `Логин успешно изменен на ${newLogin}.`);
         },
         (errorResponse: HttpErrorResponse) => {
           switch (errorResponse.status) {
@@ -112,18 +111,18 @@ export class HeaderComponent {
               return;
             case 401:
               this.authService.logout(true);
-              this.dialogsService.openWarningMessageDialog('Not authenticated', `You must be authenticated to change account login.`);
+              this.dialogsService.openWarningMessageDialog('Ошибка изменения логина', `Вы должны быть авторизированы для того, чтобы изменить логин учетной записи.`);
               break;
             case 404:
               this.authService.logout(true);
-              this.dialogsService.openWarningMessageDialog('Owner not found', `Owner account was not found. Maybe it was deleted.`);
+              this.dialogsService.openWarningMessageDialog('Ошибка изменения логина', `Учетная запись не найдена. Возможно, она была удалена.`);
               break;
             case 405:
               this.authService.logout(true);
               this.dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
               break;
             default:
-              this.dialogsService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
+              this.dialogsService.openWarningMessageDialog('Ошибка изменения логина', 'Что-то пошло не так во время изменения логина. Попытайтесь снова.');
               break;
           }
 

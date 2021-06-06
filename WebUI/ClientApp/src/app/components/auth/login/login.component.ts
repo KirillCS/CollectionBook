@@ -104,18 +104,18 @@ export class LoginComponent implements OnDestroy {
       width: '550px',
       position: { top: '30vh' },
       data: {
-        header: 'Reset password',
-        message: `Enter account email and we will send a confirmation email.`,
-        inputLabel: 'Account email',
+        header: 'Сброс пароля',
+        message: 'Введите адрес электронной почты, которая прикреплена к вашей учетной записи, и нажмите кнопку "Отправить": на указанную почту вы получите письмо, в котором вы должны перейти по ссылке на страницу сброса пароля.',
+        inputLabel: 'Адрес электронной почты',
         inputType: 'email',
         formControl: new FormControl('', [Validators.email, Validators.required]),
         inputErrors: [
-          { errorCode: 'required', errorMessage: 'Enter account email' },
-          { errorCode: 'email', errorMessage: 'Not valid' },
-          { errorCode: 'notfound', errorMessage: 'Account with this email was not found' }
+          { errorCode: 'required', errorMessage: 'Введите адрес электронной почты' },
+          { errorCode: 'email', errorMessage: 'Введенный адрес не валиден' },
+          { errorCode: 'notfound', errorMessage: 'Учетная запись с данной электронной почтой не найдена' }
         ],
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Send confirmation'
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Отправить'
       }
     });
 
@@ -133,11 +133,11 @@ export class LoginComponent implements OnDestroy {
           }
 
           dialogRef.close();
-          this.dialogsService.openWarningMessageDialog('Failed to send confirmation', 'Something went wrong while sending confirmation. You can try to reset your password again');
+          this.dialogsService.openWarningMessageDialog('Ошибка отправки письма', 'При попытки отправить письмо произошла ошибка.');
 
         }, () => {
           dialogRef.close();
-          this.dialogsService.openSuccessMessageDialog('Confirmation has sent', 'Password reset confirmation has sent. Check your email and follow the link to reset account password.');
+          this.dialogsService.openSuccessMessageDialog('Письмо успешно отправлено', `Письмо для сброса пароля учетной записи отправлено на почту ${formControl.value}. Далее вам необходимо перейти по ссылке в отправленном письме.`);
         });
     });
 

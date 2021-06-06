@@ -1,6 +1,6 @@
 <div class="row mx-0 justify-content-between align-items-center mb-1">
-  <h2 class="mb-0">Collections</h2>
-  <a mat-button color="primary" routerLink="/new">New</a>
+  <h2 class="mb-0">Коллекции</h2>
+  <a mat-button color="primary" routerLink="/new">Новая</a>
 </div>
 <div class="mb-3">
   <app-search-input placeholder="Find your collection..." (changed)="search($event)"></app-search-input>
@@ -16,9 +16,9 @@
 <div class="row mx-0 my-3 justify-content-center" *ngIf="collectionsLoading">
   <mat-spinner [diameter]="30"></mat-spinner>
 </div>
-<button class="w-100 mb-1" mat-stroked-button *ngIf="!collectionsLoading && isButtonVisible" (click)="loadMore()">Show
-  more...</button>
+<button class="w-100 mb-1" mat-stroked-button *ngIf="!collectionsLoading && isButtonVisible"
+  (click)="loadMore()">Показать еще...</button>
 <div class="total">
-  Total: {{ total }}
+  Всего: {{ total }}
 </div>
-<h3 class="not-found" *ngIf="collectionsNotFound">No collections found</h3>
+<h3 class="not-found" *ngIf="collectionsNotFound">Коллекции не найдены</h3>

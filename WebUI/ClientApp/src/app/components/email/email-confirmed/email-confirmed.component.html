@@ -1,22 +1,22 @@
 <div class="px-3">
   <main class="card mt-3 mt-md-4 mx-auto" *ngIf="confirmed === true">
-    <h1 class="success">Your email was confirmed</h1>
+    <h1 class="success">Электронная почта подтверждена</h1>
     <div>
-      You have verified your email address. Now you can add information about yourself to your account.
+      Вы успешно подтвердили электронную почту. Теперь вы можете настроить свой профиль, добавив в него информацию о себе.
     </div>
     <div class="row align-items-center justify-content-end flex-wrap-reverse mt-3">
-      <a mat-button routerLink="">No, thanks</a>
-      <a mat-button color="primary" [routerLink]="['/settings', 'profile']">Add information</a>
+      <a mat-button routerLink="">Нет, спасибо</a>
+      <a mat-button color="primary" [routerLink]="['/settings', 'profile']">Перейти в настройки</a>
     </div>
   </main>
 
   <main class="card mt-3 mt-md-4 mx-auto" *ngIf="confirmed === false">
-    <h1 class="failed">Email verification failed</h1>
+    <h1 class="failed">Электронная почта не подтверждена</h1>
     <div>
-      {{ errorMessage }}
+      Произошла ошибка при подтверждении электронной почты: {{ errorMessage }}
     </div>
     <div class="row justify-content-end mt-3">
-      <a mat-button color="primary" routerLink="">Go to home</a>
+      <a mat-button color="primary" routerLink="">На главную</a>
     </div>
   </main>
 </div>

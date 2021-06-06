@@ -1,10 +1,10 @@
 <div class="p-md-5 p-3">
   <div class="card app__container--form">
-    <h1>Sign up</h1>
+    <h1>Регистрация</h1>
     <form [formGroup]="form" (submit)="submit()" (input)="formChanged()">
       <div class="line">
         <mat-form-field class="field" appearance="outline">
-          <mat-label>Login</mat-label>
+          <mat-label>Логин</mat-label>
           <input type="text" required pattern="^[a-zA-Z0-9-_.]*$" maxlength="256" autocomplete="off" matInput
             formControlName="login" [errorStateMatcher]="matcher">
           <mat-error *ngIf="login.errors">{{ loginErrorMessage }}</mat-error>
@@ -15,7 +15,7 @@
       </div>
       <div class="line">
         <mat-form-field class="field" appearance="outline">
-          <mat-label>Email</mat-label>
+          <mat-label>Электронная почта</mat-label>
           <input type="email" required autocomplete="off" matInput formControlName="email"
             [errorStateMatcher]="matcher">
           <mat-error *ngIf="email.errors">{{ emailErrorMessage }}</mat-error>
@@ -26,13 +26,14 @@
       </div>
       <div class="line">
         <mat-form-field class="field" appearance="outline">
-          <mat-label>Password</mat-label>
-          <input [type]="hidePassword ? 'password' : 'text'" required minlength="6" pattern="^(?=.*[a-z])(?=.*?[A-Z])(?=.*\d)([a-zA-Z\d]|.){6,}$" matInput formControlName="password"
+          <mat-label>Пароль</mat-label>
+          <input [type]="hidePassword ? 'password' : 'text'" required minlength="6"
+            pattern="^(?=.*[a-z])(?=.*?[A-Z])(?=.*\d)([a-zA-Z\d]|.){6,}$" matInput formControlName="password"
             [errorStateMatcher]="matcher">
           <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
             <mat-icon class="material-icons-round">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
-          <mat-hint>Minimum length: 6</mat-hint>
+          <mat-hint>Минимальная длина: 6</mat-hint>
           <mat-error *ngIf="password.errors">{{ passwordErrorMessage }}</mat-error>
           <mat-error *ngIf="password.errors?.serverErrors">
             <div *ngFor="let error of password.errors?.serverErrors">{{ error }}</div>
@@ -41,12 +42,13 @@
       </div>
       <div class="line">
         <mat-form-field class="field" appearance="outline">
-          <mat-label>Password confirmation</mat-label>
+          <mat-label>Подтверждение пароля</mat-label>
           <input [type]="hidePasswordConfirmation ? 'password' : 'text'" required matInput
             formControlName="passwordConfirmation" [errorStateMatcher]="matcher">
           <button type="button" tabindex="-1" mat-icon-button matSuffix
             (click)="hidePasswordConfirmation = !hidePasswordConfirmation">
-            <mat-icon class="material-icons-round">{{hidePasswordConfirmation ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-icon class="material-icons-round">{{hidePasswordConfirmation ? 'visibility_off' : 'visibility'}}
+            </mat-icon>
           </button>
           <mat-error *ngIf="passwordConfirmation.errors">{{ passwordConfirmationErrorMessage }}</mat-error>
           <mat-error *ngIf="passwordConfirmation.errors?.serverErrors">
@@ -54,9 +56,10 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <mat-error *ngIf="unknownError">Something went wrong...</mat-error>
+      <mat-error *ngIf="unknownError">Что-то пошло не так...</mat-error>
       <div class="actions">
-        <button class="w-100" type="submit" [disabled]="inProcess" mat-raised-button color="primary">Register</button>
+        <button class="w-100" type="submit" [disabled]="inProcess" mat-raised-button
+          color="primary">Зарегистрироваться</button>
       </div>
     </form>
   </div>

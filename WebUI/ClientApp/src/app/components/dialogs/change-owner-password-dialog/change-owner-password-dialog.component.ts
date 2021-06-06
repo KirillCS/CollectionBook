@@ -11,8 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-change-owner-password-dialog',
-  templateUrl: './change-owner-password-dialog.component.html',
-  styleUrls: ['./change-owner-password-dialog.component.css']
+  templateUrl: './change-owner-password-dialog.component.html'
 })
 export class ChangeOwnerPasswordDialogComponent {
 
@@ -39,15 +38,15 @@ export class ChangeOwnerPasswordDialogComponent {
 
   public get newPasswordErrorMessage(): string {
     if (this.newPasswordControl.hasError('required')) {
-      return 'You must enter new password';
+      return 'Введите новый пароль';
     }
 
     if (this.newPasswordControl.hasError('minlength')) {
-      return 'Password must be at least 6 characters long';
+      return 'Пароль должен содержать не менее 6 символов';
     }
 
     if (this.newPasswordControl.hasError('pattern')) {
-      return 'Password must contain at least one lowercase english letter, one uppercase english letter and one number';
+      return 'Пароль должен содержать как минимум одну английскую букву в нижнем регистре, одну - в верхнем и одну цифру';
     }
 
     return '';
@@ -96,7 +95,7 @@ export class ChangeOwnerPasswordDialogComponent {
     this.userService.updatePassword(request).subscribe(
       () => {
         this.dialogRef.close();
-        this.dialogService.openSuccessMessageDialog('Password successfully changed', `Owner password was successfully changed .`);
+        this.dialogService.openSuccessMessageDialog('Пароль изменен', `Пароль был успешно изменен.`);
       },
       (errorResponse: HttpErrorResponse) => {
         this._inProcess = false;
@@ -106,18 +105,18 @@ export class ChangeOwnerPasswordDialogComponent {
             return;
           case 401:
             this.authService.logout(true);
-            this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change owner password.');
+            this.dialogService.openWarningMessageDialog('Ошибка изменения пароля', 'Вы должны быть авторизированы для того, чтобы изменить пароль учетной записи.');
             break;
           case 404:
             this.authService.logout(true);
-            this.dialogService.openWarningMessageDialog('User not found', `User was not found`);
+            this.dialogService.openWarningMessageDialog('Ошибка изменения пароля', `Учетная запись не найдена. Возможно, она была удалена.`);
             break;
           case 405:
             this.authService.logout(true);
             this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
             break;
           default:
-            this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong while changing the owner password.');
+            this.dialogService.openWarningMessageDialog('Ошибка изменения пароля', 'Что-то пошло не так во время изменения пароля. Попытайтесь снова..');
             break;
         }
 

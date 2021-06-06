@@ -1,12 +1,12 @@
 <div class="px-3">
   <main class="card mt-3 mt-md-4 mx-auto">
-    <h1>Confirm your email</h1>
+    <h1>Подтвердите электронную почту</h1>
     <div>
-      You must verify your email address <b>{{ email }}</b> to log into your account. To do this check your email, find our letter and follow the link in it.
+      Вы должны подтвердить электронную почту <b>{{ email }}</b> для того, чтобы войти в учетную запись. Для этого вам было отправлено письмо с ссылкой, по которой вы должны перейти.
     </div>
     <div class="row mx-0 mt-3 flex-column">
-      <a class="link" (click)="sendEmail()">I didn't get email</a>
-      <a class="link" (click)="changeEmail()">I misspelled my email address</a>
+      <a class="link" (click)="sendEmail()">Я не получал письма</a>
+      <a class="link" (click)="changeEmail()">Я ошибся в написании адреса электронной почты</a>
     </div>
   </main>
 </div>

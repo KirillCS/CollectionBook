@@ -48,15 +48,15 @@ export class PasswordResetComponent implements OnInit {
 
   public get passwordErrorMessage(): string {
     if (this.password.hasError('required')) {
-      return 'Password is a required field';
+      return 'Введите пароль';
     }
 
     if (this.password.hasError('minlength')) {
-      return 'Password must be at least 6 characters long';
+      return 'Пароль должен содержать не менее 6 символов';
     }
 
     if (this.password.hasError('pattern')) {
-      return 'Password must contain at least one lowercase english letter, one uppercase english letter and one number';
+      return 'Пароль должен содержать как минимум одну английскую букву в нижнем регистре, одну - в верхнем и одну цифру';
     }
 
     return '';
@@ -64,11 +64,11 @@ export class PasswordResetComponent implements OnInit {
 
   public get passwordConfirmationErrorMessage(): string {
     if (this.passwordConfirmation.hasError('required')) {
-      return 'Confirm password';
+      return 'Подтвердите пароль';
     }
 
     if (this.passwordConfirmation.hasError('mismatch')) {
-      return 'Password mismatch';
+      return 'Пароли не совпадают';
     }
 
     return '';
@@ -108,11 +108,11 @@ export class PasswordResetComponent implements OnInit {
             break;
           case 404:
             this.router.navigate(['']);
-            this.dialogService.openWarningMessageDialog('Failed to reset password', 'User was not found. Maybe link was broken or user was deleted.');
+            this.dialogService.openWarningMessageDialog('Ошибка сброса пароля', 'При сбросе пароля произошла ошибка: пользователь не найден. Это может быть из-за опечаток в ссылке. В таком случае проверьте ссылку или отправьте письмо снова.');
             break;
           default:
             this.router.navigate(['']);
-            this.dialogService.openWarningMessageDialog('Failed to reset password', 'Token is invalid.');
+            this.dialogService.openWarningMessageDialog('Ошибка сброса пароля', 'Токен сброса пароля не валиден. Повторите операцию сброса заново.');
             break;
         }
 
@@ -120,7 +120,7 @@ export class PasswordResetComponent implements OnInit {
       },
       () => {
         this.router.navigate(['']);
-        this.dialogService.openSuccessMessageDialog('Password reset successfully', 'Password has reseted successfully');
+        this.dialogService.openSuccessMessageDialog('Пароль успешно обновлен', 'Теперь вы можете войти в свою учетную запись, используя новый пароль.');
       })
   }
 }

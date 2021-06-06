@@ -72,11 +72,11 @@ export class NotificationsColumnComponent implements OnInit {
         this.notFound = this.notFound = this.totalCount == 0;
         this._notificationsLoading = false;
         if (errorResponse.status == 404) {
-          this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Please try to log in again.');
+          this.dialogService.openWarningMessageDialog('Ошибка получения данных', 'В процессе выборки коллекций, добавленных другими пользователями в категорию "Избранное" произошла ошибка: пользователь не найден.');
           return;
         }
 
-        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while getting your collections. Reload the page and try again.');
+        this.dialogService.openWarningMessageDialog('Ошибка получения данных', 'В процессе выборки коллекций, добавленных другими пользователями в категорию "Избранное" произошла неизвестная ошибка.');
       },
       () => {
         this.notFound = this.totalCount == 0;

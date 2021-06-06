@@ -46,7 +46,7 @@ namespace Application.Collections.Queries.FindCollections
             criterion switch
             {
                 SearchCriterion.Name => source.Where(c => c.Name.Contains(searchString)),
-                SearchCriterion.Tags =>  source.Where(c => c.Tags.Any(t => t.Label.ToLower() == searchString.ToLower())),
+                SearchCriterion.Tags => source.Where(c => c.Tags.Any(t => t.Label.ToLower() == searchString.ToLower())),
                 SearchCriterion.All => source.Where(c => c.Name.Contains(searchString) || c.Tags.Any(t => t.Label.ToLower() == searchString.ToLower())),
                 _ => throw new NotImplementedException($"Method {nameof(FilterCollections)} don't have an implementation for the {criterion} of the {nameof(SearchCriterion)} enum")
             };

@@ -33,18 +33,16 @@ export class EmailConfirmedComponent implements OnInit {
       }, (errorResponse: HttpErrorResponse) => {
         this.confirmed = false;
         if (errorResponse.status == 400) {
-          this.errorMessage = 'Verification token is invalid.';
-
+          this.errorMessage = 'верификационный токен не валиден.';
           return;
         }
 
         if (errorResponse.status == 404) {
-          this.errorMessage = 'User was not found. It could be because link is broken or user was deleted.';
-
+          this.errorMessage = 'пользователь не найден. Это может быть из-за опечаток в ссылке. В таком случае проверьте ссылку или отправьте письмо снова.';
           return;
         }
 
-        this.errorMessage = 'Something went wrong on the server.';
+        this.errorMessage = 'неизвестная ошибка.';
       })
     })
   }

@@ -36,25 +36,24 @@ export class EmailConfirmationComponent implements OnInit {
 
   public sendEmail(): void {
     if (!this.sendLinkEnable) {
-      this.dialogService.openWarningMessageDialog('Message already sent', `Verification email has already sent to ${this.email}. Wait 1 minute to send a new one.`);
-
+      this.dialogService.openWarningMessageDialog('Письмо уже отправлено', `Верификационное письмо уже отправлено на почту ${this.email}. Подождите минуту для отправки повторного письма.`);
       return;
     }
 
     this.sendLinkEnable = false;
     this.emailService.sendConfirmationMessage(this._id).subscribe(() => {
-      this.dialogService.openSuccessMessageDialog('Message was sent', `Verification message was sent to ${this.email}. Check your email and confirm it.`);
+      this.dialogService.openSuccessMessageDialog('Письмо отправлено', `Верификационное письмо успешно отправлено на адрес ${this.email}.`);
 
     }, (errorResponse: HttpErrorResponse) => {
       this.sendLinkEnable = true;
       if (errorResponse.status == 404) {
         this.router.navigate(['']);
-        this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted');
+        this.dialogService.openWarningMessageDialog('Ошибка отправки письма', `При отправки верификационного письма произошла ошибка: пользователь не найден.`);
 
         return;
       }
 
-      this.dialogService.openWarningMessageDialog('Failed to send message', `Something went wrong while sending a verification message to ${this.email}: ${errorResponse.message}`);
+      this.dialogService.openWarningMessageDialog('Ошибка отправки письма', `Что-то пошло не так при отправки письма на почту ${this.email}: ${errorResponse.message}`);
 
     }, () => {
       setTimeout(() => {
@@ -80,7 +79,7 @@ export class EmailConfirmationComponent implements OnInit {
       this.emailService.changeUnconfirmedEmail({ id: this._id, email: newEmail }).subscribe(() => {
         this.email = newEmail;
         dialogRef.close();
-        this.dialogService.openSuccessMessageDialog('Email updated successfully', `Account email changed to ${this.email}. Verification message has sent. Check email and confirm it.`);
+        this.dialogService.openSuccessMessageDialog('Почта обновлена', `Адрес электронной почты успешно обновлен на ${this.email}. Верификационной письмо уже отправлено на данную почту.`);
 
       }, errorResponse => {
         if (errorResponse.status == 400) {
@@ -92,12 +91,12 @@ export class EmailConfirmationComponent implements OnInit {
         dialogRef.close();
         if (errorResponse.status == 404) {
           this.router.navigate(['']);
-          this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted');
+          this.dialogService.openWarningMessageDialog('Ошибка обновления почты', `При изменении адреса электронной почты учетной записи произошла ошибка: пользователь не найден.`);
 
           return;
         }
 
-        this.dialogService.openWarningMessageDialog('Failed to update email', `Something went wrong: ${errorResponse.message}`);
+        this.dialogService.openWarningMessageDialog('Ошибка обновления почты', `При изменении адреса электронной почты учетной записи произошла ошибка: ${errorResponse.message}.`);
       });
     });
 
@@ -109,19 +108,19 @@ export class EmailConfirmationComponent implements OnInit {
       width: '550px',
       position: { top: '30vh' },
       data: {
-        header: 'Changing email',
-        message: `Enter a new email (current email: ${this.email})`,
-        inputLabel: 'New email',
+        header: 'Изменение адреса электронной почты',
+        message: `Введите другой адрес электронной почты и нажмите кнопку "Сохранить" (текущий адрес: ${this.email})`,
+        inputLabel: 'Новый адрес',
         inputType: 'email',
         formControl: new FormControl('', [Validators.email, Validators.required]),
         inputErrors: [
-          { errorCode: 'required', errorMessage: 'Email is a required field' },
-          { errorCode: 'email', errorMessage: 'Not valid' },
-          { errorCode: 'using', errorMessage: 'You are already using this email' },
-          { errorCode: 'exists', errorMessage: 'This email is already taken' }
+          { errorCode: 'required', errorMessage: 'Введите адрес электронной почты' },
+          { errorCode: 'email', errorMessage: 'Введенный адрес электронной почты не валиден' },
+          { errorCode: 'using', errorMessage: 'Данный адрес совпадает с используемым' },
+          { errorCode: 'exists', errorMessage: 'Данный адрес уже используется' }
         ],
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Save'
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Сохранить'
       }
     });
   }

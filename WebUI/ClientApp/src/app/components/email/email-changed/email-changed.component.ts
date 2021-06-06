@@ -30,20 +30,19 @@ export class EmailChangedComponent implements OnInit {
       }, (errorResponse: HttpErrorResponse) => {
         this.changed = false;
         if (errorResponse.status == 400) {
-          this.errorMessage = 'This could be if email is already in use by another user, or email has already updated or simply verification token is invalid. Try update account email again.';
+          this.errorMessage = `токен не валиден или адрес электронной почты ${email} уже используется другим пользователем. Попробуйте повторить процесс снова.`;
 
           return;
         }
 
         if (errorResponse.status == 404) {
-          this.errorMessage = 'User was not found. It could be because link is broken or user was deleted.';
+          this.errorMessage = 'пользователь не найден. Это может быть из-за опечаток в ссылке. В таком случае проверьте ссылку или повторите снова.';
 
           return;
         }
 
-        this.errorMessage = 'Something went wrong on the server.';
+        this.errorMessage = 'неизвестная ошибка.';
       })
     })
   }
-
 }
