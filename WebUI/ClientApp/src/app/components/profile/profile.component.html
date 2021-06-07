@@ -50,7 +50,8 @@
             <li *ngIf="user.telegramLogin">
               <div class="icon-data">
                 <i class="fab fa-telegram-plane"></i>
-                <a class="link" href="https://t.me/{{ user.telegramLogin }}" target="_blank" tabindex="-1">@{{
+                <a class="link" href="https://t.me/{{ user.telegramLogin }}" target="_blank" tabindex="-1"
+                  matTooltip="https://t.me/{{ user.telegramLogin }}">@{{
                   user.telegramLogin
                   }}</a>
               </div>
@@ -58,14 +59,15 @@
             <li *ngIf="user.instagramLogin">
               <div class="icon-data">
                 <i class="fab fa-instagram"></i>
-                <a href="https://www.instagram.com/{{ user.instagramLogin }}" target="_blank" tabindex="-1">@{{
+                <a href="https://www.instagram.com/{{ user.instagramLogin }}" target="_blank" tabindex="-1"
+                  matTooltip="https://www.instagram.com/{{ user.instagramLogin }}">@{{
                   user.instagramLogin }}</a>
               </div>
             </li>
           </ul>
         </div>
       </div>
-      <button id="settings-button" mat-icon-button *ngIf="isOwner" [routerLink]="['/settings', 'profile']">
+      <button id="settings-button" mat-icon-button *ngIf="isOwner" [routerLink]="['/settings', 'profile']" matTooltip="Настройки" matTooltipShowDelay="500">
         <mat-icon class="material-icons-round">settings</mat-icon>
       </button>
       <nav mat-tab-nav-bar mat-align-tabs="center">

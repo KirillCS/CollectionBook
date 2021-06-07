@@ -22,10 +22,11 @@
         </mat-chip>
       </mat-chip-list>
       <data>
-        <div class="date">{{ collection.creationTime | date: 'medium' : 'ru-RU' }}</div>
+        <div class="date">{{ collection.creationTime | date: 'medium' }}</div>
         <div class="statistics">
-          <app-stars-counter [count]="starsCount" [collectionId]="collection.id" [collectionName]="collection.name"></app-stars-counter>
-          <span matTooltip="{{ collection.itemsCount }} items" matTooltipPosition="above">
+          <app-stars-counter [count]="starsCount" [collectionId]="collection.id" [collectionName]="collection.name">
+          </app-stars-counter>
+          <span matTooltip="{{ collection.itemsCount }} элементов" matTooltipShowDelay="500" matTooltipPosition="above">
             {{ collection.itemsCount }}<mat-icon class="material-icons-round">reorder</mat-icon>
           </span>
         </div>

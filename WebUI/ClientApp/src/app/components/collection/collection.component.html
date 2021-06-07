@@ -57,7 +57,8 @@
           </ngx-skeleton-loader>
           <div>
             <button class="report-button" *ngIf="isAuthenticated && !isOwner && isCurrentUserInRoleUser"
-              matTooltip="Пожаловаться" mat-icon-button (click)="reportButtonClickHandler()">
+              matTooltip="Пожаловаться" matTooltipShowDelay="500" matTooltipPosition="above" mat-icon-button
+              (click)="reportButtonClickHandler()">
               <mat-icon class="material-icons-round">flag</mat-icon>
             </button>
             <app-star *ngIf="isAuthenticated && !isCurrentUserInRoleOwner" [starred]="starred"

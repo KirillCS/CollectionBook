@@ -1,7 +1,8 @@
 <h2>Панель управления коллекциями</h2>
 <div class="row mx-0 align-items-center justify-content-between">
   <app-search-input placeholder="Найти коллекцию" (changed)="searchInputChangedHandler($event)"></app-search-input>
-  <button mat-icon-button matTooltip="Обновить таблицу" (click)="refreshButtonClickedHandler()">
+  <button mat-icon-button matTooltip="Обновить таблицу" matTooltipPosition="above" matTooltipShowDelay="500"
+    (click)="refreshButtonClickedHandler()">
     <mat-icon class="material-icons-round">refresh</mat-icon>
   </button>
 </div>
@@ -34,7 +35,8 @@
     <ng-container matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let collection">
-        <button matTooltip="Удалить коллекцию" mat-icon-button (click)="deleteButtonClickedHandler(collection)" color="warn">
+        <button matTooltip="Удалить коллекцию" matTooltipPosition="above" matTooltipShowDelay="500" mat-icon-button (click)="deleteButtonClickedHandler(collection)"
+          color="warn">
           <mat-icon class="material-icons-round cell-icon">delete</mat-icon>
         </button>
       </td>

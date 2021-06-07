@@ -30,12 +30,12 @@ export class StarToggledEventArgs {
 })
 export class StarComponent {
 
-  private isStarClicked = false;
+  private _isStarClicked = false;
 
-  @Input() private starred: boolean;
-  @Input() private collectionId: number;
+  @Input('starred') private _starred: boolean;
+  @Input('collectionId') private _collectionId: number;
 
-  @Output() private toggled = new EventEmitter<StarToggledEventArgs>();
+  @Output('toggled') private _toggled = new EventEmitter<StarToggledEventArgs>();
 
   public constructor(
     private starService: StarService,
@@ -45,26 +45,30 @@ export class StarComponent {
   ) { }
 
   public get starIcon(): string {
-    if (this.starred) {
+    if (this._starred) {
       return 'star';
     }
 
     return 'star_outline';
   }
 
+  public get starred(): boolean {
+    return this._starred;
+  }
+
   public toggle(): void {
-    if (this.isStarClicked) {
+    if (this._isStarClicked) {
       return;
     }
 
-    this.isStarClicked = true;
-    this.starService.toggle(this.collectionId).subscribe(
+    this._isStarClicked = true;
+    this.starService.toggle(this._collectionId).subscribe(
       () => {
-        this.starred = !this.starred;
-        this.toggled.emit(new StarToggledEventArgs(this.collectionId, this.starred));
+        this._starred = !this._starred;
+        this._toggled.emit(new StarToggledEventArgs(this._collectionId, this._starred));
       },
       (errorResponse: HttpErrorResponse) => {
-        this.isStarClicked = false;
+        this._isStarClicked = false;
         switch (errorResponse.status) {
           case 401:
             this.authSerice.logout();
@@ -95,6 +99,6 @@ export class StarComponent {
         }
 
       },
-      () => this.isStarClicked = false)
+      () => this._isStarClicked = false)
   }
 }

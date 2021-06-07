@@ -3,7 +3,8 @@
   <div class="card py-3 px-4 my-2 row mx-0 justify-content-between align-items-center flex-nowrap"
     *ngFor="let notification of starsNotifications"
     matTooltip="Пользователь '{{ notification.user.login }}' добавил коллекцию '{{ notification.collection.name }}'"
-    matTooltipPosition="above">
+    matTooltipPosition="above"
+    matTooltipShowDelay="500">
     <app-profile-cover [user]="notification?.user"></app-profile-cover>
     <div class="collection-info">
       <a class="link name" [routerLink]="['collection', notification.collection.id]">

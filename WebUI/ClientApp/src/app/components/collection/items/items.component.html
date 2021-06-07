@@ -3,7 +3,10 @@
     <h1>Элементы коллекции</h1>
     <div class="row mx-0 justify-content-between align-items-center">
       <app-search-input placeholder="Найти элемент коллекции" (changed)="searchInputChanged($event)"></app-search-input>
-      <button *ngIf="showAddButton" mat-icon-button color="primary" (click)="addButtonWasClicked()"><mat-icon class="material-round-icons">note_add</mat-icon></button>
+      <button *ngIf="showAddButton" mat-icon-button color="primary" (click)="addButtonWasClicked()"
+        matTooltip="Добавить элемент" matTooltipShowDelay="500" matTooltipPosition="above">
+        <mat-icon class="material-round-icons">note_add</mat-icon>
+      </button>
     </div>
   </div>
   <div class="row mx-0 my-3 justify-content-center" *ngIf="!itemsLoaded">
@@ -16,7 +19,7 @@
     Элементы не найдены
   </h1>
   <div class="mt-4">
-    <mat-paginator *ngIf="totalCount > 0" [length]="totalCount" [pageSize]="pageSize"
-      [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)"></mat-paginator>
+    <mat-paginator *ngIf="totalCount > 0" [length]="totalCount" [pageSize]="pageSize" [pageIndex]="pageIndex"
+      [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)"></mat-paginator>
   </div>
 </div>

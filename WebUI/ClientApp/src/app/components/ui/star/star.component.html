@@ -1,3 +1,4 @@
-<button (click)="toggle()" mat-icon-button color="warn">
+<button (click)="toggle()" mat-icon-button color="warn"
+  [matTooltip]="starred ? 'Удалить из избранного' : 'Добавить в избранное'" matTooltipShowDelay="500" matTooltipPosition="above">
   <mat-icon class="material-icons-round">{{ starIcon }}</mat-icon>
 </button>
