@@ -88,7 +88,7 @@ export class CollectionCreatingComponent {
             break;
           case 401:
             this.authService.logout(true);
-            this.dialogService.openWarningMessageDialog('You must be authenticated', 'You must be authenticated to create a new collection.');
+            this.dialogService.openWarningMessageDialog('Ошибка создания коллекции', 'Во время создания коллекции произошла ошибка: вы не авторизованы.');
             break;
           case 403:
             let updatedToken = errorResponse.error.accessToken;
@@ -98,18 +98,18 @@ export class CollectionCreatingComponent {
             }
 
             this.router.navigateByUrl('/');
-            this.dialogService.openWarningMessageDialog('No access', 'Your account role does not allow creating a collection.');
+            this.dialogService.openWarningMessageDialog('Ошибка создания коллекции', 'Во время создания коллекции произошла ошибка: только пользователи и администраторы могут создавать коллекции.');
             break;
           case 404:
             this.authService.logout(true);
-            this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Try to log in again.');
+            this.dialogService.openWarningMessageDialog('Ошибка создания коллекции', 'Во время создания коллекции произошла ошибка: ваша учетная запись не найдена.');
             break;
           case 405:
             this.authService.logout(true);
             this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
             break;
           default:
-            this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while adding a collection.');
+            this.dialogService.openWarningMessageDialog('Ошибка создания коллекции', 'Во время создания коллекции произошла неизвестная ошибка.');
             break;
         }
 
@@ -117,7 +117,7 @@ export class CollectionCreatingComponent {
       () => {
         this.inProcess = false;
         this.router.navigate(['/profile', this.currentUserService?.currentUser?.login, 'collections']);
-        this.snackBar.open('Collection was added', 'OK', { horizontalPosition: 'left', verticalPosition: 'bottom', duration: 3500 });
+        this.snackBar.open('Коллекция успешно создана', 'OK', { horizontalPosition: 'left', verticalPosition: 'bottom', duration: 3500 });
       });
   }
 }

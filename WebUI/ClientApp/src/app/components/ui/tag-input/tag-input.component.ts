@@ -16,7 +16,7 @@ export class TagInputComponent {
   private _filteredTags: Observable<string[]>;
 
   @Input() public label = '';
-  @Input() public placeholder = 'Ex. coins';
+  @Input() public placeholder = 'Например, Монеты';
   @Input() public searchTagsCount = 5;
   @Input() public tags: string[] = []
 

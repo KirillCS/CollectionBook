@@ -114,11 +114,9 @@ export class UsersListDialogComponent implements OnInit {
       (errorResponse: HttpErrorResponse) => {
         this._dialogRef.close();
         if (errorResponse.status == 404) {
-          this._dialogsService.openWarningMessageDialog('Collection not found', `Collection "${this._data.collectionName}" was not found. Maybe it was deleted.`);
+          this._dialogsService.openWarningMessageDialog('Коллекция не найдена', `Коллекция "${this._data.collectionName}" не найдена: возможно, ее удалил владелец.`);
           return;
         }
-
-        this._dialogsService.openWarningMessageDialog('Something went wrong', `Something went wrong on the server.`);
       });
   }
 }

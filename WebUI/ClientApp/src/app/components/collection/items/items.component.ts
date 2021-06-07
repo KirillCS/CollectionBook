@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { ItemCoverDto } from 'src/app/models/dtos/item/item-cover.dto';
 import { SearchPaginatedListRequest } from 'src/app/models/requests/search-paginated-list.request';
 import { CollectionService } from 'src/app/services/collection.service';
-import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 
 @Component({
   selector: 'app-collection-items',
@@ -31,8 +30,7 @@ export class ItemsComponent implements OnInit {
 
   public constructor(
     private collectionService: CollectionService,
-    private router: Router,
-    private dialogService: DefaultDialogsService
+    private router: Router
   ) { }
 
   public ngOnInit(): void {
@@ -101,8 +99,6 @@ export class ItemsComponent implements OnInit {
           this.router.navigateByUrl('**', { skipLocationChange: true });
           return;
         }
-
-        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server. Try to reload the page to solve this problem.');
       },
       () => this._itemsLoaded = true);
   }

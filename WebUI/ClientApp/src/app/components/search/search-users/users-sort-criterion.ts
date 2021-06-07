@@ -13,7 +13,7 @@ export const UsersSortCriteriaInStringFormat = new Map<UsersSortCriterion, strin
 ]);
 
 export const UsersSortCriteriaSelectValues: SelectValue<UsersSortCriterion>[] = [
-  { value: UsersSortCriterion.ByCollectionsCount, viewValue: 'collections count' },
-  { value: UsersSortCriterion.ByAlphabetUp, viewValue: `alphabet up ('A'-'Z')` },
-  { value: UsersSortCriterion.ByAlphabetDown, viewValue: `alphabet down ('Z'-'A')` }
+  { value: UsersSortCriterion.ByCollectionsCount, viewValue: 'количеству коллекций' },
+  { value: UsersSortCriterion.ByAlphabetUp, viewValue: `алфавиту ('А'-'Я')` },
+  { value: UsersSortCriterion.ByAlphabetDown, viewValue: `алфавиту ('Я'-'А')` }
 ];

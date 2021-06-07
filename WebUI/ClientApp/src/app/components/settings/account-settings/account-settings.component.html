@@ -1,17 +1,18 @@
-<h1>Account settings</h1>
-<h2>Change login</h2>
-<p>Changing login can have some side effects (for example, links to your profile won't work).</p>
+<h1>Настройки аккаунта</h1>
+<h2>Изменение логина</h2>
+<p>Изменение логина может повлечь за собой некоторые проблемы (например, существующие ссылки на ваш профиль перестанут
+  работать).</p>
 <form [formGroup]="loginForm" #loginNgForm="ngForm" (submit)="loginSubmit(loginNgForm)">
   <div class="line">
     <mat-form-field class="field" appearance="outline">
-      <mat-label>New login</mat-label>
-      <input type="text" required pattern="^[a-zA-Z0-9-_.]*$" maxlength="256" autocomplete="off" matInput formControlName="login"
-        [errorStateMatcher]="matcher">
-      <mat-error *ngIf="loginForm.get('login').errors?.required">Login is a required field</mat-error>
-      <mat-error *ngIf="loginForm.get('login').errors?.using">Login '{{ user?.login }}' is already in use</mat-error>
-      <mat-error *ngIf="loginForm.get('login').errors?.pattern">Login can only contain english letters, numbers and
-        symbols '_', '-', '.'</mat-error>
-      <mat-error *ngIf="loginForm.get('login').errors?.maxlength">Login must be no more than 256 characters long
+      <mat-label>Новый логин</mat-label>
+      <input type="text" required pattern="^[a-zA-Z0-9-_.]*$" maxlength="256" autocomplete="off" matInput
+        formControlName="login" [errorStateMatcher]="matcher">
+      <mat-error *ngIf="loginForm.get('login').errors?.required">Введите логин</mat-error>
+      <mat-error *ngIf="loginForm.get('login').errors?.using">Логин '{{ user?.login }}' уже используется</mat-error>
+      <mat-error *ngIf="loginForm.get('login').errors?.pattern">Логин может содержать только английские буквы, цифры и
+        символы: _ - .</mat-error>
+      <mat-error *ngIf="loginForm.get('login').errors?.maxlength">Логин не может быть длинее 256 символов
       </mat-error>
       <mat-error *ngIf="loginForm.get('login').errors?.serverErrors">
         <div *ngFor="let error of loginForm.get('login').errors?.serverErrors">{{error}}</div>
@@ -19,35 +20,36 @@
     </mat-form-field>
   </div>
   <div class="actions justify-content-end">
-    <button type="submit" [disabled]="isChangingLoginInProcess" mat-raised-button color="primary">Change login</button>
+    <button type="submit" [disabled]="isChangingLoginInProcess" mat-raised-button color="primary">Изменить
+      логин</button>
   </div>
 </form>
 
 <mat-divider class="my-4"></mat-divider>
 
-<h2>Change email</h2>
-<p>To change your account email address you must enter new email address and confirm it by following the link in the
-  email that will be sent to the new email address.</p>
+<h2>Изменение адреса электронной почты</h2>
+<p>Для того, чтобы изменить адрес электронной почты, вы должны ввести другой адрес в соответствующее поле и подтвердить
+  его, перейдя по ссылке в письме, которое будет отправлено на указанную почту.</p>
 <form [formGroup]="emailForm" #emailNgForm="ngForm" (submit)="emailSubmit(emailNgForm)">
   <div class="line">
     <mat-form-field class="field" appearance="outline">
-      <mat-label>Current email</mat-label>
+      <mat-label>Текущий адрес</mat-label>
       <input type="email" required autocomplete="off" disabled matInput [value]="user?.email">
     </mat-form-field>
   </div>
   <div class="line">
     <mat-form-field class="field" appearance="outline">
-      <mat-label>New email</mat-label>
+      <mat-label>Новый адрес</mat-label>
       <input type="email" required autocomplete="off" matInput formControlName="email" [errorStateMatcher]="matcher">
-      <mat-error *ngIf="emailForm.get('email').errors?.required">Email is a required field</mat-error>
-      <mat-error *ngIf="emailForm.get('email').errors?.using">Email '{{ user?.email }}' is already in use</mat-error>
-      <mat-error *ngIf="emailForm.get('email').errors?.email">Not a valid email</mat-error>
+      <mat-error *ngIf="emailForm.get('email').errors?.required">Введите адрес электронной почты</mat-error>
+      <mat-error *ngIf="emailForm.get('email').errors?.using">Адрес '{{ user?.email }}' уже используется</mat-error>
+      <mat-error *ngIf="emailForm.get('email').errors?.email">Введенный адрес электронной почты не валиден</mat-error>
       <mat-error *ngIf="emailForm.get('email').errors?.serverErrors">
         <div *ngFor="let error of emailForm.get('email').errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
   </div>
   <div class="actions justify-content-end">
-    <button type="submit" [disabled]="isChangingEmailInProcess" mat-raised-button color="primary">Change email</button>
+    <button type="submit" [disabled]="isChangingEmailInProcess" mat-raised-button color="primary">Изменить адрес</button>
   </div>
 </form>

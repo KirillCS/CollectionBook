@@ -6,7 +6,6 @@ import { Subject } from 'rxjs';
 import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
 import { SearchPaginatedListRequest } from 'src/app/models/requests/search-paginated-list.request';
 import { CurrentUserService } from 'src/app/services/current-user.service';
-import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
 import { GetCollectionsData } from '../../ui/profile-collections/profile-collections.component';
 import { StarToggledEventArgs } from '../../ui/star/star.component';
@@ -32,8 +31,7 @@ export class StarsComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
-    private currentUserService: CurrentUserService,
-    private dialogsService: DefaultDialogsService
+    private currentUserService: CurrentUserService
   ) { }
 
   public get collectionsLoaded(): boolean {
@@ -64,8 +62,6 @@ export class StarsComponent implements OnInit {
           this.router.navigateByUrl('**', { skipLocationChange: true });
           return;
         }
-
-        this.dialogsService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching for user collections.');
       },
       () => this._collectionsLoaded = true);
   }

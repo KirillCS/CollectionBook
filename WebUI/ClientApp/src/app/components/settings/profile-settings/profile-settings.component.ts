@@ -98,13 +98,13 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
 
     let file = files[0];
     if (!this.supportedImagesTypes.includes(file.type)) {
-      this.dialogService.openInfoMessageDialog('Not supported format', 'File has not supported format. It must be image.');
+      this.dialogService.openInfoMessageDialog('Неподдерживаемый формат', 'Формат выбранного вами файла не поддерживается порталом.');
       return;
     }
 
     let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       width: '600px',
-      data: new ImageCropperDialogData(file, true, 1, 512, true, 'Crop your profile avatar', 'Upload')
+      data: new ImageCropperDialogData(file, true, 1, 512, true, 'Обрежьте аватар, если есть необходимость', 'Загрузить')
     });
 
     dialogRef.afterClosed().subscribe((avatarBlob: Blob) => {
@@ -120,7 +120,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
   }
 
   public resetAvatar(): void {
-    let dialogRef = this.dialogService.openYesNoDialog('Reset profile avatar?', 'Are you sure you want to reset profile avatar?');
+    let dialogRef = this.dialogService.openYesNoDialog('Сбросить аватар?', 'Вы уверены, что хотите сбросить аватар профиля?');
 
     dialogRef.afterClosed().subscribe((yes: boolean) => {
       if (!yes) {
@@ -150,7 +150,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
             break;
           case 401:
             this.authService.logout(true);
-            this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to set up account profile');
+            this.dialogService.openWarningMessageDialog('Ошибка обновления профиля', 'В ходе обновления профиля произошла ошибка: вы не авторизованы.');
             break;
           case 403:
             let updatedToken = errorResponse.error.accessToken;
@@ -160,11 +160,11 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
             }
 
             this.router.navigateByUrl('/');
-            this.dialogService.openWarningMessageDialog('No access', 'Your account role does not allow change account profile.');
+            this.dialogService.openWarningMessageDialog('Ошибка обновления профиля', 'В ходе обновления профиля произошла ошибка: роль вашей учетной записи не позволяет настраивать профиль.');
             break;
           case 404:
             this.authService.logout(true);
-            this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted');
+            this.dialogService.openWarningMessageDialog('Ошибка обновления профиля', 'В ходе обновления профиля произошла ошибка: ваша учетная запись не найдена.');
             break;
           case 405:
             this.authService.logout(true);
@@ -177,7 +177,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
       },
       () => {
         this.inProcess = false;
-        this.snackBar.open('Profile was updated', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
+        this.snackBar.open('Профиль успешно обновлен', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
       });
   }
 
@@ -188,7 +188,7 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
         switch (errorResponse.status) {
           case 401:
             this.authService.logout(true);
-            this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'You must be authenticated to update your profile avatar.');
+            this.dialogService.openWarningMessageDialog('Ошибка обновления аватара', 'В ходе обновления аватара произошла ошибка: вы не авторизованы.');
             break;
           case 403:
             let updatedToken = errorResponse.error.accessToken;
@@ -198,18 +198,18 @@ export class ProfileSettingsComponent implements OnInit, OnDestroy {
             }
 
             this.router.navigateByUrl('/');
-            this.dialogService.openWarningMessageDialog('No access', 'Your account role does not allow change account avatar.');
+            this.dialogService.openWarningMessageDialog('Ошибка обновления аватара', 'В ходе обновления аватара произошла ошибка: роль вашей учетной записи не позволяет изменять аватар.');
             break;
           case 404:
             this.authService.logout(true);
-            this.dialogService.openWarningMessageDialog('User not found', 'Your account was not found. Maybe it was deleted.');
+            this.dialogService.openWarningMessageDialog('Ошибка обновления аватара', 'В ходе обновления аватара произошла ошибка: ваша учетная запись не найдена.');
             break;
           case 405:
             this.authService.logout(true);
             this.dialogService.openBlockReasonDialog(JSON.parse(errorResponse.error).blockReason);
             break;
           default:
-            this.dialogService.openWarningMessageDialog('Failed to update a profile avatar', 'Something went wrong while profile avatar was updating. Try update avatar again.');
+            this.dialogService.openWarningMessageDialog('Ошибка обновления аватара', 'В ходе обновления аватара произошла неизвестная ошибка.');
             break;
         }
       });

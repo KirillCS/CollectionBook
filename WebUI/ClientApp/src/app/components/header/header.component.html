@@ -28,15 +28,20 @@
         <div *ngIf="currentUser.role == ownerRole; else userSection">
           <button mat-button [matMenuTriggerFor]="ownerMenu" color="warn">Меню</button>
           <mat-menu #ownerMenu>
-            <a mat-menu-item [routerLink]="['dashboard', 'users']">
-              <mat-icon class="material-icons-round">people</mat-icon>Панель управления пользователями
-            </a>
-            <a mat-menu-item [routerLink]="['dashboard', 'collections']">
-              <mat-icon class="material-icons-round">collections_bookmark</mat-icon>Панель управления коллекциямм
-            </a>
-            <a mat-menu-item [routerLink]="['dashboard', 'reports']">
-              <mat-icon class="material-icons-round">flag</mat-icon>Панель управления жалобами
-            </a>
+            <button mat-menu-item [matMenuTriggerFor]="dashboards">
+              <mat-icon class="material-icons-round">table_rows</mat-icon>Панель управления
+            </button>
+            <mat-menu #dashboards="matMenu">
+              <a mat-menu-item [routerLink]="['dashboard', 'users']">
+                <mat-icon class="material-icons-round">people</mat-icon>пользователями
+              </a>
+              <a mat-menu-item [routerLink]="['dashboard', 'collections']">
+                <mat-icon class="material-icons-round">collections_bookmark</mat-icon>коллекциями
+              </a>
+              <a mat-menu-item [routerLink]="['dashboard', 'reports']">
+                <mat-icon class="material-icons-round">flag</mat-icon>жалобами
+              </a>
+            </mat-menu>
             <mat-divider></mat-divider>
             <button mat-menu-item [matMenuTriggerFor]="ownerSettingsMenu">
               <mat-icon class="material-icons-round">settings</mat-icon>Настройки
@@ -70,17 +75,17 @@
             </a>
             <mat-divider></mat-divider>
             <button *ngIf="currentUser.role == adminRole" mat-menu-item [matMenuTriggerFor]="dashboards">
-              <mat-icon class="material-icons-round">table_rows</mat-icon>Панели управления
+              <mat-icon class="material-icons-round">table_rows</mat-icon>Панель управления
             </button>
             <mat-menu #dashboards="matMenu">
               <a mat-menu-item [routerLink]="['dashboard', 'users']">
-                <mat-icon class="material-icons-round">people</mat-icon>Панель управления пользователям
+                <mat-icon class="material-icons-round">people</mat-icon>пользователями
               </a>
               <a mat-menu-item [routerLink]="['dashboard', 'collections']">
-                <mat-icon class="material-icons-round">collections_bookmark</mat-icon>Панель управления коллекциями
+                <mat-icon class="material-icons-round">collections_bookmark</mat-icon>коллекциями
               </a>
               <a mat-menu-item [routerLink]="['dashboard', 'reports']">
-                <mat-icon class="material-icons-round">flag</mat-icon>Панель управления жалобами
+                <mat-icon class="material-icons-round">flag</mat-icon>жалобами
               </a>
             </mat-menu>
             <mat-divider *ngIf="currentUser.role == adminRole"></mat-divider>

@@ -91,8 +91,6 @@ export class ItemComponent implements OnInit {
             this.router.navigateByUrl('**', { skipLocationChange: true });
             return;
           }
-
-          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
         },
         () => this._contentLoaded = true);
     });
@@ -110,17 +108,17 @@ export class ItemComponent implements OnInit {
       width: '500px',
       position: { top: '30vh' },
       data: {
-        header: 'Item name editing',
-        message: `Edit the item name and click "Save".`,
-        inputLabel: 'Item name',
+        header: 'Изменение названия элемента',
+        message: `Измените название элемента и нажмите на кнопку "Сохранить".`,
+        inputLabel: 'Название элемента',
         inputType: 'text',
         formControl: control,
         inputErrors: [
-          { errorCode: 'required', errorMessage: 'Item name cannot be empty' },
-          { errorCode: 'maxlength', errorMessage: 'Maximum length of the item name is 256' }
+          { errorCode: 'required', errorMessage: 'Введите название элемента' },
+          { errorCode: 'maxlength', errorMessage: 'Длина названия элемента не может превышать 256 символов' }
         ],
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Save'
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Сохранить'
       }
     });
 
@@ -150,14 +148,14 @@ export class ItemComponent implements OnInit {
       width: '550px',
       position: { top: '25vh' },
       data: {
-        header: 'Item information editing',
-        message: `Edit the item information and click "Save".`,
-        inputLabel: 'Item information',
+        header: 'Изменение информации об элементе',
+        message: `Измените информацию об элементе и нажмите на кнопку "Сохранить".`,
+        inputLabel: 'Информация',
         inputType: 'textarea',
         formControl: control,
-        inputErrors: [{ errorCode: 'maxlength', errorMessage: 'Maximum length of the item information is 4096' }],
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Save'
+        inputErrors: [{ errorCode: 'maxlength', errorMessage: 'Максимальное количество символов - 4096' }],
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Сохранить'
       }
     });
 
@@ -184,12 +182,12 @@ export class ItemComponent implements OnInit {
       width: '600px',
       position: { top: '25vh' },
       data: {
-        header: 'Item tags editing',
-        message: `Add or remove tags and click "Save".`,
-        inputLabel: 'Item tags',
+        header: 'Изменение тегов элемента',
+        message: `Добавьте или удалите теги и нажмите на кнопку "Сохранить".`,
+        inputLabel: 'Теги элемента',
         tags: this.item.tags.map(t => t.label),
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Save'
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Сохранить'
       }
     });
 
@@ -208,13 +206,13 @@ export class ItemComponent implements OnInit {
 
     let file = files[0];
     if (!this.supportedImagesTypes.includes(file.type)) {
-      this.dialogService.openInfoMessageDialog('Not supported format', 'File has not supported format. It must be image.');
+      this.dialogService.openInfoMessageDialog('Неподдерживаемый формат', 'Формат выбранного вами файла не поддерживается порталом.');
       return;
     }
 
     let dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       width: '600px',
-      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Crop an item image', 'Add')
+      data: new ImageCropperDialogData(file, false, 1, 0, false, 'Обржьте изображение элемента, если это необходимо', 'Добавить')
     });
 
     let sub = dialogRef.afterClosed().subscribe((blob: Blob) => {
@@ -233,7 +231,7 @@ export class ItemComponent implements OnInit {
   }
 
   public removeImageButtonWasClicked(imageId: number): void {
-    let dialogRef = this.dialogService.openYesNoDialog('Remove an item image?', 'Are you sure you want to remove the current item image?');
+    let dialogRef = this.dialogService.openYesNoDialog('Удалить изображение?', 'Вы уверены, что хотите удалить изображение элемента?');
 
     dialogRef.afterClosed().subscribe((yes: boolean) => {
       if (!yes) {
@@ -245,7 +243,7 @@ export class ItemComponent implements OnInit {
   }
 
   public deleteItemButtonWasClicked(): void {
-    let dialogRef = this.dialogService.openYesNoDialog('Are you sure?', `Are you sure you want to DELETE the collection item "${this.item.name}"? This action cannot be undone.`);
+    let dialogRef = this.dialogService.openYesNoDialog('Удалить элемент коллекции?', `Вы уверены, что хотите УДАЛИТЬ элемент коллекции "${this.item.name}"? Данное действие не возвратимо.`);
 
     dialogRef.afterClosed().subscribe((yes: boolean) => {
       if (!yes) {
@@ -268,9 +266,9 @@ export class ItemComponent implements OnInit {
       () => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
-        'To change the item name you must be authenticated.',
-        `To change the item name you must be its owner.`,
-        `Something went wrong while changing the item name.`
+        'Для изменения названия элемента вы должны быть авторизованы.',
+        `Для изменения названия элемента вы должны быть владельцем данной коллекции.`,
+        `В процессе изменения названия элемента произошла неизвестная ошибка`
       ),
       () => this.item.name = newName);
   }
@@ -280,9 +278,9 @@ export class ItemComponent implements OnInit {
       () => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
-        'To change the item information you must be authenticated.',
-        `To change the item information you must be its owner.`,
-        `Something went wrong while changing the item information.`
+        'Для изменения информации об элементе вы должны быть авторизованы.',
+        `Для изменения информации об элементе вы должны быть владельцем данной коллекции.`,
+        `В процессе изменения информации об элементе произошла неизвестная ошибка`
       ),
       () => this.item.information = newInfo);
   }
@@ -292,9 +290,9 @@ export class ItemComponent implements OnInit {
       tags => this.item.tags = tags,
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
-        'To change the item tags you must be authenticated.',
-        `To change the item tags you must be its owner.`,
-        `Something went wrong while changing the item tags.`
+        'Для изменения тегов данного элемента вы должны быть авторизованы.',
+        `Для изменения тегов данного элемента вы должны быть владельцем данной коллекции.`,
+        `В процессе изменения тего данного элемента произошла неизвестная ошибка`
       ));
   }
 
@@ -305,9 +303,9 @@ export class ItemComponent implements OnInit {
         this.reinitCarousel();
       }, (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
-        'To add an item image you must be authenticated.',
-        `To add an item image you must be its owner.`,
-        `Something went wrong while adding an item image.`
+        'Для добавления изображения элемента вы должны быть авторизованы.',
+        `Для добавления изображения элемента вы должны быть владельцем данной коллекции.`,
+        `В процессе добавления изображения элемента произошла неизвестная ошибка.`
       ));
   }
 
@@ -317,9 +315,9 @@ export class ItemComponent implements OnInit {
       (errorResponse: HttpErrorResponse) =>
         this.handleErrorStatuses(
           errorResponse,
-          'To remove an item image you must be authenticated.',
-          `To remove an item image you must be its owner.`,
-          `Something went wrong while removing an item image.`
+          'Для удаления изображения элемента вы должны быть авторизованы.',
+          `Для удаления изображения элемента вы должны быть владельцем данной коллекции.`,
+          `В процессе удаления изображения элемента произошла неизвестная ошибка.`
         ),
       () => {
         this.item.images = this.item.images.filter(i => i.id !== imageId);
@@ -333,9 +331,9 @@ export class ItemComponent implements OnInit {
       (errorResponse: HttpErrorResponse) =>
         this.handleErrorStatuses(
           errorResponse,
-          'To delete the item you must be authenticated.',
-          `To delete the item you must be its owner.`,
-          `Something went wrong while deleting the item.`
+          'Для удаления элемента вы должны быть авторизованы.',
+          `Для удаления элемента вы должны быть владельцем данной коллекции.`,
+          `В процессе удаления элемента произошла неизвестная ошибка.`
         ),
       () => this.router.navigate(['/collection', this.item.collection.id]));
   }
@@ -346,15 +344,15 @@ export class ItemComponent implements OnInit {
         break;
       case 401:
         this.authService.logout();
-        this.dialogService.openWarningMessageDialog('You are not authenticated', notAuthMessage);
+        this.dialogService.openWarningMessageDialog('Не авторизованы', notAuthMessage);
         break;
       case 403:
-        this.dialogService.openWarningMessageDialog('You don\'t have access', accessErrorMessage);
+        this.dialogService.openWarningMessageDialog('Нет доступа', accessErrorMessage);
         break;
       case 404:
         if (errorResponse.error?.entityType == 'User') {
           this.authService.logout();
-          this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Try to log in again.');
+          this.dialogService.openWarningMessageDialog('Учетная запись не найдена', 'User was not found. Try to log in again.');
           break;
         }
 
@@ -365,7 +363,7 @@ export class ItemComponent implements OnInit {
         this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
         break;
       default:
-        this.dialogService.openWarningMessageDialog('Something went wrong', errorMessage);
+        this.dialogService.openWarningMessageDialog('Неизвестная ошибка', errorMessage);
         break;
     }
   }

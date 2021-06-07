@@ -1,19 +1,21 @@
 <div class="border" [class]="isOver ? 'over' : ''" (click)="selectImage()" (dragenter)="dragged($event)"
   (dragover)="dragged($event)" (dragleave)="draggingStoped($event)" (dragend)="draggingStoped($event)"
   (drop)="filesDroped($event)">
-  <div class="placeholder" [style]="thumbData ? 'display: none;' : 'display: block;'">Choose an image or drag it here
+  <div class="placeholder" [style]="thumbData ? 'display: none;' : 'display: block;'">Выберите изображение или
+    перетащите его сюда
   </div>
   <img [src]="thumbData" alt="" [style]="thumbData ? 'display: block;' : 'display: none;'">
   <input type="file" [accept]="acceptFilesTypes" #input (change)="filesSelected($event)">
   <div class="buttons">
-    <button mat-mini-fab color="" matTooltip="Crop image" matTooltipShowDelay="500" matTooltipPosition="above"
+    <button mat-mini-fab color="" matTooltip="Обрезать изображение" matTooltipShowDelay="500" matTooltipPosition="above"
       [style]="thumbData ? 'display: block;' : 'display: none;'" (click)="cropImage($event)">
       <mat-icon class="material-icons-round">crop_free</mat-icon>
     </button>
-    <button mat-mini-fab color="warn" matTooltip="Reset image" matTooltipShowDelay="500" matTooltipPosition="above"
-      [style]="thumbData ? 'display: block;' : 'display: none;'" (click)="resetButtonClicked($event)">
+    <button mat-mini-fab color="warn" matTooltip="Сбросить изображение" matTooltipShowDelay="500"
+      matTooltipPosition="above" [style]="thumbData ? 'display: block;' : 'display: none;'"
+      (click)="resetButtonClicked($event)">
       <mat-icon class="material-icons-round">clear</mat-icon>
     </button>
   </div>
 </div>
-<mat-error class="mt-1" *ngIf="isWrongFileType">Images only</mat-error>
+<mat-error class="mt-1" *ngIf="isWrongFileType">Только изображения</mat-error>

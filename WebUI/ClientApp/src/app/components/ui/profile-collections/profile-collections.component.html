@@ -1,7 +1,7 @@
 <div class="app__container px-3">
   <div class="card mt-2 mb-4 py-3 row mx-0 justify-content-between align-items-center">
-    <app-search-input placeholder="Find user collections..." (changed)="searchInputChanged($event)"></app-search-input>
-    <a mat-stroked-button *ngIf="isOwner" routerLink="/new" color="primary">New</a>
+    <app-search-input placeholder="Найти коллекцию" (changed)="searchInputChanged($event)"></app-search-input>
+    <a mat-stroked-button *ngIf="isOwner" routerLink="/new" color="primary">Новая</a>
   </div>
 
   <div class="row mx-0 my-3 justify-content-center" *ngIf="!collectionsLoaded">
@@ -13,7 +13,7 @@
   </div>
 
   <h1 class="row mx-0 justify-content-center" *ngIf="collectionsLoaded && totalCount == 0">
-    No collections found
+    Коллекции не найдены
   </h1>
 
   <div class="mt-4">

@@ -35,15 +35,15 @@ export class SecuritySettingsComponent implements OnInit {
 
   public get newPasswordErrorMessage(): string {
     if (this.newPassword.hasError('required')) {
-      return 'You must enter new password';
+      return 'Введите новый пароль';
     }
 
     if (this.newPassword.hasError('minlength')) {
-      return 'Password must be at least 6 characters long';
+      return 'Пароль должен содержать не менее 6 символов';
     }
 
     if (this.newPassword.hasError('pattern')) {
-      return 'Password must contain at least one lowercase english letter, one uppercase english letter and one number';
+      return 'Пароль должен содержать как минимум одну английскую букву в нижнем регистре, одну - в верхнем и одну цифру';
     }
 
     return '';
@@ -106,25 +106,25 @@ export class SecuritySettingsComponent implements OnInit {
             break;
           case 401:
             this.authService.logout(true);
-            this.dialogService.openWarningMessageDialog('Not authenticated', 'You must be authenticated to change account password.');
+            this.dialogService.openWarningMessageDialog('Ошибка изменения пароля', 'В ходе изменения пароля произошла ошибка: вы не авторизованы.');
             break;
           case 404:
             this.authService.logout(true);
-            this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
+            this.dialogService.openWarningMessageDialog('Ошибка изменения пароля', `В ходе изменения пароля произошла ошибка: ваша учетная запись не найдена.`);
             break;
           case 405:
             this.authService.logout(true);
             this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
             break;
           default:
-            this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong while updating the account password.');
+            this.dialogService.openWarningMessageDialog('Ошибка изменения пароля', 'В ходе изменения пароля произошла неизвестная ошибка.');
             break;
         }
       },
       () => {
         ngForm.resetForm();
         this.inProcess = false;
-        this.snackBar.open('Password was updated', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
+        this.snackBar.open('Пароль успешно изменен', 'OK', { horizontalPosition: 'center', verticalPosition: 'bottom', duration: 3500 });
       })
   }
 
@@ -134,19 +134,19 @@ export class SecuritySettingsComponent implements OnInit {
       this.inProcess = false;
       switch (errorResponse.status) {
         case 400:
-          this.dialogService.openWarningMessageDialog('Failed to send email', 'Your account email address has not passed validation. Refresh this page and click this button again.');
+          this.dialogService.openWarningMessageDialog('Ошибка отправки письма', 'В ходе отправки электронного письма произошла ошибка: адрес электронной почты вашей учетной записи не прошел валидацию. Обновите страницу и попробуйтеснова.');
           break;
         case 404:
           this.authService.logout(true);
-          this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
+          this.dialogService.openWarningMessageDialog('Ошибка отправки письма', `В ходе отправки электронного письма произошла ошибка: пользователь не найден.`);
           break;
         default:
-          this.dialogService.openWarningMessageDialog('Failed to send email', 'Something went wrong on the server.');
+          this.dialogService.openWarningMessageDialog('Ошибка отправки письма', 'В ходе отправки электронного письма произошла неизвестная ошибка.');
           break;
       }
     }, () => {
       this.inProcess = false;
-      this.dialogService.openSuccessMessageDialog('Email has sent', 'Reset password confirmation has sent to your account email address. Check it and follow the link in it.');
+      this.dialogService.openSuccessMessageDialog('Письмо отправлено', 'Электронное письмо для сброса пароля отправлено на почту, прикрепленную к вашей учетной записи.');
     });
   }
 }

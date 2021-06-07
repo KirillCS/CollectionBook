@@ -7,7 +7,6 @@ import { SEARCH_BY_KEY, SEARCH_STRING_KEY, SORT_BY_KEY } from 'src/app/app-injec
 import { CollectionDto } from 'src/app/models/dtos/collection/collection.dto';
 import { SelectValue } from 'src/app/models/ui/select-value';
 import { CollectionService } from 'src/app/services/collection.service';
-import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { SearchBaseComponent } from '../search-base.component';
 import { SearchCriterion, SearchCriteriaSelectValues, SearchCriteriaInStringFormat } from '../search-criterion';
 import { CollectionsSortCriteriaInStringFormat, CollectionsSortCriteriaSelectValues, CollectionsSortCriterion } from './collections-sort-criterion';
@@ -38,8 +37,7 @@ export class SearchCollectionsComponent extends SearchBaseComponent implements O
     @Inject(SORT_BY_KEY) private sortByKey: string,
     private route: ActivatedRoute,
     private router: Router,
-    private collectionService: CollectionService,
-    private dialogService: DefaultDialogsService
+    private collectionService: CollectionService
   ) {
     super();
     this._pageSize = 24;
@@ -130,12 +128,8 @@ export class SearchCollectionsComponent extends SearchBaseComponent implements O
       list => {
         this.$collections.next(list.items);
         this._totalCount = list.totalCount;
-      },
-      () => {
-        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching collections.');
         this._collectionsLoaded = true;
-      },
-      () => this._collectionsLoaded = true);
+      });
   }
 
   private updateQueryParams(): void {

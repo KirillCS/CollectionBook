@@ -87,7 +87,7 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
   }
 
   public changeRoleButtonClickedHandler(user: DashboardUserDto): void {
-    let dialogRef = this._dialogsService.openYesNoDialog('Are you sure?', `Change a role of the user "${user.login}" from "${user.role}" to "${user.role == Roles.User ? Roles.Admin : Roles.User}"?`);
+    let dialogRef = this._dialogsService.openYesNoDialog('Вы уверены?', `Сменить роль пользователя "${user.login}" с "${user.role}" на "${user.role == Roles.User ? Roles.Admin : Roles.User}"?`);
 
     dialogRef.afterClosed().subscribe((yes: boolean) => {
       if (!yes) {
@@ -100,7 +100,7 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
           switch (errorResponse.status) {
             case 401:
               this._authService.logout(true);
-              this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to change users roles.');
+              this._dialogsService.openWarningMessageDialog('Ошибка смены роли', 'В ходе изменения роли пользователя произошла ошибка: вы должны быть авторизованы для изменения ролей пользователей.');
             case 403:
               let updatedToken = errorResponse.error.accessToken;
               let tokenSettingType = this._authTokenService.isConstant;
@@ -109,18 +109,18 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
               }
 
               this._router.navigateByUrl('/');
-              this._dialogsService.openWarningMessageDialog('No access', 'Your account role does not allow changing users roles.');
+              this._dialogsService.openWarningMessageDialog('Ошибка смены роли', 'В ходе изменения роли пользователя произошла ошибка: роль вашей учетной записи не позволяет изменять роли пользователей.');
               break;
             case 404:
               this._authService.logout(true);
-              this._dialogsService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
+              this._dialogsService.openWarningMessageDialog('Ошибка смены роли', 'В ходе изменения роли пользователя произошла ошибка: ваша учетная запись не найдена.');
               break;
             case 405:
               this._authService.logout(true);
               this._dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
               break;
             default:
-              this._dialogsService.openWarningMessageDialog('Something went wrong', `Something went wrong on the server while changing a user role.`);
+              this._dialogsService.openWarningMessageDialog('Ошибка смены роли', `В ходе изменения роли пользователя произошла неизвестная ошибка.`);
               break;
           }
         });
@@ -129,7 +129,7 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
 
   public blockButtonClickedHandler(user: DashboardUserDto): void {
     if (user.isBlocked) {
-      let dialogRef = this._dialogsService.openYesNoDialog('Are you sure?', `Are you sure you want to unblock user "${user.login}"?`);
+      let dialogRef = this._dialogsService.openYesNoDialog('Вы уверены?', `Вы уверены, что хотите разблокировать пользователя "${user.login}"?`);
       dialogRef.afterClosed().subscribe((yes: boolean) => {
         if (yes) {
           this.changeBlockStatus(user, null);
@@ -141,17 +141,17 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
         width: '550px',
         position: { top: '25vh' },
         data: {
-          header: 'Block reason',
-          message: 'Write the block reason and click the block button',
-          inputLabel: 'Block reason',
+          header: 'Блокировка пользователя',
+          message: 'Введите причину блокировки и нажмите кнопку "Заблокировать"',
+          inputLabel: 'Причина блокировки',
           inputType: 'textarea',
           formControl: new FormControl('', [Validators.required, Validators.maxLength(256)]),
           inputErrors: [
-            { errorCode: 'required', errorMessage: 'Write the block reason' },
-            { errorCode: 'maxlength', errorMessage: 'Maximum length of the block reason is 256' }
+            { errorCode: 'required', errorMessage: 'Введите причину блокировки' },
+            { errorCode: 'maxlength', errorMessage: 'Длина причины не может превышать 256 символов' }
           ],
-          closeButtonName: 'Cancel',
-          submitButtonName: 'Block'
+          closeButtonName: 'Отмена',
+          submitButtonName: 'Заблокировать'
         }
       });
 
@@ -204,7 +204,7 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
         switch (errorResponse.status) {
           case 401:
             this._authService.logout(true);
-            this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to get dashboard users.');
+            this._dialogsService.openWarningMessageDialog('Ошибка выборки пользователей', 'В ходе выборки пользователей произошла ошибка: вы не авторизованы.');
           case 403:
             let updatedToken = errorResponse.error.accessToken;
             let tokenSettingType = this._authTokenService.isConstant;
@@ -213,18 +213,18 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
             }
 
             this._router.navigateByUrl('/');
-            this._dialogsService.openWarningMessageDialog('No access', 'Your account role does not have access to user dashboard.');
+            this._dialogsService.openWarningMessageDialog('Ошибка выборки пользователей', 'В ходе выборки пользователей произошла ошибка: вы не имеете доступа к панеле управления пользователями.');
             break;
           case 404:
             this._authService.logout(true);
-            this._dialogsService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
+            this._dialogsService.openWarningMessageDialog('Ошибка выборки пользователей', 'В ходе выборки пользователей произошла ошибка: ваша учетная запись не найдена.');
             break;
           case 405:
             this._authService.logout(true);
             this._dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
             break;
           default:
-            this._dialogsService.openWarningMessageDialog('Something went wrong', `Something went wrong on the server.`);
+            this._dialogsService.openWarningMessageDialog('Ошибка выборки пользователей', `В ходе выборки пользователей произошла неизвестная ошибка.`);
             break;
         }
       },
@@ -237,11 +237,11 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
       (errorResponse: HttpErrorResponse) => {
         switch (errorResponse.status) {
           case 400:
-            this._dialogsService.openWarningMessageDialog('Block reason is required', `You must enter a block reason to block user "${user.login}".`);
+            this._dialogsService.openWarningMessageDialog('Ошибка блокировки пользователя', `В ходе блокировки пользователя произошла ошибка: вы должны указать причину блокировки пользователя "${user.login}".`);
             break;
           case 401:
             this._authService.logout(true);
-            this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to change users roles.');
+            this._dialogsService.openWarningMessageDialog(`Ошибка ${blockReason ? 'блокировки' : 'разблокировки'} пользователя`, `В ходе ${blockReason ? 'блокировки' : 'разблокировки'} пользователя произошла ошибка: вы не авторизованы.`);
           case 403:
             let updatedToken = errorResponse.error.accessToken;
             let tokenSettingType = this._authTokenService.isConstant;
@@ -250,11 +250,11 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
             }
 
             this._router.navigateByUrl('/');
-            this._dialogsService.openWarningMessageDialog('No access', 'Your account role cannot block / unblock users.');
+            this._dialogsService.openWarningMessageDialog(`Ошибка ${blockReason ? 'блокировки' : 'разблокировки'} пользователя`, `В ходе ${blockReason ? 'блокировки' : 'разблокировки'} пользователя произошла ошибка: роль вашей учетной записи не позволяет блокировать и разблокировать пользователей.`);
             break;
           case 404:
             this._authService.logout(true);
-            this._dialogsService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
+            this._dialogsService.openWarningMessageDialog(`Ошибка ${blockReason ? 'блокировки' : 'разблокировки'} пользователя`, `В ходе ${blockReason ? 'блокировки' : 'разблокировки'} пользователя произошла ошибка: ваша учетная запись не найдена.`);
             break;
           case 405:
             this._authService.logout(true);
@@ -262,13 +262,13 @@ export class UsersDashboardComponent extends SearchBaseComponent implements OnIn
             break;
           case 406:
             if (!user.isBlocked) {
-              this._dialogsService.openInfoMessageDialog('Already blocked', `The user "${user.login}" is already blocked.`);
+              this._dialogsService.openInfoMessageDialog('Уже заблокирован', `Пользователь "${user.login}" уже был заблокирован.`);
             }
 
             user.isBlocked = !user.isBlocked;
             break;
           default:
-            this._dialogsService.openWarningMessageDialog('Something went wrong', `Something went wrong on the server while blocking user "${user.login}".`);
+            this._dialogsService.openWarningMessageDialog(`Ошибка ${blockReason ? 'блокировки' : 'разблокировки'} пользователя`, `В ходе ${blockReason ? 'блокировки' : 'разблокировки'} пользователя произошла неизвестная ошибка.`);
             break;
         }
       }

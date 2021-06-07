@@ -43,8 +43,6 @@ export class ProfileComponent implements OnInit {
             this.router.navigateByUrl('**', { skipLocationChange: true });
             return;
           }
-
-          this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server.');
         },
         () => this._contentLoaded = true);
     });

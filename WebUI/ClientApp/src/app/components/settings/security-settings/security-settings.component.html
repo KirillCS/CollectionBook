@@ -1,15 +1,15 @@
-<h1>Account security</h1>
-<h2>Change password</h2>
+<h1>Настройки безопасности</h1>
+<h2>Изменение пароля</h2>
 <form [formGroup]="form" #passwordNgForm="ngForm" (submit)="submit(passwordNgForm)">
   <div class="line">
     <mat-form-field class="field" appearance="outline">
-      <mat-label>Current password</mat-label>
+      <mat-label>Текущий пароль</mat-label>
       <input [type]="hideCurrentPassword ? 'password' : 'text'" required matInput formControlName="currentPassword"
         [errorStateMatcher]="matcher">
       <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hideCurrentPassword = !hideCurrentPassword">
         <mat-icon>{{hideCurrentPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
-      <mat-error *ngIf="currentPassword.errors?.required">You must enter current password</mat-error>
+      <mat-error *ngIf="currentPassword.errors?.required">Введите текущий пароль</mat-error>
       <mat-error *ngIf="currentPassword.errors?.serverErrors">
         <div *ngFor="let error of currentPassword.errors?.serverErrors">{{error}}</div>
       </mat-error>
@@ -17,35 +17,35 @@
   </div>
   <div class="line">
     <mat-form-field class="field" appearance="outline">
-      <mat-label>New password</mat-label>
+      <mat-label>Новый пароль</mat-label>
       <input [type]="hideNewPassword ? 'password' : 'text'" required minlength="6" pattern="^(?=.*[a-z])(?=.*?[A-Z])(?=.*\d)([a-zA-Z\d]|.){6,}$" matInput
         formControlName="newPassword" [errorStateMatcher]="matcher">
       <button type="button" tabindex="-1" mat-icon-button matSuffix (click)="hideNewPassword = !hideNewPassword">
         <mat-icon>{{hideNewPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
-      <mat-hint>Minimum length: 6</mat-hint>
+      <mat-hint>Минимальная длина: 6</mat-hint>
       <mat-error *ngIf="newPassword.errors">{{ newPasswordErrorMessage }}</mat-error>
       <mat-error *ngIf="newPassword.errors?.serverErrors">
         <div *ngFor="let error of newPassword.errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
     <mat-form-field class="field" appearance="outline">
-      <mat-label>Password confirmation</mat-label>
+      <mat-label>Подтверждение пароля</mat-label>
       <input [type]="hidePasswordConfirmation ? 'password' : 'text'" required matInput
         formControlName="passwordConfirmation" [errorStateMatcher]="matcher">
       <button type="button" tabindex="-1" mat-icon-button matSuffix
         (click)="hidePasswordConfirmation = !hidePasswordConfirmation">
         <mat-icon>{{hidePasswordConfirmation ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
-      <mat-error *ngIf="passwordConfirmation.errors?.required">You must confirm password</mat-error>
-      <mat-error *ngIf="passwordConfirmation.errors?.mismatch">Password mismatch</mat-error>
+      <mat-error *ngIf="passwordConfirmation.errors?.required">Подтвердите пароль</mat-error>
+      <mat-error *ngIf="passwordConfirmation.errors?.mismatch">Пароли не совпадают</mat-error>
       <mat-error *ngIf="passwordConfirmation.errors?.serverErrors">
         <div *ngFor="let error of passwordConfirmation.errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
   </div>
   <div class="actions justify-content-end flex-wrap-reverse">
-    <button type="button" (click)="forgotPasswordButtonClicked()" [disabled]="inProcess" mat-button>I forgot password</button>
-    <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Change password</button>
+    <button type="button" (click)="forgotPasswordButtonClicked()" [disabled]="inProcess" mat-button>Я забыл пароль</button>
+    <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Изменить пароль</button>
   </div>
 </form>

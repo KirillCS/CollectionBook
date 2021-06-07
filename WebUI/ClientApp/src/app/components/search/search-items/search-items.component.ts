@@ -6,7 +6,6 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { SEARCH_BY_KEY, SEARCH_STRING_KEY, SORT_BY_KEY } from 'src/app/app-injection-tokens';
 import { ItemCoverDto } from 'src/app/models/dtos/item/item-cover.dto';
 import { SelectValue } from 'src/app/models/ui/select-value';
-import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { ItemService } from 'src/app/services/item.service';
 import { SearchBaseComponent } from '../search-base.component';
 import { SearchCriterion, SearchCriteriaSelectValues, SearchCriteriaInStringFormat } from '../search-criterion';
@@ -37,8 +36,7 @@ export class SearchItemsComponent extends SearchBaseComponent implements OnDestr
     @Inject(SORT_BY_KEY) private sortByKey: string,
     private route: ActivatedRoute,
     private router: Router,
-    private itemService: ItemService,
-    private dialogService: DefaultDialogsService
+    private itemService: ItemService
   ) {
     super();
     this._pageSize = 20;
@@ -129,12 +127,8 @@ export class SearchItemsComponent extends SearchBaseComponent implements OnDestr
       list => {
         this.$items.next(list.items);
         this._totalCount = list.totalCount;
-      },
-      () => {
-        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching items.');
         this._itemsLoaded = true;
-      },
-      () => this._itemsLoaded = true);
+      });
   }
 
   private updateQueryParams(): void {

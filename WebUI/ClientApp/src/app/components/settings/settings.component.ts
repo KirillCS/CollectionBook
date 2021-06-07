@@ -20,8 +20,8 @@ export class SettingsComponent implements OnDestroy {
   private readonly userSub: Subscription;
 
   private user = new UserDto();
-  private readonly _title = 'Account settings';
-  private readonly _items = ['Profile', 'Account', 'Security'];
+  private readonly _title = 'Настройки учетной записи';
+  private readonly _items = ['Профиль', 'Аккаунт', 'Безопасность'];
   private _selectedIndex = 0;
 
   public constructor(private settingsService: SettingsService, private router: Router) {

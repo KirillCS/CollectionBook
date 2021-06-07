@@ -8,7 +8,6 @@ import { SelectValue } from 'src/app/models/ui/select-value';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { UserService } from 'src/app/services/user.service';
 import { SearchBaseComponent } from '../search-base.component';
-import { SearchCriteriaInStringFormat, SearchCriteriaSelectValues, SearchCriterion } from '../search-criterion';
 import { UsersSortCriteriaInStringFormat, UsersSortCriteriaSelectValues, UsersSortCriterion } from './users-sort-criterion';
 
 @Component({
@@ -33,8 +32,7 @@ export class SearchUsersComponent extends SearchBaseComponent implements OnDestr
     @Inject(SORT_BY_KEY) private sortByKey: string,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService,
-    private dialogService: DefaultDialogsService
+    private userService: UserService
   ) {
     super();
     this._pageSize = 20;
@@ -100,12 +98,8 @@ export class SearchUsersComponent extends SearchBaseComponent implements OnDestr
       list => {
         this.$users.next(list.items);
         this._totalCount = list.totalCount;
-      },
-      () => {
-        this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching items.');
         this._usersLoaded = true;
-      },
-      () => this._usersLoaded = true);
+      });
   }
 
   private updateQueryParams(): void {

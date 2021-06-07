@@ -49,8 +49,6 @@ export class CollectionsComponent {
           this.router.navigateByUrl('**', { skipLocationChange: true });
           return;
         }
-
-        this.dialogsService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server while searching for user collections.');
       },
       () => this._collectionsLoaded = true);
   }

@@ -87,14 +87,14 @@ export class ReportsDashboardComponent extends PaginatedBaseComponent implements
       width: '550px',
       position: { top: '25vh' },
       data: {
-        header: 'Collection deletion',
-        message: `Are you sure you want to delete the collection "${report.collectionName}"? Enter a collection deletion reason and click the delete button.`,
-        inputLabel: 'Reason',
+        header: 'Удаление коллекции',
+        message: `Вы уверены, что хотите удалить коллекцию "${report.collectionName}"? Введите причину удаления коллекции и нажмите на кнопку "Удалить".`,
+        inputLabel: 'Причина',
         inputType: 'textarea',
         formControl: new FormControl('', Validators.required),
-        inputErrors: [{ errorCode: 'required', errorMessage: 'Enter reason' }],
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Delete'
+        inputErrors: [{ errorCode: 'required', errorMessage: 'Введите причину' }],
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Удалить'
       }
     });
 
@@ -139,7 +139,7 @@ export class ReportsDashboardComponent extends PaginatedBaseComponent implements
         switch (errorResponse.status) {
           case 401:
             this._authService.logout(true);
-            this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to get dashboard reports.');
+            this._dialogsService.openWarningMessageDialog('Ошибка выборки жалоб', 'В ходе выборки жалоб произошла ошибка: вы не авторизованы.');
           case 403:
             let updatedToken = errorResponse.error.accessToken;
             let tokenSettingType = this._authTokenService.isConstant;
@@ -148,18 +148,18 @@ export class ReportsDashboardComponent extends PaginatedBaseComponent implements
             }
 
             this._router.navigateByUrl('/');
-            this._dialogsService.openWarningMessageDialog('No access', 'Your account role does not have access to report dashboard.');
+            this._dialogsService.openWarningMessageDialog('Ошибка выборки жалоб', 'В ходе выборки жалоб произошла ошибка: вы не имеете доступа к панеле управления жалобами.');
             break;
           case 404:
             this._authService.logout(true);
-            this._dialogsService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
+            this._dialogsService.openWarningMessageDialog('Ошибка выборки жалоб', 'В ходе выборки жалоб произошла ошибка: ваша учетная запись не найдена.');
             break;
           case 405:
             this._authService.logout(true);
             this._dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
             break;
           default:
-            this._dialogsService.openWarningMessageDialog('Something went wrong', `Something went wrong on the server.`);
+            this._dialogsService.openWarningMessageDialog('Ошибка выборки жалоб', `В ходе выборки жалоб произошла неизвестная ошибка.`);
             break;
         }
       },
@@ -184,7 +184,7 @@ export class ReportsDashboardComponent extends PaginatedBaseComponent implements
     switch (errorResponse.status) {
       case 401:
         this._authService.logout(true);
-        this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to accept or refuse reports.');
+        this._dialogsService.openWarningMessageDialog('Ошибка удаления коллекции', 'В ходе удаления коллекции произошла ошибка: вы не авторизованы.');
       case 403:
         let updatedToken = errorResponse.error.accessToken;
         let tokenSettingType = this._authTokenService.isConstant;
@@ -193,18 +193,18 @@ export class ReportsDashboardComponent extends PaginatedBaseComponent implements
         }
 
         this._router.navigateByUrl('/');
-        this._dialogsService.openWarningMessageDialog('No access', 'Your account role does not have access to accept or refuse reports.');
+        this._dialogsService.openWarningMessageDialog('Ошибка удаления коллекции', 'В ходе удаления коллекции произошла ошибка: вы не имеете достаточно прав для работы с жалобами.');
         break;
       case 404:
         this._authService.logout(true);
-        this._dialogsService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
+        this._dialogsService.openWarningMessageDialog('Ошибка удаления коллекции', 'В ходе удаления коллекции произошла ошибка: ваша учетная запись не найдена.');
         break;
       case 405:
         this._authService.logout(true);
         this._dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
         break;
       default:
-        this._dialogsService.openWarningMessageDialog('Something went wrong', `Something went wrong on the server.`);
+        this._dialogsService.openWarningMessageDialog('Ошибка удаления коллекции', `В ходе удаления коллекции произошла неизвестная ошибка.`);
         break;
     }
   }

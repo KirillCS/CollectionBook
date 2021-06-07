@@ -465,9 +465,9 @@ export class CollectionComponent implements OnInit {
       () => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
-        'To change the collection name you must be authenticated.',
-        `To change the collection name you must be its owner.`,
-        `Something went wrong while changing the collection name.`
+        'Чтобы изменить название коллекции вы должны быть авторизованы.',
+        `Только владелец может изменить название коллекции.`,
+        `В процессе изменения названия коллекции произошла неизвестная ошибка.`
       ),
       () => this.collection.name = newName);
   }
@@ -477,9 +477,9 @@ export class CollectionComponent implements OnInit {
       () => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
-        'To change the collection description you must be authenticated.',
-        `To change the collection description you must be its owner.`,
-        `Something went wrong while changing the collection description.`
+        'Чтобы изменить описание коллекции вы должны быть авторизованы.',
+        `Только владелец может изменить описание коллекции.`,
+        `В процессе изменения описания коллекции произошла неизвестная ошибка.`
       ),
       () => this.collection.description = newDescription);
   }
@@ -489,9 +489,9 @@ export class CollectionComponent implements OnInit {
       tags => this.collection.tags = tags,
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
-        'To change the collection tags you must be authenticated.',
-        `To change the collection tags you must be its owner.`,
-        `Something went wrong while changing the collection tags.`
+        'Чтобы изменить теги коллекции вы должны быть авторизованы.',
+        `Только владелец может изменить теги коллекции.`,
+        `В процессе изменения тегов коллекции произошла неизвестная ошибка.`
       ));
   }
 
@@ -500,9 +500,9 @@ export class CollectionComponent implements OnInit {
       () => { },
       (errorResponse: HttpErrorResponse) => this.handleErrorStatuses(
         errorResponse,
-        'To delete the collection you must be authenticated.',
-        `To delete the collection "${this.collection.name}" you must be its owner.`,
-        `Something went wrong while deleting the collection.`
+        'Чтобы удалить коллекцию вы должны быть авторизованы.',
+        `Чтобы удалить данную коллекцию вы должны быть ее владельцем.`,
+        `В процессе удаления коллекции произошла неизвестная ошибка.`
       ),
       () => this.router.navigate(['/profile', this.collection.user.login, 'collections']));
   }
@@ -513,15 +513,15 @@ export class CollectionComponent implements OnInit {
         break;
       case 401:
         this.authService.logout();
-        this.dialogService.openWarningMessageDialog('You are not authenticated', notAuthMessage);
+        this.dialogService.openWarningMessageDialog('Вы не авторизованы', notAuthMessage);
         break;
       case 403:
-        this.dialogService.openWarningMessageDialog('You don\'t have access', accessErrorMessage);
+        this.dialogService.openWarningMessageDialog('Вы не имеете доступ', accessErrorMessage);
         break;
       case 404:
         if (errorResponse.error?.entityType == 'User') {
           this.authService.logout();
-          this.dialogService.openWarningMessageDialog('User not found', 'User was not found. Try to log in again.');
+          this.dialogService.openWarningMessageDialog('Что-то пошло не так', 'Ваша учетная запись не была найдена.');
           break;
         }
 
@@ -532,7 +532,7 @@ export class CollectionComponent implements OnInit {
         this.dialogService.openBlockReasonDialog(errorResponse.error?.blockReason);
         break;
       default:
-        this.dialogService.openWarningMessageDialog('Something went wrong', errorMessage);
+        this.dialogService.openWarningMessageDialog('Что-то пошло не так', errorMessage);
         break;
     }
   }

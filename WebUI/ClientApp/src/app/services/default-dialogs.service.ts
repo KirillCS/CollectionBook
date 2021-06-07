@@ -15,7 +15,7 @@ export class DefaultDialogsService {
     return this.dialog.open(DialogComponent, {
       width: '500px',
       position: { top: '30vh' },
-      data: new DialogData(header, message, 'Yes', 'No')
+      data: new DialogData(header, message, 'Да', 'Нет')
     })
   }
 

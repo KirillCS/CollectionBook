@@ -17,9 +17,9 @@ export const ItemsSortCriteriaInStringFormat = new Map<ItemsSortCriterion, strin
 ]);
 
 export const ItemsSortCriteriaSelectValues: SelectValue<ItemsSortCriterion>[] = [
-  { value: ItemsSortCriterion.ByPopularity, viewValue: 'popularity' },
-  { value: ItemsSortCriterion.ByAlphabetUp, viewValue: `alphabet up ('A'-'Z')` },
-  { value: ItemsSortCriterion.ByAlphabetDown, viewValue: `alphabet down ('Z'-'A')` },
-  { value: ItemsSortCriterion.ByCreationTimeDown, viewValue: 'newest first' },
-  { value: ItemsSortCriterion.ByCreationTimeUp, viewValue: 'oldest first' }
+  { value: ItemsSortCriterion.ByPopularity, viewValue: 'популярности' },
+  { value: ItemsSortCriterion.ByAlphabetUp, viewValue: `алфавиту ('А'-'Я')` },
+  { value: ItemsSortCriterion.ByAlphabetDown, viewValue: `алфавиту ('Я'-'А')` },
+  { value: ItemsSortCriterion.ByCreationTimeDown, viewValue: 'дате создания (сначала новые)' },
+  { value: ItemsSortCriterion.ByCreationTimeUp, viewValue: 'дате создания (сначала старые)' }
 ];

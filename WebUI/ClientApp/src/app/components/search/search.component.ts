@@ -13,7 +13,7 @@ import { SearchGroupInStringFormat } from './search-group';
 export class SearchComponent implements OnDestroy {
 
   private readonly routerSub: Subscription;
-  private readonly _menuItems = ['Collections', 'Items', 'Users'];
+  private readonly _menuItems = ['Коллекции', 'Элементы', 'Пользователи'];
   private _selectedIndex = 0;
 
   public constructor(private router: Router) {

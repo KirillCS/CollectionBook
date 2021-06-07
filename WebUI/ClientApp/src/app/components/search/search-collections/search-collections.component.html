@@ -1,18 +1,18 @@
 <div class="card py-3">
   <div class="row mx-0 align-items-center justify-content-between">
     <div class="mr-3">
-      <h2 class="m-0">Search: "{{ searchString }}"</h2>
-      <h4 class="m-0">Found {{ totalCount }} collection(-s)</h4>
+      <h2 class="m-0">По запросу "{{ searchString }}"</h2>
+      <h4 class="m-0">найдены следующие коллекции ({{ totalCount }})</h4>
     </div>
     <div class="row mx-0">
       <mat-form-field class="mr-3" appearance="outline">
-        <mat-label>Search by</mat-label>
+        <mat-label>Искать по</mat-label>
         <mat-select [(ngModel)]="selectedSearchCriterion">
           <mat-option *ngFor="let criterion of searchCriterions" [value]="criterion.value">{{ criterion.viewValue }}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Sort by</mat-label>
+        <mat-label>Сортировать по</mat-label>
         <mat-select [(ngModel)]="selectedSortCriterion">
           <mat-option *ngFor="let criterion of sortCriterions" [value]="criterion.value">{{ criterion.viewValue }}</mat-option>
         </mat-select>
@@ -30,7 +30,7 @@
   </div>
   
   <h1 class="row mx-0 justify-content-center" *ngIf="collectionsLoaded && totalCount == 0">
-    No collections found
+    Коллекции не найдены
   </h1>
 
   <div class="mt-3">

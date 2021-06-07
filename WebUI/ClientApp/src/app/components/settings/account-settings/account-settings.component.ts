@@ -15,7 +15,6 @@ import { LoginResponse } from 'src/app/models/responses/auth/login.response';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
 import { Router } from '@angular/router';
-import { PreviousRouteService } from 'src/app/services/previous-route.service';
 
 @Component({
   selector: 'app-account-settings',
@@ -70,7 +69,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const dialogRef = this.dialogService.openYesNoDialog('Are you sure?', `Are you sure you want to change login from ${this.user.login} to ${control.value}? Links to your profile will be broken.`);
+    const dialogRef = this.dialogService.openYesNoDialog('Изменить логин?', `Вы уверены, что хотите изменить логин? Существующие ссылки на ваш профиль перестанут работать.`);
 
     dialogRef.afterClosed().subscribe((yes: boolean) => {
       if (!yes) {
@@ -92,25 +91,25 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
               break;
             case 401:
               this.authService.logout(true);
-              this.dialogService.openWarningMessageDialog('Not authenticated', `You must be authenticated to change account login.`);
+              this.dialogService.openWarningMessageDialog('Ошибка изменения логина', `В ходе изменения логина произошла ошибка: вы не авторизованы.`);
               break;
             case 404:
               this.authService.logout(true);
-              this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
+              this.dialogService.openWarningMessageDialog('Ошибка изменения логина', `В ходе изменения логина произошла ошибка: ваша учетная запись не найдена.`);
               break;
             case 405:
               this.authService.logout(true);
               this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
               break;
             default:
-              this.dialogService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server. Maybe page updating will be able to help.');
+              this.dialogService.openWarningMessageDialog('Ошибка изменения логина', 'В ходе изменения логина произошла неизвестная ошибка.');
               break;
           }
         },
         () => {
           form.resetForm();
           this.isChangingLoginInProcess = false;
-          this.snackBar.open('Login was updated', 'OK', { horizontalPosition: 'left', verticalPosition: 'bottom', duration: 3500 });
+          this.snackBar.open('Логин успешно изменен', 'OK', { horizontalPosition: 'left', verticalPosition: 'bottom', duration: 3500 });
         });
     });
   }
@@ -130,7 +129,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     this.isChangingEmailInProcess = true;
     this.emailService.updateEmail({ email: control.value }).subscribe(
       () => {
-        this.dialogService.openInfoMessageDialog('Confirm email', `We've sent confirmation message to email address ${control.value}. You must confirm it to update account email.`);
+        this.dialogService.openInfoMessageDialog('Подтвердите почту', `На почту ${control.value} было отправлено верификационное письмо. Перейдите по ссылке в нем для завершения изменения адреса электронной почты учетной записи.`);
       },
       (errorResponse: HttpErrorResponse) => {
         this.isChangingEmailInProcess = false;
@@ -140,12 +139,12 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
             break;
           case 401:
             this.authService.logout(true);
-            this.dialogService.openWarningMessageDialog('Not authenticated', `You must be authenticated to change account email.`);
+            this.dialogService.openWarningMessageDialog('Ошибка изменения почты', `В ходе изменения адреса электронной почты произошла ошибка: вы не авторизованы.`);
             break;
           case 404:
             this.authService.logout();
             this.router.navigateByUrl('/');
-            this.dialogService.openWarningMessageDialog('User not found', `User was not found. Maybe it was deleted.`);
+            this.dialogService.openWarningMessageDialog('Ошибка изменения почты', `В ходе изменения адреса электронной почты произошла ошибка: ваша учетная запись не найдена.`);
             break;
           case 403:
             let updatedToken = errorResponse.error.accessToken;
@@ -155,14 +154,14 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
             }
 
             this.router.navigateByUrl('/');
-            this.dialogService.openWarningMessageDialog('No access', 'Your account role does not allow change account email.');
+            this.dialogService.openWarningMessageDialog('Ошибка изменения почты', 'В ходе изменения адреса электронной почты произошла ошибка: роль вашей учетной записи не позволяет выполнить данную операцию.');
             break;
           case 405:
             this.authService.logout(true);
             this.dialogService.openBlockReasonDialog(errorResponse.error.blockReason);
             break;
           default:
-            this.dialogService.openWarningMessageDialog('Something went wrong', `Something went wrong while updating email.`);
+            this.dialogService.openWarningMessageDialog('Ошибка изменения почты', `В ходе изменения адреса электронной почты произошла неизвестная ошибка.`);
             break;
         }
       },

@@ -1,13 +1,13 @@
 <mat-form-field appearance="outline">
-  <mat-label>Top count</mat-label>
+  <mat-label>Топ</mat-label>
   <mat-select [(value)]="selectedCount">
     <mat-option *ngFor="let count of availableCount" [value]="count">
       {{ count }}
     </mat-option>
   </mat-select>
 </mat-form-field>
-<h3>Top-{{ selectedCount }} tags:</h3>
-<span *ngIf="noTags">No tags</span>
+<h3>Топ-{{ selectedCount }} тегов:</h3>
+<span *ngIf="noTags">Тего отсутствуют</span>
 <ngx-skeleton-loader *ngIf="!tagsLoaded" [count]="selectedCount"
   [theme]="{ 'max-width': '100%', width: '90px', height: '30px', 'border-radius': '15px', 'margin-right': '0.5rem', 'background-color': '#ECECEC' }">
 </ngx-skeleton-loader>

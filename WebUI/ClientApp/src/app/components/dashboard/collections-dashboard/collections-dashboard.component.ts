@@ -73,13 +73,13 @@ export class CollectionsDashboardComponent extends SearchBaseComponent implement
       position: { top: '25vh' },
       data: {
         header: 'Collection deletion',
-        message: `Are you sure you want to delete the collection "${collection.name}"? Enter a collection deletion reason and click the delete button.`,
-        inputLabel: 'Reason',
+        message: `Вы уверены, что хотите удалить коллекцию "${collection.name}"? Введите причину удаления коллекции и нажмите на кнопку "Удалить".`,
+        inputLabel: 'Причина',
         inputType: 'textarea',
         formControl: new FormControl('', Validators.required),
-        inputErrors: [{ errorCode: 'required', errorMessage: 'Enter reason' }],
-        closeButtonName: 'Cancel',
-        submitButtonName: 'Delete'
+        inputErrors: [{ errorCode: 'required', errorMessage: 'Введите причину' }],
+        closeButtonName: 'Отмена',
+        submitButtonName: 'Удалить'
       }
     });
 
@@ -120,7 +120,7 @@ export class CollectionsDashboardComponent extends SearchBaseComponent implement
         switch (errorResponse.status) {
           case 401:
             this._authService.logout(true);
-            this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to get dashboard collections.');
+            this._dialogsService.openWarningMessageDialog('Ошибка выборки коллекций', 'В ходе выборки коллекций произошла ошибка: вы не авторизованы You must be authorized to get dashboard collections.');
           case 403:
             let updatedToken = errorResponse.error.accessToken;
             let tokenSettingType = this._authTokenService.isConstant;
@@ -129,18 +129,18 @@ export class CollectionsDashboardComponent extends SearchBaseComponent implement
             }
 
             this._router.navigateByUrl('/');
-            this._dialogsService.openWarningMessageDialog('No access', 'Your account role does not have access to collection dashboard.');
+            this._dialogsService.openWarningMessageDialog('Ошибка выборки коллекций', 'В ходе выборки коллекций произошла ошибка: вы не имеете доступа к панеле управления коллекциями.');
             break;
           case 404:
             this._authService.logout(true);
-            this._dialogsService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
+            this._dialogsService.openWarningMessageDialog('Ошибка выборки коллекций', 'В ходе выборки коллекций произошла ошибка: ваша учетная запись не найдена.');
             break;
           case 405:
             this._authService.logout(true);
             this._dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
             break;
           default:
-            this._dialogsService.openWarningMessageDialog('Something went wrong', `Something went wrong on the server.`);
+            this._dialogsService.openWarningMessageDialog('Ошибка выборки коллекций', `В ходе выборки коллекций произошла неизвестная ошибка.`);
             break;
         }
       },
@@ -154,7 +154,7 @@ export class CollectionsDashboardComponent extends SearchBaseComponent implement
         switch (errorResponse.status) {
           case 401:
             this._authService.logout(true);
-            this._dialogsService.openWarningMessageDialog('Not authorized', 'You must be authorized to accept or refuse reports.');
+            this._dialogsService.openWarningMessageDialog('Ошибка удаления коллекции', 'В ходе удаления коллекции произошла ошибка: вы не авторизованы.');
           case 403:
             let updatedToken = errorResponse.error.accessToken;
             let tokenSettingType = this._authTokenService.isConstant;
@@ -163,18 +163,18 @@ export class CollectionsDashboardComponent extends SearchBaseComponent implement
             }
 
             this._router.navigateByUrl('/');
-            this._dialogsService.openWarningMessageDialog('No access', 'Your account role does not have access to accept or refuse reports.');
+            this._dialogsService.openWarningMessageDialog('Ошибка удаления коллекции', 'В ходе удаления коллекции произошла ошибка: вы не имеете достаточно прав для удаления коллекций.');
             break;
           case 404:
             this._authService.logout(true);
-            this._dialogsService.openWarningMessageDialog('User not found', 'Your account was not found. Try to log in again.');
+            this._dialogsService.openWarningMessageDialog('Ошибка удаления коллекции', 'В ходе удаления коллекции произошла ошибка: ваша учетная запись не найдена.');
             break;
           case 405:
             this._authService.logout(true);
             this._dialogsService.openBlockReasonDialog(errorResponse.error.blockReason);
             break;
           default:
-            this._dialogsService.openWarningMessageDialog('Something went wrong', `Something went wrong on the server.`);
+            this._dialogsService.openWarningMessageDialog('Ошибка удаления коллекции', `В ходе удаления коллекции произошла неизвестная ошибка.`);
             break;
         }
       }

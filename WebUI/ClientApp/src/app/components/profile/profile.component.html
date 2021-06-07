@@ -44,7 +44,7 @@
               <div class="icon-data">
                 <i class="material-icons-round">link</i>
                 <a class="link" href="{{ user.websiteUrl }}" target="_blank" tabindex="-1"
-                  matTooltip="{{ user.websiteUrl }}">Website</a>
+                  matTooltip="{{ user.websiteUrl }}">Веб-сайт</a>
               </div>
             </li>
             <li *ngIf="user.telegramLogin">
@@ -74,13 +74,13 @@
           <mat-icon class="material-icons-round mr-1">
             collections
           </mat-icon>
-          Collections
+          Коллекции
         </a>
         <a mat-tab-link routerLink="stars" routerLinkActive #stars="routerLinkActive" [active]="stars.isActive">
           <mat-icon class="material-icons-round mr-1">
             star
           </mat-icon>
-          Stars
+          Избранное
         </a>
       </nav>
     </div>

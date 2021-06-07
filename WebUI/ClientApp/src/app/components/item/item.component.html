@@ -69,22 +69,22 @@
             (change)="imageWasSelected($event.target.files)">
           <button mat-menu-item (click)="imageInput.click()">
             <mat-icon class="material-icons-round">add_photo_alternate</mat-icon>
-            <span>Add image</span>
+            <span>Добавить изображение</span>
           </button>
           <button mat-menu-item [matMenuTriggerFor]="editMenu">
             <mat-icon class="material-icons-round">edit</mat-icon>
-            <span>Edit item</span>
+            <span>Изменить</span>
           </button>
           <mat-divider></mat-divider>
           <button mat-menu-item (click)="deleteItemButtonWasClicked()">
             <mat-icon class="material-icons-round">delete</mat-icon>
-            <span>Delete item</span>
+            <span>Удалить элемент</span>
           </button>
         </mat-menu>
         <mat-menu #editMenu="matMenu">
-          <button mat-menu-item (click)="editNameButtonWasClicked()">name</button>
-          <button mat-menu-item (click)="editInfoButtonWasClicked()">information</button>
-          <button mat-menu-item (click)="editTagsButtonWasClicked()">tags</button>
+          <button mat-menu-item (click)="editNameButtonWasClicked()">название</button>
+          <button mat-menu-item (click)="editInfoButtonWasClicked()">информацию</button>
+          <button mat-menu-item (click)="editTagsButtonWasClicked()">теги</button>
         </mat-menu>
       </footer>
     </div>

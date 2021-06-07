@@ -1,5 +1,5 @@
-<h1>Profile settings</h1>
-<h2>Change profile avatar</h2>
+<h1>Настройки профиля</h1>
+<h2>Изменение аватара</h2>
 <div class="col-xl-5 col-lg-7 col-sm-9 col-12 px-0">
   <div class="avatar-settings">
     <div class="dummy"></div>
@@ -9,8 +9,8 @@
       </button>
       <mat-menu #menu="matMenu">
         <input type="file" style="display: none;" [accept]="acceptFilesFormats" #avatarInput (change)="avatarSelected($event.target.files)">
-        <button (click)="avatarInput.click()" mat-menu-item>Upload photo</button>
-        <button (click)="resetAvatar()" [disabled]="!clearAvatarEnable" mat-menu-item>Reset avatar</button>
+        <button (click)="avatarInput.click()" mat-menu-item>Загрузить фото</button>
+        <button (click)="resetAvatar()" [disabled]="!clearAvatarEnable" mat-menu-item>Сбросить аватар</button>
       </mat-menu>
     </div>
     <div class="avatar">
@@ -19,25 +19,25 @@
   </div>
 </div>
 <mat-divider class="my-4"></mat-divider>
-<h2>Change profile data</h2>
+<h2>Изменение информации</h2>
 <form [formGroup]="form" (submit)="submit()" (input)="formChanged()">
   <div class="line">
     <mat-form-field class="field" appearance="outline">
-      <mat-label>First name</mat-label>
+      <mat-label>Имя</mat-label>
       <input type="text" maxlength="128" autocomplete="off" matInput formControlName="firstName"
         [errorStateMatcher]="matcher">
-      <mat-hint>Maximum length: 128</mat-hint>
-      <mat-error *ngIf="form.get('firstName').errors?.maxlength">Maximum first name length is 128</mat-error>
+      <mat-hint>Максимальная длина: 128</mat-hint>
+      <mat-error *ngIf="form.get('firstName').errors?.maxlength">Максимальная длина имени 128 символов</mat-error>
       <mat-error *ngIf="form.get('firstName').errors?.serverErrors">
         <div *ngFor="let error of form.get('firstName').errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
     <mat-form-field class="field" appearance="outline">
-      <mat-label>Last name</mat-label>
+      <mat-label>Фамилия</mat-label>
       <input type="text" maxlength="128" autocomplete="off" matInput formControlName="lastName"
         [errorStateMatcher]="matcher">
-      <mat-hint>Maximum length: 128</mat-hint>
-      <mat-error *ngIf="form.get('lastName').errors?.maxlength">Maximum last name length is 128</mat-error>
+      <mat-hint>Максимальная длина: 128</mat-hint>
+      <mat-error *ngIf="form.get('lastName').errors?.maxlength">Максимальная длина фамилии 128 символов</mat-error>
       <mat-error *ngIf="form.get('lastName').errors?.serverErrors">
         <div *ngFor="let error of form.get('lastName').errors?.serverErrors">{{error}}</div>
       </mat-error>
@@ -45,8 +45,8 @@
   </div>
   <div class="line">
     <mat-form-field class="field" appearance="outline">
-      <mat-label>Biography</mat-label>
-      <textarea rows="4" placeholder="Write some words about you" matInput formControlName="biography"></textarea>
+      <mat-label>Биография</mat-label>
+      <textarea rows="4" placeholder="Напишите пару слов о себе" matInput formControlName="biography"></textarea>
       <mat-error *ngIf="form.get('biography').errors?.serverErrors">
         <div *ngFor="let error of form.get('biography').errors?.serverErrors">{{error}}</div>
       </mat-error>
@@ -54,21 +54,21 @@
   </div>
   <div class="line">
     <mat-form-field class="field" appearance="outline">
-      <mat-label>Email visibility</mat-label>
+      <mat-label>Видимость адреса электронной почты</mat-label>
       <mat-select formControlName="isEmailVisible">
-        <mat-option [value]="false">Unvisible</mat-option>
-        <mat-option [value]="true">Visible</mat-option>
+        <mat-option [value]="false">Видима</mat-option>
+        <mat-option [value]="true">Невидима</mat-option>
       </mat-select>
-      <mat-hint>Email visibility in your profile page</mat-hint>
+      <mat-hint>Видимость адреса электронной почты в вашем профиле</mat-hint>
     </mat-form-field>
   </div>
   <div class="line">
     <mat-form-field class="field" appearance="outline">
-      <mat-label>Location</mat-label>
-      <input type="text" maxlength="256" autocomplete="off" placeholder="Ex. Belarus, Minsk" matInput
+      <mat-label>Место жительства</mat-label>
+      <input type="text" maxlength="256" autocomplete="off" matInput
         formControlName="location" [errorStateMatcher]="matcher">
-      <mat-hint>Maximum length: 256</mat-hint>
-      <mat-error *ngIf="form.get('location').errors?.maxlength">Maximum location length is 256</mat-error>
+      <mat-hint>Максимальная длина: 256</mat-hint>
+      <mat-error *ngIf="form.get('location').errors?.maxlength">Максимальная длина - 256 символов</mat-error>
       <mat-error *ngIf="form.get('location').errors?.serverErrors">
         <div *ngFor="let error of form.get('location').errors?.serverErrors">{{error}}</div>
       </mat-error>
@@ -76,8 +76,8 @@
   </div>
   <div class="line">
     <mat-form-field class="field" appearance="outline">
-      <mat-label>Your website</mat-label>
-      <input type="url" autocomplete="off" placeholder="Ex. https://wikipedia.com" matInput
+      <mat-label>Ваш веб-сайт</mat-label>
+      <input type="url" autocomplete="off" placeholder="Например, https://wikipedia.com" matInput
         formControlName="websiteUrl">
       <mat-error *ngIf="form.get('websiteUrl').errors?.serverErrors">
         <div *ngFor="let error of form.get('websiteUrl').errors?.serverErrors">{{error}}</div>
@@ -86,22 +86,22 @@
   </div>
   <div class="line">
     <mat-form-field class="field" appearance="outline">
-      <mat-label>Telegram login</mat-label>
-      <input type="text" autocomplete="off" placeholder="Ex. kirill" matInput formControlName="telegramLogin">
+      <mat-label>Логин Telegram</mat-label>
+      <input type="text" autocomplete="off" placeholder="Например, kirill" matInput formControlName="telegramLogin">
       <mat-error *ngIf="form.get('telegramLogin').errors?.serverErrors">
         <div *ngFor="let error of form.get('telegramLogin').errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
     <mat-form-field class="field" appearance="outline">
-      <mat-label>Instagram login</mat-label>
-      <input type="text" autocomplete="off" placeholder="Ex. kirill" matInput formControlName="instagramLogin">
+      <mat-label>Логин Instagram</mat-label>
+      <input type="text" autocomplete="off" placeholder="Например, kirill" matInput formControlName="instagramLogin">
       <mat-error *ngIf="form.get('instagramLogin').errors?.serverErrors">
         <div *ngFor="let error of form.get('instagramLogin').errors?.serverErrors">{{error}}</div>
       </mat-error>
     </mat-form-field>
   </div>
-  <mat-error *ngIf="unknownError">Something went wrong on server. You can try to update profile again</mat-error>
+  <mat-error *ngIf="unknownError">Произошла неизвестная ошибка</mat-error>
   <div class="actions justify-content-end">
-    <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Update profile</button>
+    <button type="submit" [disabled]="inProcess" mat-raised-button color="primary">Обновить профиль</button>
   </div>
 </form>

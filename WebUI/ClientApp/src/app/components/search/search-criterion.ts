@@ -13,7 +13,7 @@ export const SearchCriteriaInStringFormat = new Map<SearchCriterion, string>([
 ]);
 
 export const SearchCriteriaSelectValues: SelectValue<SearchCriterion>[] = [
-  { value: SearchCriterion.Name, viewValue: 'name' },
-  { value: SearchCriterion.Tags, viewValue: 'tags' },
-  { value: SearchCriterion.All, viewValue: 'name and tags' }
+  { value: SearchCriterion.Name, viewValue: 'названию' },
+  { value: SearchCriterion.Tags, viewValue: 'тегам' },
+  { value: SearchCriterion.All, viewValue: 'названию и тегам' }
 ];

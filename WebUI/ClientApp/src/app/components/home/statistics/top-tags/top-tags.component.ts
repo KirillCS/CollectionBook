@@ -8,8 +8,7 @@ import { StatisticsService } from 'src/app/services/statistics.service';
 
 @Component({
   selector: 'app-top-tags',
-  templateUrl: './top-tags.component.html',
-  styleUrls: ['./top-tags.component.css']
+  templateUrl: './top-tags.component.html'
 })
 export class TopTagsComponent implements OnInit {
 
