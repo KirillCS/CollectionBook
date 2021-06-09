@@ -39,11 +39,11 @@ export class DefaultDialogsService {
     return this.dialog.open(MessageDialogComponent, {
       width: '500px',
       position: { top: '30vh'},
-      data: new MessageDialogData(MessageDialogType.Warning, header, message, 'Close')
+      data: new MessageDialogData(MessageDialogType.Warning, header, message, 'Закрыть')
     });
   }
 
   public openBlockReasonDialog(blockReason: string): MatDialogRef<MessageDialogComponent> {
-    return this.openWarningMessageDialog('You\'re blocked', `You are blocked, because of:\n"${blockReason}"`);
+    return this.openWarningMessageDialog('Вы заблокированы', `Ваша учетная запись была заблокирована администрацией портала. Причина:\n"${blockReason}"`);
   }
 }

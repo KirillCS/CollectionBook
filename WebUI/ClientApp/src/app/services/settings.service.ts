@@ -29,12 +29,10 @@ export class SettingsService {
       user => this.userSource.next(user),
       (errorResponse: HttpErrorResponse) => {
         if (errorResponse.status == 404) {
-          this.authService.logout();
-          this.dialogsService.openWarningMessageDialog('User not found', 'User was not found. Maybe it was deleted');
+          this.authService.logout(true);
+          this.dialogsService.openWarningMessageDialog('Пользователь не найден', 'Текущая учетная запись не найдена');
           return;
         }
-        
-        this.dialogsService.openWarningMessageDialog('Something went wrong', 'Something went wrong on the server. Maybe updating page will be able to help.');
       })
   }
 

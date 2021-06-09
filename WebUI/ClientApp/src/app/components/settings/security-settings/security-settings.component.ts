@@ -10,7 +10,6 @@ import { SettingsService } from 'src/app/services/settings.service';
 import { UserService } from 'src/app/services/user.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DefaultDialogsService } from 'src/app/services/default-dialogs.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-security-settings',
@@ -67,8 +66,7 @@ export class SecuritySettingsComponent implements OnInit {
     private serverErrorService: ServerErrorsService,
     private authService: AuthService,
     private dialogService: DefaultDialogsService,
-    private snackBar: MatSnackBar,
-    private router: Router
+    private snackBar: MatSnackBar
   ) {
     this.settingsService.user$.subscribe(user => {
       this.email = user.email;
