@@ -32,7 +32,7 @@
               <mat-label>Описание коллекции</mat-label>
               <textarea rows="5" maxlength="4096" matInput formControlName="description"
                 [errorStateMatcher]="matcher"></textarea>
-              <mat-error *ngIf="descriptionFormGroup.get('description').errors?.maxlength">Максимальная дллина описания
+              <mat-error *ngIf="descriptionFormGroup.get('description').errors?.maxlength">Максимальная длина описания
                 4096 символов</mat-error>
               <mat-error *ngIf="descriptionFormGroup.get('description').errors?.serverErrors">
                 <div *ngFor="let error of descriptionFormGroup.get('description').errors?.serverErrors">{{error}}</div>
@@ -46,7 +46,7 @@
         </form>
       </mat-step>
       <mat-step>
-        <ng-template matStepLabel>Добавьте описание коллекции</ng-template>
+        <ng-template matStepLabel>Добавьте обложку коллекции</ng-template>
         <div class="row mx-0 mt-3">
           <app-drag-n-drop-image (imageChanged)="imageChanged($event)"></app-drag-n-drop-image>
         </div>
