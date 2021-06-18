@@ -32,6 +32,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
@@ -105,6 +106,22 @@ import { TopTagsComponent } from './components/home/statistics/top-tags/top-tags
 import { TopCollectionsComponent } from './components/home/statistics/top-collections/top-collections.component';
 
 registerLocaleData(localeRu, 'ru');
+
+const paginatorIntl = new MatPaginatorIntl();
+paginatorIntl.itemsPerPageLabel = 'На странице:';
+paginatorIntl.nextPageLabel = 'Следующая страница';
+paginatorIntl.previousPageLabel = 'Предыдущая страница';
+paginatorIntl.getRangeLabel = (page: number, pageSize: number, length: number) => {
+  if (length == 0 || pageSize == 0) {
+    return `0 из ${length}`;
+  }
+
+  length = Math.max(length, 0);
+  const startIndex = page * pageSize;
+  const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
+
+  return `${startIndex + 1} - ${endIndex} из ${length}`;
+};
 
 @NgModule({
   declarations: [
@@ -236,7 +253,8 @@ registerLocaleData(localeRu, 'ru');
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
     { provide: ErrorStateMatcher, useClass: SubmitErrorStateMatcher },
 
-    { provide: LOCALE_ID, useValue: 'ru' }
+    { provide: LOCALE_ID, useValue: 'ru' },
+    { provide: MatPaginatorIntl, useValue: paginatorIntl }
   ],
   bootstrap: [AppComponent]
 })
