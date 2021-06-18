@@ -7,8 +7,6 @@
 
 nav {
   position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: $header-height;
   user-select: none;
@@ -35,9 +33,9 @@ nav {
 
     .logo {
       height: 100%;
+      border-radius: 0;
       min-width: unset !important;
       padding: 0 0.8rem;
-      border-radius: 0;
 
       div {
         display: flex;
@@ -60,24 +58,27 @@ nav {
 
     .search-input {
       flex-grow: 1;
-      margin: 0 1rem -1.25em 1rem;
+      margin: 0 1rem -1.25em;
     }
 
-    .links {
-      display: flex;
-      flex-direction: row;
+    .search-button {
+      display: none;
+      flex-grow: 1;
+      height: 100%;
+      border-radius: 0;
+    }
 
-      #auth-button {
-        display: none;
-      }
+    #auth-button {
+      display: none;
     }
   }
 }
 
 @media (max-width: 768px) {
   nav {
-
     .nav-bar {
+      padding: 0 1rem;
+
       .logo {
         div {
           img {
@@ -90,14 +91,40 @@ nav {
         }
       }
 
-      .links {
-        .link--auth {
-          display: none;
-        }
+      .link--auth {
+        display: none;
+      }
 
-        #auth-button {
-          display: block;
+      #auth-button {
+        display: block;
+      }
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  nav {
+    .nav-bar {
+      .search-input {
+        visibility: hidden;
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        padding: 1rem 1rem 0;
+        margin: 0 -1rem;
+        width: 100%;
+        transition: top 0.2s, visibility 0.2s;
+        
+        &.visible {
+          visibility: visible;
+          top: $header-height;
+          background-color: white;
+          box-shadow: 0 0 6px 0 #00000040;
         }
+      }
+
+      .search-button {
+        display: block;
       }
     }
   }

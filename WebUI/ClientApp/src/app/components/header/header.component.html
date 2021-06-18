@@ -2,18 +2,21 @@
   <div class="underlay"></div>
   <div class="app__container h-100">
     <div class="nav-bar">
-      <a class="logo" mat-button routerLink="">
+      <a class="logo button" mat-button routerLink="">
         <div>
           <img src="assets/img/logo.png" alt="">
           <span>CollectionBook</span>
         </div>
       </a>
-      <mat-form-field class="search-input" appearance="outline">
-        <mat-icon class="mx-2" matPrefix>search</mat-icon>
-        <input #searchInput type="search" autocomplete="off" matInput placeholder="Найти коллекцию, элемент или пользователя"
-          (change)="searchInputChanged(searchInput)">
+      <mat-form-field class="search-input" [ngClass]="{'visible' : isInputVisible}" appearance="outline">
+        <mat-icon class="mx-2 material-icons-round" matPrefix>search</mat-icon>
+        <input #searchInput type="search" autocomplete="off" matInput
+          placeholder="Найти коллекцию, элемент или пользователя" (change)="searchInputChanged(searchInput)">
       </mat-form-field>
-      <div class="links" *ngIf="!isAuthenticated; else authSection">
+      <button class="search-button" mat-button (click)="changeSearchInputVisibility()">
+        <mat-icon class="material-icons-round">search</mat-icon>
+      </button>
+      <div *ngIf="!isAuthenticated; else authSection">
         <a class="link--auth" mat-button routerLink="login">Вход</a>
         <a class="link--auth" mat-button routerLink="register">Регистрация</a>
         <button id="auth-button" mat-icon-button [matMenuTriggerFor]="login">

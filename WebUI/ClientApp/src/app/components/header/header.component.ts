@@ -22,6 +22,8 @@ import { ChangeOwnerPasswordDialogComponent } from '../dialogs/change-owner-pass
 })
 export class HeaderComponent {
 
+  private _isInputVisible = false;
+
   public constructor(
     @Inject(SEARCH_STRING_KEY) private searchStringKey: string,
     private authService: AuthService,
@@ -32,6 +34,10 @@ export class HeaderComponent {
     private authTokenService: AuthTokenService,
     private dialogsService: DefaultDialogsService
   ) { }
+
+  public get isInputVisible(): boolean {
+    return this._isInputVisible;
+  }
 
   public get isAuthenticated(): boolean {
     return this.authService.isAuthenticated();
@@ -49,6 +55,10 @@ export class HeaderComponent {
     return Roles.Admin;
   }
 
+  public changeSearchInputVisibility(): void {
+    this._isInputVisible = !this._isInputVisible;
+  }
+
   public searchInputChanged(input: HTMLInputElement): void {
     let queryParams: Params = {
       [this.searchStringKey]: input.value
@@ -63,6 +73,7 @@ export class HeaderComponent {
 
     this.router.navigate([url], { queryParams, queryParamsHandling: 'merge' });
     input.value = '';
+    this._isInputVisible = false;
   }
 
   public changeLogin(): void {
