@@ -4,7 +4,7 @@
       <h2 class="m-0">По запросу "{{ searchString }}"</h2>
       <h4 class="m-0">найдены следующие пользователи ({{ totalCount }})</h4>
     </div>
-    <mat-form-field appearance="outline">
+    <mat-form-field class="mt-2" appearance="outline">
       <mat-label>Сортировать по</mat-label>
       <mat-select [(ngModel)]="selectedSortCriterion">
         <mat-option *ngFor="let criterion of sortCriterions" [value]="criterion.value">{{ criterion.viewValue }}</mat-option>
