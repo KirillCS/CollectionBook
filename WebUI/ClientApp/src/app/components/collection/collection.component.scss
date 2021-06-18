@@ -114,3 +114,11 @@ $cover-width-md: 280px;
     }
   }
 }
+
+@media (max-width: 540px) {
+  .collection {
+    .cover {
+      width: $cover-width-md;
+    }
+  }
+}
